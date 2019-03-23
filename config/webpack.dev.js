@@ -1,12 +1,19 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common');
-const {appSrc, appDist} = require('./variables');
+const { srcDir, publicDir } = require('./paths');
 
 module.exports = merge(common, {
-    entry: appSrc + '/index.ts',
+    entry: srcDir + '/index.ts',
     devtool: 'eval-source-map',
+    output: {
+        filename: 'bundle.js',
+    },
     devServer: {
-        contentBase: appDist,
-        port: 4200
+        port: 4200,
+        publicPath: '/',
+        contentBase: publicDir,
+        watchContentBase: true,
+        hot: true,
+        compress: true
     }
 });
