@@ -1,0 +1,19 @@
+{
+  "name": "about-me",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarcoLeko/about-me.git"
+  },
+  "author": "Marco Leko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MarcoLeko/about-me/issues"
+  },
+  "homepage": "https://github.com/MarcoLeko/about-me#readme"
+}
