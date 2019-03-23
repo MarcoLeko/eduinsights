@@ -3,3 +3,6 @@
 
 # IDEA config files
 .idea/
+
+# Generated output
+.dist/
