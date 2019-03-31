@@ -1,10 +1,11 @@
 const webpack = require('webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 const {publicDir, srcDir, distDir} = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ManifestPlugin = require("webpack-manifest-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 
@@ -13,14 +14,16 @@ module.exports = (env) => {
     const isProduction = env.production === true;
     const isDevelopment = env.development === true;
 
+    process.env.NODE_ENV = isProduction ? 'production' : isDevelopment && 'development';
+    process.env.BABEL_ENV = isProduction ? 'production' : isDevelopment && 'development';
+
     return {
         entry: {
             main: srcDir + '/index.ts'
         },
         output: {
             filename: isProduction ? '[name].bundle.[contentHash:8].js' : '[name].bundle.js',
-            path: distDir,
-            pathinfo: isDevelopment
+            path: distDir
         },
         mode: isProduction ? 'production' : isDevelopment && 'development',
         devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
@@ -59,43 +62,46 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
-                    test: /\.tsx?$/,
-                    use: 'ts-loader',
-                    exclude: /node_modules/
-                },
-                {
-                    test: /\.(sa|sc|c)ss$/,
-                    use: [
-                        isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-                        'css-loader',
-                        'sass-loader'
-                    ]
-                },
-                {
-                    test: /\.(png|jpg|gif|svg)$/,
-                    exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-                    use: [
+                    oneOf: [
                         {
-                            loader: 'file-loader',
+                            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                            loader: 'url-loader',
                             options: {
-                                name: 'assets/[name].[hash:8].[ext]',
-                                outputPath: 'assets'
-                            },
+                                limit: 10000,
+                                name: 'assets/[name].[hash:8].[ext]'
+                            }
+                        },
+                        {
+                            test: /\.tsx?$/,
+                            use: 'ts-loader',
+                            exclude: /node_modules/
+                        },
+                        {
+                            test: /\.(sa|sc|c)ss$/,
+                            use: [
+                                isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                                'css-loader',
+                                'sass-loader'
+                            ]
+                        },
+                        {
+                            exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+                            use: [
+                                {
+                                    loader: 'file-loader',
+                                    options: {
+                                        name: 'assets/[name].[hash:8].[ext]'
+                                    },
+                                }
+                            ]
                         }
                     ]
-                },
-                {
-                    test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        name: 'assets/[name].[hash:8].[ext]',
-                        fallback: 'file-loader'
-                    },
                 }
             ]
+
         },
         plugins: [
+            new CopyWebpackPlugin([{ from: 'public' }]),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'styles/[name].[contenthash:8].css',
@@ -108,7 +114,7 @@ module.exports = (env) => {
             new HtmlWebpackPlugin(
                 Object.assign({}, {
                         inject: true,
-                        template: publicDir + '/index.html',
+                        template: publicDir + '/index.html'
                     },
                     isProduction ? {
                         minify: {
