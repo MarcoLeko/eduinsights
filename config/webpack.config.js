@@ -19,11 +19,11 @@ module.exports = (env) => {
 
     return {
         entry: {
-            main: srcDir + '/index.ts'
+            main: srcDir + '/index.tsx'
         },
         output: {
             filename: isProduction ? '[name].bundle.[contentHash:8].js' : '[name].bundle.js',
-            chunkFilename: isProduction ?'[id].vendor.bundle.[contentHash:8].js': '[id].vendor.bundle.js',
+            chunkFilename: isProduction ? '[id].vendor.bundle.[contentHash:8].js' : '[id].vendor.bundle.js',
             path: distDir
         },
         mode: isProduction ? 'production' : isDevelopment && 'development',
@@ -69,6 +69,11 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
+                    test: /\.js$/,
+                    use: 'source-map-loader',
+                    enforce: 'pre',
+                },
+                {
                     oneOf: [
                         {
                             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -79,9 +84,33 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            test: /\.tsx?$/,
-                            use: 'ts-loader',
-                            exclude: /node_modules/
+                            test: /\.(js|mjs|jsx|ts|tsx)$/,
+                            include: srcDir,
+                            loader: 'babel-loader',
+                            options: {
+                                babelrc: false,
+                                configFile: false,
+                                presets: [
+                                    ["@babel/preset-react"],
+                                    ["@babel/preset-typescript"],
+                                ],
+                                plugins: [
+                                    ['@babel/plugin-proposal-class-properties',
+                                        { loose: true }
+                                    ],
+                                        ['babel-plugin-named-asset-import', {
+                                            loaderMap: {
+                                                svg: {
+                                                    ReactComponent: '@svgr/webpack?-svgo,+ref![path]',
+                                                },
+                                            },
+                                        },
+                                    ],
+                                ],
+                                cacheDirectory: true,
+                                cacheCompression: isProduction,
+                                compact: isProduction,
+                            },
                         },
                         {
                             test: /\.(sa|sc|c)ss$/,
@@ -108,7 +137,7 @@ module.exports = (env) => {
 
         },
         plugins: [
-            new CopyWebpackPlugin([{ from: 'public' }]),
+            new CopyWebpackPlugin([{from: 'public'}]),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'styles/[name].[contenthash:8].css',
