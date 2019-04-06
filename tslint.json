@@ -1,10 +1,9 @@
 {
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
-    "quotemark": {
-      "options": "single"
-    },
+    "quotemark": false,
     "ordered-imports": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "eofline": false
   }
 }
