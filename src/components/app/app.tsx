@@ -4,8 +4,6 @@ import logo from '../../assets/logo.svg';
 
 export class App extends React.Component {
 
-    public arr: number[] = [1, 2, 3];
-
     public render(): React.ReactNode {
         return (
             <div className="app">
