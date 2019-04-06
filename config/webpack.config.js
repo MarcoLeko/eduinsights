@@ -23,6 +23,7 @@ module.exports = (env) => {
         },
         output: {
             filename: isProduction ? '[name].bundle.[contentHash:8].js' : '[name].bundle.js',
+            chunkFilename: isProduction ?'[id].vendor.bundle.[contentHash:8].js': '[id].vendor.bundle.js',
             path: distDir
         },
         mode: isProduction ? 'production' : isDevelopment && 'development',
@@ -57,7 +58,13 @@ module.exports = (env) => {
                     cache: true
                 }),
                 new OptimizeCSSAssetsPlugin({}),
-            ]
+            ],
+            splitChunks: {
+                chunks: 'all',
+                name: false,
+                minChunks: 2
+            },
+            runtimeChunk: true
         },
         module: {
             rules: [
