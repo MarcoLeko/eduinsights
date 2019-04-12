@@ -2,12 +2,9 @@ const webpack = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 const {publicDir, srcDir, distDir} = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ManifestPlugin = require("webpack-manifest-plugin");
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-
 
 module.exports = (env) => {
 
@@ -60,11 +57,8 @@ module.exports = (env) => {
                 new OptimizeCSSAssetsPlugin({}),
             ],
             splitChunks: {
-                chunks: 'all',
-                name: false,
-                minChunks: 2
-            },
-            runtimeChunk: true
+                chunks: 'all'
+            }
         },
         module: {
             rules: [
@@ -137,7 +131,6 @@ module.exports = (env) => {
 
         },
         plugins: [
-            new CopyWebpackPlugin([{from: 'public'}]),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'styles/[name].[contenthash:8].css',
@@ -146,7 +139,6 @@ module.exports = (env) => {
             new ManifestPlugin({
                 fileName: 'asset-manifest.json'
             }),
-            new CleanWebpackPlugin(),
             new HtmlWebpackPlugin(
                 Object.assign({}, {
                         inject: true,
