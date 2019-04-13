@@ -6,14 +6,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const dotenv = require('dotenv');
 
 module.exports = (env) => {
 
+    dotenv.config();
     const isProduction = env.production === true;
     const isDevelopment = env.development === true;
 
     process.env.NODE_ENV = isProduction ? 'production' : isDevelopment && 'development';
-    process.env.BABEL_ENV = isProduction ? 'production' : isDevelopment && 'development';
 
     return {
         entry: {
@@ -91,15 +92,15 @@ module.exports = (env) => {
                                 ],
                                 plugins: [
                                     ['@babel/plugin-proposal-class-properties',
-                                        { loose: true }
+                                        {loose: true}
                                     ],
-                                        ['babel-plugin-named-asset-import', {
-                                            loaderMap: {
-                                                svg: {
-                                                    ReactComponent: '@svgr/webpack?-svgo,+ref![path]',
-                                                },
+                                    ['babel-plugin-named-asset-import', {
+                                        loaderMap: {
+                                            svg: {
+                                                ReactComponent: '@svgr/webpack?-svgo,+ref![path]',
                                             },
                                         },
+                                    },
                                     ],
                                 ],
                                 cacheDirectory: true,
@@ -132,6 +133,10 @@ module.exports = (env) => {
 
         },
         plugins: [
+            new webpack.DefinePlugin({
+                'process.env.PUBLIC_URL':
+                    JSON.stringify(process.env.PUBLIC_URL)
+            }),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
             isProduction && new MiniCssExtractPlugin({
                 filename: 'styles/[name].[contenthash:8].css',
@@ -141,7 +146,7 @@ module.exports = (env) => {
                 fileName: 'asset-manifest.json'
             }),
             new CopyPlugin([
-                { from: 'public', ignore: [/index.html$/] },
+                {from: 'public', ignore: ['index.html']}
             ]),
             new HtmlWebpackPlugin(
                 Object.assign({}, {

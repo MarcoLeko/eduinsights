@@ -6,3 +6,6 @@
 
 # Generated output
 .dist/
+
+# Environment variables
+.env
