@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const {publicDir, srcDir, distDir} = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -139,6 +140,9 @@ module.exports = (env) => {
             new ManifestPlugin({
                 fileName: 'asset-manifest.json'
             }),
+            new CopyPlugin([
+                { from: 'public', ignore: [/index.html$/] },
+            ]),
             new HtmlWebpackPlugin(
                 Object.assign({}, {
                         inject: true,
@@ -157,7 +161,7 @@ module.exports = (env) => {
                             minifyCSS: true,
                             minifyURLs: true,
                         },
-                    } : undefined)),
+                    } : undefined))
         ].filter(Boolean),
         devServer: {
             port: 4200,
