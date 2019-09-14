@@ -28,7 +28,7 @@ module.exports = (env) => {
         mode: isProduction ? 'production' : isDevelopment && 'development',
         devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
         resolve: {
-            extensions: ['.tsx', '.ts', '.js']
+            extensions: ['.jsx', '.js', '.tsx', '.ts']
         },
         optimization: {
             minimize: isProduction,
