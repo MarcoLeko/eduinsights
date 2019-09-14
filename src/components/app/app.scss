@@ -1,13 +1,19 @@
 .app {
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
 }
 
 .app-logo {
   pointer-events: none;
   height: 50%;
   width: 50%;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

@@ -4,6 +4,7 @@
     "quotemark": false,
     "ordered-imports": false,
     "jsx-no-multiline-js": false,
-    "eofline": false
+    "eofline": false,
+    "interface-name": false
   }
 }
