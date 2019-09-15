@@ -1,11 +1,16 @@
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import {ReactComponent as Logo} from '../../assets/donation.svg';
+import './tab-bar.scss';
+import DonationOverview from '../donation-overview/donation-overview';
+import {Box} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import SwipeableViews from 'react-swipeable-views';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Slide from '@material-ui/core/Slide';
+import Toolbar from '@material-ui/core/Toolbar';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -15,7 +20,7 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
     return (
         <Typography
@@ -38,17 +43,9 @@ function a11yProps(index: any) {
     };
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-        width: '100%',
-    },
-}));
-
 export default function TabBar() {
-    const classes = useStyles();
-    const theme = useTheme();
     const [value, setValue] = React.useState(0);
+    const trigger = useScrollTrigger();
 
     function handleChange(event: React.ChangeEvent<{}>, newValue: number) {
         setValue(newValue);
@@ -59,36 +56,43 @@ export default function TabBar() {
     }
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static" color="default">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
-                >
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
-                </Tabs>
-            </AppBar>
+        <React.Fragment>
+                <AppBar position="fixed" color="default">
+                    <Slide appear={false} direction="down" in={!trigger}>
+                        <div className="tab-nav" style={{padding: '.5em 1em 0 1em'}}>
+                            <Logo style={{width: '30px', paddingRight: '1em'}}/>
+                            <span style={{fontWeight: 'bold', fontSize: '20px', verticalAlign: 'super'}}>Help-Educate</span>
+                        </div>
+                    </Slide>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                    >
+                        <Tab label="Item One" {...a11yProps(0)}/>
+                        <Tab label="Item Two" {...a11yProps(1)}/>
+                        <Tab label="Item Three" {...a11yProps(2)}/>
+                    </Tabs>
+                </AppBar>
+            <Toolbar/>
             <SwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={value}
+                style={{height: '100%', width: '100%'}}
+                containerStyle={{height: '100%', width: '100%'}}
                 onChangeIndex={handleChangeIndex}
             >
-                <TabPanel value={value} index={0} dir={theme.direction}>
-                    Item One
+                <TabPanel value={value} index={0}>
+                    <DonationOverview/>
                 </TabPanel>
-                <TabPanel value={value} index={1} dir={theme.direction}>
+                <TabPanel value={value} index={1}>
                     Item Two
                 </TabPanel>
-                <TabPanel value={value} index={2} dir={theme.direction}>
+                <TabPanel value={value} index={2}>
                     Item Three
                 </TabPanel>
             </SwipeableViews>
-        </div>
+        </React.Fragment>
     );
 }
