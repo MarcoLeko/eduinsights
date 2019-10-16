@@ -7,10 +7,12 @@ import {ReactComponent as Logo} from '../../assets/donation.svg';
 import './tab-bar.scss';
 import SwipeableViews from 'react-swipeable-views';
 import {Box, Toolbar} from '@material-ui/core';
+import DonationOverview from '../donation-overview/donation-overview';
 
 export default function TabBar() {
     const [value, setValue] = React.useState(0);
     const [yOffset, setNavState] = React.useState(0);
+
     function handleChange(event: React.ChangeEvent<{}>, newValue: number) {
         setValue(newValue);
     }
@@ -39,13 +41,13 @@ export default function TabBar() {
                 position="sticky"
                 color="default"
                 style={{
-                    transition: 'all 0.1s',
+                    transition: 'transform .2s ease-out',
                     transform: `translateY(-${transitionY()}px)`
                 }}
             >
                 <Toolbar style={{minHeight: '48px'}}>
                     <Logo style={{width: '30px', marginRight: '1em'}}/>
-                    <span style={{fontWeight: 'bold', fontSize: '20px', verticalAlign: 'super'}}>Help-Educate</span>
+                    <span className="toolbar-header">Help-Educate</span>
                 </Toolbar>
                 <Tabs
                     value={value}
@@ -55,7 +57,7 @@ export default function TabBar() {
                     variant="fullWidth"
                 >
                     <Tab label="Home"/>
-                    <Tab label="Live Donations"/>
+                    <Tab label="Donations"/>
                     <Tab label="About Us"/>
                 </Tabs>
             </AppBar>
@@ -66,24 +68,13 @@ export default function TabBar() {
                 onChangeIndex={handleChangeIndex}
                 enableMouseEvents={true}
             >
-                <Box>
-                    {
-                        [...new Array(20)].map(() =>
-                            `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-            dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-            consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no
-            sea takimata sanctus est Lorem ipsum dolor sit amet.`)
-                            .join('\n')
-                    }
-                </Box>
-                <div>
+                <DonationOverview/>
+                <Box p={3}>
                     Item Two
-                </div>
-                <div>
+                </Box>
+                <Box p={3}>
                     Item Three
-                </div>
+                </Box>
             </SwipeableViews>
         </React.Fragment>
     );
