@@ -1,16 +1,14 @@
 import * as React from 'react';
 import './app.scss';
 import TabBar from '../tab-bar/tab-bar';
-import BottomNav from '../bottom-nav/bottom-nav';
+import theme from '../../material-ui-theme';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 export default function App(): React.ReactNode {
 
     return (
-        <React.Fragment>
+        <ThemeProvider theme={theme}>
             <TabBar/>
-            <div className="fixed-bottom">
-                <BottomNav/>
-            </div>
-        </React.Fragment>
+        </ThemeProvider>
     );
 }

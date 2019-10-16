@@ -1,6 +1,13 @@
+$color-primary: cadetblue;
+$color-default: rgba(0, 0, 0, 0.7);
+$font-format: Apple Chancery, cursive;
+
 html, body, #root {
-  height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+  color: $color-default;
+  font-family: $font-format;
 }
+
+
