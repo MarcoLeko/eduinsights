@@ -58,7 +58,7 @@ export default function TabBar() {
         >
           <Tab label="Home"/>
           <Tab label="Donations"/>
-          <Tab label="About Us"/>
+          <Tab label="Charities"/>
         </Tabs>
       </AppBar>
       <SwipeableViews
