@@ -1,34 +1,17 @@
 import * as React from 'react';
-import {useEffect, useRef} from 'react';
 import {Box} from '@material-ui/core';
-import CountUp from 'react-countup';
 import Container from "@material-ui/core/Container";
 import Books from '../../assets/books-image.png';
 import "./donations-overview.scss";
-import Typography from "@material-ui/core/Typography";
+import AllDonationsCounter from "./all-donations-counter";
 
-export default function DonationsOverview() {
-    const countUpElm = useRef(null);
-    const [countUp, setCountUp] = React.useState(false);
+function DonationsOverview() {
+    const [canCount, setCanCount] = React.useState(false);
 
-    useEffect(() => {
+    function handleImageLoad() {
+        setCanCount(true);
+    }
 
-            const observer = new IntersectionObserver((entries) => {
-                console.log(entries[0])
-                if (entries[0].isIntersecting) {
-                    setCountUp(true);
-                } else {
-                    setCountUp(false);
-
-                }
-            }, {
-                threshold: [.5],
-                root: document.querySelector('div.react-swipeable-view-container')[0]
-            });
-            observer.observe(countUpElm.current.containerRef.current);
-            return () => observer.disconnect();
-
-    }, []);
     return (
         <React.Fragment>
             <Container>
@@ -52,65 +35,12 @@ export default function DonationsOverview() {
                 </Box>
             </Container>
 
-            <img className="books" src={Books} alt="Books for care"/>
-
-            <Typography variant="h6" align="center">
-                We already collected
-            </Typography>
-            <Box className="summed-donations-panel" p={3}>
-                <CountUp
-                    className="counting-numbers"
-                    start={0}
-                    end={160527.12}
-                    duration={5}
-                    separator=" "
-                    decimals={2}
-                    decimal=","
-                    suffix=" $ donated"
-                    onEnd={() => console.log('Ended! 👏')}
-                    onPauseResume={() => console.log('Paused!')}
-                    onStart={() => console.log('Started! 💨')}
-                    ref={countUpElm}
-                >  {({countUpRef, start, pauseResume}) => (
-                    <React.Fragment>
-                        <span
-                            ref={countUpRef}/>
-                    </React.Fragment>
-                )}</CountUp>
-            </Box>
-            <Typography variant="h6" align="center">
-                Thanks to every anonymous donor.
-            </Typography>
+            <img className="books" src={Books} alt="Books for care" onLoad={handleImageLoad.bind(this)}/>
+            <AllDonationsCounter
+                canCount={canCount}
+            />
         </React.Fragment>
     );
 }
 
-// const useIntersect = ({root = null, rootMargin, threshold = 0}) => {
-//     const [entry, updateEntry] = useState({});
-//     const [node, setNode] = useState(null);
-//     const observer = useRef(null);
-//
-//     useEffect(() => {
-//         if (observer.current) {
-//             observer.current.disconnect();
-//         }
-//
-//         // eslint-disable-next-line react-hooks/rules-of-hooks
-//         observer.current = useRef(new window.IntersectionObserver(([entry]) => updateEntry(entry), {
-//             root,
-//             rootMargin,
-//             threshold
-//         }));
-//         const {current: currentObserver} = observer;
-//
-//         currentObserver.disconnect();
-//
-//         if (node) {
-//             currentObserver.observe(node);
-//         }
-//
-//         return () => currentObserver.disconnect();
-//     }, [node, root, rootMargin, threshold]);
-//
-//     return [setNode, entry];
-// };
+export default React.memo(DonationsOverview);
