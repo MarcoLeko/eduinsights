@@ -7,7 +7,7 @@ import {ReactComponent as Logo} from '../../assets/logo.svg';
 import './tab-bar.scss';
 import SwipeableViews from 'react-swipeable-views';
 import {Box, Toolbar} from '@material-ui/core';
-import DonationOverview from "../donations-overview/donations-overview";
+import DonationsOverview from "../donations-overview/donations-overview";
 
 export default function TabBar() {
   const [value, setValue] = React.useState(0);
@@ -47,7 +47,7 @@ export default function TabBar() {
       >
         <Toolbar style={{minHeight: '48px'}}>
           <Logo style={{width: '30px', marginRight: '1em'}}/>
-          <span className="toolbar-header">Help-Educate</span>
+          <span className="toolbar-header">Help educate</span>
         </Toolbar>
         <Tabs
           value={value}
@@ -67,8 +67,9 @@ export default function TabBar() {
         containerStyle={{height: '100%', width: '100%'}}
         onChangeIndex={handleChangeIndex}
         enableMouseEvents={true}
+        slideStyle={{overflow: 'hidden'}}
       >
-        <DonationOverview/>
+        <DonationsOverview/>
         <Box p={3}>
           Item Two
         </Box>
