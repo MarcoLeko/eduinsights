@@ -8,6 +8,7 @@ import './tab-bar.scss';
 import SwipeableViews from 'react-swipeable-views';
 import {Box, Toolbar} from '@material-ui/core';
 import DonationsOverview from "../donations-overview/donations-overview";
+import MapOverlay from "../donations-map/map-overlay";
 
 export default function TabBar() {
   const [value, setValue] = React.useState(0);
@@ -70,9 +71,7 @@ export default function TabBar() {
         slideStyle={{overflow: 'hidden'}}
       >
         <DonationsOverview/>
-        <Box p={3}>
-          Item Two
-        </Box>
+        <MapOverlay />
         <Box p={3}>
           Item Three
         </Box>
