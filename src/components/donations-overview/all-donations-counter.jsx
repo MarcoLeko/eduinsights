@@ -2,6 +2,8 @@ import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import {useEffect, useRef} from "react";
 import {useCountUp} from "react-countup";
+import Footer from './footer';
+
 
 export default function AllDonationsCounter({canCount}) {
     const ref = useRef(null);
