@@ -4,6 +4,8 @@ import Container from "@material-ui/core/Container";
 import Books from '../../assets/books-image.png';
 import "./donations-overview.scss";
 import AllDonationsCounter from "./all-donations-counter";
+import PaypalPartnerButton from "./paypal-partner-button";
+import Footer from "./footer";
 
 function DonationsOverview() {
     const [canCount, setCanCount] = React.useState(false);
@@ -39,6 +41,8 @@ function DonationsOverview() {
             <AllDonationsCounter
                 canCount={canCount}
             />
+            <PaypalPartnerButton />
+            <Footer/>
         </React.Fragment>
     );
 }
