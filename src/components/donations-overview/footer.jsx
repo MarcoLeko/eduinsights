@@ -51,11 +51,11 @@ function Footer(props) {
                           style={{
                               padding: '2em 0'
                           }}>
-                        <Typography variant="subheading" color="inherit">
+                        <Typography variant="h5" color="inherit">
                             Footer Content
                         </Typography>
 
-                        <Typography color="inherit" variant="displayBlock">
+                        <Typography color="inherit" variant="subtitle1">
                             You can use rows and columns of Material-UI Grid here to organize
                             your footer content.
                         </Typography>

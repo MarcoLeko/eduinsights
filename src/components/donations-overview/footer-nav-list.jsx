@@ -20,8 +20,8 @@ class FooterMenuList extends React.Component {
 
         return (
             <List dense={true} component="div" disablePadding>
-                {this.props.navItems.map(item => (
-                    <ListItem button onClick={this.onItemClick}>
+                {this.props.navItems.map((item, i) => (
+                    <ListItem button onClick={this.onItemClick} key={i}>
                         <ListItemIcon>
                             <Avatar>{item.icon}</Avatar>
                         </ListItemIcon>

@@ -1,16 +1,15 @@
 import * as React from 'react';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {ReactComponent as Logo} from '../../assets/logo.svg';
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 import './tab-bar.scss';
 import SwipeableViews from 'react-swipeable-views';
-import {Box, Toolbar} from '@material-ui/core';
+import { Box, Toolbar } from '@material-ui/core';
 import DonationsOverview from "../donations-overview/donations-overview";
 import MapOverlay from "../donations-map/map-overlay";
-import {connect} from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import { connect } from "react-redux";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import IconButton from '@material-ui/core/IconButton';
 
