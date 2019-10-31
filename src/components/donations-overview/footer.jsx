@@ -1,15 +1,11 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import FooterMenuList from "./footer-nav-list";
 import SendIcon from "@material-ui/icons/Send";
 import GuestBook from "@material-ui/icons/MenuBook";
-
+import './footer.scss'
 const NavItems = [
     {
         icon: <GuestBook />,
@@ -21,29 +17,13 @@ const NavItems = [
     },
 ];
 
-const styles = theme => ({
-    flex: {
-        flexGrow: 1
-    },
-    footer: {
-        marginTop: '2em',
-        textAlign: "center",
-        backgroundColor: '#f5f5f5',
-        left: 0,
-        bottom: 0,
-        right: 0,
-    }
-});
-
-function Footer(props) {
-
-        const { classes } = props;
+function Footer() {
 
         return (
             <Paper
                 square={true}
-                elevation={1}
-                className={classes.footer}>
+                elevation={0}
+                className="background-transparent footer-box">
                 <Grid
                     container
                 >
@@ -67,23 +47,9 @@ function Footer(props) {
                           }}>
                         <FooterMenuList navItems={NavItems} />
                     </Grid>
-
-                    <Divider />
-
-                    <AppBar position="static">
-                        <Toolbar variant="dense">
-                            <Typography
-                                variant="caption"
-                                color="inherit"
-                                className={classes.flex}
-                            >
-                                Terms and Conditions
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
                 </Grid>
             </Paper>
         );
 }
 
-export default withStyles(styles)(Footer);
+export default Footer;
