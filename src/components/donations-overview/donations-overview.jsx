@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Box} from '@material-ui/core';
 import Container from "@material-ui/core/Container";
-import Books from '../../assets/books-image.png';
 import "./donations-overview.scss";
 import AllDonationsCounter from "./all-donations-counter";
 import PaypalPartnerButton from "./paypal-partner-button";
@@ -34,10 +33,17 @@ function DonationsOverview() {
                     sacrifices.
                     The option of an educational loan is always a great way to ensure that your child does not get left
                     behind the tertiary curve.
+                    <iframe className="books" height="315" src="https://www.youtube.com/embed/5Y_pXbcfqOk" frameBorder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            onLoad={handleImageLoad.bind(this)}/>
+
+                    We are always told how education is a key to success. We also come across several quotes about the importance of education.
+                    But do we really know why education is so important? Why exactly do we need education in our life?
+                    Find the answers to these questions here. Watch this video to know the 5 main reasons why education is necessary, and how it can change lives.
                 </Box>
             </Container>
 
-            <img className="books" src={Books} alt="Books for care" onLoad={handleImageLoad.bind(this)}/>
             <AllDonationsCounter
                 canCount={canCount}
             />
