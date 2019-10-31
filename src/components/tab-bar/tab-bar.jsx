@@ -17,18 +17,18 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
+        transition: theme.transitions.create(['margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        marginLeft: 0,
     },
     appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['margin', 'width'], {
+        transition: theme.transitions.create(['margin'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        marginRight: drawerWidth,
+        marginLeft: -drawerWidth,
     },
     content: {
         flexGrow: 1,
