@@ -5,11 +5,12 @@ import PaypalLogo from '../../assets/paypal-logo.png';
 export default function PaypalPartnerButton() {
 
     return (
-        <React.Fragment>
+        <div
+            style={{padding: '3em 0'}}
+        >
             <Typography
                 variant="h6"
                 align="center"
-                style={{paddingTop: '3em'}}
             >
                 Payments are supported by
             </Typography>
@@ -38,6 +39,6 @@ export default function PaypalPartnerButton() {
                 </tr>
                 </tbody>
             </table>
-        </React.Fragment>
+        </div>
     )
 }
