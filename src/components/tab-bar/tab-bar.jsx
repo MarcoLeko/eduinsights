@@ -12,8 +12,7 @@ import MapOverlay from "../donations-map/map-overlay";
 import {connect} from "react-redux";
 import ToggleableMenu from "./toggleable-menu";
 import SideBar, {drawerWidth} from './side-bar';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import Paper from "@material-ui/core/Paper";
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -52,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 
 function TabBar({canSwipe, isOpen}) {
     const classes = useStyles();
-    const theme = useTheme();
 
     const [tabIndex, setTabIndex] = React.useState(0);
     const [yOffset, setNavState] = React.useState(0);
