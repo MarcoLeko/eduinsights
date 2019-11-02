@@ -1,44 +1,43 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
 import {setSwipeState} from "../../store/actions";
 import {connect} from "react-redux";
 import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import marker from '../../assets/marker.png';
+import MarkerPopup from "./marker-popup";
 
-const {Map, TileLayer, Marker, Popup} = ReactLeaflet;
+const {Map, TileLayer, Marker} = ReactLeaflet;
 
 let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow
+    iconUrl: marker,
+    iconSize: [40, 40], // size of the icon
+    iconAnchor: [20, 35], // point of the icon which will correspond to marker's location
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
 function MapOverlay({setSwipeState}) {
-    const zoom = 4;
-
     const ref = useRef(null);
-    // const [bounds, setBounds] = useState([0, 0]);
 
     useEffect(() => {
-        console.log(ref)
-        console.log(ref.current.leafletElement.getBounds())
-
+        const {leafletElement} = ref.current;
+        console.log(leafletElement.getBounds())
     }, []);
 
     return (
         <Map
             ref={ref}
             center={[45.000, 10.000]}
-            zoom={zoom}
-            maxZoom={10}
-            minZoom={2}
-            // bounds={ref.current.leafletElement.getBounds()}
+            zoom={3}
+            zoomControl={false}
             onMovestart={() => setSwipeState(false)}
             onMoveend={() => setSwipeState(true)}
+            minZoom={3}
+            bounceAtZoomLimits={true}
+            maxBoundsViscosity={.95}
+            maxBounds={[[-90, -175], [80, 175]]}
         >
             <TileLayer
                 noWrap={true}
@@ -46,12 +45,13 @@ function MapOverlay({setSwipeState}) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {
-                [[51.505, -0.09], [58.403, 20.420], [43.300, 40]].map((position, i) =>
+                [
+                    [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
+                    [70.505, -20], [40.505, -80], [-40.505, -10]
+                ].map((position, i) =>
 
                     <Marker position={position} key={i}>
-                        <Popup>
-                            A pretty CSS3 popup. <br/> Easily customizable.
-                        </Popup>
+                        <MarkerPopup/>
                     </Marker>
                 )
             }

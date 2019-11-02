@@ -15,10 +15,7 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
   height: auto;
   min-height: 100%;
-  background: rgb(124,211,247);
-  background: -moz-linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
-  background: -webkit-linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
-  background: linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
+  background: #fff;
 }
 
 .background {
