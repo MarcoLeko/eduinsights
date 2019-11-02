@@ -115,12 +115,17 @@ function TabBar({canSwipe, isOpen}) {
             >
                 <SwipeableViews
                     index={tabIndex}
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                        transition: 'transform .2s ease-out',
-                        marginTop: tabIndex === 1 ? '-48px' : '0'
-                    }}
+                    style={
+                        Object.assign( {
+                            height: '100%',
+                            width: '100%',
+                            transition: 'transform .2s ease-out'
+                        }, tabIndex === 1 && {
+                            marginTop: '-48px',
+                            position: 'fixed'
+                        }
+                        )
+                    }
                     containerStyle={{height: '100%', width: '100%'}}
                     onChangeIndex={handleChangeIndex}
                     enableMouseEvents={true}

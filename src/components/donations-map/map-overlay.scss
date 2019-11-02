@@ -1,4 +1,33 @@
 .leaflet-container {
-  height: 100%;
+  height: calc(100vh - 48px);
   width: 100%;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 20px !important;
+  right: 25px !important;
+  color: #fff;
+  padding: 4px;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: transparent;
+  color: transparent;
+  box-shadow: none
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+}
+
+.leaflet-popup {
+  margin-bottom: 0;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
 }

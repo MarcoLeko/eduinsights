@@ -63,7 +63,7 @@ export default function AllDonationsCounter({ canCount }) {
         </CountUp>
       </div>
       <Typography variant="h6" align="center">
-        Thanks to every anonymous donor.
+        Thanks to all donor.
       </Typography>
     </React.Fragment>
   )
