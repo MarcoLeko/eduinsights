@@ -12,7 +12,7 @@ function ToggleableMenu(props) {
 
     return (
         <Toolbar style={{minHeight: '48px'}}>
-            <Logo style={{width: '30px', marginRight: '1em'}}/>
+            <Logo style={{width: '40px', marginRight: '1em'}}/>
             <span className="toolbar-header">Help educate</span>
             <IconButton
                 style={{right: 0, position: 'absolute'}}
