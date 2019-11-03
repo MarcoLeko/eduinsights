@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
         }),
         left: -drawerWidth,
     },
+    indicator: {
+        height: 4
+    }
 }));
 
 function TabBar({canSwipe, isOpen}) {
@@ -102,6 +105,9 @@ function TabBar({canSwipe, isOpen}) {
                     indicatorColor="primary"
                     textColor="primary"
                     variant="fullWidth"
+                    classes={{
+                        indicator : classes.indicator
+                    }}
                 >
                     <Tab label="Home"/>
                     <Tab label="Donations"/>
