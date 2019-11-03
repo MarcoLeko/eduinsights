@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": false,
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "newLine": "LF",
+    "outDir": "build",
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es6",
+    "strictPropertyInitialization": false,
+    "keyofStringsOnly": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}
