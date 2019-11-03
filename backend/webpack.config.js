@@ -1,5 +1,4 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -10,8 +9,7 @@ const terserOptions = {
     sourceMap: true,
     terserOptions: {
         compress: {
-            dead_code: true,
-            drop_console: true
+            dead_code: true
         },
         output: {
             comments: false
