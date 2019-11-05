@@ -1,6 +1,6 @@
 import {Container} from 'inversify';
 import {TYPES} from './types';
-import Express from '../express';
+import Express from '../modules/server/express';
 
 const dependencyContainer = new Container();
 

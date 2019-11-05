@@ -1,7 +1,7 @@
-import depencyContainer from './di-config/inversify.config';
-import Express from './express';
+import dependencyContainer from './di-config/inversify.config';
+import Express from './modules/server/express';
 import {TYPES} from './di-config/types';
 
-const app = depencyContainer.get<Express>(TYPES.EXPRESS);
+const app = dependencyContainer.get<Express>(TYPES.EXPRESS);
 
-app.start();
+app.init();
