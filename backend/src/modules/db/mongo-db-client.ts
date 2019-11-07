@@ -1,18 +1,27 @@
-import mongodb, {Db} from 'mongodb';
+import {MongoClient, MongoClientOptions} from 'mongodb';
 import {injectable} from 'inversify';
 
 @injectable()
 export default class MongoDBClient {
-    private mongoDBclient : mongodb.MongoClient;
+    private static readonly userName: string = process.env.DB_USERNAME || '';
+    private static readonly password: string = process.env.DB_PASSWORD || '';
+    private uri: string = `mongodb+srv://${MongoDBClient.userName}:${MongoDBClient.password}@help-educate-vj2pu.mongodb.net/test?ssl=true&&retryWrites=true&w=majority`;
 
-    connect(params: string, options: any) {
+    private mongoClient: MongoClient = new MongoClient(this.uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    } as MongoClientOptions);
 
-        this.mongoDBclient.connect(params, options)
-            .then((db: Db) => {
+    public connect(): Promise<void> {
+        return this.mongoClient.connect()
+            .then((mongoClient: MongoClient) => {
                 console.log('Connection to db was successful.');
-                db.collection('sample_airbnb.listingsAndReviews')
-            })
-            .catch((e:Error) => console.log('Could not connect to database' + e));
+                mongoClient.db('sample_geospatial').collection('shipwrecks').find().toArray()
+                    .then(result => console.log(JSON.stringify(result)))
+                    .catch(e => console.log('Could not fetch collection due to: ', e))
+                    .then(() => mongoClient.close());
+
+            }).catch((e: Error) => console.log('Could not connect to database ' + e));
     }
 
 }

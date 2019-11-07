@@ -6,6 +6,7 @@ import express from 'express';
 import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import SocketServer from './socket-server';
+import MongoDBClient from '../db/mongo-db-client';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,7 +19,8 @@ export default class Express {
     public server: Https.Server;
 
     constructor(
-        @inject(TYPES.SOCKET_SERVER) private socketServer: SocketServer
+        @inject(TYPES.SOCKET_SERVER) private socketServer: SocketServer,
+        @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient
 ) {
         this.app = express();
         this.createServer();
@@ -30,6 +32,7 @@ export default class Express {
         this.setUpRoutes();
         this.server.listen(Express.PORT, '0.0.0.0', () => {
             this.socketServer.setUpSocketIOHandlers();
+            this.mongoDBClient.connect();
             console.log(`Server successfully started on port: ${Express.PORT}`);
         });
     }
@@ -54,4 +57,9 @@ export default class Express {
         this.app.use(express.static(joinDir('../web/build')));
     }
 
+    private initRoutes() {
+        this.app.get('/charities', (request, response) => {
+
+        })
+    }
 }
