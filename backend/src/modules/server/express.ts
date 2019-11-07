@@ -1,29 +1,37 @@
 import 'reflect-metadata';
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
 import Https from 'https';
 import fs from 'fs';
 import express from 'express';
 import {joinDir} from '../utils/paths';
+import {TYPES} from '../../di-config/types';
+import SocketServer from './socket-server';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 @injectable()
 export default class Express {
 
-
-    private static readonly PORT: number = 8080;
+    private static readonly PORT: any = process.env.PORT;
     public app: express.Application;
     public server: Https.Server;
 
-    constructor() {
+    constructor(
+        @inject(TYPES.SOCKET_SERVER) private socketServer: SocketServer
+) {
         this.app = express();
         this.createServer();
+        this.socketServer.connectToStaticServer(this.server);
     }
 
     public init() {
         this.configureMiddleware();
         this.setUpRoutes();
-        this.server.listen(Express.PORT, '0.0.0.0', () =>
-            console.log(`Server successfully started on port: ${Express.PORT}`)
-        );
+        this.server.listen(Express.PORT, '0.0.0.0', () => {
+            this.socketServer.setUpSocketIOHandlers();
+            console.log(`Server successfully started on port: ${Express.PORT}`);
+        });
     }
 
     private createServer() {
@@ -45,4 +53,6 @@ export default class Express {
     private setUpRoutes() {
         this.app.use(express.static(joinDir('../web/build')));
     }
+
+
 }
