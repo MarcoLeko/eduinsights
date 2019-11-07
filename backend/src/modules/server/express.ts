@@ -29,11 +29,12 @@ export default class Express {
 
     public init() {
         this.configureMiddleware();
+        this.setUpMiddleware();
         this.setUpRoutes();
         this.server.listen(Express.PORT, '0.0.0.0', () => {
             this.socketServer.setUpSocketIOHandlers();
-            this.mongoDBClient.connect();
-            console.log(`Server successfully started on port: ${Express.PORT}`);
+            this.mongoDBClient.connect().then(() =>
+                console.log(`Server successfully started on port: ${Express.PORT}`));
         });
     }
 
@@ -53,13 +54,13 @@ export default class Express {
         });
     }
 
-    private setUpRoutes() {
+    private setUpMiddleware() {
         this.app.use(express.static(joinDir('../web/build')));
     }
 
-    private initRoutes() {
-        this.app.get('/charities', (request, response) => {
-
+    private setUpRoutes() {
+        this.app.get('/charities', async (request, response) => {
+            response.send(await this.mongoDBClient.getCollectionOfCharities())
         })
     }
 }
