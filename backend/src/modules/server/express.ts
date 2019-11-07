@@ -54,5 +54,4 @@ export default class Express {
         this.app.use(express.static(joinDir('../web/build')));
     }
 
-
 }
