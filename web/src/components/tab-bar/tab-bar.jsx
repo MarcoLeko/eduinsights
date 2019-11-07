@@ -109,9 +109,9 @@ function TabBar({canSwipe, isOpen}) {
                         indicator : classes.indicator
                     }}
                 >
-                    <Tab label="Home"/>
+                    <Tab label="Live"/>
                     <Tab label="Donations"/>
-                    <Tab label="Charities"/>
+                    <Tab label="About us"/>
                 </Tabs>
             </AppBar>
             <div
@@ -138,11 +138,11 @@ function TabBar({canSwipe, isOpen}) {
                     disabled={canSwipe === false}
                     slideStyle={{overflow: 'hidden'}}
                 >
-                    <DonationsOverview/>
-                    <MapOverlay/>
                     <Box p={3}>
                         Item Three
                     </Box>
+                    <MapOverlay/>
+                    <DonationsOverview/>
                 </SwipeableViews>
             </div>
             <SideBar/>
