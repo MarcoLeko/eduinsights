@@ -1,8 +1,5 @@
 import {MongoClient, MongoClientOptions} from 'mongodb';
 import {injectable} from 'inversify';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 @injectable()
 export default class MongoDBClient {

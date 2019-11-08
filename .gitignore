@@ -24,6 +24,7 @@ web/build
 
 # private keys
 backend/.env
+web/.env
 
 # packaging
 npm-debug.log*

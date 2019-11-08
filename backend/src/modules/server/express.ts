@@ -7,9 +7,6 @@ import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import SocketServer from './socket-server';
 import MongoDBClient from '../db/mongo-db-client';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 @injectable()
 export default class Express {
