@@ -4,7 +4,7 @@
   "description": "Backend of help educate",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon ./src/index.ts --watch",
+    "start": "nodemon -r dotenv/config ./src/index.ts --watch",
     "build": "webpack"
   },
   "author": "Marco Leko",
