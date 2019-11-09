@@ -4,12 +4,12 @@
   "description": "Contains useful scripts",
   "main": "index.js",
   "scripts": {
-    "connect:db": "mongo \"mongodb+srv://help-educate-vj2pu.mongodb.net/\" --username admin",
     "insert:db": "node -r dotenv/config ./scripts/insert-documents.js dotenv_config_path=../backend/.env"
   },
   "author": "Marco Leko",
   "license": "ISC",
   "dependencies": {
+    "mongodb": "^3.3.3",
     "chalk": "^2.4.2",
     "dotenv": "^8.2.0"
   }
