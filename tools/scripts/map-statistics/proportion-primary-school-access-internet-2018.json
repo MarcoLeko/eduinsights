@@ -1,0 +1,1632 @@
+{
+  "header": {
+    "id": "IDREFadc841e8-9a13-45e1-a92e-f854c22d5999",
+    "prepared": "2019-11-10T09:05:47",
+    "test": false,
+    "sender": {
+      "id": "UIS"
+    },
+    "receiver": {
+      "id": "ANONYMOUS"
+    }
+  },
+  "dataSets": [
+    {
+      "action": "Information",
+      "series": {
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:1": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "90",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:2": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "77.55212",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:3": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "83.78219",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:4": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "82.95135",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:5": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "46.76692",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:6": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:7": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "53.62776",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:8": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0.13963",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:9": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:10": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:11": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "51.62338",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:12": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "87.00696",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:13": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "96.24990",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:14": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "59.24420",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:15": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "12.58789",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:16": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "15.85366",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:17": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:18": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "8.40981",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:19": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "99.21753",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:20": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "12.74307",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:21": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:22": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "89.87915",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:23": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:24": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "78.96145",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:25": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:26": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "90.56143",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:27": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "76.79850",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:28": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "95.97624",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:29": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.97874",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:30": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "42.76838",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:31": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0.40847",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:32": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:33": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "27.04403",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:34": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "97.18327",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:35": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:36": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:37": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "40.77000",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:38": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "84.98986",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:39": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:40": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "30.01031",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:41": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:42": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:43": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:44": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "77.55212",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:45": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "94.25124",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:46": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "83.76418",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:47": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.97874",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:48": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "80.32666",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:49": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "0.55698",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:50": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:51": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "12.66086",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:52": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "93.10345",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:53": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "48.65506",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:54": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "57.78748",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:55": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "76.66601",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:56": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "82.95135",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:57": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.98140",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:58": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "82.91540",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:59": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.78647",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:60": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "88.66012",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:61": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "100",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:62": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "92.80566",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:63": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "83.01803",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:64": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "89.98177",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:65": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "82.46678",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:66": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "34.45593",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:67": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "82.57564",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:68": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "79.58979",
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:69": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.97780",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:70": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.37702",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:71": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "44.21330",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:72": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "43.78775",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:73": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "77.32758",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        },
+        "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:74": {
+          "attributes": [],
+          "observations": {
+            "0": [
+              "58.76764",
+              0,
+              1,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "structure": {
+    "name": "Sustainable Development Goal 4",
+    "description": null,
+    "dimensions": {
+      "dataset": [],
+      "series": [
+        {
+          "id": "STAT_UNIT",
+          "name": "Statistical unit",
+          "description": "Entity for which information is sought and for which statistics are ultimately compiled.",
+          "keyPosition": 0,
+          "role": null,
+          "values": [
+            {
+              "position": 177,
+              "id": "SCH",
+              "name": "School"
+            }
+          ]
+        },
+        {
+          "id": "UNIT_MEASURE",
+          "name": "Unit of measure",
+          "description": "The unit in which the data values are measured.",
+          "keyPosition": 1,
+          "role": null,
+          "values": [
+            {
+              "position": 44,
+              "id": "PT",
+              "name": "Percentage"
+            }
+          ]
+        },
+        {
+          "id": "EDU_LEVEL",
+          "name": "Level of education",
+          "keyPosition": 2,
+          "role": null,
+          "values": [
+            {
+              "position": 3,
+              "id": "L1",
+              "name": "Primary education"
+            }
+          ]
+        },
+        {
+          "id": "EDU_CAT",
+          "name": "Orientation",
+          "keyPosition": 3,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "SEX",
+          "name": "Sex",
+          "description": "The state of being male or female.",
+          "keyPosition": 4,
+          "role": null,
+          "values": [
+            {
+              "position": 4,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "AGE",
+          "name": "Age",
+          "description": "The length of time that a person has lived or a thing has existed.",
+          "keyPosition": 5,
+          "role": null,
+          "values": [
+            {
+              "position": 4,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "GRADE",
+          "name": "Grade",
+          "keyPosition": 6,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "SECTOR_EDU",
+          "name": "Type of institution",
+          "keyPosition": 7,
+          "role": null,
+          "values": [
+            {
+              "position": 2,
+              "id": "INST_T",
+              "name": "All institutions"
+            }
+          ]
+        },
+        {
+          "id": "EDU_ATTAIN",
+          "name": "Level of educational attainment",
+          "keyPosition": 8,
+          "role": null,
+          "values": [
+            {
+              "position": 16,
+              "id": "_Z",
+              "name": "Not applicable"
+            }
+          ]
+        },
+        {
+          "id": "SUBJECT",
+          "name": "School subject",
+          "keyPosition": 9,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "WEALTH_QUINTILE",
+          "name": "Wealth quintile",
+          "keyPosition": 10,
+          "role": null,
+          "values": [
+            {
+              "position": 7,
+              "id": "_Z",
+              "name": "Not applicable"
+            }
+          ]
+        },
+        {
+          "id": "INFRASTR",
+          "name": "Infrastructure",
+          "keyPosition": 11,
+          "role": null,
+          "values": [
+            {
+              "position": 5,
+              "id": "NET_PP",
+              "name": "Internet for pedagogical purposes"
+            }
+          ]
+        },
+        {
+          "id": "LOCATION",
+          "name": "Location",
+          "keyPosition": 12,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "EDU_TYPE",
+          "name": "Type of education",
+          "keyPosition": 13,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "SE_BKGRD",
+          "name": "Socioeconomic background",
+          "keyPosition": 14,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "_T",
+              "name": "Total"
+            }
+          ]
+        },
+        {
+          "id": "SOURCE_FUND",
+          "name": "Source of funding",
+          "keyPosition": 15,
+          "role": null,
+          "values": [
+            {
+              "position": 8,
+              "id": "_Z",
+              "name": "Not applicable"
+            }
+          ]
+        },
+        {
+          "id": "FUND_FLOW",
+          "name": "Funding flow",
+          "keyPosition": 16,
+          "role": null,
+          "values": [
+            {
+              "position": 2,
+              "id": "_Z",
+              "name": "Not applicable"
+            }
+          ]
+        },
+        {
+          "id": "IMM_STATUS",
+          "name": "Immigration status",
+          "keyPosition": 17,
+          "role": null,
+          "values": [
+            {
+              "position": 4,
+              "id": "_Z",
+              "name": "Not applicable"
+            }
+          ]
+        },
+        {
+          "id": "REF_AREA",
+          "name": "Reference area",
+          "description": "The country or geographic area to which the measured statistical phenomenon relates.",
+          "keyPosition": 18,
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "AD",
+              "name": "Andorra"
+            },
+            {
+              "position": 4,
+              "id": "AG",
+              "name": "Antigua and Barbuda"
+            },
+            {
+              "position": 232,
+              "id": "AIMS_CAS",
+              "name": "AIMS: Central Asia"
+            },
+            {
+              "position": 233,
+              "id": "AIMS_EAS",
+              "name": "AIMS: East Asia"
+            },
+            {
+              "position": 234,
+              "id": "AIMS_EAS_PAC",
+              "name": "AIMS: East Asia and the Pacific"
+            },
+            {
+              "position": 6,
+              "id": "AL",
+              "name": "Albania"
+            },
+            {
+              "position": 7,
+              "id": "AM",
+              "name": "Armenia"
+            },
+            {
+              "position": 15,
+              "id": "AZ",
+              "name": "Azerbaijan"
+            },
+            {
+              "position": 20,
+              "id": "BF",
+              "name": "Burkina Faso"
+            },
+            {
+              "position": 22,
+              "id": "BH",
+              "name": "Bahrain"
+            },
+            {
+              "position": 23,
+              "id": "BI",
+              "name": "Burundi"
+            },
+            {
+              "position": 30,
+              "id": "BT",
+              "name": "Bhutan"
+            },
+            {
+              "position": 32,
+              "id": "BY",
+              "name": "Belarus"
+            },
+            {
+              "position": 43,
+              "id": "CN",
+              "name": "China"
+            },
+            {
+              "position": 45,
+              "id": "CR",
+              "name": "Costa Rica"
+            },
+            {
+              "position": 47,
+              "id": "CU",
+              "name": "Cuba"
+            },
+            {
+              "position": 48,
+              "id": "CV",
+              "name": "Cabo Verde"
+            },
+            {
+              "position": 74,
+              "id": "GE",
+              "name": "Georgia"
+            },
+            {
+              "position": 76,
+              "id": "GH",
+              "name": "Ghana"
+            },
+            {
+              "position": 88,
+              "id": "HK",
+              "name": "China, Hong Kong Special Administrative Region"
+            },
+            {
+              "position": 103,
+              "id": "JO",
+              "name": "Jordan"
+            },
+            {
+              "position": 114,
+              "id": "KY",
+              "name": "Cayman Islands"
+            },
+            {
+              "position": 117,
+              "id": "LB",
+              "name": "Lebanon"
+            },
+            {
+              "position": 118,
+              "id": "LC",
+              "name": "Saint Lucia"
+            },
+            {
+              "position": 127,
+              "id": "MA",
+              "name": "Morocco"
+            },
+            {
+              "position": 128,
+              "id": "MC",
+              "name": "Monaco"
+            },
+            {
+              "position": 129,
+              "id": "MD",
+              "name": "Republic of Moldova"
+            },
+            {
+              "position": 243,
+              "id": "MDG_CAU_CEN_ASIA",
+              "name": "MDG: Caucasus and Central Asia"
+            },
+            {
+              "position": 246,
+              "id": "MDG_EAS",
+              "name": "MDG: Eastern Asia"
+            },
+            {
+              "position": 248,
+              "id": "MDG_LAC",
+              "name": "MDG: Latin America and the Caribbean"
+            },
+            {
+              "position": 250,
+              "id": "MDG_LAC_LA",
+              "name": "MDG: Latin America"
+            },
+            {
+              "position": 131,
+              "id": "MG",
+              "name": "Madagascar"
+            },
+            {
+              "position": 137,
+              "id": "MO",
+              "name": "China, Macao Special Administrative Region"
+            },
+            {
+              "position": 143,
+              "id": "MU",
+              "name": "Mauritius"
+            },
+            {
+              "position": 147,
+              "id": "MY",
+              "name": "Malaysia"
+            },
+            {
+              "position": 151,
+              "id": "NE",
+              "name": "Niger"
+            },
+            {
+              "position": 160,
+              "id": "OM",
+              "name": "Oman"
+            },
+            {
+              "position": 162,
+              "id": "PE",
+              "name": "Peru"
+            },
+            {
+              "position": 169,
+              "id": "PS",
+              "name": "Palestine"
+            },
+            {
+              "position": 173,
+              "id": "QA",
+              "name": "Qatar"
+            },
+            {
+              "position": 178,
+              "id": "RW",
+              "name": "Rwanda"
+            },
+            {
+              "position": 179,
+              "id": "SA",
+              "name": "Saudi Arabia"
+            },
+            {
+              "position": 180,
+              "id": "SB",
+              "name": "Solomon Islands"
+            },
+            {
+              "position": 181,
+              "id": "SC",
+              "name": "Seychelles"
+            },
+            {
+              "position": 259,
+              "id": "SDG_CAS",
+              "name": "SDG: Asia (Central)"
+            },
+            {
+              "position": 261,
+              "id": "SDG_EAS",
+              "name": "SDG: Asia (Eastern)"
+            },
+            {
+              "position": 262,
+              "id": "SDG_EAS_SEAS",
+              "name": "SDG: Asia (Eastern and South-eastern)"
+            },
+            {
+              "position": 265,
+              "id": "SDG_LAC",
+              "name": "SDG: Latin America and the Caribbean"
+            },
+            {
+              "position": 278,
+              "id": "SDG_WEST_AS",
+              "name": "SDG: Asia (Western)"
+            },
+            {
+              "position": 187,
+              "id": "SL",
+              "name": "Sierra Leone"
+            },
+            {
+              "position": 188,
+              "id": "SM",
+              "name": "San Marino"
+            },
+            {
+              "position": 189,
+              "id": "SN",
+              "name": "Senegal"
+            },
+            {
+              "position": 198,
+              "id": "TC",
+              "name": "Turks and Caicos Islands"
+            },
+            {
+              "position": 206,
+              "id": "TN",
+              "name": "Tunisia"
+            },
+            {
+              "position": 212,
+              "id": "UA",
+              "name": "Ukraine"
+            },
+            {
+              "position": 281,
+              "id": "UIS_CAS",
+              "name": "UIS: Central Asia"
+            },
+            {
+              "position": 283,
+              "id": "UIS_EAP",
+              "name": "UIS: East Asia and the Pacific"
+            },
+            {
+              "position": 284,
+              "id": "UIS_LAC",
+              "name": "UIS: Latin America and the Caribbean"
+            },
+            {
+              "position": 295,
+              "id": "UNICEF_EAP",
+              "name": "UNICEF: East Asia and Pacific"
+            },
+            {
+              "position": 300,
+              "id": "UNICEF_LAC",
+              "name": "UNICEF: Latin America and Caribbean"
+            },
+            {
+              "position": 216,
+              "id": "UZ",
+              "name": "Uzbekistan"
+            },
+            {
+              "position": 218,
+              "id": "VC",
+              "name": "Saint Vincent and the Grenadines"
+            },
+            {
+              "position": 313,
+              "id": "WB_CAR_SMALL",
+              "name": "WB: Caribbean small states"
+            },
+            {
+              "position": 315,
+              "id": "WB_EAP",
+              "name": "WB: East Asia & Pacific"
+            },
+            {
+              "position": 316,
+              "id": "WB_EAP_IBRD",
+              "name": "WB: East Asia & Pacific (IBRD only)"
+            },
+            {
+              "position": 317,
+              "id": "WB_EAP_IBRD_IDA",
+              "name": "WB: East Asia & Pacific (IDA & IBRD)"
+            },
+            {
+              "position": 318,
+              "id": "WB_EAP_IDA",
+              "name": "WB: East Asia & Pacific (IDA total)"
+            },
+            {
+              "position": 319,
+              "id": "WB_EAP_X_HIC",
+              "name": "WB: East Asia & Pacific (excluding high income)"
+            },
+            {
+              "position": 324,
+              "id": "WB_ECAS_IDA",
+              "name": "WB: Europe & Central Asia (IDA total)"
+            },
+            {
+              "position": 339,
+              "id": "WB_LAC",
+              "name": "WB: Latin America & Caribbean"
+            },
+            {
+              "position": 340,
+              "id": "WB_LAC_IBRD",
+              "name": "WB: Latin America & Caribbean (IBRD only)"
+            },
+            {
+              "position": 341,
+              "id": "WB_LAC_IBRD_IDA",
+              "name": "WB: Latin America & Caribbean (IDA & IBRD)"
+            },
+            {
+              "position": 343,
+              "id": "WB_LAC_X_HIC",
+              "name": "WB: Latin America & Caribbean (excluding high income)"
+            },
+            {
+              "position": 344,
+              "id": "WB_LATE_DIV_GMR",
+              "name": "WB: Late-demographic dividend"
+            },
+            {
+              "position": 372,
+              "id": "WB_UMC",
+              "name": "WB: Upper middle income (July 2019)"
+            }
+          ]
+        }
+      ],
+      "observation": [
+        {
+          "id": "TIME_PERIOD",
+          "name": "Time period",
+          "description": "The period of time or point in time to which the measured observation refers.",
+          "keyPosition": 19,
+          "role": "time",
+          "values": [
+            {
+              "start": "2018-01-01T00:00:00",
+              "end": "2018-12-31T23:59:59",
+              "id": "2018",
+              "name": "2018"
+            }
+          ]
+        }
+      ]
+    },
+    "attributes": {
+      "dataset": [],
+      "series": [],
+      "observation": [
+        {
+          "id": "UNIT_MULT",
+          "name": "Unit multiplier",
+          "description": "Exponent in base 10 specified so that multiplying the observation numeric values by 10^UNIT_MULT gives a value expressed in the unit of measure.",
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "0",
+              "name": "Units"
+            }
+          ]
+        },
+        {
+          "id": "OBS_STATUS",
+          "name": "Observation status",
+          "description": "Information on the quality of a value or an unusual or missing value.",
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "A",
+              "name": "Normal"
+            },
+            {
+              "position": 4,
+              "id": "E",
+              "name": "Estimated value"
+            }
+          ]
+        },
+        {
+          "id": "FREQ",
+          "name": "Frequency",
+          "description": "The time interval at which observations occur over a given time period.",
+          "role": null,
+          "values": [
+            {
+              "position": 1,
+              "id": "A",
+              "name": "Annual",
+              "description": "To be used for data collected or disseminated every year."
+            }
+          ]
+        },
+        {
+          "id": "DECIMALS",
+          "name": "Decimals",
+          "description": "The number of digits of an observation to the right of a decimal point.",
+          "role": null,
+          "values": [
+            {
+              "position": 6,
+              "id": "5",
+              "name": "Five"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
