@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useRef} from 'react'
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
@@ -7,8 +7,9 @@ import {connect} from "react-redux";
 import L from 'leaflet';
 import marker from '../../assets/marker.png';
 import MarkerPopup from "./marker-popup";
+import {statesData} from "./mock-states-data";
 
-const {Map, TileLayer, Marker} = ReactLeaflet;
+const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
 let DefaultIcon = L.icon({
     iconUrl: marker,
@@ -18,13 +19,30 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+
+// TODO: remove this line as fetching the data will later be part of backend
+const mapBoxAccessToken = "pk.eyJ1IjoibWFyY29sZWtvIiwiYSI6ImNrMnQ4dmF2eDE1NWIzY3A3Njc3cHA4OTUifQ.YZzqYyZzcwKfV51f-FUnZw";
+
 function MapOverlay({setSwipeState}) {
     const ref = useRef(null);
 
-    useEffect(() => {
-        const {leafletElement} = ref.current;
-        console.log(leafletElement.getBounds())
-    }, []);
+    function getColor(d) {
+        return d > 1000 ? '#016c59' :
+            d > 500 ? '#1c9099' :
+                d > 200 ? '#67a9cf' :
+                    '#bdc9e1';
+    }
+
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.density),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
 
     return (
         <Map
@@ -41,20 +59,22 @@ function MapOverlay({setSwipeState}) {
         >
             <TileLayer
                 noWrap={true}
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
+                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + mapBoxAccessToken}
             />
-            {
-                [
-                    [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
-                    [70.505, -20], [40.505, -80], [-40.505, -10]
-                ].map((position, i) =>
+            <GeoJSON data={statesData} style={style}>
+                {
+                    [
+                        [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
+                        [70.505, -20], [40.505, -80], [-40.505, -10]
+                    ].map((position, i) =>
 
-                    <Marker position={position} key={i}>
-                        <MarkerPopup/>
-                    </Marker>
-                )
-            }
+                        <Marker position={position} key={i}>
+                            <MarkerPopup/>
+                        </Marker>
+                    )
+                }
+            </GeoJSON>
         </Map>
     )
 }
