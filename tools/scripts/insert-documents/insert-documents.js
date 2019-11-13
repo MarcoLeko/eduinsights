@@ -31,9 +31,9 @@ const MongoClient = require('mongodb').MongoClient;
 
         mongoClient.connect()
             .then((connManager) => connManager.db(database).collection(collection).insertMany(documents))
+            .then(() => log(chalk.blue.bold(`Successfully transferred ${chalk.yellow.bold.underline(documents.length)} documents.`)))
             .catch((e) =>  log(chalk.bold.red('Ooops! Something wrong happened' + e)))
             .then(() => mongoClient.close())
-            .then(() => log(chalk.blue.bold(`Successfully transferred ${chalk.yellow.bold.underline(documents.length)} documents.`)))
     } else {
         log(chalk.bold.red('A database and a collection has to be specified!\n In Order:\n 1. Database\n 2. Collection'));
         process.exit(1);
