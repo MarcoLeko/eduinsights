@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const fetch = require("node-fetch");
+const HttpsProxyAgent = require('https-proxy-agent');
 
 (async function () {
     const unsecoStatisticsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'proportion-primary-school-access-internet-2018.json'), 'utf8')),
@@ -10,7 +12,7 @@ const chalk = require('chalk');
         availableCountriesStatistics = unsecoStatisticsJSON.structure.dimensions.series.find(data => data.id === "REF_AREA"),
         finalMappedCountries = [],
         notMatchingCountries = [],
-        unescoRegions = [],
+        unescoRegions = new Map(),
         log = console.log;
 
 
@@ -30,14 +32,39 @@ const chalk = require('chalk');
 
     notMatchingCountries.forEach(c => {
         log(`Could not found values matched contries within geoJSON/statistics sheet: ${chalk.red.bold(c)}`);
-            unsecoRegionsJSON.Codelist[0].items.forEach(unR => {
-                if (c === unR.names[0].value && /^[a-z]+_[a-z]+$/i.test(unR.id)) {
-                    unescoRegions.push(unR.id);
-                }
-            })
+        unsecoRegionsJSON.Codelist[0].items.forEach(unR => {
+            if (c === unR.names[0].value && /^[a-z]+_[a-z]+$/i.test(unR.id)) {
+                unescoRegions.set(unR.id, []);
+            }
+        })
 
     });
-    unescoRegions.forEach(c => log(`Found matching unseco regions: ${chalk.yellow.bold(c)}`));
+
+    const url = 'https://restcountries.eu/rest/v2/alpha?codes=';
+    const codeList = JSON.parse(fs.readFileSync(path.join(__dirname, 'hierarchical-codelist.json'), 'utf8'));
+
+    for (const r of unescoRegions.keys()) {
+        for (const list of codeList.HierarchicalCodelist) {
+        for (const entity of list.hierarchies) {
+
+            if (r === entity.id) {
+                for (const sub of entity.codes[0].codes) {
+                    try {
+                        const response = await fetch('https://restcountries.eu/rest/v2/alpha?codes=' + sub.id, {agent: new HttpsProxyAgent('http://localhost:3128')});
+                        const result = await response.json();
+                        log(`id: ${chalk.yellow.bold(sub.id)} name: ${chalk.magenta(result[0].name)}`);
+                        unescoRegions.get(r).push(result[0].name);
+                    } catch (e) {
+                        log(`Could not fetch country name for id: ${chalk.red.bold(sub.id)} ` + e);
+
+                    }
+                }
+            }
+        }
+    }
+    }
+
+    console.log(unescoRegions)
 })();
 
 

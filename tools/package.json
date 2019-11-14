@@ -13,6 +13,8 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "dotenv": "^8.2.0",
-    "mongodb": "^3.3.3"
+    "https-proxy-agent": "^3.0.1",
+    "mongodb": "^3.3.3",
+    "node-fetch": "^2.6.0"
   }
 }
