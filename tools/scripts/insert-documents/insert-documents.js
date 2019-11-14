@@ -23,7 +23,7 @@ const MongoClient = require('mongodb').MongoClient;
 
         log(chalk.blue(`Writing to database: ${chalk.yellow.bold.underline(database)} and to collection: ${chalk.yellow.bold.underline(collection)} `));
 
-        const raw = fs.readFileSync(path.join(__dirname, 'output.geojson'), 'utf8');
+        const raw = fs.readFileSync(path.join(__dirname, 'documents.json'), 'utf8');
         documents = JSON.parse(raw);
 
         log(`Found entities: ${chalk.bold.magenta(documents.length)}`);
