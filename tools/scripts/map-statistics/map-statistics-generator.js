@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const fetch = require("node-fetch");
 const HttpsProxyAgent = require('https-proxy-agent');
 
+// TODO: 1. Request Files on init of this script, 2. create output as temp. json files under temp 3.create npm script to delete temp dir
 (async function () {
     const unsecoStatisticsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'temp', 'proportion-primary-school-access-internet-2018.json'), 'utf8')),
         countriesGeoJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'temp','countries.geojson'), 'utf8')),
