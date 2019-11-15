@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "insert:db": "node -r dotenv/config ./scripts/insert-documents/insert-documents.js dotenv_config_path=../backend/.env",
-    "generate:statistics": "node ./scripts/map-statistics/map-statistics-generator.js",
-    "transform:geojson": "jq --compact-output \".features\" /map-statistics/countries.geojson > /map-statistics/output.geojson"
+    "generate:statistics": "node ./scripts/map-statistics/map-statistics-generator.js"
   },
   "author": "Marco Leko",
   "license": "ISC",

@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import L from 'leaflet';
 import marker from '../../assets/marker.png';
 import MarkerPopup from "./marker-popup";
-import {statesData} from "./mock-states-data";
+import json from './output';
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -19,7 +19,6 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-
 // TODO: remove this line as fetching the data will later be part of backend
 const mapBoxAccessToken = "pk.eyJ1IjoibWFyY29sZWtvIiwiYSI6ImNrMnQ4dmF2eDE1NWIzY3A3Njc3cHA4OTUifQ.YZzqYyZzcwKfV51f-FUnZw";
 
@@ -27,19 +26,19 @@ function MapOverlay({setSwipeState}) {
     const ref = useRef(null);
 
     function getColor(d) {
-        return d > 1000 ? '#016c59' :
-            d > 500 ? '#1c9099' :
-                d > 200 ? '#67a9cf' :
+        return d > 90 ? '#016c59' :
+            d > 75 ? '#1c9099' :
+                d > 50 ? '#67a9cf' :
                     '#bdc9e1';
     }
 
     function style(feature) {
         return {
-            fillColor: getColor(feature.properties.density),
+            fillColor: getColor(feature.properties.value),
             weight: 2,
             opacity: 1,
             color: 'white',
-            dashArray: '3',
+            dashArray: '2',
             fillOpacity: 0.7
         };
     }
@@ -62,7 +61,7 @@ function MapOverlay({setSwipeState}) {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
                 url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + mapBoxAccessToken}
             />
-            <GeoJSON data={statesData} style={style}>
+            <GeoJSON data={json} style={style}>
                 {
                     [
                         [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],

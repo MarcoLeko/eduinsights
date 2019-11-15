@@ -6,10 +6,10 @@ const fetch = require("node-fetch");
 const HttpsProxyAgent = require('https-proxy-agent');
 
 (async function () {
-    const unsecoStatisticsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'proportion-primary-school-access-internet-2018.json'), 'utf8')),
-        countriesGeoJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'countries.geojson'), 'utf8')),
-        unsecoRegionsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'regions.json'), 'utf8')),
-        unsecoHierarchicalCodeListJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'hierarchical-codelist.json'), 'utf8')),
+    const unsecoStatisticsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'temp', 'proportion-primary-school-access-internet-2018.json'), 'utf8')),
+        countriesGeoJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'temp','countries.geojson'), 'utf8')),
+        unsecoRegionsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'temp','regions.json'), 'utf8')),
+        unsecoHierarchicalCodeListJSON = JSON.parse(fs.readFileSync(path.join(__dirname,'temp', 'hierarchical-codelist.json'), 'utf8')),
         availableCountriesStatistics = unsecoStatisticsJSON.structure.dimensions.series.find(data => data.id === "REF_AREA"),
         resApiFromCountryCodeToName = 'https://restcountries.eu/rest/v2/alpha?codes=',
         notMatchingCountries = [],
