@@ -4,9 +4,9 @@
   "description": "Contains useful scripts",
   "main": "index.js",
   "scripts": {
-    "insert:db": "node -r dotenv/config ./scripts/insert-documents/insert-documents.js dotenv_config_path=../backend/.env",
-    "generate:statistics": "node -r dotenv/config ./scripts/map-statistics/map-statistics-generator.js dotenv_config_path=../backend/.env",
-    "clean:up": "rmdir /s /q scripts/temp"
+    "insert:db": "node -r dotenv/config ./scripts/insert-documents.js dotenv_config_path=../backend/.env",
+    "generate:statistics": "node -r dotenv/config ./scripts/map-statistics-generator.js dotenv_config_path=../backend/.env",
+    "clean:up": "node ./scripts/clean-up-files.js"
   },
   "author": "Marco Leko",
   "license": "ISC",

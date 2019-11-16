@@ -10,8 +10,8 @@ const fetch = require("node-fetch");
 (async function () {
 
     const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY,
-        outputPath = path.join(__dirname, '..', 'output'),
-        tempPath = path.join(__dirname, '..', 'temp'),
+        outputPath = path.join(__dirname, 'output'),
+        tempPath = path.join(__dirname, 'temp'),
         resApiFromCountryCodeToName = 'https://restcountries.eu/rest/v2/alpha?codes=',
         notMatchingCountries = [],
         UNESCORegions = new Map(),

@@ -25,7 +25,7 @@ const MongoClient = require('mongodb').MongoClient;
 
         log(chalk.blue(`Writing to database: ${chalk.yellow.bold.underline(database)} and to collection: ${chalk.yellow.bold.underline(collection)} `));
 
-        const raw = fs.readFileSync(path.join(__dirname, '..', selectedPath), 'utf8');
+        const raw = fs.readFileSync(path.join(__dirname, selectedPath), 'utf8');
         documents = JSON.parse(raw);
 
         if (!Array.isArray(documents)) {
