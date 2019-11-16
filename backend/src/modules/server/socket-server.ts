@@ -1,9 +1,6 @@
 import 'reflect-metadata';
 import {injectable} from 'inversify';
 import Https from 'https';
-import fs from 'fs';
-import express from 'express';
-import {joinDir} from '../utils/paths';
 import SocketIO from 'socket.io';
 
 @injectable()

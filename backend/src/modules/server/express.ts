@@ -31,8 +31,10 @@ export default class Express {
         this.server.listen(Express.PORT, '0.0.0.0', () => {
             this.socketServer.setUpSocketIOHandlers();
             this.mongoDBClient.connect().then(() =>
-                console.log(`Server successfully started on port: ${Express.PORT}`));
+            console.log(`Server successfully started on port: ${Express.PORT}`));
         });
+
+
     }
 
     private createServer() {
@@ -46,7 +48,7 @@ export default class Express {
 
     private configureMiddleware() {
         this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', 'https://localhost:4200');
+            res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
             next();
         });
     }
@@ -57,7 +59,13 @@ export default class Express {
 
     private setUpRoutes() {
         this.app.get('/charities', async (request, response) => {
-            response.send(await this.mongoDBClient.getCollectionOfCharities())
+            response.json(await this.mongoDBClient.getCollectionOfCharities())
+        });
+
+        this.app.get('/statistics/:type', async(request, response) => {
+            const kindOfStatistics = (<any>request.params).type;
+
+            response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics))
         })
     }
 }
