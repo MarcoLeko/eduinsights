@@ -51,14 +51,14 @@ const fetch = require("node-fetch");
         const availableCountriesStatistics = UNESCOStatisticsJSON.structure.dimensions.series.find(data => data.id === "REF_AREA");
 
 
-        availableCountriesStatistics.values.forEach(statisticsCountries =>
+        availableCountriesStatistics.values.forEach((statisticsCountries, i) =>
 
             countriesGeoJSON.features.forEach(geoJSONCountries => {
                 if (geoJSONCountries.properties.ADMIN === statisticsCountries.name) {
                     UNESCOCountries.push(statisticsCountries.name);
                     log(`Found matched contries within geoJSON/statistics sheet: ${chalk.green(geoJSONCountries.properties.ADMIN)}`);
                 } else {
-                    if (!notMatchingCountries.includes(statisticsCountries.name)) {
+                    if (!notMatchingCountries.includes(statisticsCountries.name) && /^[a-z]+_[a-z]+$/i.test(availableCountriesStatistics.values[i].id)) {
                         notMatchingCountries.push(statisticsCountries.name);
                     }
                 }
@@ -70,7 +70,7 @@ const fetch = require("node-fetch");
 
             log(`Could not found values matched contries within geoJSON/statistics sheet: ${chalk.red.bold(c)}`);
             UNESCOCodeListJSON.Codelist[0].items.forEach(unR => {
-                if (c === unR.names[0].value && /^[a-z]+_[a-z]+$/i.test(unR.id)) {
+                if (c === unR.names[0].value) {
                     UNESCORegions.set(unR.id, []);
                 }
             })
@@ -79,6 +79,8 @@ const fetch = require("node-fetch");
 
 
         for (const r of UNESCORegions.keys()) {
+
+            log('UNESCO region is: ' + chalk.bold.underline(r));
 
             for (const list of UNESCOHierarchicalCodeListJSON.HierarchicalCodelist) {
 
@@ -104,10 +106,11 @@ const fetch = require("node-fetch");
             }
         }
 
-        const resultArrayWithCountryMatches = UNESCOCountries.reduce((acc, curr, i) => {
+        const resultArrayWithCountryMatches = UNESCOCountries.reduce((acc, curr) => {
             for (const geo of countriesGeoJSON.features) {
                 if (geo.properties.ADMIN === curr) {
-                    const value = getUnescoStatisticsEntityByIndex(i, UNESCOStatisticsJSON);
+                    const valueIndex = availableCountriesStatistics.values.findIndex(country=> country.name === curr);
+                    const value = getUnescoStatisticsEntityByIndex(valueIndex, UNESCOStatisticsJSON);
                     const geoJSONIndex = countriesGeoJSON.features.findIndex(obj => obj.properties.ADMIN === curr);
                     const {properties} = countriesGeoJSON.features[geoJSONIndex];
                     delete properties.ADMIN;
@@ -126,7 +129,8 @@ const fetch = require("node-fetch");
 
             for (const c of value) {
                 for (const geo of countriesGeoJSON.features) {
-                    if (geo.properties.ADMIN === c) {
+                    // check if the country has its own statistics as it is higher prioritized
+                    if (geo.properties.ADMIN === c && !UNESCOCountries.includes(c)) {
                         const value = getUnescoStatisticsEntityByIndex(statisticIndex, UNESCOStatisticsJSON);
                         const geoJSONIndex = countriesGeoJSON.features.findIndex(obj => obj.properties.ADMIN === c);
                         const {properties} = countriesGeoJSON.features[geoJSONIndex];
@@ -149,7 +153,7 @@ const fetch = require("node-fetch");
         }
 
         fs.writeFileSync(path.join(outputPath, 'output.json'), JSON.stringify(output));
-        log(chalk.bold('Outputfile generated at: ' + chalk.green.underline(outputPath)))
+        log(chalk.bold('Outputfile generated at: ' + chalk.green.underline(outputPath)));
 
     } catch (e) {
         log(chalk.bold.red('Oooops! An error occured ' + e));
