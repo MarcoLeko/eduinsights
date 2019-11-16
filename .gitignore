@@ -29,3 +29,8 @@ web/.env
 
 # packaging
 npm-debug.log*
+
+# db related files
+tools/scripts/temp
+tools/scripts/output
+

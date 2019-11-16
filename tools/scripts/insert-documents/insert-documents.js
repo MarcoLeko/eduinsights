@@ -28,13 +28,17 @@ const MongoClient = require('mongodb').MongoClient;
         const raw = fs.readFileSync(path.join(__dirname, '..', selectedPath), 'utf8');
         documents = JSON.parse(raw);
 
+        if (!Array.isArray(documents)) {
+            documents = new Array(documents);
+        }
+
         log(`Found entities: ${chalk.bold.magenta(documents.length)}`);
         log("Will parse to database...");
 
         mongoClient.connect()
             .then((connManager) => connManager.db(database).collection(collection).insertMany(documents))
             .then(() => log(chalk.blue.bold(`Successfully transferred ${chalk.yellow.bold.underline(documents.length)} documents.`)))
-            .catch((e) =>  log(chalk.bold.red('Ooops! Something wrong happened' + e)))
+            .catch((e) => log(chalk.bold.red('Ooops! Something wrong happened' + e)))
             .then(() => mongoClient.close())
     } else {
         log(chalk.bold.red('A path, database and a collection has to be specified!\n In Order:\n 1. path\n 2. Database\n 3. Collection'));

@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "insert:db": "node -r dotenv/config ./scripts/insert-documents/insert-documents.js dotenv_config_path=../backend/.env",
-    "generate:statistics": "node ./scripts/map-statistics/map-statistics-generator.js"
+    "generate:statistics": "node -r dotenv/config ./scripts/map-statistics/map-statistics-generator.js dotenv_config_path=../backend/.env",
+    "clean:up": "rmdir /s /q scripts/temp"
   },
   "author": "Marco Leko",
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.2",
     "dotenv": "^8.2.0",
-    "https-proxy-agent": "^3.0.1",
     "mongodb": "^3.3.3",
     "node-fetch": "^2.6.0"
   }
