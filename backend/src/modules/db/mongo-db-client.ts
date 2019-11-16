@@ -13,6 +13,7 @@ export default class MongoDBClient {
     } as MongoClientOptions);
 
     private connectionManager: MongoClient;
+
     public connect(): Promise<MongoClient | void> {
         return this.mongoClient.connect()
             .then((mongoClient: MongoClient) => this.connectionManager = mongoClient)
@@ -21,7 +22,23 @@ export default class MongoDBClient {
 
     public getCollectionOfCharities() {
         return this.connectionManager.db('sample_geospatial').collection('shipwrecks').find().limit(3).toArray()
-            .then((result:any) => console.log(JSON.stringify(result)))
-            .catch((e: Error) => console.log('Could not fetch collection due to: ', e))
+            .then((result: any) => console.log(JSON.stringify(result)))
+            .catch((e: Error) => console.log('Could not fetch collection due to: ', e));
+    }
+
+    public getStatisticsCollection(params: string): Promise<unknown> {
+        switch (params) {
+            case 'internet-access':
+                const cursor = this.connectionManager.db('map-statistics').collection('internet-access').find({}, {
+                    projection: {
+                        type: true,
+                        features: true,
+                        '_id': false
+                    }
+                });
+                return cursor.next();
+            default:
+                return this.connectionManager.db('map-statistics').collection('internet-access').find({}).next();
+        }
     }
 }
