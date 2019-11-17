@@ -19,28 +19,29 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// TODO: remove this line as fetching the data will later be part of backend
-const mapBoxAccessToken = "pk.eyJ1IjoibWFyY29sZWtvIiwiYSI6ImNrMnQ4dmF2eDE1NWIzY3A3Njc3cHA4OTUifQ.YZzqYyZzcwKfV51f-FUnZw";
-
 function MapOverlay({setSwipeState}) {
     const ref = useRef(null);
-
     const [geoJSON, setGeoJSON] = useState({type: 'featureCollection', features: []});
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await getInternetAccessStatistics();
-            console.log(result);
-            setGeoJSON(result)
-        };
+    const [donationLocations] = useState([
+        [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
+        [70.505, -20], [40.505, -80], [-40.505, -10]
+    ]);
 
-        fetchData();
-    }, [geoJSON.features]);
+    useEffect(() => {
+        getInternetAccessStatistics().then((result) => {
+            ref.current.leafletElement.clearLayers().addData(result);
+            setGeoJSON(result);
+        });
+
+    }, []);
 
     function getColor(d) {
-        return d > 90 ? '#016c59' :
-            d > 75 ? '#1c9099' :
-                d > 50 ? '#67a9cf' :
-                    '#bdc9e1';
+        return d > 95 ? '#993404' :
+            d > 75  ? '#d95f0e' :
+                d > 50  ? '#fe9929' :
+                    d > 30  ? '#fec44f' :
+                        d > 25   ? '#fee391' :
+                            '#ffffd4'
     }
 
     function style(feature) {
@@ -54,9 +55,23 @@ function MapOverlay({setSwipeState}) {
         };
     }
 
+    function getMapData() {
+        return (
+            <GeoJSON data={geoJSON} style={style} ref={ref}>
+                {
+                    donationLocations.map((position, i) =>
+                        (
+                            <Marker position={position} key={i}>
+                                <MarkerPopup/>
+                            </Marker>
+                        )
+                    )
+                }
+            </GeoJSON>
+        )
+    }
     return (
         <Map
-            ref={ref}
             center={[45.000, 10.000]}
             zoom={3}
             zoomControl={false}
@@ -70,21 +85,9 @@ function MapOverlay({setSwipeState}) {
             <TileLayer
                 noWrap={true}
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
-                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + mapBoxAccessToken}
+                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
             />
-            <GeoJSON data={geoJSON} style={style}>
-                {
-                    [
-                        [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
-                        [70.505, -20], [40.505, -80], [-40.505, -10]
-                    ].map((position, i) =>
-
-                        <Marker position={position} key={i}>
-                            <MarkerPopup/>
-                        </Marker>
-                    )
-                }
-            </GeoJSON>
+            {getMapData()}
         </Map>
     )
 }
