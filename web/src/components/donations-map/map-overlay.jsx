@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react';
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
@@ -8,6 +8,7 @@ import L from 'leaflet';
 import marker from '../../assets/marker.png';
 import MarkerPopup from "./marker-popup";
 import {getInternetAccessStatistics} from "../../store/thunks";
+import MapInfoControl from './map-info-control';
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -18,9 +19,9 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
-
 function MapOverlay({setSwipeState}) {
-    const ref = useRef(null);
+    const mapRef = useRef(null);
+    const geoJSONRef = useRef(null);
     const [geoJSON, setGeoJSON] = useState({type: 'featureCollection', features: []});
     const [donationLocations] = useState([
         [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
@@ -29,7 +30,7 @@ function MapOverlay({setSwipeState}) {
 
     useEffect(() => {
         getInternetAccessStatistics().then((result) => {
-            ref.current.leafletElement.clearLayers().addData(result);
+            geoJSONRef.current.leafletElement.clearLayers().addData(result);
             setGeoJSON(result);
         });
 
@@ -55,9 +56,44 @@ function MapOverlay({setSwipeState}) {
         };
     }
 
+    function highlightFeature(e) {
+        const layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
+
+    function resetHighlight(e) {
+        geoJSONRef.current.leafletElement.resetStyle(e.target);
+    }
+
+    function zoomToCountry(e) {
+        mapRef.current.leafletElement.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToCountry
+        });
+    }
+
     function getMapData() {
         return (
-            <GeoJSON data={geoJSON} style={style} ref={ref}>
+            <GeoJSON
+                data={geoJSON}
+                style={style}
+                ref={geoJSONRef}
+                onEachFeature={onEachFeature}>
                 {
                     donationLocations.map((position, i) =>
                         (
@@ -72,6 +108,7 @@ function MapOverlay({setSwipeState}) {
     }
     return (
         <Map
+            ref={mapRef}
             center={[45.000, 10.000]}
             zoom={3}
             zoomControl={false}
@@ -88,6 +125,7 @@ function MapOverlay({setSwipeState}) {
                 url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
             />
             {getMapData()}
+            <MapInfoControl getColor={getColor}/>
         </Map>
     )
 }
