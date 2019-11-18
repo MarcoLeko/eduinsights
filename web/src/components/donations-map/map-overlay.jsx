@@ -10,6 +10,7 @@ import MarkerPopup from "./marker-popup";
 import {getInternetAccessStatistics} from "../../store/thunks";
 import MapLegend from './map-legend';
 import MapInfoControl from "./map-info-control";
+import MapResetViewButton from "./map-reset-view-button";
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -133,6 +134,7 @@ function MapOverlay({setSwipeState}) {
             {getMapData()}
             <MapLegend/>
             <MapInfoControl/>
+            <MapResetViewButton />
         </Map>
     )
 }
