@@ -1,32 +1,33 @@
 import {useLeaflet} from "react-leaflet";
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
+import L from "leaflet";
 
-function MapInfoControl({getColor}) {
+/**
+ * @return {null}
+ */
+function MapInfoControl() {
 
-    const leafletContext = useLeaflet();
-    const grades = [95, 75, 50, 30, 25];
+    const {map} = useLeaflet();
+    const info = L.control();
 
     useEffect(() => {
-        console.log(leafletContext)
-    });
 
-    return (
-        <div className="legend">
-            {
-                grades.map((grade, i) => (
-                        <React.Fragment key={i}>
-                            <i className="legend-color-box" style={{background: getColor(grades[i])}}/>
-                            {
-                                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+')
-                            }
-                        </React.Fragment>
-                    )
-                )
-            }
-            )
-            }
-        </div>
-    );
+        info.onAdd = () => {
+            const div = L.DomUtil.create("div", "info");
+            const update = (props) => (
+                div.innerHTML = '<h4>Proportion of primary schools with access to internet</h4>' + (props ?
+                    '<b>' + props.name + '</b>&emsp;' + props.value + '&nbsp;%'
+                    : 'Hover over a state')
+            );
+
+            update();
+            return div;
+        };
+
+        info.addTo(map);
+    }, []);
+
+    return null;
 }
 
 export default MapInfoControl;
