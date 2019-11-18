@@ -8,7 +8,8 @@ import L from 'leaflet';
 import marker from '../../assets/marker.png';
 import MarkerPopup from "./marker-popup";
 import {getInternetAccessStatistics} from "../../store/thunks";
-import MapInfoControl from './map-info-control';
+import MapLegend from './map-legend';
+import MapInfoControl from "./map-info-control";
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -19,6 +20,16 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
+
+export function getColor(d) {
+    return d > 95 ? '#993404' :
+        d > 75 ? '#d95f0e' :
+            d > 50 ? '#fe9929' :
+                d > 30 ? '#fec44f' :
+                    d > 25 ? '#fee391' :
+                        '#ffffd4'
+}
+
 function MapOverlay({setSwipeState}) {
     const mapRef = useRef(null);
     const geoJSONRef = useRef(null);
@@ -35,15 +46,6 @@ function MapOverlay({setSwipeState}) {
         });
 
     }, []);
-
-    function getColor(d) {
-        return d > 95 ? '#993404' :
-            d > 75  ? '#d95f0e' :
-                d > 50  ? '#fe9929' :
-                    d > 30  ? '#fec44f' :
-                        d > 25   ? '#fee391' :
-                            '#ffffd4'
-    }
 
     function style(feature) {
         return {
@@ -69,10 +71,13 @@ function MapOverlay({setSwipeState}) {
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             layer.bringToFront();
         }
+
+        MapInfoControl.info.update(layer.feature.properties);
     }
 
     function resetHighlight(e) {
         geoJSONRef.current.leafletElement.resetStyle(e.target);
+        MapInfoControl.info.update()
     }
 
     function zoomToCountry(e) {
@@ -106,6 +111,7 @@ function MapOverlay({setSwipeState}) {
             </GeoJSON>
         )
     }
+
     return (
         <Map
             ref={mapRef}
@@ -125,7 +131,8 @@ function MapOverlay({setSwipeState}) {
                 url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
             />
             {getMapData()}
-            <MapInfoControl getColor={getColor}/>
+            <MapLegend/>
+            <MapInfoControl/>
         </Map>
     )
 }
