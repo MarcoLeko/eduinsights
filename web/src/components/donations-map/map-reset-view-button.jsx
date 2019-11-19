@@ -13,7 +13,7 @@ function MapResetViewButton() {
     useEffect(() => {
 
         button.onAdd = () => {
-            const div = L.DomUtil.create("button", "button ripple MuiButton-root MuiButton-contained");
+            const div = L.DomUtil.create("button", "button ripple");
             div.innerHTML = 'Reset View';
 
             L.DomEvent.disableClickPropagation(div)
