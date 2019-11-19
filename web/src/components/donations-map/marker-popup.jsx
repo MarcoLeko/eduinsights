@@ -24,7 +24,9 @@ export default function MarkerPopup() {
     const classes = useStyles();
 
     return (
-        <Popup>
+        <Popup
+            autoPan={false}
+        >
             <Card className={classes.card}>
                     <CardMedia
                         className={classes.media}

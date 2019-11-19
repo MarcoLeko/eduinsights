@@ -101,9 +101,8 @@ function MapOverlay({setSwipeState}) {
         console.log(leafletElement);
         if(e) {
             leafletElement.setView(e.popup._latlng);
-            const px = leafletElement.project(e.target._popup._latlng);
-            px.y -= e.target._popup._container.clientHeight / 2;
-            leafletElement.panTo(leafletElement.unproject(px), {animate: true});
+            const point = leafletElement.project(e.target._popup._latlng);
+            leafletElement.panTo(leafletElement.unproject(point), {animate: true});
         }
 
     }
@@ -140,7 +139,7 @@ function MapOverlay({setSwipeState}) {
             minZoom={3}
             bounceAtZoomLimits={true}
             maxBoundsViscosity={.95}
-            maxBounds={[[-90, -175], [80, 175]]}
+            maxBounds={[[-180, -90], [180, 90]]}
         >
             <TileLayer
                 noWrap={true}
