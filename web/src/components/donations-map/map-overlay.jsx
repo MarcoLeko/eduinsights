@@ -93,6 +93,21 @@ function MapOverlay({setSwipeState}) {
         });
     }
 
+    function centerMapView(e) {
+        const {leafletElement} = mapRef.current;
+
+        console.log(e.popup._latlng);
+        console.log(e);
+        console.log(leafletElement);
+        if(e) {
+            leafletElement.setView(e.popup._latlng);
+            const px = leafletElement.project(e.target._popup._latlng);
+            px.y -= e.target._popup._container.clientHeight / 2;
+            leafletElement.panTo(leafletElement.unproject(px), {animate: true});
+        }
+
+    }
+
     function getMapData() {
         return (
             <GeoJSON
@@ -118,6 +133,7 @@ function MapOverlay({setSwipeState}) {
             ref={mapRef}
             center={[45.000, 10.000]}
             zoom={3}
+            onPopupopen={centerMapView.bind(this)}
             zoomControl={false}
             onMovestart={() => setSwipeState(false)}
             onMoveend={() => setSwipeState(true)}
@@ -134,7 +150,7 @@ function MapOverlay({setSwipeState}) {
             {getMapData()}
             <MapLegend/>
             <MapInfoControl/>
-            <MapResetViewButton />
+            <MapResetViewButton/>
         </Map>
     )
 }
