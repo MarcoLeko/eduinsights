@@ -1,5 +1,5 @@
 import {useLeaflet} from "react-leaflet";
-import {useEffect} from 'react';
+import {memo, useEffect} from 'react';
 import L from "leaflet";
 import {getColor} from "./map-overlay";
 
@@ -36,9 +36,9 @@ function MapLegend() {
         };
 
         legend.addTo(map);
-    }, []);
+    }, [map, legend]);
 
     return null;
 }
 
-export default MapLegend;
+export default memo(MapLegend);
