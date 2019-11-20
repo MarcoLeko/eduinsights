@@ -95,12 +95,11 @@ function MapOverlay({setSwipeState}) {
     function centerMapView(e) {
         const {leafletElement} = mapRef.current;
 
-        console.log(e.popup._latlng);
         console.log(e);
-        console.log(leafletElement);
         if (e) {
             leafletElement.setView(e.popup._latlng);
             const point = leafletElement.project(e.target._popup._latlng);
+            point.y -= e.target._popup._container.clientHeight/2;
             leafletElement.panTo(leafletElement.unproject(point), {animate: true});
         }
 
