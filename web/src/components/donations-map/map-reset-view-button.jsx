@@ -1,5 +1,5 @@
 import {useLeaflet} from "react-leaflet";
-import React, {useEffect} from 'react';
+import {memo, useEffect} from 'react';
 import L from "leaflet";
 
 /**
@@ -24,9 +24,9 @@ function MapResetViewButton() {
         };
 
         button.addTo(map);
-    }, []);
+    }, [map, button]);
 
     return null;
 }
 
-export default MapResetViewButton;
+export default memo(MapResetViewButton);

@@ -34,11 +34,10 @@ export function getColor(d) {
 function MapOverlay({setSwipeState}) {
     const mapRef = useRef(null);
     const geoJSONRef = useRef(null);
+    const infoControlRef = useRef(null);
+
     const [geoJSON, setGeoJSON] = useState({type: 'featureCollection', features: []});
-    const [donationLocations] = useState([
-        [48.135125, 11.581981], [58.403, 20.420], [43.300, 40],
-        [70.505, -20], [40.505, -80], [-40.505, -10]
-    ]);
+    const [donationLocations] = useState([[48.135125, 11.581981], [58.403, 20.420], [43.300, 40], [70.505, -20], [40.505, -80], [-40.505, -10]]);
 
     useEffect(() => {
         getInternetAccessStatistics().then((result) => {
@@ -73,12 +72,12 @@ function MapOverlay({setSwipeState}) {
             layer.bringToFront();
         }
 
-        MapInfoControl.info.update(layer.feature.properties);
+        infoControlRef.current.info.update(layer.feature.properties);
     }
 
     function resetHighlight(e) {
         geoJSONRef.current.leafletElement.resetStyle(e.target);
-        MapInfoControl.info.update()
+        infoControlRef.current.info.update();
     }
 
     function zoomToCountry(e) {
@@ -99,7 +98,7 @@ function MapOverlay({setSwipeState}) {
         console.log(e.popup._latlng);
         console.log(e);
         console.log(leafletElement);
-        if(e) {
+        if (e) {
             leafletElement.setView(e.popup._latlng);
             const point = leafletElement.project(e.target._popup._latlng);
             leafletElement.panTo(leafletElement.unproject(point), {animate: true});
@@ -107,8 +106,25 @@ function MapOverlay({setSwipeState}) {
 
     }
 
-    function getMapData() {
-        return (
+    return (
+        <Map
+            ref={mapRef}
+            center={[45.000, 10.000]}
+            zoom={3}
+            onPopupopen={centerMapView.bind(this)}
+            zoomControl={false}
+            onMovestart={() => setSwipeState(false)}
+            onMoveend={() => setSwipeState(true)}
+            minZoom={3}
+            bounceAtZoomLimits={true}
+            maxBoundsViscosity={.95}
+            maxBounds={[[-90, -175], [80, 175]]}
+        >
+            <TileLayer
+                noWrap={true}
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
+                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
+            />
             <GeoJSON
                 data={geoJSON}
                 style={style}
@@ -124,31 +140,8 @@ function MapOverlay({setSwipeState}) {
                     )
                 }
             </GeoJSON>
-        )
-    }
-
-    return (
-        <Map
-            ref={mapRef}
-            center={[45.000, 10.000]}
-            zoom={3}
-            onPopupopen={centerMapView.bind(this)}
-            zoomControl={false}
-            onMovestart={() => setSwipeState(false)}
-            onMoveend={() => setSwipeState(true)}
-            minZoom={3}
-            bounceAtZoomLimits={true}
-            maxBoundsViscosity={.95}
-            maxBounds={[[-180, -90], [180, 90]]}
-        >
-            <TileLayer
-                noWrap={true}
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
-                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
-            />
-            {getMapData()}
             <MapLegend/>
-            <MapInfoControl/>
+            <MapInfoControl ref={infoControlRef}/>
             <MapResetViewButton/>
         </Map>
     )
