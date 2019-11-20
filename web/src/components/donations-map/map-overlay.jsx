@@ -23,12 +23,12 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 export function getColor(d) {
-    return d > 95 ? '#993404' :
-        d > 75 ? '#d95f0e' :
-            d > 50 ? '#fe9929' :
-                d > 30 ? '#fec44f' :
-                    d > 25 ? '#fee391' :
-                        '#ffffd4'
+    return d > 100 ? '#009900' :
+        d > 90 ? '#9dd900' :
+            d > 75 ? '#0054fe' :
+                d > 50 ? '#fede00' :
+                    d > 25 ? '#fe4f00' :
+                        '#ff0005'
 }
 
 function MapOverlay({setSwipeState}) {
@@ -123,7 +123,7 @@ function MapOverlay({setSwipeState}) {
             <TileLayer
                 noWrap={true}
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
-                url={'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
+                url={'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
             />
             <GeoJSON
                 data={geoJSON}

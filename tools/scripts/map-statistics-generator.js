@@ -110,7 +110,7 @@ const fetch = require("node-fetch");
             for (const geo of countriesGeoJSON.features) {
                 if (geo.properties.ADMIN === curr) {
                     const valueIndex = availableCountriesStatistics.values.findIndex(country=> country.name === curr);
-                    const value = getUnescoStatisticsEntityByIndex(valueIndex, UNESCOStatisticsJSON);
+                    const value = Math.round(Number(getUnescoStatisticsEntityByIndex(valueIndex, UNESCOStatisticsJSON)));
                     const geoJSONIndex = countriesGeoJSON.features.findIndex(obj => obj.properties.ADMIN === curr);
                     const {properties} = countriesGeoJSON.features[geoJSONIndex];
                     delete properties.ADMIN;
@@ -131,7 +131,7 @@ const fetch = require("node-fetch");
                 for (const geo of countriesGeoJSON.features) {
                     // check if the country has its own statistics as it is higher prioritized
                     if (geo.properties.ADMIN === c && !UNESCOCountries.includes(c)) {
-                        const value = getUnescoStatisticsEntityByIndex(statisticIndex, UNESCOStatisticsJSON);
+                        const value = Math.round(Number(getUnescoStatisticsEntityByIndex(statisticIndex, UNESCOStatisticsJSON)));
                         const geoJSONIndex = countriesGeoJSON.features.findIndex(obj => obj.properties.ADMIN === c);
                         const {properties} = countriesGeoJSON.features[geoJSONIndex];
                         delete properties.ADMIN;

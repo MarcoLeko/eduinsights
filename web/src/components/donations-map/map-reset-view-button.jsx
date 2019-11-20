@@ -18,7 +18,11 @@ function MapResetViewButton() {
 
             L.DomEvent.disableClickPropagation(div)
                 .addListener(div, 'click', function () {
-                    map.setView(map.options.center, map.options.zoom)
+                    map.flyTo(map.options.center, map.options.zoom, {
+                        animate: true,
+                        easeLinearity: .75,
+                        duration: 1.5
+                    })
                 }, div);
             return div;
         };
