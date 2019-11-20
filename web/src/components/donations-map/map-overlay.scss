@@ -24,12 +24,9 @@
 
 .leaflet-popup {
   margin-bottom: 0;
-  max-width: 300px;
-  max-height: 300px;
+  max-width: 350px;
+  max-height: 350px;
   opacity: 1;
-  bottom: 0 !important;
-  left: 0 !important;
-  transform: translate(-40%, 50%) !important;
 }
 
 .leaflet-popup-content p {
