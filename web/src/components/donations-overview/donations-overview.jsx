@@ -35,6 +35,7 @@ function DonationsOverview() {
                     behind the tertiary curve.
                     <iframe className="books" height="315" src="https://www.youtube.com/embed/5Y_pXbcfqOk" frameBorder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            title="About education"
                             allowFullScreen
                             onLoad={handleImageLoad.bind(this)}/>
 

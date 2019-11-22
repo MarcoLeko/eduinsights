@@ -134,7 +134,6 @@ function TabBar({canSwipe, isOpen}) {
                     }
                     containerStyle={{height: '100%', width: '100%'}}
                     onChangeIndex={handleChangeIndex}
-                    enableMouseEvents={true}
                     disabled={canSwipe === false}
                     slideStyle={{overflow: 'hidden'}}
                 >

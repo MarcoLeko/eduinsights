@@ -7,25 +7,50 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import * as ReactLeaflet from 'react-leaflet';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
 
 const {Popup} = ReactLeaflet;
 
 const useStyles = makeStyles({
     card: {
-        maxWidth: 345,
+        maxWidth: 350,
+        maxHeight: 550,
+        width: '90%',
     },
     media: {
         height: 140,
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 });
 
-
-export default function MarkerPopup() {
+function MarkerPopup({open, setOpen}) {
     const classes = useStyles();
 
+    function handleClose() {
+        setOpen(false);
+    }
+
     return (
-        <Popup>
-            <Card className={classes.card}>
+        <Popup
+            autoPan={false}
+        >
+            <Modal
+                className={classes.modal}
+                open={open}
+                classes={{root: classes.root}}
+                onClose={handleClose.bind(this)}
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 0,
+                    invisible: true
+                }}
+            >
+                <Card className={classes.card}>
                     <CardMedia
                         className={classes.media}
                         image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
@@ -40,15 +65,18 @@ export default function MarkerPopup() {
                             across all continents except Antarctica
                         </Typography>
                     </CardContent>
-                <CardActions>
-                    <Button size="small" color="primary">
-                        Details
-                    </Button>
-                    <Button size="small" color="primary">
-                        Donate
-                    </Button>
-                </CardActions>
-            </Card>
+                    <CardActions>
+                        <Button size="small" color="primary">
+                            Details
+                        </Button>
+                        <Button size="small" color="primary">
+                            Donate
+                        </Button>
+                    </CardActions>
+                </Card>
+            </Modal>
         </Popup>
     );
 }
+
+export default MarkerPopup;
