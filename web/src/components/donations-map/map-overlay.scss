@@ -4,10 +4,7 @@
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  top: 20px !important;
-  right: 25px !important;
-  color: #fff;
-  padding: 4px;
+  display: none;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
@@ -81,10 +78,10 @@
   color: inherit;
   padding: 6px 16px;
   font-size: 0.875rem;
+  font-weight: 700;
   min-width: 64px;
   box-sizing: border-box;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  font-weight: 500;
   line-height: 1.75;
   border-radius: 4px;
   letter-spacing: 0.02857em;
