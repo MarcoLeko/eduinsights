@@ -3,6 +3,7 @@
 # dependencies
 web/node_modules
 backend/node_modules
+tools/node_modules
 
 # testing
 web/coverage
@@ -22,9 +23,14 @@ web/build
 .env.test.local
 .env.production.local
 
-# private keys
-backend/.env
-web/.env
+# private keys will be later added
+# backend/.env
+# web/.env
 
 # packaging
 npm-debug.log*
+
+# db related files
+tools/scripts/temp
+tools/scripts/output
+
