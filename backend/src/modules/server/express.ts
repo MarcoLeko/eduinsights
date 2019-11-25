@@ -19,7 +19,7 @@ export default class Express {
     constructor(
         @inject(TYPES.SOCKET_SERVER) private socketServer: SocketServer,
         @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient
-) {
+    ) {
         this.app = express();
         this.createServer();
         this.socketServer.connectToStaticServer(this.server);
@@ -32,7 +32,7 @@ export default class Express {
         this.server.listen(Express.PORT, '0.0.0.0', () => {
             this.socketServer.setUpSocketIOHandlers();
             this.mongoDBClient.connect().then(() =>
-            console.log(`Server successfully started on port: ${Express.PORT}`));
+                console.log(`Server successfully started on port: ${Express.PORT}`));
         });
 
 
@@ -56,7 +56,7 @@ export default class Express {
 
     private setUpMiddleware() {
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(bodyParser.urlencoded({extended: true}));
 
         this.app.use(express.static(joinDir('../web/build')));
     }
@@ -66,10 +66,16 @@ export default class Express {
             response.send(await this.mongoDBClient.getCollectionOfCharities())
         });
 
-        this.app.get('/statistics/:type', async(request, response) => {
+        this.app.get('/statistics/:type', async (request, response) => {
             const kindOfStatistics = (<any>request.params).type;
-
             response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics))
-        })
+        });
+
+        this.app.post('/register', async (request, response) => {
+            const {email, password} = request.body;
+            this.mongoDBClient.addUser(email, password)
+                .then(() => response.status(200).send("Successfully logged in!"))
+                .catch(e => response.status(400).send("Login failed." + e))
+        });
     }
 }
