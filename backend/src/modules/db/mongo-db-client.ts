@@ -1,6 +1,8 @@
 import {MongoClient, MongoClientOptions} from 'mongodb';
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {User} from "../../types/types";
+import {TYPES} from "../../di-config/types";
+import HashGenerator from "./hash-generator";
 
 @injectable()
 export default class MongoDBClient {
@@ -43,7 +45,8 @@ export default class MongoDBClient {
         }
     }
 
-    public postNewUser(email: string, password: string) {
+    public async addUser(email: string, clearTextPassword: string) {
+        const password: string = await HashGenerator.hash(clearTextPassword);
         return this.connectionManager.db('users').collection<User>('email').insertOne({
             email, password
         })
