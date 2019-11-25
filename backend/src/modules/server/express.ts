@@ -7,6 +7,7 @@ import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import SocketServer from './socket-server';
 import MongoDBClient from '../db/mongo-db-client';
+import bodyParser from 'body-parser';
 
 @injectable()
 export default class Express {
@@ -54,12 +55,15 @@ export default class Express {
     }
 
     private setUpMiddleware() {
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+
         this.app.use(express.static(joinDir('../web/build')));
     }
 
     private setUpRoutes() {
         this.app.get('/charities', async (request, response) => {
-            response.json(await this.mongoDBClient.getCollectionOfCharities())
+            response.send(await this.mongoDBClient.getCollectionOfCharities())
         });
 
         this.app.get('/statistics/:type', async(request, response) => {
