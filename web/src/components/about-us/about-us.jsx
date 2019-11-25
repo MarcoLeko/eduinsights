@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Box} from '@material-ui/core';
 import Container from "@material-ui/core/Container";
-import "./donations-overview.scss";
+import "./about-us.scss";
 import AllDonationsCounter from "./all-donations-counter";
 import PaypalPartnerButton from "./paypal-partner-button";
 import Footer from "./footer";
 
-function DonationsOverview() {
+function AboutUs() {
     const [canCount, setCanCount] = React.useState(false);
 
     function handleImageLoad() {
@@ -54,4 +54,4 @@ function DonationsOverview() {
     );
 }
 
-export default React.memo(DonationsOverview);
+export default React.memo(AboutUs);

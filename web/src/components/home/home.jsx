@@ -3,10 +3,10 @@ import {useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import './tab-bar.scss';
+import './home.scss';
 import SwipeableViews from 'react-swipeable-views';
 import {Box} from '@material-ui/core';
-import DonationsOverview from "../donations-overview/donations-overview";
+import DonationsOverview from "../about-us/about-us";
 import clsx from 'clsx';
 import MapOverlay from "../donations-map/map-overlay";
 import {connect} from "react-redux";
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function TabBar({canSwipe, isOpen}) {
+function Home({canSwipe, isOpen}) {
     const classes = useStyles();
 
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -154,4 +154,4 @@ const mapStateToProps = state => ({
     isOpen: state.isOpen
 });
 
-export default connect(mapStateToProps)(TabBar);
+export default connect(mapStateToProps)(Home);

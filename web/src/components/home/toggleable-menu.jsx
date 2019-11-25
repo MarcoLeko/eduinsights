@@ -4,7 +4,7 @@ import {ReactComponent as Logo} from "../../assets/logo.svg";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import './tab-bar.scss';
+import './home.scss';
 import {connect} from "react-redux";
 import {toggleSideBar} from "../../store/actions";
 
