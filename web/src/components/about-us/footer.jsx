@@ -38,12 +38,6 @@ function Footer() {
                 <Grid item xs={6} md={4}>
                     <List dense={true}>
                         <ListItem disableGutters={true}>
-                            <Link
-                                component="button"
-                                variant="button"
-                                className="padding-left-30"
-                            >About Us
-                            </Link>
                         </ListItem>
                         <ListItem disableGutters={true}>
                             <Link
