@@ -1,5 +1,6 @@
 import {MongoClient, MongoClientOptions} from 'mongodb';
 import {injectable} from 'inversify';
+import {User} from "../../types/types";
 
 @injectable()
 export default class MongoDBClient {
@@ -17,11 +18,11 @@ export default class MongoDBClient {
     public connect(): Promise<MongoClient | void> {
         return this.mongoClient.connect()
             .then((mongoClient: MongoClient) => this.connectionManager = mongoClient)
-            .catch((e: Error) => console.log('Could not connect to database ' + e));
+            .catch((e: Error) => console.log('Could not connect to mongo server: ' + e));
     }
 
     public getCollectionOfCharities() {
-        return this.connectionManager.db('sample_geospatial').collection('shipwrecks').find().limit(3).toArray()
+        return this.connectionManager.db('organization').collection('list').find().limit(3).toArray()
             .then((result: any) => console.log(JSON.stringify(result)))
             .catch((e: Error) => console.log('Could not fetch collection due to: ', e));
     }
@@ -40,5 +41,11 @@ export default class MongoDBClient {
             default:
                 return this.connectionManager.db('map-statistics').collection('internet-access').find({}).next();
         }
+    }
+
+    public postNewUser(email: string, password: string) {
+        return this.connectionManager.db('users').collection<User>('email').insertOne({
+            email, password
+        })
     }
 }
