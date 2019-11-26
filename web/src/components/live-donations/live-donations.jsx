@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
@@ -42,16 +42,17 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function LiveDonations() {
+function LiveDonations() {
     const classes = useStyles();
 
     const lastDonations = new Array(3).fill((Math.random() * 50).toFixed(2));
+    const allDonations =  new Array(6).fill(Math.random());
     console.log(lastDonations);
     return (
         <Box p={3}>
             {
-                new Array(6).fill(null).map(() =>
-                    <Card className={classes.card}>
+                allDonations.map((v, i) =>
+                    <Card className={classes.card} key={i}>
                         <CardMedia
                             className={classes.media}
                             image={
@@ -92,5 +93,6 @@ export default function LiveDonations() {
                 )}
         </Box>
     );
-
 }
+
+export default memo(LiveDonations)
