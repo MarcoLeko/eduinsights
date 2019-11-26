@@ -13,14 +13,16 @@ import Box from "@material-ui/core/Box";
 import React from "react";
 import Copyright from "../shared/copyright";
 import muiBackground from "../shared/material-ui-background";
+import Divider from "@material-ui/core/Divider";
+import deviceFrame from '../../assets/device-frame.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
         height: '100vh',
         background: muiBackground
     },
-    image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
+    background: {
+        backgroundColor: 'rgba(62,62,62,0.4)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -49,26 +51,51 @@ const useStyles = makeStyles(theme => ({
 
 function LogIn() {
     const classes = useStyles();
-
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
-            <Grid item xs={false} sm={4} md={7} gridSpacing={3} className={classes.image}>
+            <Box component={Grid} item
+                 container direction="column" justify="space-around"
+                 xs={false} sm={7} md={6}
+                 display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}
+                 className={classes.background}>
                 <div className={classes.header}>
-                    <Typography variant="h2" gutterBottom>
+                    <Typography variant="h3" gutterBottom>
                         Help-educate.com
                     </Typography>
                     <Typography variant="subtitle1" gutterBottom>Support educational institutes, school or libraries
                         with
                         your givings.
                         See the development in school infrastructure around the world provided by the statistics
-                        of <Link
-                            href="https://apiportal.uis.unesco.org/">UNESCO</Link>. Every little donation
+                        of <Link color="secondary"
+                                 href="https://apiportal.uis.unesco.org/">UNESCO</Link>. Every little donation
                         counts.
                     </Typography>
+                    <Divider variant="middle"/>
                 </div>
-            </Grid>
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={1} square
+                <div style={{
+                    backgroundImage: 'url(https://source.unsplash.com/random)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    position: 'relative',
+                    borderRadius: 21,
+                    height: 468,
+                    width: 215,
+                    display: 'block', margin: 'auto',
+                    border: '2px solid white',
+                }}
+                >
+                    <img src={deviceFrame} height={500} width={250} alt="device frame"
+                         style={{
+                             position: 'absolute',
+                             left: -20,
+                             bottom: -18
+                         }}/>
+                </div>
+
+            </Box>
+            <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square
                   style={{backgroundColor: 'transparent'}}>
                 <div className={classes.paper}>
                     <div className={classes.avatar}>
