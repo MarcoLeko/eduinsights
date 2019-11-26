@@ -5,7 +5,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import './home.scss';
 import SwipeableViews from 'react-swipeable-views';
-import {Box} from '@material-ui/core';
 import DonationsOverview from "../about-us/about-us";
 import clsx from 'clsx';
 import MapOverlay from "../donations-map/map-overlay";
@@ -13,6 +12,7 @@ import {connect} from "react-redux";
 import ToggleableMenu from "./toggleable-menu";
 import SideBar, {drawerWidth} from './side-bar';
 import {makeStyles} from '@material-ui/core/styles';
+import LiveDonations from "../live-donations/live-donations";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -106,7 +106,7 @@ function Home({canSwipe, isOpen}) {
                     textColor="primary"
                     variant="fullWidth"
                     classes={{
-                        indicator : classes.indicator
+                        indicator: classes.indicator
                     }}
                 >
                     <Tab label="Live"/>
@@ -122,7 +122,7 @@ function Home({canSwipe, isOpen}) {
                 <SwipeableViews
                     index={tabIndex}
                     style={
-                        Object.assign( {
+                        Object.assign({
                             height: '100%',
                             width: '100%',
                             transition: 'transform .2s ease-out'
@@ -137,9 +137,7 @@ function Home({canSwipe, isOpen}) {
                     disabled={canSwipe === false}
                     slideStyle={{overflow: 'hidden'}}
                 >
-                    <Box p={3}>
-                        Item Three
-                    </Box>
+                    <LiveDonations/>
                     <MapOverlay/>
                     <DonationsOverview/>
                 </SwipeableViews>
