@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: theme.palette.grey[50],
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        height: '100%'
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    header: {
+        padding: theme.spacing(3, 5, 0)
+    }
 }));
 
 function LogIn() {
@@ -50,8 +53,23 @@ function LogIn() {
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
-            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square style={{backgroundColor: 'transparent'}}>
+            <Grid item xs={false} sm={4} md={7} gridSpacing={3} className={classes.image}>
+                <div className={classes.header}>
+                    <Typography variant="h2" gutterBottom>
+                        Help-educate.com
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>Support educational institutes, school or libraries
+                        with
+                        your givings.
+                        See the development in school infrastructure around the world provided by the statistics
+                        of <Link
+                            href="https://apiportal.uis.unesco.org/">UNESCO</Link>. Every little donation
+                        counts.
+                    </Typography>
+                </div>
+            </Grid>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={1} square
+                  style={{backgroundColor: 'transparent'}}>
                 <div className={classes.paper}>
                     <div className={classes.avatar}>
                         <Logo width={40}/>

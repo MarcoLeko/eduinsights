@@ -1,8 +1,7 @@
 import {MongoClient, MongoClientOptions} from 'mongodb';
-import {inject, injectable} from 'inversify';
+import {injectable} from 'inversify';
 import {User} from "../../types/types";
-import {TYPES} from "../../di-config/types";
-import HashGenerator from "./hash-generator";
+import CredentialHelper from "./credential-helper";
 
 @injectable()
 export default class MongoDBClient {
@@ -36,9 +35,10 @@ export default class MongoDBClient {
                     projection: {
                         type: true,
                         features: true,
-                        '_id': false
+                        _id: false
                     }
                 });
+
                 return cursor.next();
             default:
                 return this.connectionManager.db('map-statistics').collection('internet-access').find({}).next();
@@ -46,9 +46,13 @@ export default class MongoDBClient {
     }
 
     public async addUser(email: string, clearTextPassword: string) {
-        const password: string = await HashGenerator.hash(clearTextPassword);
+        const password: string = await CredentialHelper.hash(clearTextPassword);
         return this.connectionManager.db('users').collection<User>('email').insertOne({
             email, password
         })
+    }
+
+    public async findUser(email: string) {
+        return this.connectionManager.db('users').collection<User>('email').findOne({email})
     }
 }

@@ -5,7 +5,6 @@ import {Route} from "react-router-dom";
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function ProtectedRoute({children, isLoggedIn, ...rest}) {
-    console.log(children);
 
     return (
         <Route
