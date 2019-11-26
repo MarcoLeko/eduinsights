@@ -11,6 +11,7 @@ import {getInternetAccessStatistics} from "../../store/thunks";
 import MapLegend from './map-legend';
 import MapInfoControl from "./map-info-control";
 import MapResetViewButton from "./map-reset-view-button";
+import UnescoLogo from "./unesco-logo";
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -146,6 +147,7 @@ function MapOverlay({setSwipeState}) {
             <MapLegend/>
             <MapInfoControl ref={infoControlRef}/>
             <MapResetViewButton/>
+            <UnescoLogo/>
         </Map>
     )
 }

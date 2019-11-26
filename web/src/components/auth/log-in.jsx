@@ -15,6 +15,7 @@ import Copyright from "../shared/copyright";
 import muiBackground from "../shared/material-ui-background";
 import Divider from "@material-ui/core/Divider";
 import deviceFrame from '../../assets/device-frame.png';
+import AppPreview from '../../assets/app-preview-1.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -74,7 +75,7 @@ function LogIn() {
                     <Divider variant="middle"/>
                 </div>
                 <div style={{
-                    backgroundImage: 'url(https://source.unsplash.com/random)',
+                    backgroundImage: `url(${AppPreview})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
