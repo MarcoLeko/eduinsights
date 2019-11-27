@@ -16,6 +16,7 @@ import muiBackground from "../shared/material-ui-background";
 import Divider from "@material-ui/core/Divider";
 import deviceFrame from '../../assets/device-frame.png';
 import AppPreview from '../../assets/app-preview-1.png';
+import './log-in.scss';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -68,31 +69,16 @@ function LogIn() {
                         with
                         your givings.
                         See the development in school infrastructure around the world provided by the statistics
-                        of <Link color="secondary"
+                        of <Link color="primary"
                                  href="https://apiportal.uis.unesco.org/">UNESCO</Link>. Every little donation
                         counts.
                     </Typography>
                     <Divider variant="middle"/>
                 </div>
-                <div style={{
-                    backgroundImage: `url(${AppPreview})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    position: 'relative',
-                    borderRadius: 21,
-                    height: 468,
-                    width: 215,
-                    display: 'block', margin: 'auto',
-                    border: '2px solid white',
-                }}
+                <div className="app-preview-content"
+                    style={{backgroundImage: `url(${AppPreview})`}}
                 >
-                    <img src={deviceFrame} height={500} width={250} alt="device frame"
-                         style={{
-                             position: 'absolute',
-                             left: -20,
-                             bottom: -18
-                         }}/>
+                    <img className="device-frame" src={deviceFrame} height={500} width={250} alt="device frame"/>
                 </div>
 
             </Box>
