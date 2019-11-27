@@ -3,7 +3,7 @@ import {CAN_SWIPE, IS_LOGGED_IN, TOGGLE_SIDEBAR} from "./action-types";
 const initialState = {
     canSwipe: true,
     isOpen: false,
-    isLoggedIn: false
+    isLoggedIn: true
 };
 
 export default function rootReducer(state = initialState, action) {
