@@ -14,7 +14,6 @@ import React from "react";
 import Copyright from "../shared/copyright";
 import muiBackground from "../shared/material-ui-background";
 import Divider from "@material-ui/core/Divider";
-import deviceFrame from '../../assets/device-frame.png';
 import AppPreview from '../../assets/app-preview-1.png';
 import './log-in.scss';
 
@@ -47,7 +46,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(3, 0, 2),
     },
     header: {
-        padding: theme.spacing(3, 5, 0)
+        padding: theme.spacing(3, 5, 5)
     }
 }));
 
@@ -57,15 +56,16 @@ function LogIn() {
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
             <Box component={Grid} item
-                 container direction="column" justify="space-around"
+                 container direction="column" justify="flex-start"
                  xs={false} sm={7} md={6}
                  display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}
                  className={classes.background}>
                 <div className={classes.header}>
-                    <Typography variant="h3" gutterBottom>
+                    <Typography variant="h5" gutterBottom>
                         Help-educate.com
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom>Support educational institutes, school or libraries
+                    <Typography variant="body1" gutterBottom>Support educational institutes, school or
+                        libraries
                         with
                         your givings.
                         See the development in school infrastructure around the world provided by the statistics
@@ -75,12 +75,11 @@ function LogIn() {
                     </Typography>
                     <Divider variant="middle"/>
                 </div>
-                <div className="app-preview-content"
-                    style={{backgroundImage: `url(${AppPreview})`}}
-                >
-                    <img className="device-frame" src={deviceFrame} height={500} width={250} alt="device frame"/>
+                <div className="login-image-panel">
+                    <div className="device-frame">
+                    <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
+                    </div>
                 </div>
-
             </Box>
             <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square
                   style={{backgroundColor: 'transparent'}}>
