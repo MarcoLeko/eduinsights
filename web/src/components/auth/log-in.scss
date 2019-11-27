@@ -1,18 +1,25 @@
-.device-frame {
-  position: absolute;
-  left: -20px;
-  bottom: -18px;
-}
-
 .app-preview-content {
+  position: absolute;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  position: relative;
   border-radius: 21px;
-  height: 468px;
-  width: 215px;
-  display: block;
-  margin: auto;
-  border: 2px solid white;
+  height: 426px;
+  width: 196px;
+}
+
+.login-image-panel {
+  align-self: center;
+  background-image: url('../../assets/device-frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  -webkit-flex-basis: 454px;
+  flex-basis: 454px;
+  width: 224px;
+}
+
+.device-frame {
+  position: relative;
+  margin: 14px 15px;
 }
