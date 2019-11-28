@@ -20,7 +20,6 @@ import googlePlayLogo from '../../assets/google-play.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: 'auto',
         background: muiBackground
     },
     paper: {
@@ -44,17 +43,19 @@ const useStyles = makeStyles(theme => ({
 function LogIn() {
     const classes = useStyles();
     return (
-        <Grid container component="main" className={classes.root}>
+        <Grid container component="main">
             <CssBaseline/>
             <Box component={Grid} item
                  container direction="column" justify="flex-start"
-                 xs={false} sm={7} md={6} wrap="nowrap"
+                 xs={false} sm={7} md={6}
+                 className={classes.root}
                  display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}>
                 <article className="article-panel">
                     <div className="login-image-panel">
                         <div className="device-frame">
                             <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
                         </div>
+                        <div className="device-frame-shadow" />
                     </div>
                 </article>
                 <div className="app-store-panel">
@@ -64,9 +65,9 @@ function LogIn() {
                     </div>
                 </div>
             </Box>
-            <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square
-                  style={{backgroundColor: 'transparent'}}>
+            <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
+                    <Typography variant="h4" color="primary" align="center" gutterBottom>Help-educate.com</Typography>
                     <div className={classes.avatar}>
                         <Logo width={40}/>
                     </div>

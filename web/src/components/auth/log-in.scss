@@ -26,16 +26,24 @@
   margin: 13px 118px;
 }
 
+.device-frame-shadow {
+  width: 165px;
+  box-shadow: 0px 0px 30px 10px #111;
+  position: absolute;
+  bottom: 90px;
+  left: 180px;
+}
+
 .article-panel {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
+  -webkit-box-flex: .75;
+  -webkit-flex-grow: .75;
+  -ms-flex-positive: .75;
+  flex-grow: .75;
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
