@@ -3,35 +3,30 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-radius: 15px;
+  border-radius: 18px;
   height: 386px;
   width: 178px;
+  margin: 13px;
 }
 
 .login-image-panel {
   align-self: center;
   background-image: url('../../assets/device-frame.png');
   background-repeat: no-repeat;
-  flex-basis: 412px;
   width: 204px;
-  -webkit-flex-basis:  412px;
-  -ms-flex-preferred-size: 412px;
   background-position: center;
   background-size: 204px 412px;
   height: 412px;
-}
-
-.device-frame {
   position: relative;
-  margin: 13px 118px;
 }
 
 .device-frame-shadow {
   width: 165px;
   box-shadow: 0px 0px 10px 3px #111;
   position: absolute;
-  bottom: 100px;
-  left: 175px;
+  top: 415px;
+  left: 20px;
+  content: '';
 }
 
 .article-panel {
@@ -40,9 +35,9 @@
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-flex: .75;
-  -webkit-flex-grow: .75;
-  -ms-flex-positive: .75;
+  -webkit-box-flex: .65;
+  -webkit-flex-grow: .65;
+  -ms-flex-positive: .65;
   flex-grow: .75;
   display: flex;
   -webkit-box-pack: center;
