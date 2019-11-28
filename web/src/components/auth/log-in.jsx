@@ -13,21 +13,15 @@ import Box from "@material-ui/core/Box";
 import React from "react";
 import Copyright from "../shared/copyright";
 import muiBackground from "../shared/material-ui-background";
-import Divider from "@material-ui/core/Divider";
 import AppPreview from '../../assets/app-preview-1.png';
 import './log-in.scss';
+import appStoreLogo from '../../assets/app-store.png';
+import googlePlayLogo from '../../assets/google-play.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: '100vh',
+        height: 'auto',
         background: muiBackground
-    },
-    background: {
-        backgroundColor: 'rgba(62,62,62,0.4)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100%'
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -44,9 +38,6 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
-    header: {
-        padding: theme.spacing(3, 5, 5)
     }
 }));
 
@@ -57,27 +48,19 @@ function LogIn() {
             <CssBaseline/>
             <Box component={Grid} item
                  container direction="column" justify="flex-start"
-                 xs={false} sm={7} md={6}
-                 display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}
-                 className={classes.background}>
-                <div className={classes.header}>
-                    <Typography variant="h5" gutterBottom>
-                        Help-educate.com
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>Support educational institutes, school or
-                        libraries
-                        with
-                        your givings.
-                        See the development in school infrastructure around the world provided by the statistics
-                        of <Link color="primary"
-                                 href="https://apiportal.uis.unesco.org/">UNESCO</Link>. Every little donation
-                        counts.
-                    </Typography>
-                    <Divider variant="middle"/>
-                </div>
-                <div className="login-image-panel">
-                    <div className="device-frame">
-                    <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
+                 xs={false} sm={7} md={6} wrap="nowrap"
+                 display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}>
+                <article className="article-panel">
+                    <div className="login-image-panel">
+                        <div className="device-frame">
+                            <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
+                        </div>
+                    </div>
+                </article>
+                <div className="app-store-panel">
+                    <div className="image-panel">
+                        <img src={appStoreLogo} alt="download on app store" height={40} style={{marginRight: '2em'}}/>
+                        <img src={googlePlayLogo} alt="download on google play" height={40}/>
                     </div>
                 </div>
             </Box>

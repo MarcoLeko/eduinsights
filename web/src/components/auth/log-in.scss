@@ -3,23 +3,59 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-radius: 21px;
-  height: 426px;
-  width: 196px;
+  border-radius: 15px;
+  height: 386px;
+  width: 178px;
 }
 
 .login-image-panel {
   align-self: center;
   background-image: url('../../assets/device-frame.png');
   background-repeat: no-repeat;
-  background-size: cover;
+  flex-basis: 412px;
+  width: 204px;
+  -webkit-flex-basis:  412px;
+  -ms-flex-preferred-size: 412px;
   background-position: center;
-  -webkit-flex-basis: 454px;
-  flex-basis: 454px;
-  width: 224px;
+  background-size: 204px 412px;
+  height: 412px;
 }
 
 .device-frame {
   position: relative;
-  margin: 14px 15px;
+  margin: 13px 118px;
+}
+
+.article-panel {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 935px;
+  width: 100%;
+}
+
+.image-panel {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-self: center;
+  padding-bottom: 40px;
 }
