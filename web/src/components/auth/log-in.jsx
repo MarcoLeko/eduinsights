@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 function LogIn() {
     const classes = useStyles();
     return (
-        <Grid container component="main">
+        <Grid container component="main" style={{height: '100%'}}>
             <CssBaseline/>
             <Box component={Grid} item
                  container direction="column" justify="flex-start"
@@ -52,10 +52,8 @@ function LogIn() {
                  display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}>
                 <article className="article-panel">
                     <div className="login-image-panel">
-                        <div className="device-frame">
                             <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
-                        </div>
-                        <div className="device-frame-shadow" />
+                        <div className="device-frame-shadow"/>
                     </div>
                 </article>
                 <div className="app-store-panel">
