@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import {Link as RouterLink} from 'react-router-dom';
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import React from "react";
@@ -40,6 +41,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+// The use of React.forwardRef will no longer be required for react-router-dom v6.
+// See https://github.com/ReactTraining/react-router/issues/6056
+const RegisterLink = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
+const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {...props} />));
+
 function LogIn() {
     const classes = useStyles();
     return (
@@ -52,7 +58,7 @@ function LogIn() {
                  display={{xs: 'none !important', sm: 'flex !important', md: 'flex !important'}}>
                 <article className="article-panel">
                     <div className="login-image-panel">
-                            <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
+                        <div className="app-preview-content" style={{backgroundImage: `url(${AppPreview})`}}/>
                         <div className="device-frame-shadow"/>
                     </div>
                 </article>
@@ -110,12 +116,12 @@ function LogIn() {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
+                                <Link component={ForgotPasswordLink} to="/password/reset/" variant="body2">
+                                    {"Forgot password?"}
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link component={RegisterLink} to="sign-up" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
