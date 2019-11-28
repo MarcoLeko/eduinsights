@@ -13,7 +13,7 @@ function ProtectedRoute({children, isLoggedIn, ...rest}) {
                 isLoggedIn ? (
                     children
                 ) : (
-                    <Route path=""
+                    <Route path="/"
                            component={LogIn}
                     />
                 )
