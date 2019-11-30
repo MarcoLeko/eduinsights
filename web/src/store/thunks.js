@@ -3,7 +3,23 @@ export async function getInternetAccessStatistics() {
         const response = await fetch('https://localhost:8080/statistics/internet-access');
         return response.json();
     } catch (e) {
+        // notify with global toast message: 'Could not fetch Internet-statistics: ' + e.
         return {type: 'featureCollection', features: []};
-        // throw new Error('Could not fetch Internet-statistics: ' + e);
     }
+}
+
+export async function registerNewUser(payload) {
+    try {
+        return fetch('https://localhost:8080/register', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (e) {
+        // notify with global toast message something went wrong
+        return e;
+    }
+
 }

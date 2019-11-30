@@ -16,10 +16,15 @@ export default class MongoDBClient {
 
     private connectionManager: MongoClient;
 
-    public connect(): Promise<MongoClient | void> {
+    public connect(): Promise<void| string> {
         return this.mongoClient.connect()
             .then((mongoClient: MongoClient) => this.connectionManager = mongoClient)
+            .then(() => this.setupDBIndexes())
             .catch((e: Error) => console.log('Could not connect to mongo server: ' + e));
+    }
+
+    private setupDBIndexes() {
+        return this.connectionManager.db('users').collection('list').createIndex( {"email": 1} as Object, {unique: true})
     }
 
     public getCollectionOfCharities() {
@@ -45,11 +50,11 @@ export default class MongoDBClient {
         }
     }
 
-    public async addUser(email: string, clearTextPassword: string) {
-        const password: string = await CredentialHelper.hash(clearTextPassword);
-        return this.connectionManager.db('users').collection<User>('email').insertOne({
-            email, password
-        })
+    public async addUser({ firstName, lastName, avatarColor, email, password } : User) {
+        const passwordHashed: string = await CredentialHelper.hash(password);
+        return this.connectionManager.db('users').collection<User>('email').insertOne(
+        { firstName, lastName, avatarColor, email, password: passwordHashed }
+        )
     }
 
     public async findUser(email: string) {
