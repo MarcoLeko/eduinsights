@@ -8,6 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {ReactComponent as Logo} from "../../assets/logo.svg";
+import {Link as RouterLink} from "react-router-dom";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {registerNewUser} from "../../store/thunks";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -28,8 +33,47 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const LogInLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {...props} />));
 export default function SignUp() {
     const classes = useStyles();
+
+    const initialState = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        showPassword: false,
+    };
+
+    const [values, setValues] = React.useState(initialState);
+
+    function handleChange(prop) {
+        return function (event) {
+            setValues({...values, [prop]: event.target.value});
+        }
+    }
+
+    function handleClickShowPassword() {
+        setValues({...values, showPassword: !values.showPassword});
+    }
+
+    function handleMouseDownPassword(e) {
+        e.preventDefault();
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        registerNewUser({...values, avatarColor: generateAvatarColor()})
+            .then(() => setValues(initialState))
+    }
+
+    function generateAvatarColor() {
+        return "#000000".replace(/0/g, function () {
+            return (~~(Math.random() * 16)).toString(16);
+        });
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -50,6 +94,8 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
+                                value={values.firstName}
+                                onChange={handleChange('firstName')}
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
@@ -63,6 +109,8 @@ export default function SignUp() {
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
+                                value={values.lastName}
+                                onChange={handleChange('lastName')}
                                 autoComplete="lname"
                             />
                         </Grid>
@@ -72,6 +120,8 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
+                                value={values.email}
+                                onChange={handleChange('email')}
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
@@ -84,9 +134,23 @@ export default function SignUp() {
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type="password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
                                 id="password"
                                 autoComplete="current-password"
+                                InputProps={{
+                                    endAdornment:
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -96,9 +160,11 @@ export default function SignUp() {
                                 fullWidth
                                 name="password-confirm"
                                 label="Password confirm"
-                                type="password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.passwordConfirm}
+                                onChange={handleChange('passwordConfirm')}
                                 id="password-confirm"
-                                autoComplete={false}
+                                autoComplete="off"
                             />
                         </Grid>
                     </Grid>
@@ -108,12 +174,13 @@ export default function SignUp() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={handleSubmit.bind(this)}
                     >
                         Sign Up
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link component={LogInLink} to="/" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>

@@ -1,5 +1,4 @@
 import Home from "../home/home";
-import socket from "../../socket-io-client";
 import {connect} from "react-redux";
 import React from 'react';
 import {Switch, Route,
@@ -14,7 +13,7 @@ function RouteHandler({isLoggedIn}) {
         <Switch>
             <Route path="/sign-up" component={SignUp}/>
             <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Home socket={socket}/>
+                <Home/>
             </ProtectedRoute>
         </Switch>
         </Router>

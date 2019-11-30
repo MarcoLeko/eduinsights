@@ -5,11 +5,12 @@ import fs from 'fs';
 import express from 'express';
 import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
-import SocketServer from './socket-server';
 import MongoDBClient from '../db/mongo-db-client';
 import bodyParser from 'body-parser';
 import CredentialHelper from "../db/credential-helper";
 import cookieParser = require("cookie-parser");
+import {User} from '../../types/types';
+import cors from 'cors';
 
 @injectable()
 export default class Express {
@@ -19,25 +20,19 @@ export default class Express {
     public server: Https.Server;
 
     constructor(
-        @inject(TYPES.SOCKET_SERVER) private socketServer: SocketServer,
         @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient
     ) {
         this.app = express();
         this.createServer();
-        this.socketServer.connectToStaticServer(this.server);
     }
 
     public init() {
-        this.configureMiddleware();
         this.setUpMiddleware();
         this.setUpRoutes();
         this.server.listen(Express.PORT, '0.0.0.0', () => {
-            this.socketServer.setUpSocketIOHandlers();
             this.mongoDBClient.connect().then(() =>
                 console.log(`Server successfully started on port: ${Express.PORT}`));
         });
-
-
     }
 
     private createServer() {
@@ -49,18 +44,14 @@ export default class Express {
         this.server = new Https.Server(httpsOptions, this.app);
     }
 
-    private configureMiddleware() {
-        this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', 'https://localhost:4200');
-            next();
-        });
-    }
-
     private setUpMiddleware() {
         this.app.use(cookieParser());
-        this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-
+        this.app.use(bodyParser.json());
+        this.app.use(cors({
+            origin: 'http://localhost:4200',
+            optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        }));
         this.app.use(express.static(joinDir('../web/build')));
     }
 
@@ -72,13 +63,6 @@ export default class Express {
         this.app.get('/statistics/:type', async (request, response) => {
             const kindOfStatistics = (<any>request.params).type;
             response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics))
-        });
-
-        this.app.post('/register', async (request, response) => {
-            const {email, password} = request.body;
-            this.mongoDBClient.addUser(email, password)
-                .then(() => response.status(200).send("Successfully logged in!"))
-                .catch(e => response.status(400).send("Registration failed." + e))
         });
 
         this.app.post('/login', async (request, response) => {
@@ -102,6 +86,14 @@ export default class Express {
             })
                 .catch(() => response.status(500).json({error: 'Internal error please try again'}))
         });
+
+        this.app.post('/register', (request, response) => {
+            console.log(request.body);
+            const { firstName, lastName, avatarColor, email, password }: User = request.body;
+            this.mongoDBClient.addUser({ firstName, lastName, avatarColor, email, password } as User)
+                .then(() => response.status(200).send("Successfully registered."))
+                .catch((e: Error) => response.status(400).send("Registration failed: " + e))
+        })
     }
 
     public withToken(request: any, response: any, next: Function) {

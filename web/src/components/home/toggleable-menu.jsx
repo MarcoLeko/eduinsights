@@ -7,20 +7,62 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import './home.scss';
 import {connect} from "react-redux";
 import {toggleSideBar} from "../../store/actions";
+import Avatar from "@material-ui/core/Avatar";
+import Divider from "@material-ui/core/Divider";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        minHeight: 48,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 4px'
+    },
+    logoPanel: {
+        alignItems: 'center',
+        flex: 1,
+        display: 'flex'
+    },
+    logo: {
+        width: 40,
+        marginRight: theme.spacing(1)
+    },
+    divider: {
+        height: 30,
+        margin: 4,
+        width: 2
+    },
+    actionButtons: {
+        display: 'flex',
+        alignItems: 'center',
+        '& > *': {
+            margin: theme.spacing(0, 1),
+        },
+    }
+}));
 
 function ToggleableMenu(props) {
+    const classes = useStyles();
 
     return (
-        <Toolbar style={{minHeight: '48px'}}>
-            <Logo style={{width: '40px', marginRight: '1em'}}/>
-            <span className="toolbar-header">Help educate</span>
-            <IconButton
-                style={{right: 0, position: 'absolute'}}
-                onClick={props.toggle.bind(this, !props.isOpen)}
-            >
-                {props.isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
+        <Toolbar className={classes.root}>
+            <div className={classes.logoPanel}>
+                <Logo className={classes.logo}/>
+                <span className="toolbar-header">Help educate</span>
+            </div>
+            <div className={classes.actionButtons}>
+                <Avatar style={{
+                    color: '#fff',
+                    backgroundColor: '#000',
+                }}>OP</Avatar>
+                <Divider className={classes.divider} orientation="vertical"/>
+                <IconButton
+                    onClick={props.toggle.bind(this, !props.isOpen)}
+                >
+                    {props.isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
 
-            </IconButton>
+                </IconButton>
+            </div>
         </Toolbar>
     )
 }

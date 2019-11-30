@@ -21,7 +21,7 @@ import googlePlayLogo from '../../assets/google-play.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: muiBackground
+        background: muiBackground,
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -49,7 +49,7 @@ const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRe
 function LogIn() {
     const classes = useStyles();
     return (
-        <Grid container component="main" style={{height: '100%'}}>
+        <Grid container component="main" style={{height: '100vh'}}>
             <CssBaseline/>
             <Box component={Grid} item
                  container direction="column" justify="flex-start"
@@ -121,7 +121,7 @@ function LogIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link component={RegisterLink} to="sign-up" variant="body2">
+                                <Link component={RegisterLink} to="/sign-up" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
