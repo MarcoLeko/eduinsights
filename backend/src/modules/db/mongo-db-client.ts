@@ -1,7 +1,7 @@
 import {MongoClient, MongoClientOptions} from 'mongodb';
 import {injectable} from 'inversify';
-import {User} from "../../types/types";
-import CredentialHelper from "./credential-helper";
+import {User} from '../../types/types';
+import CredentialHelper from './credential-helper';
 
 @injectable()
 export default class MongoDBClient {
@@ -24,7 +24,7 @@ export default class MongoDBClient {
     }
 
     private setupDBIndexes() {
-        return this.connectionManager.db('users').collection('list').createIndex( {"email": 1} as Object, {unique: true})
+        return this.connectionManager.db('users').collection('email').createIndex( {"email": 1} as Object, {unique: true})
     }
 
     public getCollectionOfCharities() {
