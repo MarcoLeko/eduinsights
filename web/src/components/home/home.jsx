@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,6 +12,7 @@ import ToggleableMenu from "./toggleable-menu";
 import SideBar, {drawerWidth} from './side-bar';
 import {makeStyles} from '@material-ui/core/styles';
 import LiveDonations from "../live-donations/live-donations";
+import {useScrollTrigger} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -54,10 +54,10 @@ const useStyles = makeStyles(theme => ({
 
 function Home({canSwipe, isOpen}) {
     const classes = useStyles();
-
+    const trigger = useScrollTrigger({threshold: 0});
     const [tabIndex, setTabIndex] = React.useState(0);
-    const [yOffset, setNavState] = React.useState(0);
 
+    console.log(trigger)
     function handleChange(event, newValue) {
         setTabIndex(newValue);
     }
@@ -67,21 +67,15 @@ function Home({canSwipe, isOpen}) {
     }
 
     function transitionY() {
-        const transitionYthreshold = 48;
         if (tabIndex === 1) {
-            return transitionYthreshold;
+            return 48;
         } else {
-            return Math.min(transitionYthreshold, yOffset);
+            if(!trigger) {
+                return 0;
+            } else {
+                return 48;
+            }
         }
-    }
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll, {passive: true});
-        return () => window.removeEventListener('scroll', handleScroll);
-    });
-
-    function handleScroll() {
-        setNavState(window.pageYOffset);
     }
 
     return (
@@ -94,7 +88,7 @@ function Home({canSwipe, isOpen}) {
                 }, "background")}
                 style={{
                     boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2)',
-                    transition: 'transform .2s ease-out',
+                    transition: 'transform .25s ease-out',
                     transform: `translateY(-${transitionY()}px)`
                 }}
             >
