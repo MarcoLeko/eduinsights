@@ -10,6 +10,7 @@ import {toggleSideBar} from "../../store/actions";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {emphasize} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -52,8 +53,8 @@ function ToggleableMenu(props) {
             </div>
             <div className={classes.actionButtons}>
                 <Avatar style={{
-                    color: '#fff',
-                    backgroundColor: '#000',
+                    backgroundColor: '#fff',
+                    color: emphasize('#fff', .75)
                 }}>OP</Avatar>
                 <Divider className={classes.divider} orientation="vertical"/>
                 <IconButton
