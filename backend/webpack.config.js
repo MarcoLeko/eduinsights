@@ -2,6 +2,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const terserOptions = {
     parallel: true,
@@ -23,7 +24,7 @@ module.exports = {
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'app.js',
+        filename: 'backend/app.js',
     },
     resolve: {
         // Add `.ts` as a resolvable extension.
@@ -49,5 +50,8 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new CopyPlugin([
+            { from: '../web/build', to: 'web/build' }
+        ]),
     ]
 };
