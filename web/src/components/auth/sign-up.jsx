@@ -13,6 +13,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import {registerNewUser} from "../../store/thunks";
+import useForm from "react-hook-form";
+import {emailRegex} from "./auth-utils";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -36,37 +39,28 @@ const useStyles = makeStyles(theme => ({
 const LogInLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {...props} />));
 export default function SignUp() {
     const classes = useStyles();
+    const history = useHistory();
+    const {register, handleSubmit, errors, watch} = useForm({
+        defaultValues: {
+            persistLogin: false
+        }
+    });
 
-    const initialState = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
-        showPassword: false,
+    const onSubmit = (data, e) => {
+        console.log(data);
+        registerNewUser({...data, avatarColor: generateAvatarColor()})
+            .then(() => e.target.reset())
+            .then(() => history.push('/'))
     };
 
-    const [values, setValues] = React.useState(initialState);
-
-    function handleChange(prop) {
-        return function (event) {
-            setValues({...values, [prop]: event.target.value});
-        }
-    }
+    const [showPassword, setShowPassword] = React.useState(false);
 
     function handleClickShowPassword() {
-        setValues({...values, showPassword: !values.showPassword});
+        setShowPassword(!showPassword);
     }
 
     function handleMouseDownPassword(e) {
         e.preventDefault();
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-
-        registerNewUser({...values, avatarColor: generateAvatarColor()})
-            .then(() => setValues(initialState))
     }
 
     function generateAvatarColor() {
@@ -85,7 +79,7 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -94,8 +88,12 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                value={values.firstName}
-                                onChange={handleChange('firstName')}
+                                error={!!errors.firstName}
+                                inputRef={register({
+                                    required: 'First name is required',
+                                    maxLength: {value: 30, message: 'First name max. length is 30.'}
+                                })}
+                                helperText={errors.firstName && errors.firstName.message}
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
@@ -107,10 +105,14 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="lastName"
+                                error={!!errors.lastName}
+                                inputRef={register({
+                                    required: 'Last name is required',
+                                    maxLength: {value: 30, message: 'Last name max. length is 30.'}
+                                })}
+                                helperText={errors.lastName && errors.lastName.message}
                                 label="Last Name"
                                 name="lastName"
-                                value={values.lastName}
-                                onChange={handleChange('lastName')}
                                 autoComplete="lname"
                             />
                         </Grid>
@@ -120,9 +122,16 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                value={values.email}
-                                onChange={handleChange('email')}
                                 label="Email Address"
+                                error={!!errors.email}
+                                inputRef={register({
+                                    required: 'Email is required.',
+                                    pattern: {
+                                        value: emailRegex,
+                                        message: 'Email address is invalid.'
+                                    }
+                                })}
+                                helperText={!!errors.email && errors.email.message}
                                 name="email"
                                 autoComplete="email"
                             />
@@ -134,10 +143,15 @@ export default function SignUp() {
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange('password')}
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
+                                error={!!errors.password}
+                                inputRef={register({
+                                    required: 'Password is required.',
+                                    minLength: {value: 5, message: 'Password min. length is 5.'},
+                                    maxLength: {value: 20, message: 'Password max. length is 20.'}
+                                })}
+                                helperText={!!errors.password && errors.password.message}
                                 autoComplete="current-password"
                                 InputProps={{
                                     endAdornment:
@@ -147,7 +161,7 @@ export default function SignUp() {
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                             >
-                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                {showPassword ? <Visibility/> : <VisibilityOff/>}
                                             </IconButton>
                                         </InputAdornment>
                                 }}
@@ -158,12 +172,15 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password-confirm"
+                                name="passwordConfirm"
                                 label="Password confirm"
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.passwordConfirm}
-                                onChange={handleChange('passwordConfirm')}
-                                id="password-confirm"
+                                id="passwordConfirm"
+                                error={!!errors.passwordConfirm}
+                                inputRef={register({
+                                    validate: (value) => value === watch('password') || 'The passwords do not match.'// value is from password2 and watch will return value from password1
+                                })}
+                                helperText={!!errors.passwordConfirm && errors.passwordConfirm.message}
+                                type={showPassword ? 'text' : 'password'}
                                 autoComplete="off"
                             />
                         </Grid>

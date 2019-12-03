@@ -19,6 +19,7 @@ import './log-in.scss';
 import appStoreLogo from '../../assets/app-store.png';
 import googlePlayLogo from '../../assets/google-play.png';
 import useForm from "react-hook-form";
+import {emailRegex} from "./auth-utils";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -100,7 +101,7 @@ function LogIn() {
                             error={!!errors.email}
                             inputRef={register({
                                 required: 'Email is required.',
-                                pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                pattern: {value: emailRegex,
                                 message: 'Email address is invalid.'
                                 }
                             })}
