@@ -11,6 +11,7 @@ import CredentialHelper from "../db/credential-helper";
 import cookieParser = require("cookie-parser");
 import {User} from '../../types/types';
 import cors from 'cors';
+import isProduction from '../utils/environment';
 
 @injectable()
 export default class Express {
@@ -29,10 +30,9 @@ export default class Express {
     public init() {
         this.setUpMiddleware();
         this.setUpRoutes();
-        this.server.listen(Express.PORT, '0.0.0.0', () => {
+        this.server.listen(Express.PORT, '0.0.0.0', () =>
             this.mongoDBClient.connect()
-                .then(() => console.log(`Server successfully started on port: ${Express.PORT}`));
-        });
+                .then(() => console.log(`Server successfully started on port: ${Express.PORT}`)));
     }
 
     private createServer() {
@@ -48,7 +48,7 @@ export default class Express {
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(express.static(joinDir('../web/build')));
+        this.app.use(express.static(joinDir( isProduction ? 'build/web/build' :'../web/build')));
         this.app.use(cors({
             origin: 'http://localhost:4200',
             optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
