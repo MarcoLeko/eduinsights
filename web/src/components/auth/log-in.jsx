@@ -18,6 +18,7 @@ import AppPreview from '../../assets/app-preview-1.png';
 import './log-in.scss';
 import appStoreLogo from '../../assets/app-store.png';
 import googlePlayLogo from '../../assets/google-play.png';
+import useForm from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,6 +49,16 @@ const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRe
 
 function LogIn() {
     const classes = useStyles();
+    const {register, handleSubmit, errors} = useForm({
+        defaultValues: {
+            persistLogin: false
+        }
+    });
+
+    const onSubmit = data => {
+        console.log(data)
+    };
+
     return (
         <Grid container component="main" style={{height: '100vh'}}>
             <CssBaseline/>
@@ -78,13 +89,21 @@ function LogIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
                             id="email"
+                            error={!!errors.email}
+                            inputRef={register({
+                                required: 'Email is required.',
+                                pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: 'Email address is invalid.'
+                                }
+                            })}
+                            helperText={!!errors.email && errors.email.message}
                             label="Email Address"
                             name="email"
                             autoComplete="email"
@@ -96,13 +115,22 @@ function LogIn() {
                             required
                             fullWidth
                             name="password"
+                            error={!!errors.password}
+                            inputRef={register({required: 'Password is required.',
+                                minLength: {value: 5, message: 'Password min. length is 5.'},
+                                maxLength: {value: 20, message: 'Password max. length is 20.'}
+                            })}
+                            helperText={!!errors.password && errors.password.message}
                             label="Password"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
+                            control={<Checkbox
+                                name="persistLogin"
+                                inputRef={register}
+                                color="primary"/>}
                             label="Remember me"
                         />
                         <Button
