@@ -30,8 +30,8 @@ export default class Express {
         this.setUpMiddleware();
         this.setUpRoutes();
         this.server.listen(Express.PORT, '0.0.0.0', () => {
-            this.mongoDBClient.connect().then(() =>
-                console.log(`Server successfully started on port: ${Express.PORT}`));
+            this.mongoDBClient.connect()
+                .then(() => console.log(`Server successfully started on port: ${Express.PORT}`));
         });
     }
 
@@ -46,13 +46,14 @@ export default class Express {
 
     private setUpMiddleware() {
         this.app.use(cookieParser());
-        this.app.use(bodyParser.urlencoded({extended: true}));
         this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use(express.static(joinDir('../web/build')));
         this.app.use(cors({
             origin: 'http://localhost:4200',
             optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
         }));
-        this.app.use(express.static(joinDir('../web/build')));
+
     }
 
     private setUpRoutes() {
