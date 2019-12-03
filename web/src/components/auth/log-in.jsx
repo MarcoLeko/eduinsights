@@ -55,8 +55,9 @@ function LogIn() {
         }
     });
 
-    const onSubmit = data => {
-        console.log(data)
+    const onSubmit = (data, e) => {
+        console.log(data);
+        e.target.reset(); // reset after form submit
     };
 
     return (
