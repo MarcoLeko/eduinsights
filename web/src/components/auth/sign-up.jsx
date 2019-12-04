@@ -40,7 +40,7 @@ const LogInLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {
 export default function SignUp() {
     const classes = useStyles();
     const history = useHistory();
-    const {register, handleSubmit, errors, watch} = useForm({
+    const {register, handleSubmit, errors, watch, triggerValidation} = useForm({
         defaultValues: {
             persistLogin: false
         }
@@ -48,7 +48,8 @@ export default function SignUp() {
 
     const onSubmit = (data, e) => {
         console.log(data);
-        registerNewUser({...data, avatarColor: generateAvatarColor()})
+        triggerValidation()
+            .then(() =>registerNewUser({...data, avatarColor: generateAvatarColor()}))
             .then(() => e.target.reset())
             .then(() => history.push('/'))
     };

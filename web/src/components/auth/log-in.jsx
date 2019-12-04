@@ -50,15 +50,15 @@ const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRe
 
 function LogIn() {
     const classes = useStyles();
-    const {register, handleSubmit, errors} = useForm({
+    const {register, handleSubmit, errors, triggerValidation} = useForm({
         defaultValues: {
             persistLogin: false
         }
     });
 
-    const onSubmit = (data, e) => {
+    const onSubmit = async (data, e) => {
         console.log(data);
-        e.target.reset(); // reset after form submit
+        triggerValidation().then(() => e.target.reset())
     };
 
     return (
@@ -101,8 +101,9 @@ function LogIn() {
                             error={!!errors.email}
                             inputRef={register({
                                 required: 'Email is required.',
-                                pattern: {value: emailRegex,
-                                message: 'Email address is invalid.'
+                                pattern: {
+                                    value: emailRegex,
+                                    message: 'Email address is invalid.'
                                 }
                             })}
                             helperText={!!errors.email && errors.email.message}
@@ -118,7 +119,8 @@ function LogIn() {
                             fullWidth
                             name="password"
                             error={!!errors.password}
-                            inputRef={register({required: 'Password is required.',
+                            inputRef={register({
+                                required: 'Password is required.',
                                 minLength: {value: 5, message: 'Password min. length is 5.'},
                                 maxLength: {value: 20, message: 'Password max. length is 20.'}
                             })}
