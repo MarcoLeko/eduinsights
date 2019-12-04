@@ -50,6 +50,7 @@ export default class Express {
         this.app.use(bodyParser.urlencoded({extended: true}));
         this.app.use(express.static(joinDir( isProduction ? 'build/web/build' :'../web/build')));
         this.app.use(cors({
+            credentials: true,
             origin: 'http://localhost:4200',
             optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
         }));
@@ -76,7 +77,7 @@ export default class Express {
                         if (truthy) {
                             const payload = {email};
                             const token = CredentialHelper.JWTSign(payload, `${email}-${new Date()}`);
-                            response.cookie('token', token, {httpOnly: true}).sendStatus(200);
+                            response.cookie('token', token).sendStatus(200);
                         } else {
                             response.status(401).json({error: 'Incorrect email or password'});
                         }
@@ -92,7 +93,10 @@ export default class Express {
             console.log(request.body);
             const { firstName, lastName, avatarColor, email, password }: User = request.body;
             this.mongoDBClient.addUser({ firstName, lastName, avatarColor, email, password } as User)
-                .then(() => response.status(200).send("Successfully registered."))
+                .then(() => {
+                    const token = CredentialHelper.JWTSign({email}, `${email}-${new Date()}`);
+                    response.cookie('token', token).sendStatus(200);
+                })
                 .catch((e: Error) => response.status(400).send("Registration failed: " + e))
         })
     }
