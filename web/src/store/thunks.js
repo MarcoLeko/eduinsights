@@ -12,6 +12,7 @@ export async function registerNewUser(payload) {
     try {
         return fetch('https://localhost:8080/register', {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify(payload),
             headers: {
                 'Content-Type': 'application/json'

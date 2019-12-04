@@ -49,7 +49,8 @@ export default function SignUp() {
     const onSubmit = (data, e) => {
         console.log(data);
         triggerValidation()
-            .then(() =>registerNewUser({...data, avatarColor: generateAvatarColor()}))
+            .then(() => registerNewUser({...data, avatarColor: generateAvatarColor()}))
+            .then(() => console.log(document.cookie))
             .then(() => e.target.reset())
             .then(() => history.push('/'))
     };
