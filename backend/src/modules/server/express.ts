@@ -6,19 +6,27 @@ import express from 'express';
 import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import MongoDBClient from '../db/mongo-db-client';
-import bodyParser from 'body-parser';
-import CredentialHelper from "../db/credential-helper";
-import cookieParser = require("cookie-parser");
+import CredentialHelper from '../db/credential-helper';
 import {User} from '../../types/types';
 import cors from 'cors';
+import session from 'express-session';
+import connectStore from 'connect-mongo';
 import isProduction from '../utils/environment';
+import cookieParser = require('cookie-parser');
 
 @injectable()
 export default class Express {
 
+    private static COOKIE_SETTINGS = {
+        sameSite: true,
+        secure: isProduction,
+        maxAge: 2 * 60 * 60 * 1000,
+    };
+
     private static readonly PORT: any = process.env.PORT;
     public app: express.Application;
     public server: Https.Server;
+    private MongoStore = connectStore(session);
 
     constructor(
         @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient
@@ -30,9 +38,10 @@ export default class Express {
     public init() {
         this.setUpMiddleware();
         this.setUpRoutes();
-        this.server.listen(Express.PORT, '0.0.0.0', () =>
-            this.mongoDBClient.connect()
-                .then(() => console.log(`Server successfully started on port: ${Express.PORT}`)));
+        this.server.listen(Express.PORT, '0.0.0.0', () => {
+            this.mongoDBClient.connect().then(() =>
+                console.log(`Server successfully started on port: ${Express.PORT}`));
+        });
     }
 
     private createServer() {
@@ -45,29 +54,42 @@ export default class Express {
     }
 
     private setUpMiddleware() {
+        this.app.disable('x-powered-by');
         this.app.use(cookieParser());
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(express.static(joinDir( isProduction ? 'build/web/build' :'../web/build')));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({extended: true}));
+        this.app.use(session({
+            name: 'sid',
+            secret: process.env.SESSION_SECRET as string,
+            saveUninitialized: false,
+            resave: false,
+            store: new this.MongoStore({
+                client: this.mongoDBClient.mongoClient,
+                // @ts-ignore
+                dbName: 'users',
+            }),
+            cookie: Express.COOKIE_SETTINGS
+        }));
+        this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
         this.app.use(cors({
             credentials: true,
             origin: 'http://localhost:4200',
             optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
         }));
-
+        this.app.use(express.static(joinDir('../web/build')));
     }
 
     private setUpRoutes() {
         this.app.get('/charities', async (request, response) => {
-            response.send(await this.mongoDBClient.getCollectionOfCharities())
+            response.send(await this.mongoDBClient.getCollectionOfCharities());
         });
 
         this.app.get('/statistics/:type', async (request, response) => {
             const kindOfStatistics = (<any>request.params).type;
-            response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics))
+            response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics));
         });
 
-        this.app.post('/login', async (request, response) => {
+        this.app.post('/login', async (request:any , response: any) => {
             const {email, password} = request.body;
             this.mongoDBClient.findUser(email).then((user) => {
                 if (!user) {
@@ -75,41 +97,56 @@ export default class Express {
                 } else {
                     CredentialHelper.compare(password, user.password).then((truthy) => {
                         if (truthy) {
-                            const payload = {email};
-                            const token = CredentialHelper.JWTSign(payload, `${email}-${new Date()}`);
-                            response.cookie('token', token).sendStatus(200);
+                        const { firstName, lastName, avatarColor, email} = user;
+                            Object.assign(request.session, {user: {uid: user._id}});
+                            console.log(request.session);
+                            response.status(200).json({
+                                isAuthenticated: true, firstName, lastName, avatarColor, email
+                            });
                         } else {
                             response.status(401).json({error: 'Incorrect email or password'});
                         }
                     })
-                        .catch(() => response.status(500).json({error: 'Internal error please try again'}))
+                        .catch(() => response.status(500).json({error: 'Internal error please try again'}));
                 }
-                response.status(200).send("Successfully logged in!");
+                response.status(200).json('Successfully logged in!');
             })
-                .catch(() => response.status(500).json({error: 'Internal error please try again'}))
+                .catch(() => response.status(500).json({error: 'Internal error please try again'}));
         });
 
-        this.app.post('/register', (request, response) => {
-            console.log(request.body);
-            const { firstName, lastName, avatarColor, email, password }: User = request.body;
-            this.mongoDBClient.addUser({ firstName, lastName, avatarColor, email, password } as User)
-                .then(() => {
-                    const token = CredentialHelper.JWTSign({email}, `${email}-${new Date()}`);
-                    response.cookie('token', token).sendStatus(200);
+        this.app.post('/register', (request: any, response: any) => {
+            const {firstName, lastName, avatarColor, email, password}: User = request.body;
+            this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password} as User)
+                .then(({insertedId}) => {
+                    Object.assign(request.session, {user: {uid: insertedId}});
+                    console.log(request.session);
+                    response.status(200).json({
+                        isAuthenticated: true, firstName, lastName, avatarColor, email});
                 })
-                .catch((e: Error) => response.status(400).send("Registration failed: " + e))
+                .catch((e) => {
+                    response.status(400).send('User already registered.');
+                    console.log(e);
+                });
+        });
+        this.app.delete('/logout', ({session}: any, response: any) => {
+            if(session.user) {
+                session.destroy();
+                response.clearCookie('sid');
+            } else {
+                response.status(200).send('Not logged in.');
+            }
         })
     }
 
-    public withToken(request: any, response: any, next: Function) {
-        const token = request.cookies.token;
-        if (!token) {
-            response.status(401).send('Unauthorized: No token provided');
+    public sessionValidator(request: any, response: any, next: Function) {
+        const sessionId = request.cookies.sid;
+        if (sessionId && !request.session.user) {
+            response.clearCookie('sid');
+        } else if (request.session.user && request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
+            next();
         } else {
-            CredentialHelper.compareJWT(token, 'someObject').then((decoded: any) => {
-                request.email = decoded.email;
-                next();
-            })
+            response.status(200).json({isAuthenticated: false});
+
         }
     }
 }

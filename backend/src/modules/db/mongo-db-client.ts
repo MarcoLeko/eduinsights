@@ -7,9 +7,9 @@ import CredentialHelper from './credential-helper';
 export default class MongoDBClient {
     private static readonly userName: string = process.env.DB_USERNAME || '';
     private static readonly password: string = process.env.DB_PASSWORD || '';
-    private uri: string = `mongodb+srv://${MongoDBClient.userName}:${MongoDBClient.password}@help-educate-vj2pu.mongodb.net/test?retryWrites=true&w=majority`;
+    private static readonly URI: string = `mongodb+srv://${MongoDBClient.userName}:${MongoDBClient.password}@help-educate-vj2pu.mongodb.net?retryWrites=true&w=majority`;
 
-    private mongoClient: MongoClient = new MongoClient(this.uri, {
+    public mongoClient: MongoClient = new MongoClient(MongoDBClient.URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     } as MongoClientOptions);
@@ -59,5 +59,11 @@ export default class MongoDBClient {
 
     public async findUser(email: string) {
         return this.connectionManager.db('users').collection<User>('email').findOne({email})
+    }
+
+    public async compareSessionIds(uid: string, sid: string) {
+        const user = await this.connectionManager.db('users').collection<User>('sessions').findOne({uid});
+        return user && user._id === sid;
+
     }
 }

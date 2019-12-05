@@ -1,8 +1,11 @@
-export interface User {
+export interface User extends UserCredential {
     _id: string,
-    email: string,
-    password: string,
     firstName: string,
     lastName: string,
     avatarColor: string,
+}
+
+export interface UserCredential {
+    email: string,
+    password: string
 }
