@@ -22,5 +22,8 @@ export async function registerNewUser(payload) {
         // notify with global toast message something went wrong
         return e;
     }
+}
 
+export async function logout() {
+    return fetch("/logout", {method: "DELETE"});
 }
