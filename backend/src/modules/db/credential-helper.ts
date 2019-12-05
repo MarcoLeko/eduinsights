@@ -1,6 +1,6 @@
-import {injectable} from "inversify";
+import {injectable} from 'inversify';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+
 @injectable()
 export default class CredentialHelper {
 
@@ -18,23 +18,5 @@ export default class CredentialHelper {
             .catch(e => {
                 throw new Error(e);
             });
-    }
-
-    public static compareJWT(token: string, secretOrPublicKey: string) {
-    return new Promise<string | Object>((resolve, reject) => {
-        jwt.verify(token, secretOrPublicKey, (err, decoded) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(decoded)
-            }
-        });
-    })
-    }
-
-    public static JWTSign(payload: Object, key: string) {
-        return jwt.sign(payload, key, {
-            expiresIn: '365d'
-        });
     }
 }
