@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import {inject, injectable} from 'inversify';
-import Https from 'https';
+import Http from 'http';
 import fs from 'fs';
 import express from 'express';
 import {joinDir} from '../utils/paths';
@@ -25,7 +25,7 @@ export default class Express {
 
     private static readonly PORT: any = process.env.PORT;
     public app: express.Application;
-    public server: Https.Server;
+    public server: Http.Server;
     private MongoStore = connectStore(session);
 
     constructor(
@@ -45,12 +45,7 @@ export default class Express {
     }
 
     private createServer() {
-        const httpsOptions = {
-            key: fs.readFileSync(joinDir('/ssl/key.pem')),
-            cert: fs.readFileSync(joinDir('/ssl/cert.pem'))
-        };
-
-        this.server = new Https.Server(httpsOptions, this.app);
+        this.server = new Http.Server(this.app);
     }
 
     private setUpMiddleware() {
@@ -63,19 +58,12 @@ export default class Express {
             secret: process.env.SESSION_SECRET as string,
             saveUninitialized: false,
             resave: false,
-            store: new this.MongoStore({
-                client: this.mongoDBClient.mongoClient,
-                // @ts-ignore
-                dbName: 'users',
-            }),
+            // @ts-ignore
+            store: new this.MongoStore({client: this.mongoDBClient.mongoClient, dbName: 'users',}),
             cookie: Express.COOKIE_SETTINGS
         }));
         this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
-        this.app.use(cors({
-            credentials: true,
-            origin: 'http://localhost:4200',
-            optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-        }));
+        this.app.use(cors({credentials: true, origin: 'http://localhost:4200', optionsSuccessStatus: 200}));
         this.app.use(express.static(joinDir('../web/build')));
     }
 
@@ -90,10 +78,13 @@ export default class Express {
         });
 
         this.app.post('/login', async (request:any , response: any) => {
+            if(request.session && request.cookies.sid) {
+                response.status(200).send('User already logged in.')
+            } else {
             const {email, password} = request.body;
             this.mongoDBClient.findUser(email).then((user) => {
                 if (!user) {
-                    response.status(401).json({error: 'Incorrect email or password'});
+                    response.status(401).send('Incorrect email or password');
                 } else {
                     CredentialHelper.compare(password, user.password).then((truthy) => {
                         if (truthy) {
@@ -104,14 +95,14 @@ export default class Express {
                                 isAuthenticated: true, firstName, lastName, avatarColor, email
                             });
                         } else {
-                            response.status(401).json({error: 'Incorrect email or password'});
+                            response.status(401).send('Incorrect email or password');
                         }
                     })
-                        .catch(() => response.status(500).json({error: 'Internal error please try again'}));
+                        .catch(() => response.status(500).send('Internal error please try again'));
                 }
-                response.status(200).json('Successfully logged in!');
             })
-                .catch(() => response.status(500).json({error: 'Internal error please try again'}));
+                .catch(() => response.status(500).send('Internal error please try again'));
+            }
         });
 
         this.app.post('/register', (request: any, response: any) => {
@@ -120,11 +111,11 @@ export default class Express {
                 .then(({insertedId}) => {
                     Object.assign(request.session, {user: {uid: insertedId}});
                     console.log(request.session);
-                    response.status(200).json({
+                    response.status(200).json(<any>{
                         isAuthenticated: true, firstName, lastName, avatarColor, email});
                 })
                 .catch((e) => {
-                    response.status(400).send('User already registered.');
+                    response.status(401).send('User already registered.');
                     console.log(e);
                 });
         });
@@ -146,7 +137,6 @@ export default class Express {
             next();
         } else {
             response.status(200).json({isAuthenticated: false});
-
         }
     }
 }
