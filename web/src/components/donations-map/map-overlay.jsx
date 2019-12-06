@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
-import {setSwipeState} from "../../store/actions";
+import {setSwipeState} from "../../store/ui/ui-actions";
 import {connect} from "react-redux";
 import L from 'leaflet';
 import marker from '../../assets/marker.png';

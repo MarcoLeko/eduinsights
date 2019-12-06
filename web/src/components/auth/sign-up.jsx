@@ -8,14 +8,14 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {ReactComponent as Logo} from "../../assets/logo.svg";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useHistory} from "react-router-dom";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
-import {registerNewUser} from "../../store/thunks";
 import useForm from "react-hook-form";
 import {emailRegex} from "./auth-utils";
-import { useHistory } from "react-router-dom";
+import {connect} from "react-redux";
+import {signUp} from "../../store/auth/action-creators";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -37,7 +37,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LogInLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {...props} />));
-export default function SignUp() {
+
+function SignUp({signUp}) {
     const classes = useStyles();
     const history = useHistory();
     const {register, handleSubmit, errors, watch, triggerValidation} = useForm({
@@ -47,10 +48,10 @@ export default function SignUp() {
     });
 
     const onSubmit = (data, e) => {
-        console.log(data);
+        e.preventDefault();
+
         triggerValidation()
-            .then(() => registerNewUser({...data, avatarColor: generateAvatarColor()}))
-            .then(() => console.log(document.cookie))
+            .then(() => signUp({...data, avatarColor: generateAvatarColor()}))
             .then(() => e.target.reset())
             .then(() => history.push('/'))
     };
@@ -209,3 +210,11 @@ export default function SignUp() {
         </Container>
     );
 }
+
+const mapStateToProps = ({errors}) => ({
+    errors
+});
+const mapDispatchToProps = dispatch => ({
+    signUp: user => dispatch(signUp(user))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

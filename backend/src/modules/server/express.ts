@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import {inject, injectable} from 'inversify';
 import Http from 'http';
-import fs from 'fs';
 import express from 'express';
 import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
@@ -75,6 +74,10 @@ export default class Express {
         this.app.get('/statistics/:type', async (request, response) => {
             const kindOfStatistics = (<any>request.params).type;
             response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics));
+        });
+
+        this.app.get('/check/logged-in', ({ session: { user }}: any, res) => {
+            res.json({isAuthenticated: Boolean(user)});
         });
 
         this.app.post('/login', async (request:any , response: any) => {

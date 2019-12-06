@@ -20,6 +20,8 @@ import appStoreLogo from '../../assets/app-store.png';
 import googlePlayLogo from '../../assets/google-play.png';
 import useForm from "react-hook-form";
 import {emailRegex} from "./auth-utils";
+import {logIn} from "../../store/auth/action-creators";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 const RegisterLink = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} {...props} />));
 
-function LogIn() {
+function LogIn({logIn}) {
     const classes = useStyles();
     const {register, handleSubmit, errors, triggerValidation} = useForm({
         defaultValues: {
@@ -57,8 +59,11 @@ function LogIn() {
     });
 
     const onSubmit = async (data, e) => {
-        console.log(data);
-        triggerValidation().then(() => e.target.reset())
+        e.preventDefault();
+
+        triggerValidation()
+            .then(() => logIn(data))
+            .then(() => e.target.reset())
     };
 
     return (
@@ -168,4 +173,12 @@ function LogIn() {
     );
 }
 
-export default LogIn;
+const mapStateToProps = ({errors}) => ({
+    errors
+});
+
+const mapDispatchToProps = dispatch => ({
+    logIn: user => dispatch(logIn(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

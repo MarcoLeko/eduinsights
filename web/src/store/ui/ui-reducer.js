@@ -1,12 +1,11 @@
-import {CAN_SWIPE, IS_LOGGED_IN, TOGGLE_SIDEBAR} from "./action-types";
+import {CAN_SWIPE, TOGGLE_SIDEBAR} from "./ui-action-types";
 
 const initialState = {
     canSwipe: true,
     isOpen: false,
-    isLoggedIn: false
 };
 
-export default function rootReducer(state = initialState, action) {
+export default function uiReducer(state = initialState, action) {
     switch (action.type) {
         case CAN_SWIPE: {
             return {
@@ -18,13 +17,6 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 isOpen: action.payload.isOpen
-
-            }
-        }
-        case IS_LOGGED_IN: {
-            return {
-                ...state,
-                isLoggedIn: action.payload.isLoggedIn
 
             }
         }

@@ -16,3 +16,6 @@ export default function App() {
         </ThemeProvider>
     );
 }
+
+// TODO: FOR TESTING, remove before production
+window.getState = store.getState;
