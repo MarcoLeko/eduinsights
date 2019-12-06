@@ -57,7 +57,6 @@ function Home({canSwipe, isOpen}) {
     const trigger = useScrollTrigger({threshold: 0});
     const [tabIndex, setTabIndex] = React.useState(0);
 
-    console.log(trigger)
     function handleChange(event, newValue) {
         setTabIndex(newValue);
     }

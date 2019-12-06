@@ -1,20 +1,16 @@
-import {MongoClient, MongoClientOptions} from 'mongodb';
+import {MongoClient, MongoClientOptions, ObjectId} from 'mongodb';
 import {injectable} from 'inversify';
 import {User} from '../../types/types';
 import CredentialHelper from './credential-helper';
 
 @injectable()
 export default class MongoDBClient {
-    private static readonly userName: string = process.env.DB_USERNAME || '';
-    private static readonly password: string = process.env.DB_PASSWORD || '';
+    private static readonly userName: string = process.env.DB_USERNAME as string;
+    private static readonly password: string = process.env.DB_PASSWORD as string;
     private static readonly URI: string = `mongodb+srv://${MongoDBClient.userName}:${MongoDBClient.password}@help-educate-vj2pu.mongodb.net?retryWrites=true&w=majority`;
 
-    public mongoClient: MongoClient = new MongoClient(MongoDBClient.URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    } as MongoClientOptions);
-
     private connectionManager: MongoClient;
+    public mongoClient: MongoClient = new MongoClient(MongoDBClient.URI, {useNewUrlParser: true, useUnifiedTopology: true} as MongoClientOptions);
 
     public connect(): Promise<void| string> {
         return this.mongoClient.connect()
@@ -57,13 +53,16 @@ export default class MongoDBClient {
         )
     }
 
-    public async findUser(email: string) {
+    public async findUserByEmail(email: string) {
         return this.connectionManager.db('users').collection<User>('email').findOne({email})
+    }
+
+    public async findUserByID(id: string) {
+        return this.connectionManager.db('users').collection<User>('email').findOne({"_id": new ObjectId(id)} as any)
     }
 
     public async compareSessionIds(uid: string, sid: string) {
         const user = await this.connectionManager.db('users').collection<User>('sessions').findOne({uid});
         return user && user._id === sid;
-
     }
 }

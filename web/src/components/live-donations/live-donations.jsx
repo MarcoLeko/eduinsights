@@ -47,7 +47,7 @@ function LiveDonations() {
 
     const lastDonations = new Array(3).fill((Math.random() * 50).toFixed(2));
     const allDonations =  new Array(6).fill(Math.random());
-    console.log(lastDonations);
+
     return (
         <Box p={3}>
             {

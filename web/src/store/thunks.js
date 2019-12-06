@@ -1,37 +1,40 @@
 export async function getInternetAccessStatistics() {
-        const response = await fetch('https://localhost:8080/statistics/internet-access');
+    try {
+        const response = await fetch('http://localhost:8080/statistics/internet-access');
         return response.json();
+    } catch (e) {
+        // throw new Error('Could not fetch Internet-statistics' + e);
+        return {type: 'featureCollection', features: []};
+    }
 }
 
 export async function registerUser(payload) {
-        return fetch('https://localhost:8080/register', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(payload),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    return fetch('http://localhost:8080/register', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }
 
 export async function loginUser(payload) {
-        return fetch('https://localhost:8080/login', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(payload),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    return fetch('http://localhost:8080/login', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }
 
 export async function logoutUser() {
-    return fetch("/logout", {method: 'DELETE'});
+    return fetch("http://localhost:8080/logout", {method: 'DELETE', credentials: 'include'});
 }
 
 
 export async function checkLoggedIn() {
-    const response = await fetch('/check/logged-in');
-    const { istAuthenticated } = await response.json();
-    return istAuthenticated;
+    return await fetch('http://localhost:8080/check/logged-in',{credentials: 'include'});
 }
