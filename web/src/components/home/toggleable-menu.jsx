@@ -6,7 +6,7 @@ import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import './home.scss';
 import {connect} from "react-redux";
-import {toggleSideBar} from "../../store/actions";
+import {toggleSideBar} from "../../store/ui/ui-actions";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";

@@ -1,15 +1,9 @@
 export async function getInternetAccessStatistics() {
-    try {
         const response = await fetch('https://localhost:8080/statistics/internet-access');
         return response.json();
-    } catch (e) {
-        // notify with global toast message: 'Could not fetch Internet-statistics: ' + e.
-        return {type: 'featureCollection', features: []};
-    }
 }
 
-export async function registerNewUser(payload) {
-    try {
+export async function registerUser(payload) {
         return fetch('https://localhost:8080/register', {
             method: 'POST',
             credentials: 'include',
@@ -18,12 +12,26 @@ export async function registerNewUser(payload) {
                 'Content-Type': 'application/json'
             }
         });
-    } catch (e) {
-        // notify with global toast message something went wrong
-        return e;
-    }
 }
 
-export async function logout() {
-    return fetch("/logout", {method: "DELETE"});
+export async function loginUser(payload) {
+        return fetch('https://localhost:8080/login', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+}
+
+export async function logoutUser() {
+    return fetch("/logout", {method: 'DELETE'});
+}
+
+
+export async function checkLoggedIn() {
+    const response = await fetch('/check/logged-in');
+    const { istAuthenticated } = await response.json();
+    return istAuthenticated;
 }
