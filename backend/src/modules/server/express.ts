@@ -79,8 +79,7 @@ export default class Express {
         this.app.get('/check/logged-in', (request: any, response:any) => {
             const sessionId = request.cookies.sid;
             if(request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
-                const _id = request.session.user.uid;
-                this.mongoDBClient.findUserByID(_id).then(user => {
+                this.mongoDBClient.findUserByID(request.session.user.uid).then(user => {
                     response.status(200).json({isAuthenticated: true, ...user});
                 })
             } else {
@@ -104,9 +103,7 @@ export default class Express {
                         const { firstName, lastName, avatarColor, email} = user;
                             Object.assign(request.session, {user: {uid: user._id}});
                             console.log(request.session);
-                            response.status(200).json({
-                                isAuthenticated: true, firstName, lastName, avatarColor, email
-                            });
+                            response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
                         } else {
                             response.status(401).send('Incorrect email or password');
                         }
@@ -149,6 +146,8 @@ export default class Express {
         } else if (request.session.user && request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
             next();
         } else {
+            request.session.destroy();
+            response.clearCookie('sid');
             response.status(200).json({isAuthenticated: false});
         }
     }
