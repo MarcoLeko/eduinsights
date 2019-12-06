@@ -140,9 +140,9 @@ function Home({canSwipe, isOpen}) {
     );
 }
 
-const mapStateToProps = state => ({
-    canSwipe: state.canSwipe,
-    isOpen: state.isOpen
+const mapStateToProps = store => ({
+    canSwipe: store.uiReducer.canSwipe,
+    isOpen: store.uiReducer.isOpen
 });
 
 export default connect(mapStateToProps)(Home);

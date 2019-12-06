@@ -8,9 +8,7 @@ import {checkLoginState} from "../../store/auth/action-creators";
 
 function RouteHandler({isAuthenticated, checkAuthentication}) {
 
-    useEffect(() => {
-        checkAuthentication();
-    }, []);
+    useEffect(() => {checkAuthentication();}, [checkAuthentication]);
 
     return (
         <Router>

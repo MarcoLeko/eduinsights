@@ -68,7 +68,7 @@ function SideBar(props) {
 }
 
 const mapStateTopProps = store => ({
-    isOpen: store.isOpen
+    isOpen: store.uiReducer.isOpen
 });
 
 export default connect(mapStateTopProps)(SideBar);
