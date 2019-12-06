@@ -1,8 +1,7 @@
 import Home from "../home/home";
 import {connect} from "react-redux";
 import React, {useEffect} from 'react';
-import {Switch, Route,
-    BrowserRouter as Router,} from 'react-router-dom';
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 import ProtectedRoute from './protected-route';
 import SignUp from "../auth/sign-up";
 import {logIn} from "../../store/auth/action-creators";
