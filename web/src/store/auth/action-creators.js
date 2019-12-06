@@ -1,6 +1,6 @@
 import {checkLoggedIn, loginUser, logoutUser, registerUser} from "../thunks";
 import {checkLoggedInUser, logoutCurrentUser, receiveCurrentUser} from "./auth-actions";
-import {receiveErrors} from "../errors/error-actions";
+import {receiveErrors} from "../alert/alert-actions";
 
 export const logIn = user => async dispatch => {
     try {
@@ -22,10 +22,10 @@ export const signUp = user => async dispatch => {
     }
 };
 
-export const checkLoginState = user => async dispatch => {
+export const checkLoginState = () => async dispatch => {
         const response = await checkLoggedIn();
-        const data = await response.json();
-        return dispatch(checkLoggedInUser(data));
+        const {isAuthenticated} = await response.json();
+        return dispatch(checkLoggedInUser(isAuthenticated));
 };
 
 export const logOut = () => async dispatch => {

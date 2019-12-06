@@ -48,7 +48,7 @@ export default class Express {
     }
 
     private setUpMiddleware() {
-        this.app.disable('x-powered-by');
+        this.app.disable('X-Powered-By');
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
@@ -76,8 +76,18 @@ export default class Express {
             response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics));
         });
 
-        this.app.get('/check/logged-in', ({ session: { user }}: any, res) => {
-            res.json({isAuthenticated: Boolean(user)});
+        this.app.get('/check/logged-in', (request: any, response:any) => {
+            const sessionId = request.cookies.sid;
+            if(request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
+                const _id = request.session.user.uid;
+                this.mongoDBClient.findUserByID(_id).then(user => {
+                    response.status(200).json({isAuthenticated: true, ...user});
+                })
+            } else {
+                request.session.destroy();
+                response.clearCookie('sid');
+                response.status(440).json({isAuthenticated: false})
+            }
         });
 
         this.app.post('/login', async (request:any , response: any) => {
@@ -85,7 +95,7 @@ export default class Express {
                 response.status(200).send('User already logged in.')
             } else {
             const {email, password} = request.body;
-            this.mongoDBClient.findUser(email).then((user) => {
+            this.mongoDBClient.findUserByEmail(email).then((user) => {
                 if (!user) {
                     response.status(401).send('Incorrect email or password');
                 } else {

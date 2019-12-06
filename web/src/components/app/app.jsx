@@ -6,7 +6,7 @@ import store from '../../store/store';
 import {Provider} from "react-redux";
 import RouteHandler from "../route-handler/route-handler";
 
-export default function App() {
+function App() {
 
     return (
         <ThemeProvider theme={theme}>
@@ -17,5 +17,4 @@ export default function App() {
     );
 }
 
-// TODO: FOR TESTING, remove before production
-window.getState = store.getState;
+export default App;
