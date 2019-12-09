@@ -48,7 +48,7 @@ export default class Express {
     }
 
     private setUpMiddleware() {
-        this.app.disable('X-Powered-By');
+        this.app.disable('x-powered-by');
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
