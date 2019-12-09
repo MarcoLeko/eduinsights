@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function ToggleableMenu(props) {
+function ToggleableMenu({isOpen, toggle}) {
     const classes = useStyles();
 
     return (
@@ -58,9 +58,9 @@ function ToggleableMenu(props) {
                 }}>OP</Avatar>
                 <Divider className={classes.divider} orientation="vertical"/>
                 <IconButton
-                    onClick={props.toggle.bind(this, !props.isOpen)}
+                    onClick={toggle.bind(this, !isOpen)}
                 >
-                    {props.isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
+                    {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
 
                 </IconButton>
             </div>

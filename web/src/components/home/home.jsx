@@ -13,10 +13,11 @@ import SideBar, {drawerWidth} from './side-bar';
 import {makeStyles} from '@material-ui/core/styles';
 import LiveDonations from "../live-donations/live-donations";
 import {useScrollTrigger} from "@material-ui/core";
+import {useEffect} from "react";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
-        transition: theme.transitions.create(['margin'], {
+        transition: theme.transitions.create(['transform', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
@@ -33,19 +34,19 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         height: '100%',
         width: '100%',
-        transition: theme.transitions.create('margin', {
+        transition: theme.transitions.create(['margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
         position: 'relative',
-        left: 0,
+        marginLeft: 0,
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        left: -drawerWidth,
+        marginLeft: -drawerWidth,
     },
     indicator: {
         height: 4
@@ -69,7 +70,7 @@ function Home({canSwipe, isOpen}) {
         if (tabIndex === 1) {
             return 48;
         } else {
-            if(!trigger) {
+            if (!trigger) {
                 return 0;
             } else {
                 return 48;
@@ -87,11 +88,10 @@ function Home({canSwipe, isOpen}) {
                 }, "background")}
                 style={{
                     boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2)',
-                    transition: 'transform .25s ease-out',
                     transform: `translateY(-${transitionY()}px)`
                 }}
             >
-                <ToggleableMenu/>
+                    <ToggleableMenu trigger={trigger} tabIndex={tabIndex}/>
                 <Tabs
                     value={tabIndex}
                     onChange={handleChange}
@@ -107,34 +107,30 @@ function Home({canSwipe, isOpen}) {
                     <Tab label="About us"/>
                 </Tabs>
             </AppBar>
-            <div
+            <SwipeableViews
                 className={clsx(classes.content, {
                     [classes.contentShift]: isOpen,
                 })}
-            >
-                <SwipeableViews
-                    index={tabIndex}
-                    style={
-                        Object.assign({
-                            height: '100%',
-                            width: '100%',
-                            transition: 'transform .2s ease-out'
-                        }, tabIndex === 1 && {
-                            marginTop: '-48px',
-                            position: 'fixed'
-                        }
-                        )
+                index={tabIndex}
+                style={
+                    Object.assign({
+                        height: '100%',
+                        width: '100%',
+                    }, tabIndex === 1 && {
+                        marginTop: '-48px',
+                        position: 'fixed'
                     }
-                    containerStyle={{height: '100%', width: '100%'}}
-                    onChangeIndex={handleChangeIndex}
-                    disabled={canSwipe === false}
-                    slideStyle={{overflow: 'hidden'}}
-                >
-                    <LiveDonations/>
-                    <MapOverlay/>
-                    <DonationsOverview/>
-                </SwipeableViews>
-            </div>
+                    )
+                }
+                containerStyle={{height: '100%', width: '100%'}}
+                onChangeIndex={handleChangeIndex}
+                disabled={!canSwipe}
+                slideStyle={{overflow: 'hidden'}}
+            >
+                <LiveDonations/>
+                <MapOverlay/>
+                <DonationsOverview/>
+            </SwipeableViews>
             <SideBar/>
         </React.Fragment>
     );

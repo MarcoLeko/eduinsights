@@ -6,10 +6,15 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import {connect} from "react-redux";
 import muiBackground from "../shared/material-ui-background";
+import History from "@material-ui/icons/HistoryOutlined";
+import ExitToApp from "@material-ui/icons/ExitToAppOutlined";
+import Settings from "@material-ui/icons/SettingsApplicationsOutlined";
+import Poll from "@material-ui/icons/PollOutlined";
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import {Typography} from "@material-ui/core";
 
 export const drawerWidth = 240;
 
@@ -30,10 +35,42 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
     },
+    avatar: {
+        margin: theme.spacing(1, 0)
+    }
 }));
 
 function SideBar(props) {
     const classes = useStyles();
+
+    const navItems = [
+        {
+            icon: <Settings/>,
+            name: "Settings",
+            onClick: (e) => console.log(e)
+
+        },
+        {
+            icon: <History/>,
+            name: "Transactions",
+            onClick: (e) => console.log(e)
+        },
+        {
+            icon: <Poll/>,
+            name: "Statistics",
+            onClick: (e) => console.log(e)
+        },
+        {
+            icon: <ExitToApp/>,
+            name: 'Log out',
+            onClick: handleLogout.bind(this)
+        }
+    ];
+
+    function handleLogout(e) {
+        console.log(e);
+        console.log('Log out click triggered!!!')
+    }
 
     return (
         <Drawer
@@ -46,20 +83,19 @@ function SideBar(props) {
                 paper: classes.drawerPaper,
             }}
         >
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                        <ListItemText primary={text}/>
-                    </ListItem>
-                ))}
-            </List>
+            <Box p={2}>
+                <Avatar className={classes.avatar}>
+                R
+            </Avatar>
+                <Typography variant={'h6'}>{'Marco Leko'}</Typography>
+                <Typography variant={'subtitle1'}>{'leko.marco@outlook.com'}</Typography>
+            </Box>
             <Divider/>
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                        <ListItemText primary={text}/>
+                {navItems.map(({icon, name, onClick}, index) => (
+                    <ListItem button key={index} onClick={onClick}>
+                        <ListItemIcon>{icon}</ListItemIcon>
+                        <ListItemText primary={name}/>
                     </ListItem>
                 ))}
             </List>
