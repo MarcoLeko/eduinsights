@@ -7,5 +7,6 @@ export interface User extends UserCredential {
 
 export interface UserCredential {
     email: string,
-    password: string
+    password: string,
+    persistLogin?: boolean
 }

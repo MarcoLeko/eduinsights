@@ -19,7 +19,7 @@ export default class Express {
     private static COOKIE_SETTINGS = {
         sameSite: true,
         secure: isProduction,
-        maxAge: 2 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000, // defaults to one day
     };
 
     private static readonly PORT: any = process.env.PORT;
@@ -76,79 +76,83 @@ export default class Express {
             response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics));
         });
 
-        this.app.get('/check/logged-in', (request: any, response:any) => {
+        this.app.get('/check/logged-in', (request: any, response: any) => {
             const sessionId = request.cookies.sid;
-            if(request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
+            const uid = request.session?.user?.uid;
+            if (sessionId && uid && this.mongoDBClient.compareSessionIds(uid, sessionId)) {
                 this.mongoDBClient.findUserByID(request.session.user.uid).then(user => {
                     response.status(200).json({isAuthenticated: true, ...user});
-                })
+                });
             } else {
-                request.session.destroy();
                 response.clearCookie('sid');
-                response.status(440).json({isAuthenticated: false})
+                request.session.destroy();
+                response.status(440).json({isAuthenticated: false});
             }
         });
 
-        this.app.post('/login', async (request:any , response: any) => {
-            if(request.session && request.cookies.sid) {
-                response.status(200).send('User already logged in.')
+        this.app.post('/login', async (request: any, response: any) => {
+            if (request.session && request.cookies.sid) {
+                response.status(200).json({message: 'User already logged in.'});
             } else {
-            const {email, password} = request.body;
-            this.mongoDBClient.findUserByEmail(email).then((user) => {
-                if (!user) {
-                    response.status(401).send('Incorrect email or password');
-                } else {
-                    CredentialHelper.compare(password, user.password).then((truthy) => {
-                        if (truthy) {
-                        const { firstName, lastName, avatarColor, email} = user;
-                            Object.assign(request.session, {user: {uid: user._id}});
-                            console.log(request.session);
-                            response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
-                        } else {
-                            response.status(401).send('Incorrect email or password');
-                        }
-                    })
-                        .catch(() => response.status(500).send('Internal error please try again'));
-                }
-            })
-                .catch(() => response.status(500).send('Internal error please try again'));
+                const {email, password} = request.body;
+                this.mongoDBClient.findUserByEmail(email).then((user) => {
+                    if (!user) {
+                        response.status(401).json({message: 'Incorrect email or password'});
+                    } else {
+                        CredentialHelper.compare(password, user.password).then(async (truthy) => {
+                            if (truthy) {
+                                const {firstName, lastName, avatarColor, email, persistLogin} = user;
+
+                                if (request.body.persistLogin !== persistLogin) {
+                                    await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin})
+                                        .catch((e: any) => console.log(e));
+                                }
+                                Object.assign(
+                                    request.session,
+                                    {user: {uid: user._id}},
+                                    request.body.persistLogin && {cookie: {expires: false}}
+                                );
+
+                                response.status(200).json({
+                                    isAuthenticated: true,
+                                    firstName,
+                                    lastName,
+                                    avatarColor,
+                                    email
+                                });
+                            } else {
+                                response.status(401).json({message: 'Incorrect email or password'});
+                            }
+                        })
+                            .catch(() => response.status(500).json({message: 'Internal error please try again'}));
+                    }
+                })
+                    .catch(() => response.status(500).json({message: 'Internal error please try again'}));
             }
         });
 
         this.app.post('/register', (request: any, response: any) => {
             const {firstName, lastName, avatarColor, email, password}: User = request.body;
-            this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password} as User)
+            this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, persistLogin: false} as User)
                 .then(({insertedId}) => {
                     Object.assign(request.session, {user: {uid: insertedId}});
                     console.log(request.session);
                     response.status(200).json(<any>{
-                        isAuthenticated: true, firstName, lastName, avatarColor, email});
+                        isAuthenticated: true, firstName, lastName, avatarColor, email
+                    });
                 })
-                .catch((e) => {
-                    response.status(401).send('User already registered.');
-                    console.log(e);
+                .catch(() => {
+                    response.status(401).json({message: 'User already registered.'});
                 });
         });
-        this.app.delete('/logout', ({session}: any, response: any) => {
-            if(session.user) {
-                session.destroy();
+        this.app.delete('/logout', ({session, cookies}: any, response: any) => {
+            if (session.user) {
                 response.clearCookie('sid');
+                session.destroy();
+                response.status(200).json({authenticated: false});
             } else {
-                response.status(200).send('Not logged in.');
+                response.status(200).json({message: 'Not logged in.'});
             }
-        })
-    }
-
-    public sessionValidator(request: any, response: any, next: Function) {
-        const sessionId = request.cookies.sid;
-        if (sessionId && !request.session.user) {
-            response.clearCookie('sid');
-        } else if (request.session.user && request.cookies.sid && this.mongoDBClient.compareSessionIds(request.session.user.uid, sessionId)) {
-            next();
-        } else {
-            request.session.destroy();
-            response.clearCookie('sid');
-            response.status(200).json({isAuthenticated: false});
-        }
+        });
     }
 }
