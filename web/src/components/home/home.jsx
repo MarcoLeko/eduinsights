@@ -13,7 +13,6 @@ import SideBar, {drawerWidth} from './side-bar';
 import {makeStyles} from '@material-ui/core/styles';
 import LiveDonations from "../live-donations/live-donations";
 import {useScrollTrigger} from "@material-ui/core";
-import {useEffect} from "react";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -55,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 function Home({canSwipe, isOpen}) {
     const classes = useStyles();
-    const trigger = useScrollTrigger({threshold: 0});
+    const trigger = useScrollTrigger({threshold: 48});
     const [tabIndex, setTabIndex] = React.useState(0);
 
     function handleChange(event, newValue) {
@@ -91,7 +90,7 @@ function Home({canSwipe, isOpen}) {
                     transform: `translateY(-${transitionY()}px)`
                 }}
             >
-                    <ToggleableMenu trigger={trigger} tabIndex={tabIndex}/>
+                <ToggleableMenu trigger={trigger} tabIndex={tabIndex}/>
                 <Tabs
                     value={tabIndex}
                     onChange={handleChange}

@@ -15,6 +15,8 @@ import Poll from "@material-ui/icons/PollOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
+import {logOut} from "../../store/auth/action-creators";
+import {useHistory} from "react-router-dom";
 
 export const drawerWidth = 240;
 
@@ -43,6 +45,7 @@ const useStyles = makeStyles(theme => ({
 function SideBar(props) {
     const classes = useStyles();
 
+    const history = useHistory();
     const navItems = [
         {
             icon: <Settings/>,
@@ -67,9 +70,9 @@ function SideBar(props) {
         }
     ];
 
-    function handleLogout(e) {
-        console.log(e);
-        console.log('Log out click triggered!!!')
+    async function handleLogout() {
+        await props.logout();
+        history.push('/');
     }
 
     return (
@@ -85,8 +88,8 @@ function SideBar(props) {
         >
             <Box p={2}>
                 <Avatar className={classes.avatar}>
-                R
-            </Avatar>
+                    R
+                </Avatar>
                 <Typography variant={'h6'}>{'Marco Leko'}</Typography>
                 <Typography variant={'subtitle1'}>{'leko.marco@outlook.com'}</Typography>
             </Box>
@@ -107,5 +110,8 @@ const mapStateTopProps = store => ({
     isOpen: store.uiReducer.isOpen
 });
 
-export default connect(mapStateTopProps)(SideBar);
+const mapDispatchToProps = dispatch => ({
+    logout: () => dispatch(logOut())
+});
+export default connect(mapStateTopProps, mapDispatchToProps)(SideBar);
 

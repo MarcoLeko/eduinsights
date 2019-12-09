@@ -1,4 +1,4 @@
-import {MongoClient, MongoClientOptions, ObjectId} from 'mongodb';
+import {MongoClient, MongoClientOptions, ObjectId, UpdateWriteOpResult} from 'mongodb';
 import {injectable} from 'inversify';
 import {User} from '../../types/types';
 import CredentialHelper from './credential-helper';
@@ -46,10 +46,10 @@ export default class MongoDBClient {
         }
     }
 
-    public async addUser({ firstName, lastName, avatarColor, email, password } : User) {
+    public async addUser({ firstName, lastName, avatarColor, email, password, persistLogin } : User) {
         const passwordHashed: string = await CredentialHelper.hash(password);
         return this.connectionManager.db('users').collection<User>('email').insertOne(
-        { firstName, lastName, avatarColor, email, password: passwordHashed }
+        { firstName, lastName, avatarColor, email, persistLogin, password: passwordHashed }
         )
     }
 
@@ -57,6 +57,9 @@ export default class MongoDBClient {
         return this.connectionManager.db('users').collection<User>('email').findOne({email})
     }
 
+    public async updateUser(email: string, toUpdate: Partial<User>): Promise<UpdateWriteOpResult> {
+        return this.connectionManager.db('users').collection<User>('email').updateOne({email: email}, {"$set": toUpdate})
+    }
     public async findUserByID(id: string) {
         return this.connectionManager.db('users').collection<User>('email').findOne({"_id": new ObjectId(id)} as any)
     }

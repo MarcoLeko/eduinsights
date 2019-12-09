@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -42,14 +43,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function ToggleableMenu({isOpen, toggle}) {
+function ToggleableMenu({isOpen, toggle, logout}) {
     const classes = useStyles();
 
     return (
         <Toolbar className={classes.root}>
             <div className={classes.logoPanel}>
                 <Logo className={classes.logo}/>
-                <span className="toolbar-header">Help educate</span>
+                <Typography variant={"h6"} color="primary">Help educate</Typography>
             </div>
             <div className={classes.actionButtons}>
                 <Avatar style={{
@@ -57,9 +58,7 @@ function ToggleableMenu({isOpen, toggle}) {
                     color: emphasize('#fff', .75)
                 }}>OP</Avatar>
                 <Divider className={classes.divider} orientation="vertical"/>
-                <IconButton
-                    onClick={toggle.bind(this, !isOpen)}
-                >
+                <IconButton onClick={toggle.bind(this, !isOpen)}>
                     {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
 
                 </IconButton>
@@ -75,7 +74,7 @@ const mapStateTopProps = store => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         // dispatching plain actions
-        toggle: (val) => dispatch(toggleSideBar(val)),
+        toggle: (val) => dispatch(toggleSideBar(val))
     }
 };
 
