@@ -12,6 +12,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     logoPanel: {
         alignItems: 'center',
         flex: 1,
-        display: 'flex'
+        display: 'flex',
+        textDecoration: 'none'
     },
     logo: {
         width: 40,
@@ -49,14 +51,14 @@ function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
 
     return (
         <Toolbar className={classes.root}>
-            <div className={classes.logoPanel}>
+            <Link to="/" className={classes.logoPanel}>
                 <Logo className={classes.logo}/>
                 <Typography variant={"h6"} color="primary">Help educate</Typography>
-            </div>
+            </Link>
             <div className={classes.actionButtons}>
                 <Avatar style={{
                     backgroundColor: avatarColor,
-                    color: emphasize(avatarColor, .75)
+                    color: emphasize(avatarColor, 1)
                 }}>{logoName}</Avatar>
                 <Divider className={classes.divider} orientation="vertical"/>
                 <IconButton onClick={toggle.bind(this, !isOpen)}>

@@ -1,4 +1,4 @@
-import {checkLoggedIn, loginUser, logoutUser, registerUser} from "../thunks";
+import {loginUser, logoutUser, registerUser} from "../thunks";
 import {logoutCurrentUser, receiveCurrentUser} from "./auth-actions";
 import {receiveMessageInterceptor} from "../alert/alert-actions";
 
@@ -20,17 +20,6 @@ export const signUp = user => async dispatch => {
     } catch (e) {
         return dispatch(receiveMessageInterceptor(e));
     }
-};
-
-export const checkLoginState = () => async dispatch => {
-    try {
-        const response = await checkLoggedIn();
-        const user = await response.json();
-        return dispatch(receiveCurrentUser(user));
-    }catch (e) {
-        return dispatch(receiveMessageInterceptor(e));
-    }
-
 };
 
 export const logOut = () => async dispatch => {

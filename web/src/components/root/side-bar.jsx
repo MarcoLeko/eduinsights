@@ -103,7 +103,7 @@ function SideBar(props) {
                 <Avatar className={classes.avatar}
                         style={{
                             backgroundColor: props.avatarColor,
-                            color: emphasize(props.avatarColor, .75)
+                            color: emphasize(props.avatarColor, 1)
                         }}>
                     {logoName}
                 </Avatar>
