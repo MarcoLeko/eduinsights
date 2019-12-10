@@ -1,8 +1,7 @@
-import {CAN_SWIPE, TOGGLE_SIDEBAR} from "./ui-action-types";
+import {CAN_SWIPE} from "./ui-action-types";
 
 const initialState = {
-    canSwipe: true,
-    isOpen: false,
+    canSwipe: true
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -10,14 +9,7 @@ export default function uiReducer(state = initialState, action) {
         case CAN_SWIPE: {
             return {
                 ...state,
-                canSwipe: action.payload.canSwipe
-            }
-        }
-        case TOGGLE_SIDEBAR: {
-            return {
-                ...state,
-                isOpen: action.payload.isOpen
-
+                canSwipe: action.canSwipe
             }
         }
         default:

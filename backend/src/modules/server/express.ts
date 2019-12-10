@@ -58,7 +58,7 @@ export default class Express {
             saveUninitialized: false,
             resave: false,
             // @ts-ignore
-            store: new this.MongoStore({client: this.mongoDBClient.mongoClient, dbName: 'users',}),
+            store: new this.MongoStore({client: this.mongoDBClient.mongoClient, dbName: 'users'}),
             cookie: Express.COOKIE_SETTINGS
         }));
         this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
@@ -73,7 +73,13 @@ export default class Express {
 
         this.app.get('/statistics/:type', async (request, response) => {
             const kindOfStatistics = (<any>request.params).type;
-            response.send(await this.mongoDBClient.getStatisticsCollection(kindOfStatistics));
+            try {
+                const data = await this.mongoDBClient.getStatisticsCollection(kindOfStatistics);
+                response.send(data);
+            } catch (e) {
+                response.statusMessage = 'Could not fetch Internet-statistics';
+                response.status(500).end();
+            }
         });
 
         this.app.get('/check/logged-in', (request: any, response: any) => {
@@ -86,26 +92,28 @@ export default class Express {
             } else {
                 response.clearCookie('sid');
                 request.session.destroy();
-                response.status(440).json({isAuthenticated: false});
+                response.statusMessage = 'Please login first.';
+                response.status(440).end();
             }
         });
 
         this.app.post('/login', async (request: any, response: any) => {
             if (request.session && request.cookies.sid) {
-                response.status(200).json({message: 'User already logged in.'});
+                response.statusMessage = 'User already logged in.';
+                response.status(422).end();
             } else {
                 const {email, password} = request.body;
                 this.mongoDBClient.findUserByEmail(email).then((user) => {
                     if (!user) {
-                        response.status(401).json({message: 'Incorrect email or password'});
+                        response.statusMessage = 'Incorrect email or password.';
+                        response.status(401).end();
                     } else {
                         CredentialHelper.compare(password, user.password).then(async (truthy) => {
                             if (truthy) {
                                 const {firstName, lastName, avatarColor, email, persistLogin} = user;
 
                                 if (request.body.persistLogin !== persistLogin) {
-                                    await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin})
-                                        .catch((e: any) => console.log(e));
+                                    await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin});
                                 }
                                 Object.assign(
                                     request.session,
@@ -113,21 +121,22 @@ export default class Express {
                                     request.body.persistLogin && {cookie: {expires: false}}
                                 );
 
-                                response.status(200).json({
-                                    isAuthenticated: true,
-                                    firstName,
-                                    lastName,
-                                    avatarColor,
-                                    email
-                                });
+                                response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
                             } else {
-                                response.status(401).json({message: 'Incorrect email or password'});
+                                response.statusMessage = 'Incorrect email or password.';
+                                response.status(401).end();
                             }
                         })
-                            .catch(() => response.status(500).json({message: 'Internal error please try again'}));
+                            .catch(() => {
+                                response.statusMessage = 'Internal error please try again.';
+                                response.status(500).end();
+                            });
                     }
                 })
-                    .catch(() => response.status(500).json({message: 'Internal error please try again'}));
+                    .catch(() => {
+                        response.statusMessage = 'Internal error please try again.';
+                        response.status(500).end();
+                    });
             }
         });
 
@@ -136,13 +145,13 @@ export default class Express {
             this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, persistLogin: false} as User)
                 .then(({insertedId}) => {
                     Object.assign(request.session, {user: {uid: insertedId}});
-                    console.log(request.session);
-                    response.status(200).json(<any>{
+                    response.status(200).json({
                         isAuthenticated: true, firstName, lastName, avatarColor, email
                     });
                 })
                 .catch(() => {
-                    response.status(401).json({message: 'User already registered.'});
+                    response.statusMessage = 'User already registered.';
+                    response.status(401).end();
                 });
         });
         this.app.delete('/logout', ({session, cookies}: any, response: any) => {
@@ -151,7 +160,8 @@ export default class Express {
                 session.destroy();
                 response.status(200).json({authenticated: false});
             } else {
-                response.status(200).json({message: 'Not logged in.'});
+                response.statusMessage = 'Not logged in.';
+                response.status(409).end();
             }
         });
     }

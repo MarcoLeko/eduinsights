@@ -3,7 +3,7 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import CountUp from "react-countup";
 
-export default function AllDonationsCounter({ canCount }) {
+export default function AllDonationsCounter() {
   let ref = useRef(null);
   let globStartFunc;
 
@@ -21,7 +21,6 @@ export default function AllDonationsCounter({ canCount }) {
   }
 
   useEffect(() => {
-    if (canCount) {
       const { current: currentObserver } = observer;
       currentObserver.disconnect();
 
@@ -31,8 +30,7 @@ export default function AllDonationsCounter({ canCount }) {
       }
 
       return () => currentObserver.disconnect();
-    }
-  }, [canCount]);
+  }, []);
 
   return (
     <React.Fragment>

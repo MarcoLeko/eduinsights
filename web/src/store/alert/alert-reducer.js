@@ -1,15 +1,9 @@
-import {CLEAR, ERROR, SUCCESS} from "./alert-action-types";
+import {CLEAR, MESSAGE} from "./alert-action-types";
 
 export default function alertReducer(state = {}, action) {
     switch (action.type) {
-        case SUCCESS:
+        case MESSAGE:
             return {
-                type: 'alert-success',
-                message: action.message
-            };
-        case ERROR:
-            return {
-                type: 'alert-danger',
                 message: action.message
             };
         case CLEAR:

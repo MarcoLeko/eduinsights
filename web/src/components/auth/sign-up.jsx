@@ -15,7 +15,7 @@ import {Visibility, VisibilityOff} from "@material-ui/icons";
 import useForm from "react-hook-form";
 import {emailRegex} from "./auth-utils";
 import {connect} from "react-redux";
-import {signUp} from "../../store/auth/action-creators";
+import {signUp} from "../../store/auth/auth-action-creators";
 
 const useStyles = makeStyles(theme => ({
     paper: {

@@ -20,7 +20,7 @@ import appStoreLogo from '../../assets/app-store.png';
 import googlePlayLogo from '../../assets/google-play.png';
 import useForm from "react-hook-form";
 import {emailRegex} from "./auth-utils";
-import {logIn} from "../../store/auth/action-creators";
+import {logIn} from "../../store/auth/auth-action-creators";
 import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
@@ -67,7 +67,7 @@ function LogIn({logIn}) {
     };
 
     return (
-        <Grid container component="main" style={{height: '100vh'}}>
+        <Grid container component="main" style={{height: '100vh', flexDirection: 'row-reverse'}}>
             <CssBaseline/>
             <Box component={Grid} item
                  container direction="column" justify="flex-start"

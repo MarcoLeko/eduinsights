@@ -1,17 +1,17 @@
 import * as React from "react";
+import {useState} from "react";
 import {Toolbar} from "@material-ui/core";
 import {ReactComponent as Logo} from "../../assets/logo.svg";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import './home.scss';
-import {connect} from "react-redux";
-import {toggleSideBar} from "../../store/ui/ui-actions";
+import './root.scss';
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,8 +43,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function ToggleableMenu({isOpen, toggle, logout}) {
+function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
     const classes = useStyles();
+    const [logoName] = useState(firstName.charAt(0).concat(lastName.charAt(0)).toLocaleUpperCase());
 
     return (
         <Toolbar className={classes.root}>
@@ -54,9 +55,9 @@ function ToggleableMenu({isOpen, toggle, logout}) {
             </div>
             <div className={classes.actionButtons}>
                 <Avatar style={{
-                    backgroundColor: '#fff',
-                    color: emphasize('#fff', .75)
-                }}>OP</Avatar>
+                    backgroundColor: avatarColor,
+                    color: emphasize(avatarColor, .75)
+                }}>{logoName}</Avatar>
                 <Divider className={classes.divider} orientation="vertical"/>
                 <IconButton onClick={toggle.bind(this, !isOpen)}>
                     {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
@@ -67,15 +68,9 @@ function ToggleableMenu({isOpen, toggle, logout}) {
     )
 }
 
-const mapStateTopProps = store => ({
-    isOpen: store.uiReducer.isOpen
+const mapStateToProps = store => ({
+    firstName: store.authReducer.firstName,
+    lastName: store.authReducer.lastName,
+    avatarColor: store.authReducer.avatarColor,
 });
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        // dispatching plain actions
-        toggle: (val) => dispatch(toggleSideBar(val))
-    }
-};
-
-export default connect(mapStateTopProps, mapDispatchToProps)(ToggleableMenu);
+export default connect(mapStateToProps)(ToggleableMenu);
