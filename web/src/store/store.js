@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 
 const loggerMiddleware = createLogger();
 const rootReducer = combineReducers({uiReducer, authReducer, alertReducer});
-const store = createStore(rootReducer, applyMiddleware(thunk, loggerMiddleware));
 
-export default store;
+export default (preloadedState) => (
+    createStore(rootReducer, preloadedState, applyMiddleware(thunk, loggerMiddleware))
+);

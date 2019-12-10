@@ -1,6 +1,24 @@
+export const isLoggedIn = async preloadedState => {
+    try {
+        const response = await checkLoggedIn();
+        const data = await response.json();
+
+        if (data) {
+            preloadedState = {
+                authReducer: data
+            };
+        }
+
+        return preloadedState;
+    } catch (e) {
+        return preloadedState;
+    }
+
+};
+
 export async function getInternetAccessStatistics() {
-        const response = await fetch('http://localhost:8080/statistics/internet-access');
-        return handleErrors(response);
+    const response = await fetch('http://localhost:8080/statistics/internet-access');
+    return handleErrors(response);
 }
 
 export async function registerUser(payload) {

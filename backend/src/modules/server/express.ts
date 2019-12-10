@@ -87,13 +87,13 @@ export default class Express {
             const uid = request.session?.user?.uid;
             if (sessionId && uid && this.mongoDBClient.compareSessionIds(uid, sessionId)) {
                 this.mongoDBClient.findUserByID(request.session.user.uid).then(user => {
-                    response.status(200).json({isAuthenticated: true, ...user});
+                    const {firstName, lastName, avatarColor, email} = user as User;
+                    response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
                 });
             } else {
                 response.clearCookie('sid');
                 request.session.destroy();
-                response.statusMessage = 'Please login first.';
-                response.status(440).end();
+                response.status(200).end();
             }
         });
 
