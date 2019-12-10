@@ -1,4 +1,11 @@
-import {CLEAR, ERROR} from "./alert-action-types";
+import {CLEAR, MESSAGE} from "./alert-action-types";
 
-export const receiveErrors = ({ message }) => ({type: ERROR, message});
-export const clearErrors = () => ({type: CLEAR});
+export const clearMessage = () => ({type: CLEAR});
+
+export const receiveMessageInterceptor = ({message}) => {
+    if (message) {
+        return {type: MESSAGE, message}
+    } else {
+        clearMessage();
+    }
+};

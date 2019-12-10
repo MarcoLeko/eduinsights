@@ -1,5 +1,5 @@
-import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {emphasize, makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -15,8 +15,10 @@ import Poll from "@material-ui/icons/PollOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
-import {logOut} from "../../store/auth/action-creators";
+import {logOut} from "../../store/auth/auth-action-creators";
 import {useHistory} from "react-router-dom";
+import CodeIcon from '@material-ui/icons/Code';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 
 export const drawerWidth = 240;
 
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 function SideBar(props) {
     const classes = useStyles();
+    const [logoName] = useState(props.firstName.charAt(0).concat(props.lastName.charAt(0)).toLocaleUpperCase());
 
     const history = useHistory();
     const navItems = [
@@ -61,6 +64,16 @@ function SideBar(props) {
         {
             icon: <Poll/>,
             name: "Statistics",
+            onClick: (e) => console.log(e)
+        },
+        {
+            icon: <CodeIcon/>,
+            name: 'Contribute',
+            onClick: (e) => console.log(e)
+        },
+        {
+            icon: <YouTubeIcon/>,
+            name: 'About Education',
             onClick: (e) => console.log(e)
         },
         {
@@ -87,11 +100,15 @@ function SideBar(props) {
             }}
         >
             <Box p={2}>
-                <Avatar className={classes.avatar}>
-                    R
+                <Avatar className={classes.avatar}
+                        style={{
+                            backgroundColor: props.avatarColor,
+                            color: emphasize(props.avatarColor, .75)
+                        }}>
+                    {logoName}
                 </Avatar>
-                <Typography variant={'h6'}>{'Marco Leko'}</Typography>
-                <Typography variant={'subtitle1'}>{'leko.marco@outlook.com'}</Typography>
+                <Typography variant={'h6'}>{props.firstName.concat(' ', props.lastName)}</Typography>
+                <Typography variant={'subtitle1'}>{props.email}</Typography>
             </Box>
             <Divider/>
             <List>
@@ -106,12 +123,15 @@ function SideBar(props) {
     );
 }
 
-const mapStateTopProps = store => ({
-    isOpen: store.uiReducer.isOpen
-});
-
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logOut())
 });
-export default connect(mapStateTopProps, mapDispatchToProps)(SideBar);
+
+const mapStateToProps = store => ({
+    firstName: store.authReducer.firstName,
+    lastName: store.authReducer.lastName,
+    email: store.authReducer.email,
+    avatarColor: store.authReducer.avatarColor,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
 

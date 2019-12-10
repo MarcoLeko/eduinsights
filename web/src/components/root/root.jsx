@@ -2,9 +2,9 @@ import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import './home.scss';
+import './root.scss';
 import SwipeableViews from 'react-swipeable-views';
-import DonationsOverview from "../about-us/about-us";
+import Charities from "../charities/charities";
 import clsx from 'clsx';
 import MapOverlay from "../donations-map/map-overlay";
 import {connect} from "react-redux";
@@ -52,10 +52,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Home({canSwipe, isOpen}) {
+function Root({canSwipe}) {
     const classes = useStyles();
     const trigger = useScrollTrigger({threshold: 48});
     const [tabIndex, setTabIndex] = React.useState(0);
+    const [sideBarOpen, setSideBarOpen] = React.useState(false);
 
     function handleChange(event, newValue) {
         setTabIndex(newValue);
@@ -83,14 +84,19 @@ function Home({canSwipe, isOpen}) {
                 position="sticky"
                 color="default"
                 className={clsx(classes.appBar, {
-                    [classes.appBarShift]: isOpen,
+                    [classes.appBarShift]: sideBarOpen,
                 }, "background")}
                 style={{
                     boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2)',
                     transform: `translateY(-${transitionY()}px)`
                 }}
             >
-                <ToggleableMenu trigger={trigger} tabIndex={tabIndex}/>
+                <ToggleableMenu
+                    trigger={trigger}
+                    tabIndex={tabIndex}
+                    toggle={setSideBarOpen}
+                    isOpen={sideBarOpen}
+                />
                 <Tabs
                     value={tabIndex}
                     onChange={handleChange}
@@ -102,13 +108,13 @@ function Home({canSwipe, isOpen}) {
                     }}
                 >
                     <Tab label="Live"/>
-                    <Tab label="Donations"/>
-                    <Tab label="About us"/>
+                    <Tab label="Map"/>
+                    <Tab label="Charities"/>
                 </Tabs>
             </AppBar>
             <SwipeableViews
                 className={clsx(classes.content, {
-                    [classes.contentShift]: isOpen,
+                    [classes.contentShift]: sideBarOpen,
                 })}
                 index={tabIndex}
                 style={
@@ -128,16 +134,15 @@ function Home({canSwipe, isOpen}) {
             >
                 <LiveDonations/>
                 <MapOverlay/>
-                <DonationsOverview/>
+                <Charities/>
             </SwipeableViews>
-            <SideBar/>
+            <SideBar isOpen={sideBarOpen}/>
         </React.Fragment>
     );
 }
 
 const mapStateToProps = store => ({
-    canSwipe: store.uiReducer.canSwipe,
-    isOpen: store.uiReducer.isOpen
+    canSwipe: store.uiReducer.canSwipe
 });
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Root);
