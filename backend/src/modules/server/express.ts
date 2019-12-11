@@ -52,6 +52,7 @@ export default class Express {
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
+        this.app.use(cors({credentials: true, origin: 'http://localhost:4200', optionsSuccessStatus: 200}));
         this.app.use(session({
             name: 'sid',
             secret: process.env.SESSION_SECRET as string,
@@ -62,8 +63,6 @@ export default class Express {
             cookie: Express.COOKIE_SETTINGS
         }));
         this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
-        this.app.use(cors({credentials: true, origin: 'http://localhost:4200', optionsSuccessStatus: 200}));
-        this.app.use(express.static(joinDir('../web/build')));
     }
 
     private setUpRoutes() {
@@ -82,11 +81,12 @@ export default class Express {
             }
         });
 
-        this.app.get('/check/logged-in', (request: any, response: any) => {
+        this.app.get('/check/logged-in', async (request: any, response: any) => {
             const sessionId = request.cookies.sid;
             const uid = request.session?.user?.uid;
-            if (sessionId && uid && this.mongoDBClient.compareSessionIds(uid, sessionId)) {
-                this.mongoDBClient.findUserByID(request.session.user.uid).then(user => {
+
+            if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
+                this.mongoDBClient.findUserByID(uid).then(user => {
                     const {firstName, lastName, avatarColor, email} = user as User;
                     response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
                 });
@@ -98,7 +98,10 @@ export default class Express {
         });
 
         this.app.post('/login', async (request: any, response: any) => {
-            if (request.session && request.cookies.sid) {
+            const sessionId = request.cookies.sid;
+            const uid = request.session?.user?.uid;
+
+            if (sessionId && uid) {
                 response.statusMessage = 'User already logged in.';
                 response.status(422).end();
             } else {
@@ -115,6 +118,7 @@ export default class Express {
                                 if (request.body.persistLogin !== persistLogin) {
                                     await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin});
                                 }
+
                                 Object.assign(
                                     request.session,
                                     {user: {uid: user._id}},
