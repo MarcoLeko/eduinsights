@@ -5,8 +5,6 @@ import Paper from "@material-ui/core/Paper";
 import {ReactComponent as Logo} from '../../assets/logo.svg'
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import {Link as RouterLink} from 'react-router-dom';
 import Link from "@material-ui/core/Link";
@@ -52,11 +50,7 @@ const ForgotPasswordLink = React.forwardRef((props, ref) => (<RouterLink innerRe
 
 function LogIn({logIn}) {
     const classes = useStyles();
-    const {register, handleSubmit, errors, triggerValidation} = useForm({
-        defaultValues: {
-            persistLogin: false
-        }
-    });
+    const {register, handleSubmit, errors, triggerValidation} = useForm();
 
     const onSubmit = async (data, e) => {
         e.preventDefault();
@@ -134,13 +128,6 @@ function LogIn({logIn}) {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox
-                                name="persistLogin"
-                                inputRef={register}
-                                color="primary"/>}
-                            label="Remember me"
                         />
                         <Button
                             type="submit"

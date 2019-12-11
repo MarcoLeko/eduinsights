@@ -19,7 +19,7 @@ export default class Express {
     private static COOKIE_SETTINGS = {
         sameSite: true,
         secure: isProduction,
-        maxAge: 24 * 60 * 60 * 1000, // defaults to one day
+        maxAge: 365 * 24 * 60 * 60 * 1000, // defaults to one year
     };
 
     private static readonly PORT: any = process.env.PORT;
@@ -107,19 +107,14 @@ export default class Express {
                 } else {
                     const truthy = await CredentialHelper.compare(password, user.password);
                     if (truthy) {
-                        const {firstName, lastName, avatarColor, email, persistLogin} = user;
-
-                        if (request.body.persistLogin !== persistLogin) {
-                            await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin});
-                        }
+                        const {firstName, lastName, avatarColor, email} = user;
 
                         Object.assign(
                             request.session,
-                            {user: {uid: user._id}},
-                            request.body.persistLogin && {cookie: {expires: false}}
+                            {user: {uid: user._id}}
                         );
 
-                        response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
+                        response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
                     } else {
                         response.statusMessage = 'Incorrect email or password.';
                         response.status(401).end();
@@ -136,9 +131,9 @@ export default class Express {
         this.app.post('/register', async (request: any, response: any) => {
             try {
                 const {firstName, lastName, avatarColor, email, password}: User = request.body;
-                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, persistLogin: false} as User);
+                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password} as User);
                 Object.assign(request.session, {user: {uid: insertedId}});
-                response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
+                response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email});
             } catch (e) {
                 response.statusMessage = 'User already registered.';
                 response.status(401).end();
