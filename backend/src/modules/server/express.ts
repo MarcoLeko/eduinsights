@@ -86,10 +86,9 @@ export default class Express {
             const uid = request.session?.user?.uid;
 
             if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
-                this.mongoDBClient.findUserByID(uid).then(user => {
-                    const {firstName, lastName, avatarColor, email} = user as User;
-                    response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
-                });
+                const user = await this.mongoDBClient.findUserByID(uid);
+                const {firstName, lastName, avatarColor, email} = user as User;
+                response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
             } else {
                 response.clearCookie('sid');
                 request.session.destroy();
@@ -98,66 +97,54 @@ export default class Express {
         });
 
         this.app.post('/login', async (request: any, response: any) => {
-            const sessionId = request.cookies.sid;
-            const uid = request.session?.user?.uid;
-
-            if (sessionId && uid) {
-                response.statusMessage = 'User already logged in.';
-                response.status(422).end();
-            } else {
+            try {
                 const {email, password} = request.body;
-                this.mongoDBClient.findUserByEmail(email).then((user) => {
-                    if (!user) {
+                const user = await this.mongoDBClient.findUserByEmail(email);
+
+                if (!user) {
+                    response.statusMessage = 'Incorrect email or password.';
+                    response.status(401).end();
+                } else {
+                    const truthy = await CredentialHelper.compare(password, user.password);
+                    if (truthy) {
+                        const {firstName, lastName, avatarColor, email, persistLogin} = user;
+
+                        if (request.body.persistLogin !== persistLogin) {
+                            await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin});
+                        }
+
+                        Object.assign(
+                            request.session,
+                            {user: {uid: user._id}},
+                            request.body.persistLogin && {cookie: {expires: false}}
+                        );
+
+                        response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
+                    } else {
                         response.statusMessage = 'Incorrect email or password.';
                         response.status(401).end();
-                    } else {
-                        CredentialHelper.compare(password, user.password).then(async (truthy) => {
-                            if (truthy) {
-                                const {firstName, lastName, avatarColor, email, persistLogin} = user;
-
-                                if (request.body.persistLogin !== persistLogin) {
-                                    await this.mongoDBClient.updateUser(email, {persistLogin: request.body.persistLogin});
-                                }
-
-                                Object.assign(
-                                    request.session,
-                                    {user: {uid: user._id}},
-                                    request.body.persistLogin && {cookie: {expires: false}}
-                                );
-
-                                response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
-                            } else {
-                                response.statusMessage = 'Incorrect email or password.';
-                                response.status(401).end();
-                            }
-                        })
-                            .catch(() => {
-                                response.statusMessage = 'Internal error please try again.';
-                                response.status(500).end();
-                            });
                     }
-                })
-                    .catch(() => {
-                        response.statusMessage = 'Internal error please try again.';
-                        response.status(500).end();
-                    });
+                }
+            } catch (e) {
+                response.statusMessage = 'Internal error please try again.';
+                console.log(e);
+                response.status(500).end();
+            }
+
+        });
+
+        this.app.post('/register', async (request: any, response: any) => {
+            try {
+                const {firstName, lastName, avatarColor, email, password}: User = request.body;
+                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, persistLogin: false} as User);
+                Object.assign(request.session, {user: {uid: insertedId}});
+                response.status(200).json({isAuthenticated: true, firstName, lastName, avatarColor, email});
+            } catch (e) {
+                response.statusMessage = 'User already registered.';
+                response.status(401).end();
             }
         });
 
-        this.app.post('/register', (request: any, response: any) => {
-            const {firstName, lastName, avatarColor, email, password}: User = request.body;
-            this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, persistLogin: false} as User)
-                .then(({insertedId}) => {
-                    Object.assign(request.session, {user: {uid: insertedId}});
-                    response.status(200).json({
-                        isAuthenticated: true, firstName, lastName, avatarColor, email
-                    });
-                })
-                .catch(() => {
-                    response.statusMessage = 'User already registered.';
-                    response.status(401).end();
-                });
-        });
         this.app.delete('/logout', ({session, cookies}: any, response: any) => {
             if (session.user) {
                 response.clearCookie('sid');
