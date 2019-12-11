@@ -64,14 +64,9 @@ export default class MongoDBClient {
     }
 
     public async validatedSession(uid: string, sid: string) {
-        try {
-            const user: any = await this.connectionManager.db('users').collection<User>('sessions').findOne({"session": /uid/});
-            return user && sid.replace('s:', '').includes(user._id);
-        } catch (e) {
-            console.log(e);
-            return false;
-        }
-
+        const mappedId = sid.replace(decodeURIComponent('s%3A'), '').split('.')[0];
+        const user: any = await this.connectionManager.db('users').collection<User>('sessions').findOne({"_id": {$regex: `.*${mappedId}.*`}});
+        return user && mappedId === user._id;
     }
 
     private setupDBIndexes() {
