@@ -44,10 +44,10 @@ export default class MongoDBClient {
         }
     }
 
-    public async addUser({firstName, lastName, avatarColor, email, password, persistLogin}: User) {
+    public async addUser({firstName, lastName, avatarColor, email, password, emailVerified}: User) {
         const passwordHashed: string = await CredentialHelper.hash(password);
         return this.connectionManager.db('users').collection<User>('email').insertOne(
-            {firstName, lastName, avatarColor, email, persistLogin, password: passwordHashed}
+            {firstName, lastName, avatarColor, email, emailVerified, password: passwordHashed}
         );
     }
 
@@ -64,8 +64,11 @@ export default class MongoDBClient {
     }
 
     public async validatedSession(uid: string, sid: string) {
+        // An mongoDB-Id is a 12 Bytes long string - The session cookie of a 24 Bytes string
+        // A session id is looking like: s%3Avvui1vsldkCor7CE-E0aU8Fmpg_z-f4c.3c43w5lavEdUmfjvzkubCXxy7VctVp4XaBhs7sj11%2F0
+        // A db-id is composed of the letter between s:(urlEncoded: s%3A) - string - .
         const mappedId = sid.replace(decodeURIComponent('s%3A'), '').split('.')[0];
-        const user: any = await this.connectionManager.db('users').collection<User>('sessions').findOne({"_id": {$regex: `.*${mappedId}.*`}});
+        const user: any = await this.connectionManager.db('users').collection<User>('sessions').findOne({"_id": mappedId});
         return user && mappedId === user._id;
     }
 

@@ -87,8 +87,8 @@ export default class Express {
 
             if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
                 const user = await this.mongoDBClient.findUserByID(uid);
-                const {firstName, lastName, avatarColor, email} = user as User;
-                response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
+                const {firstName, lastName, avatarColor, email, emailVerified} = user as User;
+                response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email, emailVerified});
             } else {
                 response.clearCookie('sid');
                 request.session.destroy();
@@ -131,9 +131,9 @@ export default class Express {
         this.app.post('/register', async (request: any, response: any) => {
             try {
                 const {firstName, lastName, avatarColor, email, password}: User = request.body;
-                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password} as User);
+                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User);
                 Object.assign(request.session, {user: {uid: insertedId}});
-                response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email});
+                response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
             } catch (e) {
                 response.statusMessage = 'User already registered.';
                 response.status(401).end();
