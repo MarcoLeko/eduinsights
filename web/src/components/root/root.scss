@@ -1,0 +1,12 @@
+@import "../../styles";
+
+// workaround where the tab height of the current tab is applied to the current active tab;
+// The following two selector styles will fix this
+.react-swipeable-view-container > div[aria-hidden="false"] {
+  height: 100%;
+}
+
+.react-swipeable-view-container > div[aria-hidden="true"] {
+  height: 0;
+}
+
