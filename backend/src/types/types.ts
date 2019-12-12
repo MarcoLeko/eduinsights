@@ -3,6 +3,7 @@ export interface User extends UserCredential {
     firstName: string,
     lastName: string,
     avatarColor: string,
+    emailVerified: boolean
 }
 
 export interface UserCredential {
