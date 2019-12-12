@@ -8,7 +8,7 @@ import L from "leaflet";
 function MapResetViewButton() {
 
     const {map} = useLeaflet();
-    const button = L.control({position: "topleft"});
+    const button = L.control({position: "bottomleft"});
 
     useEffect(() => {
 
