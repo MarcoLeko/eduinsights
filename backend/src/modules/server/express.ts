@@ -6,7 +6,7 @@ import {joinDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import MongoDBClient from '../db/mongo-db-client';
 import CredentialHelper from '../db/credential-helper';
-import {User} from '../../types/types';
+import {User, UserToken} from '../../types/types';
 import cors from 'cors';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
@@ -68,12 +68,12 @@ export default class Express {
     }
 
     private setUpRoutes() {
-        this.app.get('/charities', async (request, response) => {
+        this.app.get('/charities', async (request: any, response: any) => {
             response.send(await this.mongoDBClient.getCollectionOfCharities());
         });
 
-        this.app.get('/statistics/:type', async (request, response) => {
-            const kindOfStatistics = (<any>request.params).type;
+        this.app.get('/statistics/:type', async (request: any, response: any) => {
+            const kindOfStatistics = request.params.type;
             try {
                 const data = await this.mongoDBClient.getStatisticsCollection(kindOfStatistics);
                 response.send(data);
@@ -148,6 +148,13 @@ export default class Express {
                         response.statusMessage = 'Could not send verification Email.';
                         response.status(407).end();
                     });
+        });
+
+        this.app.post('/validate-token', async (request: any, response: any) => {
+            const {token}: UserToken = request.body;
+            const uid = request.session?.user?.uid;
+
+            // TODO: validate token here and send response accordingly
         });
 
         this.app.delete('/logout', ({session, cookies}: any, response: any) => {
