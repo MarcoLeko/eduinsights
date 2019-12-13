@@ -37,7 +37,7 @@ export default class EmailCreator {
             subject: 'Help-educate Support',
             html: EmailCreator.transformTemplate({
                 firstName,
-                link: `http://localhost:8080?token=${token}`
+                link: `http://localhost:8080/verify-email?token=${token}`
             }, path.join(joinDir('src/modules/email-manager/templates/email-verification.html')))
         };
 

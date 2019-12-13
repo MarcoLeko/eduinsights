@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import ProtectedRoute from './protected-route';
 import SignUp from "../auth/sign-up";
 import AppNotifier from '../shared/app-notifier';
+import VerifyEmail from "../auth/account-verification/verify-email";
 
 function RouteHandler({isAuthenticated}) {
 
@@ -13,6 +14,7 @@ function RouteHandler({isAuthenticated}) {
             <AppNotifier/>
             <Switch>
                 <Route path="/sign-up" component={SignUp}/>
+                <Route path="/verify-email" component={VerifyEmail}/>
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                     <Home/>
                 </ProtectedRoute>

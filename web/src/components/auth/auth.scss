@@ -62,3 +62,12 @@
   justify-self: center;
   padding-bottom: 40px;
 }
+
+.email-verification-container {
+  text-align: center;
+  display: flex;
+  vertical-align: middle;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}

@@ -58,6 +58,17 @@ export async function checkLoggedIn() {
     return handleErrors(response);
 }
 
+export async function checkEmailToken(payload) {
+    return fetch('http://localhost:8080/validate-token', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
 function handleErrors(response) {
     if (!response.ok) {
         throw Error(response.statusText);
