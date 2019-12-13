@@ -12,6 +12,7 @@ import session from 'express-session';
 import connectStore from 'connect-mongo';
 import isProduction from '../utils/environment';
 import cookieParser = require('cookie-parser');
+import EmailCreator from "../email-manager/email-creator";
 
 @injectable()
 export default class Express {
@@ -28,7 +29,8 @@ export default class Express {
     private MongoStore = connectStore(session);
 
     constructor(
-        @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient
+        @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient,
+        @inject(TYPES.EMAIL_CREATOR) private emailCreator: EmailCreator
     ) {
         this.app = express();
         this.createServer();
@@ -133,6 +135,7 @@ export default class Express {
                 const {firstName, lastName, avatarColor, email, password}: User = request.body;
                 const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User);
                 Object.assign(request.session, {user: {uid: insertedId}});
+                await this.emailCreator.sendEmailVerificationLink({email, firstName});
                 response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
             } catch (e) {
                 response.statusMessage = 'User already registered.';
