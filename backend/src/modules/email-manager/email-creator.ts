@@ -32,7 +32,7 @@ export default class EmailCreator {
                 subject: 'Help-educate Support',
                 html: EmailCreator.transformTemplate({
                     firstName,
-                    link: `https://google.com?token=${token}`
+                    link: `http://localhost:8080?token=${token}`
                 }, path.join(joinDir('src/modules/email-manager/templates/email-verification.html')))
             };
             return sendgridMail.send(message);
