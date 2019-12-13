@@ -136,12 +136,13 @@ export default class Express {
                     .then(({insertedId}) => {
                         Object.assign(request.session, {user: {uid: insertedId}});
                         response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
+                        return insertedId;
                     })
                     .catch(() => {
                         response.statusMessage = 'User already registered.';
                         response.status(401).end();
                     })
-                    .then(() => this.emailCreator.sendEmailVerificationLink({email, firstName}))
+                    .then((uid) => this.emailCreator.sendEmailVerificationLink({email, uid,  firstName}))
                     .catch((e) => {
                         console.log(e);
                         response.statusMessage = 'Could not send verification Email.';
