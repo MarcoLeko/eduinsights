@@ -130,17 +130,23 @@ export default class Express {
 
         });
 
-        this.app.post('/register', async (request: any, response: any) => {
-            try {
+        this.app.post('/register', (request: any, response: any) => {
                 const {firstName, lastName, avatarColor, email, password}: User = request.body;
-                const {insertedId} = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User);
-                Object.assign(request.session, {user: {uid: insertedId}});
-                await this.emailCreator.sendEmailVerificationLink({email, firstName});
-                response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
-            } catch (e) {
-                response.statusMessage = 'User already registered.';
-                response.status(401).end();
-            }
+                this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User)
+                    .then(({insertedId}) => {
+                        Object.assign(request.session, {user: {uid: insertedId}});
+                        response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
+                    })
+                    .catch(() => {
+                        response.statusMessage = 'User already registered.';
+                        response.status(401).end();
+                    })
+                    .then(() => this.emailCreator.sendEmailVerificationLink({email, firstName}))
+                    .catch((e) => {
+                        console.log(e);
+                        response.statusMessage = 'Could not send verification Email.';
+                        response.status(407).end();
+                    });
         });
 
         this.app.delete('/logout', ({session, cookies}: any, response: any) => {

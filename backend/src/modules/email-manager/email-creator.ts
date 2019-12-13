@@ -22,8 +22,7 @@ export default class EmailCreator {
         return html(data);
     }
 
-    public sendEmailVerificationLink(data: Partial<User>): Promise<[ClientResponse, {}]> | void {
-        try {
+    public sendEmailVerificationLink(data: Partial<User>): Promise<[ClientResponse, {}]> {
             const {firstName, email} = data;
             const token = Math.random().toString(36).substr(2);
 
@@ -37,8 +36,5 @@ export default class EmailCreator {
                 }, path.join(joinDir('src/modules/email-manager/templates/email-verification.html')))
             };
             return sendgridMail.send(message);
-        } catch (e) {
-            console.log(e)
-        }
     }
 }

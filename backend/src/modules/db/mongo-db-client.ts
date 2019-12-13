@@ -69,7 +69,7 @@ export default class MongoDBClient {
         // A db-id is composed of the letter between s:(urlEncoded: s%3A) - string - .
         const mappedId = sid.replace(decodeURIComponent('s%3A'), '').split('.')[0];
         const user: any = await this.connectionManager.db('users').collection<User>('sessions').findOne({"_id": mappedId});
-        return user && mappedId === user._id;
+        return user && uid === JSON.parse(user.session).user.uid;
     }
 
     private setupDBIndexes() {
