@@ -1,6 +1,6 @@
 import {MongoClient, MongoClientOptions, ObjectId, UpdateWriteOpResult} from 'mongodb';
 import {injectable} from 'inversify';
-import {User} from '../../types/types';
+import {User, UserToken} from '../../types/types';
 import CredentialHelper from './credential-helper';
 
 @injectable()
@@ -51,6 +51,17 @@ export default class MongoDBClient {
         );
     }
 
+    public async addEmailVerificationToken({uid, token, expireAt}: UserToken) {
+        // If you add a expireAt field in a mongoDB document - the document gets automatically deleted after the incoming expiration
+        // for creation of an email-verification token in the db we will use update one with the option {upsert: true}
+        //  Update will look for the document that matches your query, then it will modify the fields you want and then,
+        //  you can tell it {upsert: true} if you want to insert if no document matches your query.
+        // source: https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
+        return this.connectionManager.db('users').collection<UserToken>('email-verification').updateOne(
+            {uid}, {uid, token, expireAt}, {upsert: true}
+        );
+    }
+
     public async findUserByEmail(email: string) {
         return this.connectionManager.db('users').collection<User>('email').findOne({email});
     }
@@ -72,7 +83,8 @@ export default class MongoDBClient {
         return user && uid === JSON.parse(user.session).user.uid;
     }
 
-    private setupDBIndexes() {
-        return this.connectionManager.db('users').collection('email').createIndex({'email': 1} as Object, {unique: true});
+    private async setupDBIndexes() {
+        await this.connectionManager.db('users').collection('email').createIndex({'email': 1}, {unique: true});
+        return this.connectionManager.db('users').collection('email-verification').createIndex({'uid': 1}, {unique: true});
     }
 }
