@@ -4,4 +4,4 @@ import {TYPES} from './di-config/types';
 
 const app = dependencyContainer.get<Express>(TYPES.EXPRESS);
 
-app.init();
+app.start();

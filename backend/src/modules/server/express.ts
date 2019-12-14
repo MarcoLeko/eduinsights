@@ -11,8 +11,8 @@ import cors from 'cors';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
 import isProduction from '../utils/environment';
+import EmailCreator from '../email-manager/email-creator';
 import cookieParser = require('cookie-parser');
-import EmailCreator from "../email-manager/email-creator";
 
 @injectable()
 export default class Express {
@@ -33,23 +33,22 @@ export default class Express {
         @inject(TYPES.EMAIL_CREATOR) private emailCreator: EmailCreator
     ) {
         this.app = express();
-        this.createServer();
-    }
-
-    public init() {
-        this.setUpMiddleware();
-        this.setUpRoutes();
-        this.server.listen(Express.PORT, '0.0.0.0', () => {
-            this.mongoDBClient.connect().then(() =>
-                console.log(`Server successfully started on port: ${Express.PORT}`));
-        });
-    }
-
-    private createServer() {
         this.server = new Http.Server(this.app);
     }
 
-    private setUpMiddleware() {
+    public start() {
+        return this.initServer()
+            .then(console.log)
+            .then(() => this.mongoDBClient.connect());
+    }
+
+    private initServer() {
+        this.createMiddleware();
+        this.createEndpoints();
+        return new Promise((resolve) => this.server.listen(Express.PORT, () => resolve(`Server listens on Port ${Express.PORT}`)));
+    }
+
+    private createMiddleware() {
         this.app.disable('x-powered-by');
         this.app.use(cookieParser());
         this.app.use(express.json());
@@ -67,7 +66,7 @@ export default class Express {
         this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
     }
 
-    private setUpRoutes() {
+    private createEndpoints() {
         this.app.get('/charities', async (request: any, response: any) => {
             response.send(await this.mongoDBClient.getCollectionOfCharities());
         });
@@ -90,7 +89,14 @@ export default class Express {
             if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
                 const user = await this.mongoDBClient.findUserByID(uid);
                 const {firstName, lastName, avatarColor, email, emailVerified} = user as User;
-                response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email, emailVerified});
+                response.status(200).json({
+                    isAuthenticated: Boolean(user),
+                    firstName,
+                    lastName,
+                    avatarColor,
+                    email,
+                    emailVerified
+                });
             } else {
                 response.clearCookie('sid');
                 request.session.destroy();
@@ -116,7 +122,13 @@ export default class Express {
                             {user: {uid: user._id}}
                         );
 
-                        response.status(200).json({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
+                        response.status(200).json({
+                            isAuthenticated: Boolean(user),
+                            firstName,
+                            lastName,
+                            avatarColor,
+                            email
+                        });
                     } else {
                         response.statusMessage = 'Incorrect email or password.';
                         response.status(401).end();
@@ -131,23 +143,43 @@ export default class Express {
         });
 
         this.app.post('/register', (request: any, response: any) => {
-                const {firstName, lastName, avatarColor, email, password}: User = request.body;
-                this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User)
-                    .then(({insertedId}) => {
-                        Object.assign(request.session, {user: {uid: insertedId}});
-                        response.status(200).json({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
-                        return insertedId;
-                    })
-                    .catch(() => {
-                        response.statusMessage = 'User already registered.';
-                        response.status(401).end();
-                    })
-                    .then((uid) => this.emailCreator.sendEmailVerificationLink({email, uid,  firstName}))
-                    .catch((e) => {
-                        console.log(e);
-                        response.statusMessage = 'Could not send verification Email.';
-                        response.status(407).end();
+            const {firstName, lastName, avatarColor, email, password}: User = request.body;
+            this.mongoDBClient.addUser({
+                firstName,
+                lastName,
+                avatarColor,
+                email,
+                password,
+                emailVerified: false
+            } as User)
+                .then(({insertedId}) => {
+                    Object.assign(request.session, {user: {uid: insertedId}});
+                    response.status(200).json({
+                        isAuthenticated: Boolean(insertedId),
+                        firstName,
+                        lastName,
+                        avatarColor,
+                        email,
+                        emailVerified: false
                     });
+                    return insertedId;
+                })
+                .catch(() => {
+                    response.statusMessage = 'User already registered.';
+                    response.status(401).end();
+                })
+                .then(async (uid) => {
+                    const {expireAt, token}: Partial<UserToken> = await this.emailCreator.sendEmailVerificationLink({
+                        email,
+                        firstName
+                    });
+                    return this.mongoDBClient.addEmailVerificationToken({uid, token, expireAt} as UserToken);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    response.statusMessage = 'Could not send verification Email.';
+                    response.status(407).end();
+                });
         });
 
         this.app.post('/validate-token', async (request: any, response: any) => {

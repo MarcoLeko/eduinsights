@@ -22,9 +22,7 @@ export default class MongoDBClient {
     }
 
     public getCollectionOfCharities() {
-        return this.connectionManager.db('organization').collection('list').find().limit(3).toArray()
-            .then((result: any) => console.log(JSON.stringify(result)))
-            .catch((e: Error) => console.log('Could not fetch collection due to: ', e));
+        return this.connectionManager.db('organizations').collection('charities').find().toArray()
     }
 
     public getStatisticsCollection(params: string): Promise<unknown> {
@@ -51,14 +49,14 @@ export default class MongoDBClient {
         );
     }
 
-    public async addEmailVerificationToken({uid, token, expireAt}: UserToken) {
+    public async addEmailVerificationToken({uid, token, expireAt}: Partial<UserToken>) {
         // If you add a expireAt field in a mongoDB document - the document gets automatically deleted after the incoming expiration
         // for creation of an email-verification token in the db we will use update one with the option {upsert: true}
         //  Update will look for the document that matches your query, then it will modify the fields you want and then,
         //  you can tell it {upsert: true} if you want to insert if no document matches your query.
         // source: https://stackoverflow.com/questions/24122981/how-to-stop-insertion-of-duplicate-documents-in-a-mongodb-collection
         return this.connectionManager.db('users').collection<UserToken>('email-verification').updateOne(
-            {uid}, {uid, token, expireAt}, {upsert: true}
+            {uid}, {'$set': {uid, token, expireAt}}, {upsert: true}
         );
     }
 
