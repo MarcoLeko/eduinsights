@@ -17,23 +17,21 @@ import cookieParser = require('cookie-parser');
 @injectable()
 export default class Express {
 
-    private static COOKIE_SETTINGS = {
-        sameSite: true,
-        secure: isProduction,
-        maxAge: 365 * 24 * 60 * 60 * 1000, // defaults to one year
-    };
-
     private static readonly PORT: any = process.env.PORT;
     public app: express.Application;
     public server: Http.Server;
     private MongoStore = connectStore(session);
+    private readonly environmentalProps: any;
 
     constructor(
         @inject(TYPES.MONGO_DB_CLIENT) private mongoDBClient: MongoDBClient,
-        @inject(TYPES.EMAIL_CREATOR) private emailCreator: EmailCreator
+        @inject(TYPES.EMAIL_CREATOR) private emailCreator: EmailCreator,
+        @inject(TYPES.ENVIRONMENTAL_CONFIG) private environmentFactory: Function
     ) {
+
         this.app = express();
         this.server = new Http.Server(this.app);
+        this.environmentalProps = this.environmentFactory(isProduction);
     }
 
     public start() {
@@ -61,9 +59,13 @@ export default class Express {
             resave: false,
             // @ts-ignore
             store: new this.MongoStore({client: this.mongoDBClient.mongoClient, dbName: 'users'}),
-            cookie: Express.COOKIE_SETTINGS
+            cookie: {
+                sameSite: true,
+                secure: this.environmentalProps.SECURE_COOKIE,
+                maxAge: 365 * 24 * 60 * 60 * 1000, // defaults to one year
+            }
         }));
-        this.app.use(express.static(joinDir(isProduction ? 'build/web/build' : '../web/build')));
+        this.app.use(express.static(joinDir(this.environmentalProps.PATH_TO_STATIC_FILES)));
     }
 
     private createEndpoints() {
