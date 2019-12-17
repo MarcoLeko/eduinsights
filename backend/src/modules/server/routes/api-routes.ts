@@ -12,20 +12,24 @@ export default class ApiRoutes extends AbstractRoutes {
         super();
     }
 
-    public createEndpoints() {
-        this.router.get('/charities', async (request: any, response: any) => {
-            response.send(await this.mongoDBClient.getCollectionOfCharities());
-        });
+    protected createEndpoints() {
+        this.router.get('/charities', this.getCharitiesList.bind(this));
+        this.router.get('/statistics/:type', this.getStatistics.bind(this));
+    }
 
-        this.router.get('/statistics/:type', async (request: any, response: any) => {
-            const kindOfStatistics = request.params.type;
-            try {
-                const data = await this.mongoDBClient.getStatisticsCollection(kindOfStatistics);
-                response.send(data);
-            } catch (e) {
-                response.statusMessage = 'Could not fetch Internet-statistics';
-                response.status(500).end();
-            }
-        });
+    private async getCharitiesList(response: any) {
+        const charities = await this.mongoDBClient.getCollectionOfCharities();
+        response.send(charities);
+    }
+
+    private async getStatistics(request: any, response: any) {
+        const kindOfStatistics = request.params.type;
+        try {
+            const data = await this.mongoDBClient.getStatisticsCollection(kindOfStatistics);
+            response.send(data);
+        } catch (e) {
+            response.statusMessage = 'Could not fetch Internet-statistics';
+            response.status(500).end();
+        }
     }
 }
