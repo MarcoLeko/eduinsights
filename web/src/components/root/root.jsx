@@ -13,6 +13,11 @@ import SideBar, {drawerWidth} from './side-bar';
 import {makeStyles} from '@material-ui/core/styles';
 import LiveDonations from "../live-donations/live-donations";
 import {useScrollTrigger} from "@material-ui/core";
+import CastForEducationIcon from '@material-ui/icons/CastForEducation';
+import MapTwoToneIcon from '@material-ui/icons/MapTwoTone';
+import FeaturedPlayListTwoToneIcon from '@material-ui/icons/FeaturedPlayListTwoTone';
+import Hidden from "@material-ui/core/Hidden";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -49,6 +54,13 @@ const useStyles = makeStyles(theme => ({
     },
     indicator: {
         height: 4
+    },
+    tabContent: {
+        flexDirection: 'row',
+        alignItems: 'initial'
+    },
+    iconSpacing: {
+        padding:  theme.spacing(0, 1)
     }
 }));
 
@@ -57,6 +69,25 @@ function Root({canSwipe}) {
     const trigger = useScrollTrigger({threshold: 48});
     const [tabIndex, setTabIndex] = React.useState(0);
     const [sideBarOpen, setSideBarOpen] = React.useState(false);
+
+    function tabCreator(icon, text) {
+        return (
+            <Tab classes={{wrapper: classes.tabContent}} key={text} label={
+                <>
+                    <Hidden smDown>
+                        <Box component="div" className={classes.iconSpacing}>{icon}</Box>
+                    </Hidden>
+                    {text}
+                </>
+            }/>
+        );
+    }
+
+    const labels = [
+        tabCreator(<CastForEducationIcon/>, 'Live'),
+        tabCreator(<MapTwoToneIcon/>, 'Map'),
+        tabCreator(<FeaturedPlayListTwoToneIcon/>, 'Charities')
+    ];
 
     function handleChange(event, newValue) {
         setTabIndex(newValue);
@@ -107,9 +138,9 @@ function Root({canSwipe}) {
                         indicator: classes.indicator
                     }}
                 >
-                    <Tab label="Live"/>
-                    <Tab label="Map"/>
-                    <Tab label="Charities"/>
+                    {
+                        labels.map((tab) => tab)
+                    }
                 </Tabs>
             </AppBar>
             <SwipeableViews
