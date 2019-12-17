@@ -19,7 +19,6 @@ export default class AuthRoutes extends AbstractRoutes {
     private async checkLoggedIn(request: any, response: any) {
         const sessionId = request.cookies.sid;
         const uid = request.session?.user?.uid;
-        console.log('from method: ' + this.mongoDBClient);
 
         if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
             const user = await this.mongoDBClient.findUserByID(uid);
