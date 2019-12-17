@@ -6,7 +6,7 @@ export default abstract class AbstractRoutes {
     abstract ROUTE_PARAMS: string;
     public router = express.Router();
 
-    abstract createEndpoints(): void;
+   protected abstract createEndpoints(): void;
 
     public getRoutes() {
         this.createEndpoints();

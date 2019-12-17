@@ -54,8 +54,7 @@ export default class Express {
             secret: process.env.SESSION_SECRET as string,
             saveUninitialized: false,
             resave: false,
-            // @ts-ignore
-            store: new this.MongoStore({client: this.mongoDBClient.mongoClient, dbName: 'users'}),
+            store: new this.MongoStore({client: this.mongoDBClient.connectionCreator, dbName: 'users'} as any),
             cookie: {
                 sameSite: true,
                 secure: this.environmentalProps.SECURE_COOKIE,

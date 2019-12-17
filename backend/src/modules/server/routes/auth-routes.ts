@@ -1,5 +1,4 @@
 import {inject, injectable} from 'inversify';
-import session from 'express-session';
 import AbstractRoutes from './abstract-routes';
 import {User, UserToken} from '../../../types/types';
 import CredentialHelper from '../../db/credential-helper';
@@ -17,21 +16,15 @@ export default class AuthRoutes extends AbstractRoutes {
         super();
     }
 
-    public async checkLoggedIn(request: any, response: any) {
+    private async checkLoggedIn(request: any, response: any) {
         const sessionId = request.cookies.sid;
         const uid = request.session?.user?.uid;
+        console.log('from method: ' + this.mongoDBClient);
 
         if (sessionId && uid && await this.mongoDBClient.validatedSession(uid, sessionId)) {
             const user = await this.mongoDBClient.findUserByID(uid);
             const {firstName, lastName, avatarColor, email, emailVerified} = user as User;
-            response.status(200).json({
-                isAuthenticated: Boolean(user),
-                firstName,
-                lastName,
-                avatarColor,
-                email,
-                emailVerified
-            });
+            response.status(200).send({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email, emailVerified});
         } else {
             response.clearCookie('sid');
             request.session.destroy();
@@ -39,7 +32,7 @@ export default class AuthRoutes extends AbstractRoutes {
         }
     }
 
-    public async login(request: any, response: any) {
+    private async login(request: any, response: any) {
         try {
             const {email, password} = request.body;
             const user = await this.mongoDBClient.findUserByEmail(email);
@@ -52,18 +45,9 @@ export default class AuthRoutes extends AbstractRoutes {
                 if (truthy) {
                     const {firstName, lastName, avatarColor, email} = user;
 
-                    Object.assign(
-                        request.session,
-                        {user: {uid: user._id}}
-                    );
+                    Object.assign(request.session, {user: {uid: user._id}});
 
-                    response.status(200).json({
-                        isAuthenticated: Boolean(user),
-                        firstName,
-                        lastName,
-                        avatarColor,
-                        email
-                    });
+                    response.status(200).send({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
                 } else {
                     response.statusMessage = 'Incorrect email or password.';
                     response.status(401).end();
@@ -76,26 +60,12 @@ export default class AuthRoutes extends AbstractRoutes {
         }
     }
 
-    public async register(request: any, response: any) {
+    private async register(request: any, response: any) {
         const {firstName, lastName, avatarColor, email, password}: User = request.body;
-        this.mongoDBClient.addUser({
-            firstName,
-            lastName,
-            avatarColor,
-            email,
-            password,
-            emailVerified: false
-        } as User)
+        this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User)
             .then(({insertedId}: any) => {
                 Object.assign(request.session, {user: {uid: insertedId}});
-                response.status(200).json({
-                    isAuthenticated: Boolean(insertedId),
-                    firstName,
-                    lastName,
-                    avatarColor,
-                    email,
-                    emailVerified: false
-                });
+                response.status(200).send({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
                 return insertedId;
             })
             .catch(() => {
@@ -103,10 +73,7 @@ export default class AuthRoutes extends AbstractRoutes {
                 response.status(401).end();
             })
             .then(async (uid: string) => {
-                const {expireAt, token}: Partial<UserToken> = await this.emailCreator.sendEmailVerificationLink({
-                    email,
-                    firstName
-                });
+                const {expireAt, token}: Partial<UserToken> = await this.emailCreator.sendEmailVerificationLink({email, firstName});
                 return this.mongoDBClient.addEmailVerificationToken({uid, token, expireAt} as UserToken);
             })
             .catch((e: Error) => {
@@ -116,29 +83,29 @@ export default class AuthRoutes extends AbstractRoutes {
             });
     }
 
-    public async validateToken(request: any, response: any) {
+    private async validateToken(request: any, response: any) {
         const {token}: UserToken = request.body;
         const uid = request.session?.user?.uid;
 
         // TODO: validate token here and send response accordingly
     }
 
-    public async logOut({session, cookies}: any, response: any) {
+    private  async logOut({session, cookies}: any, response: any) {
         if (session.user) {
             response.clearCookie('sid');
             session.destroy();
-            response.status(200).json({authenticated: false});
+            response.status(200).send({authenticated: false});
         } else {
             response.statusMessage = 'Not logged in.';
             response.status(409).end();
         }
     }
 
-    public createEndpoints() {
-        this.router.get('/check/logged-in', this.checkLoggedIn);
-        this.router.post('/login', this.login);
-        this.router.post('/register', this.register);
-        this.router.post('/validate-token', this.validateToken);
-        this.router.delete('/logout', this.logOut);
+    protected createEndpoints() {
+        this.router.get('/check/logged-in', this.checkLoggedIn.bind(this));
+        this.router.post('/login', this.login.bind(this));
+        this.router.post('/register', this.register.bind(this));
+        this.router.post('/validate-token', this.validateToken.bind(this));
+        this.router.delete('/logout', this.logOut.bind(this));
     }
 }

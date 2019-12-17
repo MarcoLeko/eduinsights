@@ -1,3 +1,5 @@
+import MongoDBClient from "../modules/db/mongo-db-client";
+
 export interface User extends UserCredential {
     _id: string,
     firstName: string,
@@ -17,3 +19,5 @@ export interface UserToken {
     uid: string,
     token: string,
 }
+
+export type MongoDBClientProvider = () => Promise<MongoDBClient>;
