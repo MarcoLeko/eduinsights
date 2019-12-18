@@ -12,6 +12,7 @@ import MapInfoControl from "./map-info-control";
 import MapResetViewButton from "./map-reset-view-button";
 import {receiveMessageInterceptor} from "../../store/alert/alert-actions";
 import {getInternetAccessStatistics} from "../../store/thunks";
+import MapSideBar from "./map-side-bar";
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
@@ -146,6 +147,7 @@ function MapOverlay({toggleSwipe}) {
                     )
                 }
             </GeoJSON>
+            <MapSideBar/>
             <MapLegend/>
             <MapInfoControl ref={infoControlRef}/>
             <MapResetViewButton/>
