@@ -12,12 +12,12 @@ import History from "@material-ui/icons/HistoryOutlined";
 import ExitToApp from "@material-ui/icons/ExitToAppOutlined";
 import Settings from "@material-ui/icons/SettingsApplicationsOutlined";
 import Poll from "@material-ui/icons/PollOutlined";
-import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
 import {logOut} from "../../store/auth/auth-action-creators";
 import {useHistory} from "react-router-dom";
 import CodeIcon from '@material-ui/icons/Code';
+import UserAvatar from "../shared/user-avatar";
 
 export const drawerWidth = 240;
 
@@ -94,13 +94,13 @@ function SideBar(props) {
             }}
         >
             <Box p={2}>
-                <Avatar className={classes.avatar}
+                <UserAvatar className={classes.avatar}
                         style={{
                             backgroundColor: props.avatarColor,
                             color: emphasize(props.avatarColor, 1)
                         }}>
                     {logoName}
-                </Avatar>
+                </UserAvatar>
                 <Typography variant={'h6'}>{props.firstName.concat(' ', props.lastName)}</Typography>
                 <Typography variant={'subtitle1'}>{props.email}</Typography>
             </Box>

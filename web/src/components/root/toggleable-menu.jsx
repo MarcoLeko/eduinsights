@@ -6,12 +6,12 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import './root.scss';
-import Avatar from "@material-ui/core/Avatar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import UserAvatar from "../shared/user-avatar";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -55,10 +55,10 @@ function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
                 <Typography variant={"h6"} color="primary">Help educate</Typography>
             </Link>
             <div className={classes.actionButtons}>
-                <Avatar style={{
+                <UserAvatar style={{
                     backgroundColor: avatarColor,
                     color: emphasize(avatarColor, 1)
-                }}>{logoName}</Avatar>
+                }}>{logoName}</UserAvatar>
                 <IconButton onClick={toggle.bind(this, !isOpen)}>
                     {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
 
@@ -71,6 +71,6 @@ function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
 const mapStateToProps = store => ({
     firstName: store.authReducer.firstName,
     lastName: store.authReducer.lastName,
-    avatarColor: store.authReducer.avatarColor,
+    avatarColor: store.authReducer.avatarColor
 });
 export default connect(mapStateToProps)(ToggleableMenu);

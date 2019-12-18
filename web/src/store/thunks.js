@@ -1,11 +1,10 @@
 export const isLoggedIn = async preloadedState => {
     try {
         const response = await checkLoggedIn();
-        const data = await response.json();
 
-        if (data) {
+        if (response) {
             preloadedState = {
-                authReducer: data
+                authReducer: response
             };
         }
 
