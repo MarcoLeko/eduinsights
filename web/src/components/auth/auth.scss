@@ -71,3 +71,68 @@
   flex-direction: column;
   height: 100vh;
 }
+
+.circle-background {
+  width: 100px;
+  height: 50px;
+  border-radius: 100%;
+  background: #a9a9a9 no-repeat center;
+  background-size: cover;
+  margin-bottom: 12px;
+  position: relative;
+  box-shadow: 0 10px 15px -15px rgba(50, 50, 50, 0.75);
+  -webkit-animation: scale 4s infinite alternate;
+  animation: scale 4s infinite alternate;
+}
+
+.svg-with-circle {
+  height: 150px;
+  width: 150px;
+  margin-bottom: 24px;
+  -webkit-animation: move-vertical 4s infinite alternate;
+  animation: move-vertical 4s infinite alternate;
+}
+
+@-webkit-keyframes move-vertical {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(15px);
+    transform: translateY(15px);
+  }
+}
+
+@keyframes move-vertical {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(15px);
+    transform: translateY(15px);
+  }
+}
+
+@-webkit-keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15);
+  }
+}
+
+@keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15);
+  }
+}

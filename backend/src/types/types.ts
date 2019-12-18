@@ -1,6 +1,6 @@
 import MongoDBClient from "../modules/db/mongo-db-client";
 
-export interface User extends UserCredential {
+export interface User extends UserCredentials {
     _id: string,
     firstName: string,
     lastName: string,
@@ -8,12 +8,12 @@ export interface User extends UserCredential {
     emailVerified: boolean
 }
 
-export interface UserCredential {
+export interface UserCredentials {
     email: string,
     password: string
 }
 
-export interface UserToken {
+export interface UserValidationToken {
     _id: string,
     expireAt: Date,
     uid: string,
