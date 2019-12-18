@@ -45,12 +45,12 @@ export default class AuthRoutes extends AbstractRoutes {
             } else {
                 const truthy = await CredentialHelper.compare(password, user.password);
                 if (truthy) {
-                    const {firstName, lastName, avatarColor, email} = user;
+                    const {firstName, lastName, avatarColor, email, emailVerified}: User = user;
 
                     Object.assign(request.session, {user: {uid: user._id}});
 
                     response.status(200)
-                        .send({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email});
+                        .send({isAuthenticated: Boolean(user), firstName, lastName, avatarColor, email, emailVerified});
                 } else {
                     response.statusMessage = 'Incorrect email or password.';
                     response.status(401)
