@@ -58,7 +58,7 @@ export async function checkLoggedIn() {
 }
 
 export async function checkEmailToken(payload) {
-    const response = await fetch('http://localhost:8080/auth/validate-token', {
+    const response = await fetch('http://localhost:8080/auth/validate-email-token', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(payload),

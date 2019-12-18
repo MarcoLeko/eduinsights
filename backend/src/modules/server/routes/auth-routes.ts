@@ -98,7 +98,8 @@ export default class AuthRoutes extends AbstractRoutes {
         const user = await this.mongoDBClient.validateEmailToken(uid, token);
 
         if (user) {
-            await this.mongoDBClient.updateUser(uid, {emailVerified: Boolean(user)})
+            await this.mongoDBClient.updateUser(uid, {emailVerified: Boolean(user)});
+            await this.mongoDBClient.dropEmailValidationDocument(uid);
         }
 
         response.status(200)
@@ -147,7 +148,7 @@ export default class AuthRoutes extends AbstractRoutes {
         this.router.get('/send-validation-email', this.sendValidationEmail.bind(this));
         this.router.post('/login', this.login.bind(this));
         this.router.post('/register', this.register.bind(this));
-        this.router.post('/validate-token', this.validateToken.bind(this));
+        this.router.post('/validate-email-token', this.validateToken.bind(this));
         this.router.delete('/logout', this.logout.bind(this));
     }
 }
