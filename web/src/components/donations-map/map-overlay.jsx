@@ -45,9 +45,8 @@ function MapOverlay({toggleSwipe}) {
 
     useEffect(() => {
         getInternetAccessStatistics().then(async (result) => {
-            const data = await result.json();
-            setGeoJSON(data);
-            geoJSONRef.current.leafletElement.clearLayers().addData(data);
+            setGeoJSON(result);
+            geoJSONRef.current.leafletElement.clearLayers().addData(result);
         }).catch(e => dispatch(receiveMessageInterceptor(e)));
 
     }, [dispatch]);
