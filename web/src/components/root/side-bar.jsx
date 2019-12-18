@@ -18,7 +18,6 @@ import {Typography} from "@material-ui/core";
 import {logOut} from "../../store/auth/auth-action-creators";
 import {useHistory} from "react-router-dom";
 import CodeIcon from '@material-ui/icons/Code';
-import YouTubeIcon from '@material-ui/icons/YouTube';
 
 export const drawerWidth = 240;
 
@@ -69,11 +68,6 @@ function SideBar(props) {
         {
             icon: <CodeIcon/>,
             name: 'Contribute',
-            onClick: (e) => console.log(e)
-        },
-        {
-            icon: <YouTubeIcon/>,
-            name: 'About Education',
             onClick: (e) => console.log(e)
         },
         {

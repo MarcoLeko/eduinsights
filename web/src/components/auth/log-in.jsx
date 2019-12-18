@@ -13,7 +13,7 @@ import React from "react";
 import Copyright from "../shared/copyright";
 import muiBackground from "../shared/material-ui-background";
 import AppPreview from '../../assets/app-preview-1.png';
-import './log-in.scss';
+import './auth.scss';
 import appStoreLogo from '../../assets/app-store.png';
 import googlePlayLogo from '../../assets/google-play.png';
 import useForm from "react-hook-form";
