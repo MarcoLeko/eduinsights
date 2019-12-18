@@ -1,6 +1,6 @@
 import {LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER} from "./auth-action-types";
 
-const initialState = {isAuthenticated: null, firstName: null, lastName: null, avatarColor: null, email: null};
+const initialState = {isAuthenticated: null, firstName: null, lastName: null, avatarColor: null, email: null, emailVerified: null};
 
 export default function authReducer(state = initialState, {type, user}) {
     switch (type) {

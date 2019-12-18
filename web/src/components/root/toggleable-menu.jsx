@@ -7,7 +7,6 @@ import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import './root.scss';
 import Avatar from "@material-ui/core/Avatar";
-import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -60,7 +59,6 @@ function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
                     backgroundColor: avatarColor,
                     color: emphasize(avatarColor, 1)
                 }}>{logoName}</Avatar>
-                <Divider className={classes.divider} orientation="vertical"/>
                 <IconButton onClick={toggle.bind(this, !isOpen)}>
                     {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
 

@@ -1,0 +1,138 @@
+.app-preview-content {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 18px;
+  height: 386px;
+  width: 178px;
+  margin: 13px;
+}
+
+.login-image-panel {
+  align-self: center;
+  background-image: url('../../assets/device-frame.png');
+  background-repeat: no-repeat;
+  width: 204px;
+  background-position: center;
+  background-size: 204px 412px;
+  height: 412px;
+  position: relative;
+}
+
+.device-frame-shadow {
+  width: 165px;
+  box-shadow: 0px 0px 10px 3px #111;
+  position: absolute;
+  top: 415px;
+  left: 20px;
+  content: '';
+}
+
+.article-panel {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-flex: .65;
+  -webkit-flex-grow: .65;
+  -ms-flex-positive: .65;
+  flex-grow: .75;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 935px;
+  width: 100%;
+}
+
+.image-panel {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-self: center;
+  padding-bottom: 40px;
+}
+
+.email-verification-container {
+  text-align: center;
+  display: flex;
+  vertical-align: middle;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.circle-background {
+  width: 100px;
+  height: 50px;
+  border-radius: 100%;
+  background: #a9a9a9 no-repeat center;
+  background-size: cover;
+  margin-bottom: 12px;
+  position: relative;
+  box-shadow: 0 10px 15px -15px rgba(50, 50, 50, 0.75);
+  -webkit-animation: scale 4s infinite alternate;
+  animation: scale 4s infinite alternate;
+}
+
+.svg-with-circle {
+  height: 150px;
+  width: 150px;
+  margin-bottom: 24px;
+  -webkit-animation: move-vertical 4s infinite alternate;
+  animation: move-vertical 4s infinite alternate;
+}
+
+@-webkit-keyframes move-vertical {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(15px);
+    transform: translateY(15px);
+  }
+}
+
+@keyframes move-vertical {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(15px);
+    transform: translateY(15px);
+  }
+}
+
+@-webkit-keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15);
+  }
+}
+
+@keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15);
+  }
+}
