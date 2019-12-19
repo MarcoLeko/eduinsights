@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
@@ -37,20 +37,23 @@ function MapOverlay({toggleSwipe}) {
     const mapRef = useRef(null);
     const geoJSONRef = useRef(null);
     const infoControlRef = useRef(null);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const dispatch = useDispatch();
 
     const [geoJSON, setGeoJSON] = useState({type: 'FeatureCollection', features: []});
     const [donationLocations] = useState([[48.135125, 11.581981], [58.403, 20.420], [43.300, 40], [70.505, -20], [40.505, -80], [-40.505, -10]]);
 
-    useEffect(() => {
+    const callback = useCallback(() => {
         getInternetAccessStatistics().then(async (result) => {
             setGeoJSON(result);
             geoJSONRef.current.leafletElement.clearLayers().addData(result);
         }).catch(e => dispatch(receiveMessageInterceptor(e)));
-
     }, [dispatch]);
+
+    useEffect(() => {
+        callback();
+    }, [callback]);
 
     function style(feature) {
         return {
