@@ -1,6 +1,7 @@
 .leaflet-container {
   height: calc(100vh - 48px);
   width: 100%;
+  font: inherit;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
