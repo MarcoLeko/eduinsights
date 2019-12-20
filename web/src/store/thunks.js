@@ -16,7 +16,7 @@ export const isLoggedIn = async preloadedState => {
 };
 
 export async function getInternetAccessStatistics() {
-    const response = await fetch('http://localhost:8080/statistics/api/internet-access');
+    const response = await fetch('http://localhost:8080/api/statistics/internet-access');
     return handleResponse(response);
 }
 
