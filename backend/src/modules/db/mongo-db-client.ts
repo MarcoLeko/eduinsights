@@ -89,7 +89,7 @@ export default class MongoDBClient {
     public async validateEmailToken(uid: string, token: string) {
         return this.connectionMiddleware.db('users')
             .collection<UserValidationToken>('email-verification')
-            .findOne({'_id': new ObjectId(uid), token} as any);
+            .findOne({'uid': new ObjectId(uid), token} as any);
     }
 
     public async validatedSession(uid: string, sid: string) {

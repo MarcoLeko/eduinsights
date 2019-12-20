@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
         }),
     },
     sideBarContent: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column',
         height: 'inherit',
@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
     },
     searchForm: {
         padding: theme.spacing(1, 2),
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(2),
         alignSelf: 'center',
         display: 'flex',
         alignItems: 'center',
