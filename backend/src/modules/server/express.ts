@@ -9,8 +9,8 @@ import cors from 'cors';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
 import isProduction from '../utils/environment';
-import AbstractRoutes from './routes/abstract-routes';
 import cookieParser = require('cookie-parser');
+import AbstractRoutes from './routes/abstract-routes';
 
 @injectable()
 export default class Express {
@@ -32,8 +32,7 @@ export default class Express {
     }
 
     public start() {
-        return this.mongoDBClient.connect()
-            .then(() => this.initServer())
+        return this.initServer()
             .then(console.log);
     }
 
@@ -54,7 +53,7 @@ export default class Express {
             secret: process.env.SESSION_SECRET as string,
             saveUninitialized: false,
             resave: false,
-            store: new this.MongoStore({client: this.mongoDBClient.connectionCreator, dbName: 'users'} as any),
+            store: new this.MongoStore({client: this.mongoDBClient.connectionMiddlewareProp, dbName: 'users'} as any),
             cookie: {
                 sameSite: true,
                 secure: this.environmentalProps.SECURE_COOKIE,

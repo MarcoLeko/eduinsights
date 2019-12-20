@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import muiBackground from "../shared/material-ui-background";
 import History from "@material-ui/icons/HistoryOutlined";
 import ExitToApp from "@material-ui/icons/ExitToAppOutlined";
-import Settings from "@material-ui/icons/SettingsApplicationsOutlined";
+import Settings from '@material-ui/icons/Settings';
 import Poll from "@material-ui/icons/PollOutlined";
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";

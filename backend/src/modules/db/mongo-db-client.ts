@@ -9,7 +9,7 @@ export default class MongoDBClient {
     private connectionMiddleware: MongoClient;
     private mongoClient: MongoClient = connectorInstance();
 
-    get connectionCreator(): MongoClient {
+    get connectionMiddlewareProp(): MongoClient {
         return this.mongoClient;
     }
 
