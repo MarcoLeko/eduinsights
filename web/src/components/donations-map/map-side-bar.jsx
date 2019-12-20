@@ -20,7 +20,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import List from '@material-ui/core/List';
 
 const maxDrawerWidth = 480;
-const drawerWidth = '85%';
+const drawerWidth = 'calc(97.5% - 49px)';
 
 const useStyles = makeStyles(theme => ({
     button: {
