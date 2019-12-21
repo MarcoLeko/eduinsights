@@ -34,3 +34,8 @@ npm-debug.log*
 tools/scripts/temp
 tools/scripts/output
 
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
