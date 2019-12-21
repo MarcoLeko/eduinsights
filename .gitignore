@@ -24,8 +24,8 @@ web/build
 .env.production.local
 
 # private keys will be later added
-# backend/.env
-# web/.env
+backend/.env
+web/.env
 
 # packaging
 npm-debug.log*
