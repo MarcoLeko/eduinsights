@@ -7,25 +7,29 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import * as ReactLeaflet from 'react-leaflet';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import {DialogContent} from '@material-ui/core';
 
 const {Popup} = ReactLeaflet;
 
 const useStyles = makeStyles({
-    card: {
-        maxWidth: 350,
-        maxHeight: 550,
-        width: '90%',
-    },
     media: {
         height: 140,
     },
-    modal: {
+    dialog: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    root: {
+        padding: 0,
+        paddingTop: '0px !Important'
+    },
+});
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function MarkerPopup({open, setOpen}) {
@@ -39,42 +43,48 @@ function MarkerPopup({open, setOpen}) {
         <Popup
             autoPan={false}
         >
-            <Modal
-                className={classes.modal}
+            <Dialog
+                className={classes.dialog}
                 open={open}
-                classes={{root: classes.root}}
+                maxWidth={"xs"}
+                TransitionComponent={Transition}
+                aria-describedby="modal-description"
                 onClose={handleClose.bind(this)}
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 0,
-                    invisible: true
-                }}
+                keepMounted
             >
-                <Card className={classes.card}>
-                    <CardMedia
-                        className={classes.media}
-                        image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-                        title="Contemplative Reptile"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                            across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" color="primary">
-                            Details
-                        </Button>
-                        <Button size="small" color="primary">
-                            Donate
-                        </Button>
-                    </CardActions>
-                </Card>
-            </Modal>
+                <DialogContent
+                    classes={{root: classes.root}}
+                >
+                    <Card className={classes.card} id="modal-description">
+                        <CardMedia
+                            className={classes.media}
+                            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+                            title="Contemplative Reptile"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5"
+                                        component="h2">
+                                Lizard
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary"
+                                        component="p">
+                                Lizards are a widespread group of squamate
+                                reptiles,
+                                with over 6,000 species, ranging
+                                across all continents except Antarctica
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" color="primary">
+                                Details
+                            </Button>
+                            <Button size="small" color="primary">
+                                Donate
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </DialogContent>
+            </Dialog>
         </Popup>
     );
 }

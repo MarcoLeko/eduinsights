@@ -2,35 +2,35 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import 'leaflet/dist/leaflet.css';
 import './map-overlay.scss';
 import * as ReactLeaflet from 'react-leaflet';
-import {setSwipeState} from "../../store/ui/ui-actions";
-import {connect, useDispatch} from "react-redux";
+import {setSwipeState} from '../../store/ui/ui-actions';
+import {connect, useDispatch} from 'react-redux';
 import L from 'leaflet';
-import marker from '../../assets/marker.png';
-import MarkerPopup from "./marker-popup";
+import marker from '../../assets/marker.svg';
+import MarkerPopup from './marker-popup';
 import MapLegend from './map-legend';
-import MapInfoControl from "./map-info-control";
-import MapResetViewButton from "./map-reset-view-button";
-import {receiveMessageInterceptor} from "../../store/alert/alert-actions";
-import {getInternetAccessStatistics} from "../../store/thunks";
-import MapSideBar from "./map-side-bar";
+import MapInfoControl from './map-info-control';
+import MapResetViewButton from './map-reset-view-button';
+import {receiveMessageInterceptor} from '../../store/alert/alert-actions';
+import {getInternetAccessStatistics} from '../../store/thunks';
+import MapSideBar from './map-side-bar';
 
 const {Map, TileLayer, Marker, GeoJSON} = ReactLeaflet;
 
 let DefaultIcon = L.icon({
     iconUrl: marker,
-    iconSize: [40, 40], // size of the icon
-    iconAnchor: [20, 35], // point of the icon which will correspond to marker's location
+    iconSize: [45, 45], // size of the icon
+    iconAnchor: [20, 40], // point of the icon which will correspond to marker's location
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
 export function getColor(d) {
-    return d > 100 ? '#009900' :
-        d > 90 ? '#9dd900' :
-            d > 75 ? '#0054fe' :
-                d > 50 ? '#fede00' :
-                    d > 25 ? '#fe4f00' :
-                        '#ff0005'
+    return  d > 100 ? '#800026' :
+            d > 90 ? '#E31A1C' :
+            d > 75 ? '#FD8D3C' :
+            d > 50 ? '#FEB24C' :
+            d > 25 ? '#FED976' :
+                     '#FFEDA0';
 }
 
 function MapOverlay({toggleSwipe}) {
@@ -41,8 +41,15 @@ function MapOverlay({toggleSwipe}) {
 
     const dispatch = useDispatch();
 
-    const [geoJSON, setGeoJSON] = useState({type: 'FeatureCollection', features: []});
-    const [donationLocations] = useState([[48.135125, 11.581981], [58.403, 20.420], [43.300, 40], [70.505, -20], [40.505, -80], [-40.505, -10]]);
+    const [geoJSON, setGeoJSON] = useState(
+        {type: 'FeatureCollection', features: []});
+    const [donationLocations] = useState([
+        [48.135125, 11.581981],
+        [58.403, 20.420],
+        [43.300, 40],
+        [70.505, -20],
+        [40.505, -80],
+        [-40.505, -10]]);
 
     const callback = useCallback(() => {
         getInternetAccessStatistics().then(async (result) => {
@@ -62,7 +69,7 @@ function MapOverlay({toggleSwipe}) {
             opacity: 1,
             color: 'white',
             dashArray: '2',
-            fillOpacity: 0.7
+            fillOpacity: 0.7,
         };
     }
 
@@ -73,7 +80,7 @@ function MapOverlay({toggleSwipe}) {
             weight: 5,
             color: '#666',
             dashArray: '',
-            fillOpacity: 0.7
+            fillOpacity: 0.7,
         });
 
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -96,7 +103,7 @@ function MapOverlay({toggleSwipe}) {
         layer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight,
-            click: zoomToCountry
+            click: zoomToCountry,
         });
     }
 
@@ -126,7 +133,8 @@ function MapOverlay({toggleSwipe}) {
             <TileLayer
                 noWrap={true}
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
-                url={'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + process.env.REACT_APP_MAPBOX_KEY}
+                url={'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' +
+                process.env.REACT_APP_MAPBOX_KEY}
             />
             <GeoJSON
                 data={geoJSON}
@@ -146,7 +154,7 @@ function MapOverlay({toggleSwipe}) {
                                     setOpen={setOpen}
                                 />
                             </Marker>
-                        )
+                        ),
                     )
                 }
             </GeoJSON>
@@ -155,11 +163,11 @@ function MapOverlay({toggleSwipe}) {
             <MapInfoControl ref={infoControlRef}/>
             <MapResetViewButton/>
         </Map>
-    )
+    );
 }
 
 const dispatchMapToProps = dispatch => ({
-    toggleSwipe: (val) => dispatch(setSwipeState(val))
+    toggleSwipe: (val) => dispatch(setSwipeState(val)),
 });
 
 export default connect(null, dispatchMapToProps)(MapOverlay);
