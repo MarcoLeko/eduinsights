@@ -5,8 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "cross-env nodemon -r dotenv/config ./src/index.ts --watch",
-    "build": "cd ../web && npm run build && cd ../backend && webpack",
-    "serve:bundle": "cross-env NODE_ENV=production node -r dotenv/config ./build/backend/app.js"
+    "build": "cd ../web && npm run build && cd ../backend && webpack"
   },
   "author": "Marco Leko",
   "license": "ISC",

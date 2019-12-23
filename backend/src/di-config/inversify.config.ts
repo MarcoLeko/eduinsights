@@ -25,6 +25,6 @@ dependencyContainer.bind<MongoDBClientProvider>(TYPES.MONGO_DB_CLIENT_PROVIDER)
     .toProvider((context) => () => context.container.get<MongoDBClient>(TYPES.MONGO_DB_CLIENT).connect());
 
 dependencyContainer.bind<Object>(TYPES.ENVIRONMENTAL_CONFIG).toFactory(
-    () => (context: interfaces.Context) => context ? CONFIG_DEVELOPMENT : CONFIG_PRODUCTION);
+    () => (context: interfaces.Context) => context ? CONFIG_PRODUCTION : CONFIG_DEVELOPMENT);
 
 export default dependencyContainer;
