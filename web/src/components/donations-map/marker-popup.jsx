@@ -14,6 +14,7 @@ import {DialogContent} from '@material-ui/core';
 const {Popup} = ReactLeaflet;
 
 const useStyles = makeStyles({
+    container: {width: '100%'},
     media: {
         height: 140,
     },
@@ -44,13 +45,15 @@ function MarkerPopup({open, setOpen}) {
             autoPan={false}
         >
             <Dialog
+                hideBackdrop
                 className={classes.dialog}
                 open={open}
+                PaperProps={{elevation:0}}
+                classes={{container: classes.container}}
                 maxWidth={"xs"}
                 TransitionComponent={Transition}
                 aria-describedby="modal-description"
                 onClose={handleClose.bind(this)}
-                keepMounted
             >
                 <DialogContent
                     classes={{root: classes.root}}
