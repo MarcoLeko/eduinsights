@@ -2,15 +2,15 @@ import 'reflect-metadata';
 import {inject, injectable, multiInject} from 'inversify';
 import Http from 'http';
 import express from 'express';
-import {joinDir} from '../utils/paths';
+import {resolveDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import MongoDBClient from '../db/mongo-db-client';
 import cors from 'cors';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
 import isProduction from '../utils/environment';
-import cookieParser = require('cookie-parser');
 import AbstractRoutes from './routes/abstract-routes';
+import cookieParser = require('cookie-parser');
 
 @injectable()
 export default class Express {
@@ -60,7 +60,7 @@ export default class Express {
                 maxAge: 365 * 24 * 60 * 60 * 1000, // defaults to one year
             }
         }));
-        this.app.use(express.static(joinDir(this.environmentalProps.PATH_TO_STATIC_FILES)));
+        this.app.use(express.static(resolveDir(this.environmentalProps.PATH_TO_STATIC_FILES)));
     }
 
     private assignRouteEndpoints() {

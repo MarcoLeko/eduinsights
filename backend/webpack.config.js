@@ -52,13 +52,18 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyPlugin([
       {from: '../web/build', to: 'web/build'},
+      {from: '.env'},
+      {from: '.ebextensions', to: '.ebextensions'},
+      {from: '.elasticbeanstalk', to: '.elasticbeanstalk'},
       {
         from: './package.json', transform(content) {
           const json = JSON.parse(content.toString());
           json.main = 'backend/app.js';
+          json.scripts.start = 'NODE_ENV=production node -r dotenv/config ./backend/app.js';
           return Buffer.from(JSON.stringify(json), 'utf8');
         },
       },
+      {from: './package-lock.json'},
     ]),
   ],
 };

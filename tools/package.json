@@ -4,13 +4,15 @@
   "description": "Contains useful scripts",
   "main": "index.js",
   "scripts": {
-    "insert:db": "node -r dotenv/config ./scripts/insert-documents.js dotenv_config_path=../backend/.env",
-    "generate:statistics": "node -r dotenv/config ./scripts/map-statistics-generator.js dotenv_config_path=../backend/.env",
-    "clean:up": "node ./scripts/clean-up-files.js"
+    "insert:db": "node -r dotenv/config ./scripts/db/insert-documents.js",
+    "generate:statistics": "node -r dotenv/config ./scripts/db/map-statistics-generator.js",
+    "clean:up": "node ./scripts/db/clean-up-files.js",
+    "pack:bundle": "node ./scripts/aws/pack-bundle.js"
   },
   "author": "Marco Leko",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^3.1.1",
     "chalk": "^2.4.2",
     "dotenv": "^8.2.0",
     "mongodb": "^3.3.3",
