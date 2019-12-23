@@ -21,8 +21,7 @@ const archiver = require('archiver');
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  log(chalk.blue.italic(
-      `... bundling ${packageJSON.name}@${packageJSON.version} into ZIP.`));
+  log('... bundling ' + chalk.bold.blue(`${packageJSON.name}@${packageJSON.version}`) + ' into ZIP.');
 
   // create a file to stream archive data to.
   const output = fs.createWriteStream(
@@ -34,8 +33,7 @@ const archiver = require('archiver');
   // listen for all archive data to be written
   // 'close' event is fired only when a file descriptor is involved
   output.on('close', function() {
-    log(chalk.green.bold(
-        `${formatBytes(archive.pointer())} total compressed.`));
+    log((`${chalk.bold.green(formatBytes(archive.pointer()))} total compressed.`));
   });
 
   // This event is fired when the data source is drained no matter what was the data source.
@@ -64,5 +62,5 @@ const archiver = require('archiver');
   archive.directory(path.join(__dirname, '../../..', '/backend', 'build'),
       false);
   archive.finalize();
-  log(chalk.green.bold('Successfully compressed bundle folder.'));
+  log(chalk('Successfully compressed bundle folder.'));
 })();
