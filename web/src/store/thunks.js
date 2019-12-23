@@ -16,12 +16,12 @@ export const isLoggedIn = async preloadedState => {
 };
 
 export async function getInternetAccessStatistics() {
-    const response = await fetch('http://localhost:8080/api/statistics/internet-access');
+    const response = await fetch('/api/statistics/internet-access');
     return handleResponse(response);
 }
 
 export async function registerUser(payload) {
-    const response = await fetch('http://localhost:8080/auth/register', {
+    const response = await fetch('/auth/register', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(payload),
@@ -34,7 +34,7 @@ export async function registerUser(payload) {
 }
 
 export async function loginUser(payload) {
-    const response = await fetch('http://localhost:8080/auth/login', {
+    const response = await fetch('/auth/login', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(payload),
@@ -47,18 +47,18 @@ export async function loginUser(payload) {
 }
 
 export async function logoutUser() {
-    const response = await fetch("http://localhost:8080/auth/logout", {method: 'DELETE', credentials: 'include'});
+    const response = await fetch("/auth/logout", {method: 'DELETE', credentials: 'include'});
     return handleResponse(response);
 }
 
 
 export async function checkLoggedIn() {
-    const response = await fetch('http://localhost:8080/auth/check/logged-in', {credentials: 'include'});
+    const response = await fetch('/auth/check/logged-in', {credentials: 'include'});
     return handleResponse(response);
 }
 
 export async function checkEmailToken(payload) {
-    const response = await fetch('http://localhost:8080/auth/validate-email-token', {
+    const response = await fetch('/auth/validate-email-token', {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(payload),
@@ -71,7 +71,7 @@ export async function checkEmailToken(payload) {
 }
 
 export async function sendNewValidationEmail(payload) {
-    const response = await fetch('http://localhost:8080/auth/send-validation-email', {
+    const response = await fetch('/auth/send-validation-email', {
         method: 'GET',
         credentials: 'include',
         body: JSON.stringify(payload),
