@@ -48,7 +48,7 @@ function MarkerPopup({open, setOpen}) {
                 hideBackdrop
                 className={classes.dialog}
                 open={open}
-                PaperProps={{elevation:0}}
+                PaperProps={{elevation:1}}
                 classes={{container: classes.container}}
                 maxWidth={"xs"}
                 TransitionComponent={Transition}

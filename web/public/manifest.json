@@ -10,16 +10,16 @@
     {
       "src": "favicon-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "72x72 76x76 114x114 120x120 144x144 152x152 180x180 192x192"
     },
     {
-      "src": "favicon-512.png",
+      "src": "favicon-310.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "310x310"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "rgba(0, 0, 0, 0.54)",
-  "background_color": "rgb(124,211,247)"
+  "theme_color": "#fff",
+  "background_color": "#fff"
 }

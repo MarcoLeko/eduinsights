@@ -6,8 +6,8 @@ const archiver = require('archiver');
 
 (function() {
   const log = console.log,
-      packageJSON = JSON.parse(fs.readFileSync(
-          path.join(__dirname, '../../..', '/backend', 'package.json')));
+      packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '../../..', '/backend', 'package.json'))),
+      appName = `${packageJSON.name}@${packageJSON.version}`;
 
   function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
@@ -21,10 +21,15 @@ const archiver = require('archiver');
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  log('... bundling ' + chalk.bold.blue(`${packageJSON.name}@${packageJSON.version}`) + ' into ZIP.');
+  // Delete previous zip files
+  const zipPattern = /^.*\.(zip)$/;
+  fs.readdirSync(__dirname).forEach(
+      (file) => zipPattern.test(file) && fs.unlinkSync(path.join(__dirname, file))
+  );
 
   // create a file to stream archive data to.
-  const output = fs.createWriteStream(path.join(__dirname, `${packageJSON.name}@${packageJSON.version}.zip`));
+  log('... bundling ' + chalk.bold.blue(`${appName}`) + ' into ZIP.');
+  const output = fs.createWriteStream(path.join(__dirname, `${appName}.zip`));
   const archive = archiver('zip', {zlib: {level: 9}});
 
   // listen for all archive data to be written

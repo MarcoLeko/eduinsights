@@ -32,9 +32,11 @@ tools/.env
 npm-debug.log*
 
 # db related files
-tools/scripts/temp
-tools/scripts/output
+tools/scripts/db/temp
+tools/scripts/db/output
 
+# environment zip bundle
+tools/scripts/aws/*.zip
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
