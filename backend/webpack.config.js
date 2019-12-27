@@ -62,7 +62,6 @@ module.exports = (argv) => {
       new CleanWebpackPlugin(),
       new webpack.DefinePlugin({'process.env.NODE_ENV': `"${argv}"`}),
       new CopyPlugin([
-        {from: '.env'},
         {from: './package-lock.json'},
         {from: '../web/build', to: 'web/build'},
         {
