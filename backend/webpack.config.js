@@ -65,8 +65,6 @@ module.exports = (argv) => {
         {from: '.env'},
         {from: './package-lock.json'},
         {from: '../web/build', to: 'web/build'},
-        {from: '.ebextensions', to: '.ebextensions'},
-        {from: '.elasticbeanstalk', to: '.elasticbeanstalk'},
         {
           from: './package.json', transform(content) {
             return transformPackageJSON(content, argv)
