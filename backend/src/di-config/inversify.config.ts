@@ -1,16 +1,16 @@
 import 'reflect-metadata';
-import {Container, interfaces} from 'inversify';
+import {Container} from 'inversify';
 import {TYPES} from './types';
 import Express from '../modules/server/express';
 import MongoDBClient from '../modules/db/mongo-db-client';
-import CredentialHelper from "../modules/db/credential-helper";
-import EmailCreator from "../modules/email-manager/email-creator";
-import CONFIG_DEVELOPMENT from '../../config/env-properties.development';
-import CONFIG_PRODUCTION from '../../config/env-properties.production';
+import CredentialHelper from '../modules/db/credential-helper';
+import EmailCreator from '../modules/email-manager/email-creator';
 import AuthRoutes from '../modules/server/routes/auth-routes';
 import ApiRoutes from '../modules/server/routes/api-routes';
 import AbstractRoutes from '../modules/server/routes/abstract-routes';
-import {MongoDBClientProvider} from "../types/types";
+import {MongoDBClientProvider} from '../types/types';
+import {Environment} from '../modules/utils/environment';
+import {CONFIG_DEVELOPMENT, CONFIG_LOCAL, CONFIG_PRODUCTION} from '../../config/env.properties';
 
 const dependencyContainer = new Container();
 
@@ -25,6 +25,17 @@ dependencyContainer.bind<MongoDBClientProvider>(TYPES.MONGO_DB_CLIENT_PROVIDER)
     .toProvider((context) => () => context.container.get<MongoDBClient>(TYPES.MONGO_DB_CLIENT).connect());
 
 dependencyContainer.bind<Object>(TYPES.ENVIRONMENTAL_CONFIG).toFactory(
-    () => (context: interfaces.Context) => context ? CONFIG_PRODUCTION : CONFIG_DEVELOPMENT);
+    () => (context: Environment) => {
+
+        switch (context) {
+            case Environment.development:
+                return CONFIG_DEVELOPMENT;
+            case Environment.production:
+                return CONFIG_PRODUCTION;
+            case Environment.local:
+            default:
+                return CONFIG_LOCAL;
+        }
+    });
 
 export default dependencyContainer;

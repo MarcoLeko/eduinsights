@@ -4,8 +4,9 @@
   "description": "Backend of help educate",
   "main": "index.ts",
   "scripts": {
-    "start": "cross-env nodemon -r dotenv/config ./src/index.ts --watch",
-    "build": "cd ../web && npm run build && cd ../backend && webpack"
+    "start": "cross-env NODE_ENV=local nodemon -r dotenv/config ./src/index.ts --watch",
+    "build:dev": "cd ../web && npm run build && cd ../backend && webpack --env development",
+    "build:prod": "cd ../web && npm run build && cd ../backend && webpack --env production"
   },
   "author": "Marco Leko",
   "license": "ISC",

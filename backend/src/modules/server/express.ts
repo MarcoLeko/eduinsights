@@ -8,14 +8,13 @@ import MongoDBClient from '../db/mongo-db-client';
 import cors from 'cors';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
-import isProduction from '../utils/environment';
+import environment from '../utils/environment';
 import AbstractRoutes from './routes/abstract-routes';
 import cookieParser = require('cookie-parser');
 
 @injectable()
 export default class Express {
 
-    private static readonly PORT: any = process.env.PORT;
     public app: express.Application;
     public server: Http.Server;
     private MongoStore = connectStore(session);
@@ -28,7 +27,7 @@ export default class Express {
     ) {
         this.app = express();
         this.server = new Http.Server(this.app);
-        this.environmentalProps = this.environmentFactory(isProduction);
+        this.environmentalProps = this.environmentFactory(environment);
     }
 
     public start() {
@@ -39,7 +38,7 @@ export default class Express {
     private async initServer() {
         this.createMiddleware();
         this.assignRouteEndpoints();
-        return new Promise((resolve) => this.server.listen(Express.PORT, () => resolve(`Server listens on Port ${Express.PORT}`)));
+        return new Promise((resolve) => this.server.listen(this.environmentalProps.PORT, () => resolve(`Server listens on Port ${this.environmentalProps.PORT}`)));
     }
 
     private createMiddleware() {
@@ -50,7 +49,7 @@ export default class Express {
         this.app.use(cors({credentials: true, origin: 'http://localhost:4200', optionsSuccessStatus: 200}));
         this.app.use(session({
             name: 'sid',
-            secret: process.env.SESSION_SECRET as string,
+            secret: this.environmentalProps.SESSION_SECRET as string,
             saveUninitialized: false,
             resave: false,
             store: new this.MongoStore({client: this.mongoDBClient.connectionMiddlewareProp, dbName: 'users'} as any),
