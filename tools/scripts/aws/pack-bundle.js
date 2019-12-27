@@ -24,11 +24,8 @@ const archiver = require('archiver');
   log('... bundling ' + chalk.bold.blue(`${packageJSON.name}@${packageJSON.version}`) + ' into ZIP.');
 
   // create a file to stream archive data to.
-  const output = fs.createWriteStream(
-      path.join(__dirname, `${packageJSON.name}@${packageJSON.version}.zip`));
-  const archive = archiver('zip', {
-    zlib: {level: 9}, // Sets the compression level.
-  });
+  const output = fs.createWriteStream(path.join(__dirname, `${packageJSON.name}@${packageJSON.version}.zip`));
+  const archive = archiver('zip', {zlib: {level: 9}});
 
   // listen for all archive data to be written
   // 'close' event is fired only when a file descriptor is involved

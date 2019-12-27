@@ -1,13 +1,22 @@
 import {MongoClient, ObjectId, UpdateWriteOpResult} from 'mongodb';
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
 import {User, UserValidationToken} from '../../types/types';
 import CredentialHelper from './credential-helper';
-import connectorInstance from "./mongo-connector-config";
+import connectorInstance from './mongo-connector-config';
+import {TYPES} from '../../di-config/types';
+import environment from '../utils/environment';
 
 @injectable()
 export default class MongoDBClient {
     private connectionMiddleware: MongoClient;
-    private mongoClient: MongoClient = connectorInstance();
+    private readonly mongoClient: MongoClient;
+
+    constructor(
+        @inject(TYPES.ENVIRONMENTAL_CONFIG) private environmentFactory: Function
+    ) {
+        const {DB_USERNAME, DB_PASSWORD} = this.environmentFactory(environment);
+        this.mongoClient = connectorInstance(DB_USERNAME, DB_PASSWORD);
+    }
 
     get connectionMiddlewareProp(): MongoClient {
         return this.mongoClient;
@@ -24,7 +33,7 @@ export default class MongoDBClient {
         return this.connectionMiddleware.db('organizations')
             .collection('charities')
             .find()
-            .toArray()
+            .toArray();
     }
 
     public getStatisticsCollection(params: string): Promise<unknown> {
@@ -100,7 +109,7 @@ export default class MongoDBClient {
             .split('.')[0];
         const user: any = await this.connectionMiddleware.db('users')
             .collection<User>('sessions')
-            .findOne({"_id": mappedId});
+            .findOne({'_id': mappedId});
         return user && uid === JSON.parse(user.session).user.uid;
     }
 
