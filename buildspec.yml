@@ -5,6 +5,7 @@ phases:
     commands:
       - cd backend && npm i && cd ..
       - cd web && npm i && cd ..
+      - cd tools && npm i && cd ..
   build:
     commands:
       - cd backend && npm run build:dev && cd ..
