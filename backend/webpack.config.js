@@ -20,11 +20,13 @@ const terserOptions = {
 };
 
 function transformPackageJSON(content, environment) {
+  // make package.json as small as possible -> removing unnecessary development dependencies
   const json = JSON.parse(content.toString());
   json.main = 'backend/app.js';
   json.scripts.start = `NODE_ENV=${environment} node -r dotenv/config ./backend/app.js`;
   delete json.scripts['build:dev'];
   delete json.scripts['build:prod'];
+  delete json.scripts['devDependencies'];
   return Buffer.from(JSON.stringify(json), 'utf8');
 }
 
@@ -64,11 +66,7 @@ module.exports = (argv) => {
       new CopyPlugin([
         {from: './package-lock.json'},
         {from: '../web/build', to: 'web/build'},
-        {
-          from: './package.json', transform(content) {
-            return transformPackageJSON(content, argv)
-          },
-        },
+        {from: './package.json', transform(content) {return transformPackageJSON(content, argv)}},
       ]),
     ],
   };
