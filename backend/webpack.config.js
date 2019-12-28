@@ -26,13 +26,11 @@ function transformPackageJSON(content, environment) {
   json.scripts.start = `NODE_ENV=${environment} node -r dotenv/config ./backend/app.js`;
   delete json.scripts['build:dev'];
   delete json.scripts['build:prod'];
-  delete json.scripts['devDependencies'];
+  delete json.devDependencies;
   return Buffer.from(JSON.stringify(json), 'utf8');
 }
 
 module.exports = (argv) => {
-
-  const isDevelopment = argv === 'development';
 
   return {
     entry: './src/index.ts',
@@ -67,11 +65,9 @@ module.exports = (argv) => {
       new webpack.DefinePlugin({'process.env.NODE_ENV': `"${argv}"`}),
       new CopyPlugin([
         {from: './package-lock.json'},
-        isDevelopment && {from: '../.elasticbeanstalk', to: '.elasticbeanstalk'},
-        isDevelopment && {from: '../.ebextensions', to: '.ebextensions'},
         {from: '../web/build', to: 'web/build'},
         {from: './package.json', transform(content) {return transformPackageJSON(content, argv)}},
-      ].filter(Boolean)),
+      ]),
     ],
   };
 };
