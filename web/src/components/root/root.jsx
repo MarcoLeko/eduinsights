@@ -4,89 +4,54 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import './root.scss';
 import SwipeableViews from 'react-swipeable-views';
-import Charities from "../charities/charities";
+import Charities from '../charities/charities';
 import clsx from 'clsx';
-import MapOverlay from "../donations-map/map-overlay";
-import {connect} from "react-redux";
-import ToggleableMenu from "./toggleable-menu";
-import SideBar, {drawerWidth} from './side-bar';
-import {makeStyles} from '@material-ui/core/styles';
-import LiveDonations from "../live-donations/live-donations";
-import {useScrollTrigger} from "@material-ui/core";
-import CastForEducationIcon from '@material-ui/icons/CastForEducation';
-import MapTwoToneIcon from '@material-ui/icons/MapTwoTone';
-import FeaturedPlayListTwoToneIcon from '@material-ui/icons/FeaturedPlayListTwoTone';
-import Hidden from "@material-ui/core/Hidden";
-import Box from "@material-ui/core/Box";
+import MapOverlay from '../donations-map/map-overlay';
+import {connect} from 'react-redux';
+import ToggleableMenu from './toggleable-menu';
+import SideBar from './side-bar';
+import LiveDonations from '../live-donations/live-donations';
+import {useScrollTrigger} from '@material-ui/core';
+import EducationIcon from '@material-ui/icons/CastForEducation';
+import CharitiesIcon from '@material-ui/icons/FeaturedPlayListOutlined';
+import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
+import MapIcon from '@material-ui/icons/MapRounded';
+import Poll from "@material-ui/icons/PollOutlined";
 
-const useStyles = makeStyles(theme => ({
-    appBar: {
-        transition: theme.transitions.create(['transform', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: 0,
-    },
-    appBarShift: {
-        transition: theme.transitions.create(['margin'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: -drawerWidth,
-    },
-    content: {
-        flexGrow: 1,
-        height: '100%',
-        width: '100%',
-        transition: theme.transitions.create(['margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        position: 'relative',
-        marginLeft: 0,
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: -drawerWidth,
-    },
-    indicator: {
-        height: 4
-    },
-    tabContent: {
-        flexDirection: 'row',
-        alignItems: 'initial'
-    },
-    iconSpacing: {
-        padding:  theme.spacing(0, 1)
-    }
-}));
+import {useRootStyles} from './root-styles';
 
 function Root({canSwipe}) {
-    const classes = useStyles();
+    const classes = useRootStyles();
     const trigger = useScrollTrigger({threshold: 48});
-    const [tabIndex, setTabIndex] = React.useState(0);
+    const [tabIndex, setTabIndex] = React.useState(1);
     const [sideBarOpen, setSideBarOpen] = React.useState(false);
 
-    function tabCreator(icon, text) {
+    function tab(icon, text, index, iconOnly) {
         return (
-            <Tab classes={{wrapper: classes.tabContent}} key={text} label={
-                <>
-                    <Hidden smDown>
-                        <Box component="div" className={classes.iconSpacing}>{icon}</Box>
-                    </Hidden>
-                    {text}
-                </>
-            }/>
+            <Tab
+                classes={{
+                    wrapper: classes.tabContent,
+                    root: iconOnly && classes.iconTab
+                }}
+                key={index}
+                label={
+                    <>
+                        <Hidden smDown={!iconOnly}>
+                            <Box component="div"
+                                 className={classes.iconSpacing}>{icon}</Box>
+                        </Hidden>
+                        {text}
+                    </>
+                }/>
         );
     }
 
     const labels = [
-        tabCreator(<CastForEducationIcon/>, 'Live'),
-        tabCreator(<MapTwoToneIcon/>, 'Map'),
-        tabCreator(<FeaturedPlayListTwoToneIcon/>, 'Charities')
+        tab(<MapIcon/>, undefined, 0, true),
+        tab(<EducationIcon/>, 'Live', 1),
+        tab(<CharitiesIcon/>, 'Charities', 2),
+        tab( <Poll/>, 'Statistics', 3)
     ];
 
     function handleChange(event, newValue) {
@@ -98,7 +63,7 @@ function Root({canSwipe}) {
     }
 
     function transitionY() {
-        if (tabIndex === 1) {
+        if (tabIndex === 0) {
             return 48;
         } else {
             if (!trigger) {
@@ -116,10 +81,9 @@ function Root({canSwipe}) {
                 color="default"
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: sideBarOpen,
-                }, "background")}
+                }, 'background')}
                 style={{
-                    boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2)',
-                    transform: `translateY(-${transitionY()}px)`
+                    transform: `translateY(-${transitionY()}px)`,
                 }}
             >
                 <ToggleableMenu
@@ -134,10 +98,7 @@ function Root({canSwipe}) {
                     indicatorColor="primary"
                     textColor="primary"
                     variant="fullWidth"
-                    classes={{
-                        indicator: classes.indicator
-                    }}
-                >
+                    classes={{indicator: classes.indicator}}>
                     {
                         labels.map((tab) => tab)
                     }
@@ -150,12 +111,12 @@ function Root({canSwipe}) {
                 index={tabIndex}
                 style={
                     Object.assign({
-                        height: '100%',
-                        width: '100%',
-                    }, tabIndex === 1 && {
+                            height: '100%',
+                            width: '100%',
+                        }, tabIndex === 0 && {
                         marginTop: '-48px',
-                        position: 'fixed'
-                    }
+                        position: 'fixed',
+                    },
                     )
                 }
                 containerStyle={{height: '100%', width: '100%'}}
@@ -163,9 +124,10 @@ function Root({canSwipe}) {
                 disabled={!canSwipe}
                 slideStyle={{overflow: 'hidden'}}
             >
-                <LiveDonations/>
                 <MapOverlay/>
+                <LiveDonations/>
                 <Charities/>
+                <div>{'Statistics'}</div>
             </SwipeableViews>
             <SideBar isOpen={sideBarOpen}/>
         </React.Fragment>
@@ -173,7 +135,7 @@ function Root({canSwipe}) {
 }
 
 const mapStateToProps = store => ({
-    canSwipe: store.uiReducer.canSwipe
+    canSwipe: store.uiReducer.canSwipe,
 });
 
 export default connect(mapStateToProps)(Root);
