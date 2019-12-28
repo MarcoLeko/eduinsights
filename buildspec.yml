@@ -5,10 +5,10 @@ phases:
     commands:
       - cd backend && npm i && cd ..
       - cd web && npm i && cd ..
-build:
-  commands:
-    - cd backend && npm run build:dev
-    - cd tools && npm run pack:bundle
+  build:
+    commands:
+      - cd backend && npm run build:dev && cd ..
+      - cd tools && npm run pack:bundle && cd ..
 artifacts:
   files:
     - tools/scripts/aws/help-educate@1.0.0.zip
