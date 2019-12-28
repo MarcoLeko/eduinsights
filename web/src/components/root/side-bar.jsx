@@ -8,15 +8,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {connect} from "react-redux";
 import muiBackground from "../shared/material-ui-background";
-import History from "@material-ui/icons/HistoryOutlined";
-import ExitToApp from "@material-ui/icons/ExitToAppOutlined";
+import History from "@material-ui/icons/History";
+import Logout from "@material-ui/icons/ExitToAppOutlined";
 import Settings from '@material-ui/icons/Settings';
-import Poll from "@material-ui/icons/PollOutlined";
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
 import {logOut} from "../../store/auth/auth-action-creators";
 import {useHistory} from "react-router-dom";
-import CodeIcon from '@material-ui/icons/Code';
+import Contribute from '@material-ui/icons/Code';
 import UserAvatar from "../shared/user-avatar";
 
 export const drawerWidth = 240;
@@ -61,17 +60,12 @@ function SideBar(props) {
             onClick: (e) => console.log(e)
         },
         {
-            icon: <Poll/>,
-            name: "Statistics",
-            onClick: (e) => console.log(e)
-        },
-        {
-            icon: <CodeIcon/>,
+            icon: <Contribute/>,
             name: 'Contribute',
             onClick: (e) => console.log(e)
         },
         {
-            icon: <ExitToApp/>,
+            icon: <Logout/>,
             name: 'Log out',
             onClick: handleLogout.bind(this)
         }

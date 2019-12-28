@@ -21,7 +21,7 @@ function VerifiedBadge({children}) {
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          badgeContent={<CheckCircleRoundedIcon fontSizeSmall style={{
+          badgeContent={<CheckCircleRoundedIcon style={{
             height: '.75em',
             width: '.75em',
           }}/>}
