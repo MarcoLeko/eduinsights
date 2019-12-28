@@ -32,6 +32,8 @@ function transformPackageJSON(content, environment) {
 
 module.exports = (argv) => {
 
+  const isDevelopment = argv === 'development';
+
   return {
     entry: './src/index.ts',
     mode: 'production',
@@ -65,9 +67,11 @@ module.exports = (argv) => {
       new webpack.DefinePlugin({'process.env.NODE_ENV': `"${argv}"`}),
       new CopyPlugin([
         {from: './package-lock.json'},
+        isDevelopment && {from: '../.elasticbeanstalk', to: '.elasticbeanstalk'},
+        isDevelopment && {from: '../.ebextensions', to: '.ebextensions'},
         {from: '../web/build', to: 'web/build'},
         {from: './package.json', transform(content) {return transformPackageJSON(content, argv)}},
-      ]),
+      ].filter(Boolean)),
     ],
   };
 };
