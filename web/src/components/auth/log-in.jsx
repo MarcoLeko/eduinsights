@@ -83,7 +83,7 @@ function LogIn({logIn}) {
             </Box>
             <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
-                    <Typography variant="h5" color="primary" align="center" gutterBottom>Help-educate-dev.com</Typography>
+                    <Typography variant="h5" color="primary" align="center" gutterBottom>Help-educate.com</Typography>
                     <div className={classes.avatar}>
                         <Logo width={40}/>
                     </div>
