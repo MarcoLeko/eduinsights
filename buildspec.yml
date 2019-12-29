@@ -2,6 +2,8 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 10
     commands:
       - cd backend && npm i && cd ..
       - cd web && npm i && cd ..
@@ -11,8 +13,7 @@ phases:
       - cd backend && npm run build:dev && cd ..
       - cd tools && npm run pack:bundle && cd ..
 artifacts:
-  files:
-    - help-educate@1.0.0.zip
+  name: help-educate@1.0.0.zip
   discard-paths: yes
   base-directory: tools/scripts/aws
 
