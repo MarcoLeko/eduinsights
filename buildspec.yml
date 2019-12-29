@@ -12,7 +12,7 @@ phases:
       - cd tools && npm run pack:bundle && cd ..
 artifacts:
   files:
-    - tools/scripts/aws/help-educate@1.0.0.zip
+    - help-educate@1.0.0.zip
   discard-paths: yes
   base-directory: tools/scripts/aws
 
