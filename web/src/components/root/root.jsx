@@ -20,6 +20,7 @@ import MapIcon from '@material-ui/icons/MapRounded';
 import Poll from "@material-ui/icons/PollOutlined";
 
 import {useRootStyles} from './root-styles';
+import DonationStatistics from '../statistics/donation-statistics';
 
 function Root({canSwipe}) {
     const classes = useRootStyles();
@@ -110,14 +111,8 @@ function Root({canSwipe}) {
                 })}
                 index={tabIndex}
                 style={
-                    Object.assign({
-                            height: '100%',
-                            width: '100%',
-                        }, tabIndex === 0 && {
-                        marginTop: '-48px',
-                        position: 'fixed',
-                    },
-                    )
+                    Object.assign({height: '100%', width: '100%',},
+                        tabIndex === 0 && {marginTop: '-48px',position: 'fixed'})
                 }
                 containerStyle={{height: '100%', width: '100%'}}
                 onChangeIndex={handleChangeIndex}
@@ -127,7 +122,7 @@ function Root({canSwipe}) {
                 <MapOverlay/>
                 <LiveDonations/>
                 <Charities/>
-                <div>{'Statistics'}</div>
+                <DonationStatistics />
             </SwipeableViews>
             <SideBar isOpen={sideBarOpen}/>
         </React.Fragment>
