@@ -60,6 +60,7 @@ export default class Express {
                 maxAge: 365 * 24 * 60 * 60 * 1000, // defaults to one year
             }
         }));
+
         this.app.use(express.static(resolveDir(this.environmentalProps.PATH_TO_STATIC_FILES)));
     }
 
