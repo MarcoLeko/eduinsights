@@ -13,4 +13,5 @@ phases:
 artifacts:
   files:
     - tools/scripts/aws/help-educate@1.0.0.zip
+  base-directory: ./tools/scripts/aws/help-educate@1.0.0
 
