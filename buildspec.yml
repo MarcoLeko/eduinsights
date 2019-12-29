@@ -13,11 +13,11 @@ phases:
       - cd backend && npm run build:dev && cd ..
       - cd tools && npm run pack:bundle && cd ..
   post_build:
-    commans:
+    commands:
       - echo $CODEBUILD_SRC_DIR
 artifacts:
   files:
-    - '**/*'
+    - '**/help-educate@*.zip'
   discard-paths: yes
   base-directory: tools/scripts/aws
 
