@@ -16,7 +16,8 @@ phases:
     commands:
       - echo $CODEBUILD_SRC_DIR
 artifacts:
-  name: help-educate@1.0.0.zip
+  files:
+    - '**/help-educate@*'
   discard-paths: yes
   base-directory: tools/scripts/aws
 
