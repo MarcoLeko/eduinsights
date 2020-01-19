@@ -1,4 +1,4 @@
-export const isLoggedIn = async preloadedState => {
+export const getUserData = async preloadedState => {
     try {
         const response = await checkLoggedIn();
 
