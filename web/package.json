@@ -9,7 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.34",
     "clsx": "^1.0.4",
     "leaflet": "^1.5.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hook-form": "^3.28.11",

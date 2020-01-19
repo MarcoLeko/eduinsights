@@ -4,8 +4,8 @@
   "description": "Contains useful scripts",
   "main": "index.js",
   "scripts": {
-    "insert:db": "node -r dotenv/config ./scripts/db/insert-documents.js",
-    "generate:statistics": "node -r dotenv/config ./scripts/db/map-statistics-generator.js",
+    "insert:db": "node -r dotenv/config ./scripts/db/insert-documents.js dotenv_config_path=../.env",
+    "generate:statistics": "node -r dotenv/config ./scripts/db/map-statistics-generator.js dotenv_config_path=../.env",
     "clean:up": "node ./scripts/db/clean-up-files.js",
     "pack:bundle": "node ./scripts/aws/pack-bundle.js",
     "deploy:prod": "cd ../backend && npm run build:prod && cd ../tools && npm run pack:bundle && cd .. && eb deploy help-educate-prod"
