@@ -24,9 +24,8 @@ web/build
 .env.production.local
 
 # environmental properties
-backend/.env
 web/.env
-tools/.env
+.env
 
 # packaging
 npm-debug.log*
