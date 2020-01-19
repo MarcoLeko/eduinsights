@@ -1,22 +1,11 @@
-.App {
-  text-align: center;
+@import "../../styles";
+
+// workaround where the tab height of the current tab is applied to the current active tab;
+// The following two selector styles will fix this
+.react-swipeable-view-container > div[aria-hidden="false"] {
+  height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
+.react-swipeable-view-container > div[aria-hidden="true"] {
+  height: 0;
 }

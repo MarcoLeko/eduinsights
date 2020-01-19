@@ -5,7 +5,6 @@ import {ReactComponent as Logo} from "../../assets/logo.svg";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import './root.scss';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";

@@ -1,4 +1,4 @@
-import Home from "../root/root";
+import Home from "../app/app";
 import {connect} from "react-redux";
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
