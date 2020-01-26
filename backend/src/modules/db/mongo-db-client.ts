@@ -1,4 +1,4 @@
-import {MongoClient, ObjectId, UpdateWriteOpResult} from 'mongodb';
+import {FilterQuery, MongoClient, ObjectId, UpdateWriteOpResult} from 'mongodb';
 import {inject, injectable} from 'inversify';
 import {User, UserValidationToken} from '../../types/types';
 import CredentialHelper from './credential-helper';
@@ -57,7 +57,7 @@ export default class MongoDBClient {
         return this.connectionMiddleware
             .db('users')
             .collection<User>('email')
-            .insertOne({firstName, lastName, avatarColor, email, emailVerified, password: passwordHashed});
+            .insertOne({firstName, lastName, avatarColor, email, emailVerified, password: passwordHashed} as User);
     }
 
     public async addEmailVerificationToken({uid, token, expireAt}: Partial<UserValidationToken>) {
@@ -105,11 +105,11 @@ export default class MongoDBClient {
         // An mongoDB-Id is a 12 Bytes long string - The session cookie of a 24 Bytes string
         // A session id is looking like: s%3Avvui1vsldkCor7CE-E0aU8Fmpg_z-f4c.3c43w5lavEdUmfjvzkubCXxy7VctVp4XaBhs7sj11%2F0
         // A db-id is composed of the letter between s:(urlEncoded: s%3A) - string - .
-        const mappedId = sid.replace(decodeURIComponent('s%3A'), '')
-            .split('.')[0];
+        const mappedId: unknown = sid.replace(decodeURIComponent('s%3A'), '').split('.')[0];
         const user: any = await this.connectionMiddleware.db('users')
             .collection<User>('sessions')
-            .findOne({'_id': mappedId});
+            .findOne({'_id': mappedId as ObjectId});
+
         return user && uid === JSON.parse(user.session).user.uid;
     }
 

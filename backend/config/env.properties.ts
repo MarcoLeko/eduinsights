@@ -12,10 +12,10 @@ const CONFIG_DEVELOPMENT = {
     PATH_TO_STATIC_FILES: 'web/build',
     SECURE_COOKIE: true,
     PORT: process.env.PORT,
-    DB_USERNAME: process.env.DB_USERNAME_DEV,
-    DB_PASSWORD: process.env.DB_PASSWORD_DEV,
-    SESSION_SECRET: process.env.SESSION_SECRET_DEV,
-    SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY_DEV
+    DB_USERNAME: process.env.DB_USERNAME,
+    DB_PASSWORD: process.env.DB_PASSWORD,
+    SESSION_SECRET: process.env.SESSION_SECRET,
+    SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY
 };
 
 const CONFIG_LOCAL = Object.assign({}, CONFIG_DEVELOPMENT, {
