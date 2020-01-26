@@ -1,7 +1,8 @@
 import MongoDBClient from "../modules/db/mongo-db-client";
+import {ObjectId} from 'bson';
 
 export interface User extends UserCredentials {
-    _id: string,
+    _id: ObjectId,
     firstName: string,
     lastName: string,
     avatarColor: string,
