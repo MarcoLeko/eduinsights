@@ -1,0 +1,22 @@
+branch-defaults:
+  master:
+    environment: help-educate-prod
+deploy:
+  artifact: ./tools/scripts/aws/help-educate@1.0.0.zip
+environment-defaults:
+  help-educate-prod:
+    branch: null
+    repository: null
+global:
+  application_name: help-educate-app
+  default_ec2_keyname: null
+  default_platform: arn:aws:elasticbeanstalk:eu-central-1::platform/Node.js running
+    on 64bit Amazon Linux/4.12.0
+  default_region: eu-central-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  sc: git
+  workspace_type: Application
