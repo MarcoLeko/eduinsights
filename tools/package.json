@@ -8,7 +8,7 @@
     "generate:statistics": "node -r dotenv/config ./scripts/db/map-statistics-generator.js dotenv_config_path=../.env",
     "clean:up": "node ./scripts/db/clean-up-files.js",
     "pack:bundle": "node ./scripts/aws/pack-bundle.js",
-    "deploy": "cd ../backend && npm run build:prod && cd ../tools && npm run pack:bundle && node ./scripts/aws/modify-deploy-script.js cd .. && eb deploy --profile help-educate-user"
+    "deploy": "cd ../backend && npm run build:prod && cd ../tools && npm run pack:bundle && node ./scripts/aws/modify-deploy-script.js && cd .. && eb deploy --profile eb-cli"
   },
   "author": "Marco Leko",
   "license": "ISC",

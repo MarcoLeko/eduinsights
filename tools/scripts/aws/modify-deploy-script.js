@@ -12,5 +12,5 @@ const chalk = require('chalk');
 
   log(`Applying app version ${chalk.bold.blue(appName)} for deployment.`);
 
-  fs.writeFileSync(pathToConfigurationFile, configurationFile.replace(/^.*artifact.*$/mg, `artifact: ${appName}`));
+  fs.writeFileSync(pathToConfigurationFile, configurationFile.replace(/^.*artifact.*$/mg, `  artifact: ./tools/scripts/aws/${appName}.zip`));
 })();
