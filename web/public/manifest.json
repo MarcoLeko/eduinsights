@@ -1,6 +1,6 @@
 {
   "short_name": "help-educate",
-  "name": "Help-educate.com",
+  "name": "help-educate.net",
   "icons": [
     {
       "src": "favicon.png",
@@ -18,8 +18,8 @@
       "sizes": "310x310"
     }
   ],
-  "start_url": ".",
+  "start_url": "/?utm_source=homescreen",
   "display": "standalone",
-  "theme_color": "#fff",
+  "theme_color": "#A8F7BC",
   "background_color": "#fff"
 }

@@ -8,6 +8,7 @@ import {MongoDBClientProvider} from "./types/types";
  * First a connection to the mongo database is created
  * Afterwards the express server starts
  */
+
 const connect = dependencyContainer.get<MongoDBClientProvider>(TYPES.MONGO_DB_CLIENT_PROVIDER);
 const app = dependencyContainer.get<Express>(TYPES.EXPRESS);
 

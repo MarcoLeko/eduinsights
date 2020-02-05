@@ -67,28 +67,23 @@ export default class AuthRoutes extends AbstractRoutes {
 
     private async register(request: any, response: any) {
         const {firstName, lastName, avatarColor, email, password}: User = request.body;
-        this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User)
-            .then(({insertedId}: any) => {
-                Object.assign(request.session, {user: {uid: insertedId}});
-                response.status(200)
-                    .send({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
-                return insertedId;
-            })
-            .catch(() => {
+        try {
+            const {insertedId}: any = await this.mongoDBClient.addUser({firstName, lastName, avatarColor, email, password, emailVerified: false} as User)
+            Object.assign(request.session, {user: {uid: insertedId}});
+            response.status(200).send({isAuthenticated: Boolean(insertedId), firstName, lastName, avatarColor, email, emailVerified: false});
+
+            const {expireAt, token}: Partial<UserValidationToken> = await this.emailCreator.sendEmailVerificationLink({email, firstName});
+            await this.mongoDBClient.addEmailVerificationToken({uid: insertedId as string, token, expireAt});
+        } catch (e) {
+            // duplicate key error
+            if(e.code === 11000) {
                 response.statusMessage = 'User already registered.';
-                response.status(401)
-                    .end();
-            })
-            .then(async (uid: string) => {
-                const {expireAt, token}: Partial<UserValidationToken> = await this.emailCreator.sendEmailVerificationLink({email, firstName});
-                return this.mongoDBClient.addEmailVerificationToken({uid, token, expireAt} as UserValidationToken);
-            })
-            .catch((e: Error) => {
-                console.log(e);
+                response.status(401).end();
+            } else {
                 response.statusMessage = 'Could not send verification Email.';
-                response.status(407)
-                    .end();
-            });
+                response.status(407).end();
+            }
+        }
     }
 
     private async validateToken(request: any, response: any) {
