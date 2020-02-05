@@ -7,7 +7,7 @@ import environment from '../utils/environment';
 @injectable()
 export default class EmailCreator {
 
-    private static EMAIL_FROM = 'no-reply@help-educate.com';
+    private static EMAIL_FROM = 'no-reply@help-educate.net';
     private static TEMPLATE_ID_EMAIL_VERIFY = 'd-8ca7682e287d47428c351e7854d98567';
 
     constructor(
