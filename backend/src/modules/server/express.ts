@@ -6,7 +6,6 @@ import {resolveDir} from '../utils/paths';
 import {TYPES} from '../../di-config/types';
 import MongoDBClient from '../db/mongo-db-client';
 import cors from 'cors';
-import path from 'path';
 import session from 'express-session';
 import connectStore from 'connect-mongo';
 import environment from '../utils/environment';
