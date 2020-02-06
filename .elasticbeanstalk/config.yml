@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: help-educate-prod
+    environment: help-educate-production
 deploy:
   artifact: ./tools/scripts/aws/help-educate@1.0.0.zip
 environment-defaults:
