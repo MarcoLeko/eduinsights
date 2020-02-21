@@ -1,6 +1,6 @@
 const CONFIG_PRODUCTION = {
     PATH_TO_STATIC_FILES: 'web/build',
-    SECURE_COOKIE: true,
+    SECURE_COOKIE: false, // TODO: secure the cookie in eb for https
     PORT: process.env.PORT,
     DB_USERNAME: process.env.DB_USERNAME,
     DB_PASSWORD: process.env.DB_PASSWORD,
@@ -10,7 +10,7 @@ const CONFIG_PRODUCTION = {
 
 const CONFIG_DEVELOPMENT = {
     PATH_TO_STATIC_FILES: 'web/build',
-    SECURE_COOKIE: true,
+    SECURE_COOKIE: false,
     PORT: process.env.PORT,
     DB_USERNAME: process.env.DB_USERNAME,
     DB_PASSWORD: process.env.DB_PASSWORD,

@@ -46,7 +46,7 @@ export default class Express {
         this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
-        this.app.use(cors({credentials: true, origin: 'http://localhost:4200', optionsSuccessStatus: 200}));
+        this.app.use(cors({credentials: true, optionsSuccessStatus: 200}));
         this.app.use(session({
             name: 'sid',
             secret: this.environmentalProps.SESSION_SECRET as string,
