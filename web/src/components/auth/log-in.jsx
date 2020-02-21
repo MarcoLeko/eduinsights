@@ -83,11 +83,10 @@ function LogIn({logIn}) {
             </Box>
             <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
-                    <Typography variant="h5" color="primary" align="center" gutterBottom>help-educate.net</Typography>
                     <div className={classes.avatar}>
-                        <Logo width={40}/>
+                        <Logo width={100}/>
                     </div>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h4">
                         Sign in
                     </Typography>
                     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>

@@ -77,9 +77,9 @@ function SignUp({signUp}) {
             <CssBaseline/>
             <div className={classes.paper}>
                 <div className={classes.avatar}>
-                    <Logo width={40}/>
+                    <Logo width={100}/>
                 </div>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h4">
                     Sign up
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
