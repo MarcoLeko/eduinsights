@@ -121,6 +121,7 @@ function MapOverlay({toggleSwipe}) {
             ref={mapRef}
             center={[45.000, 10.000]}
             zoom={3}
+            tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
             onPopupopen={centerMapView.bind(this)}
             zoomControl={false}
             onMovestart={() => toggleSwipe(false)}
