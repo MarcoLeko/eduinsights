@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import {ReactComponent as Logo} from '../../assets/logo.svg'
-import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import {Link as RouterLink} from 'react-router-dom';
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         background: muiBackground,
     },
     paper: {
-        margin: theme.spacing(8, 4),
+        padding: theme.spacing(0, 4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -81,14 +80,11 @@ function LogIn({logIn}) {
                     </div>
                 </div>
             </Box>
-            <Grid item xs={12} sm={5} md={6} component={Paper} elevation={6} square>
+            <Grid container alignItems="center" justify="center" item xs={12} sm={5} md={6} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <div className={classes.avatar}>
-                        <Logo width={100}/>
+                        <Logo width={110}/>
                     </div>
-                    <Typography component="h1" variant="h4">
-                        Sign in
-                    </Typography>
                     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
                         <TextField
                             variant="outlined"
@@ -149,7 +145,7 @@ function LogIn({logIn}) {
                                 </Link>
                             </Grid>
                         </Grid>
-                        <Box mt={5}>
+                        <Box mt={4} mb={2}>
                             <Copyright/>
                         </Box>
                     </form>

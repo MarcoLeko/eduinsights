@@ -1,4 +1,5 @@
 const CONFIG_PRODUCTION = {
+    env: process.env.NODE_ENV,
     PATH_TO_STATIC_FILES: 'web/build',
     SECURE_COOKIE: false, // TODO: secure the cookie in eb for https
     PORT: process.env.PORT,
@@ -9,6 +10,7 @@ const CONFIG_PRODUCTION = {
 };
 
 const CONFIG_DEVELOPMENT = {
+    env: process.env.NODE_ENV,
     PATH_TO_STATIC_FILES: 'web/build',
     SECURE_COOKIE: false,
     PORT: process.env.PORT,
@@ -18,9 +20,9 @@ const CONFIG_DEVELOPMENT = {
     SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY
 };
 
-const CONFIG_LOCAL = Object.assign({}, CONFIG_DEVELOPMENT, {
-    PATH_TO_STATIC_FILES: '../web/build',
-    SECURE_COOKIE: false
+const CONFIG_LOCAL = Object.assign(CONFIG_DEVELOPMENT, {
+    env: process.env.NODE_ENV,
+    PATH_TO_STATIC_FILES: '../web/build'
 });
 
 export {CONFIG_PRODUCTION, CONFIG_DEVELOPMENT, CONFIG_LOCAL};
