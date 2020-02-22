@@ -21,5 +21,6 @@
   "start_url": "/?utm_source=homescreen",
   "display": "standalone",
   "theme_color": "#A8F7BC",
-  "background_color": "#fff"
+  "background_color": "#fff",
+  "orientation": "portrait"
 }
