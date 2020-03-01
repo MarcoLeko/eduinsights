@@ -15,6 +15,7 @@ web/build
 
 # ide
 /.idea
+/.vscode
 
 # misc
 .DS_Store

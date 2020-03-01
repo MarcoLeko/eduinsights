@@ -16,6 +16,7 @@ import useForm from "react-hook-form";
 import { emailRegex } from "./auth-utils";
 import { connect } from "react-redux";
 import { signUp } from "../../store/auth/auth-action-creators";
+import { Typography, Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -39,9 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LogInLink = React.forwardRef((props, ref) => (
-  <RouterLink innerRef={ref} {...props} />
-));
+const LogInLink = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
 function SignUp({ signUp }) {
   const classes = useStyles();
@@ -78,22 +77,18 @@ function SignUp({ signUp }) {
   }
 
   return (
-    <Grid
-      container
-      component="main"
-      className={classes.main}
-      alignItems="center"
-    >
+    <Grid container component="main" className={classes.main} alignItems="center">
       <CssBaseline />
       <div className={classes.paper}>
+        <Hidden mdDown>
+          <Typography component="h1" variant="h4" gutterBottom>
+            Help-educate.net
+          </Typography>
+        </Hidden>
         <div className={classes.avatar}>
           <Logo width={110} />
         </div>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -204,12 +199,9 @@ function SignUp({ signUp }) {
                 id="passwordConfirm"
                 error={!!errors.passwordConfirm}
                 inputRef={register({
-                  validate: value =>
-                    value === watch("password") || "The passwords do not match." // value is from password2 and watch will return value from password1
+                  validate: value => value === watch("password") || "The passwords do not match." // value is from password2 and watch will return value from password1
                 })}
-                helperText={
-                  !!errors.passwordConfirm && errors.passwordConfirm.message
-                }
+                helperText={!!errors.passwordConfirm && errors.passwordConfirm.message}
                 type={showPassword ? "text" : "password"}
                 autoComplete="off"
               />
