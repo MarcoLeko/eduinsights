@@ -10,7 +10,7 @@ import ApiRoutes from "../modules/server/routes/api-routes";
 import AbstractRoutes from "../modules/server/routes/abstract-routes";
 import { MongoDBClientProvider } from "../types/types";
 import { Environment } from "../modules/utils/environment";
-import { CONFIG_DEVELOPMENT, CONFIG_LOCAL, CONFIG_PRODUCTION } from "../../config/env.properties";
+import { CONFIG_LOCAL, CONFIG_PRODUCTION } from "../../config/env.properties";
 
 const dependencyContainer = new Container();
 
