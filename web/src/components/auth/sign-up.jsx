@@ -77,7 +77,7 @@ function SignUp({ signUp }) {
   }
 
   return (
-    <Grid container component="main" className={classes.main} alignItems="center">
+    <Grid container component="main" className={classes.main} alignItems="center" justify="center">
       <CssBaseline />
       <div className={classes.paper}>
         <Hidden mdDown>
