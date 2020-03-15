@@ -7,7 +7,9 @@ import thunk from "redux-thunk";
 
 const loggerMiddleware = createLogger();
 const rootReducer = combineReducers({uiReducer, authReducer, alertReducer});
-
+ 
 export default (preloadedState) => (
-    createStore(rootReducer, preloadedState, applyMiddleware(thunk, loggerMiddleware))
+    createStore(rootReducer, preloadedState, applyMiddleware(...[thunk, 
+        process.env.NODE_ENV === 'development' && loggerMiddleware
+    ].filter(Boolean)))
 );

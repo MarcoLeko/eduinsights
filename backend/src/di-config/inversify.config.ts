@@ -45,6 +45,6 @@ dependencyContainer
 
 dependencyContainer
   .bind<Object>(TYPES.ENVIRONMENTAL_CONFIG)
-  .toFactory(() => (context: Environment) => (context === Environment.production ? CONFIG_PRODUCTION : CONFIG_LOCAL));
+  .toFactory(() => (context: Environment) => context === Environment.production ? CONFIG_PRODUCTION : CONFIG_LOCAL);
 
 export default dependencyContainer;
