@@ -9,7 +9,7 @@ const CONFIG_PRODUCTION = {
     SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY
 };
 
-const CONFIG_LOCAL = Object.assign(CONFIG_PRODUCTION, {
+const CONFIG_LOCAL = Object.assign({}, CONFIG_PRODUCTION, {
     env: process.env.NODE_ENV,
     PATH_TO_STATIC_FILES: '../web/build'
 });
