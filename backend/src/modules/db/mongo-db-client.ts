@@ -31,19 +31,11 @@ export default class MongoDBClient {
       );
   }
 
-  public getCollectionOfCharities() {
-    return this.connectionMiddleware
-      .db("organizations")
-      .collection("charities")
-      .find()
-      .toArray();
-  }
-
   public getStatisticsCollection(params: string): Promise<unknown> {
     switch (params) {
       case "internet-access":
         const cursor = this.connectionMiddleware
-          .db("map-statistics")
+          .db("statistics")
           .collection("internet-access")
           .find({}, { projection: { type: true, features: true, _id: false } });
 
