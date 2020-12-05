@@ -1,14 +1,14 @@
 branch-defaults:
   master:
-    environment: help-educate-production
+    environment: eduinsights-production
 deploy:
-  artifact: ./tools/scripts/aws/help-educate@1.0.0.zip
+  artifact: ./tools/scripts/aws/eduinsights@1.0.0.zip
 environment-defaults:
-  help-educate-prod:
+  eduinsights-prod:
     branch: null
     repository: null
 global:
-  application_name: help-educate-app
+  application_name: eduinsights-app
   default_ec2_keyname: null
   default_platform: arn:aws:elasticbeanstalk:eu-central-1::platform/Node.js running
     on 64bit Amazon Linux/4.13.1
@@ -17,6 +17,6 @@ global:
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: help-educate
+  profile: eduinsights
   sc: git
   workspace_type: Application

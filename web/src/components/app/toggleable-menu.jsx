@@ -1,75 +1,69 @@
 import * as React from "react";
-import {useState} from "react";
-import {Toolbar} from "@material-ui/core";
-import {ReactComponent as Logo} from "../../assets/logo.svg";
+import { Hidden, Toolbar } from "@material-ui/core";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
+import appStore from "../../assets/app-store.png";
+import googlePlay from "../../assets/google-play.png";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {emphasize} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import UserAvatar from "../shared/user-avatar";
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        minHeight: 48,
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 4px'
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: 48,
+    display: "flex",
+    alignItems: "center",
+    padding: "0 4px",
+  },
+  logoPanel: {
+    alignItems: "center",
+    flex: 1,
+    display: "flex",
+    textDecoration: "none",
+  },
+  logo: {
+    height: 48,
+    width: 48,
+    marginRight: theme.spacing(1),
+  },
+  divider: {
+    height: 30,
+    margin: 4,
+    width: 2,
+  },
+  actionButtons: {
+    display: "flex",
+    alignItems: "center",
+    "& > *": {
+      margin: theme.spacing(0, 1),
     },
-    logoPanel: {
-        alignItems: 'center',
-        flex: 1,
-        display: 'flex',
-        textDecoration: 'none'
-    },
-    logo: {
-        width: 40,
-        marginRight: theme.spacing(1)
-    },
-    divider: {
-        height: 30,
-        margin: 4,
-        width: 2
-    },
-    actionButtons: {
-        display: 'flex',
-        alignItems: 'center',
-        '& > *': {
-            margin: theme.spacing(0, 1),
-        },
-    }
+  },
 }));
 
-function ToggleableMenu({isOpen, toggle, firstName, lastName, avatarColor}) {
-    const classes = useStyles();
-    const [logoName] = useState(firstName.charAt(0).concat(lastName.charAt(0)).toLocaleUpperCase());
+function ToggleableMenu({ isOpen, toggle }) {
+  const classes = useStyles();
 
-    return (
-        <Toolbar className={classes.root}>
-            <Link to="/" className={classes.logoPanel}>
-                <Logo className={classes.logo}/>
-                <Typography variant={"h6"} color="primary">Help educate</Typography>
-            </Link>
-            <div className={classes.actionButtons}>
-                <UserAvatar style={{
-                    backgroundColor: avatarColor,
-                    color: emphasize(avatarColor, 1)
-                }}>{logoName}</UserAvatar>
-                <IconButton onClick={toggle.bind(this, !isOpen)}>
-                    {isOpen ? <ChevronRightIcon/> : <MoreVertical/>}
-
-                </IconButton>
-            </div>
-        </Toolbar>
-    )
+  return (
+    <Toolbar className={classes.root}>
+      <Link to="/" className={classes.logoPanel}>
+        <Logo className={classes.logo} />
+        <Typography variant={"h6"} color="primary">
+          Eduinsights
+        </Typography>
+      </Link>
+      <div className={classes.actionButtons}>
+        <Hidden xsDown>
+          <img src={appStore} height={40} alt="Get it on app store" />
+          <img src={googlePlay} height={40} alt="Get it on google play" />
+        </Hidden>
+        <IconButton onClick={toggle.bind(this, !isOpen)}>
+          {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
+        </IconButton>
+      </div>
+    </Toolbar>
+  );
 }
 
-const mapStateToProps = store => ({
-    firstName: store.authReducer.firstName,
-    lastName: store.authReducer.lastName,
-    avatarColor: store.authReducer.avatarColor
-});
-export default connect(mapStateToProps)(ToggleableMenu);
+export default ToggleableMenu;

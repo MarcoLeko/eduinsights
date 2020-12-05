@@ -8,7 +8,6 @@ export const useAppStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
-    boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2)',
   },
   appBarShift: {
     transition: theme.transitions.create(['margin'], {
@@ -44,11 +43,5 @@ export const useAppStyles = makeStyles(theme => ({
   },
   iconSpacing: {
     padding: theme.spacing(0, 1),
-  },
-  iconTab: {
-    minWidth: 60,
-    flexGrow: .25,
-    flexBasis: 0,
-    flexShrink: .25
   },
 }));
