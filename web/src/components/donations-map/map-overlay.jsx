@@ -32,7 +32,15 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
-  const [mapMode, setMapMode] = useState("light");
+  const [mapMode, setMapMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      setMapMode(e.matches ? "dark" : "light");
+    });
 
   const dispatch = useDispatch();
 

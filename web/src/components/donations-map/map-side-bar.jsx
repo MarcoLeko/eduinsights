@@ -130,7 +130,7 @@ function MapSideBar({ toggleMapMode, mapMode }) {
                 color="primary"
               />
             }
-            label="Switch to a dark mode"
+            label={`Switch to ${mapMode === "light" ? "dark" : "light"} mode`}
           />
         </div>
       </Drawer>
