@@ -1,44 +1,46 @@
-import {useLeaflet} from "react-leaflet";
-import {memo, useEffect} from 'react';
+import { useLeaflet } from "react-leaflet";
+import { memo, useEffect } from "react";
 import L from "leaflet";
-import {getColor} from "./map-overlay";
+import { getColor } from "./map-overlay";
 
 /**
  * @return {null}
  */
 function MapLegend() {
+  const { map } = useLeaflet();
+  const legend = L.control({ position: "bottomright" });
 
-    const {map} = useLeaflet();
-    const legend = L.control({position: "bottomright"});
+  useEffect(() => {
+    const grades = [100, 90, 75, 50, 25];
+    const labels = [];
 
-    useEffect(() => {
-        const grades = [100, 90, 75, 50, 25];
-        const labels = [];
+    legend.onAdd = () => {
+      const div = L.DomUtil.create("div", "info legend");
 
-        legend.onAdd = () => {
-            const div = L.DomUtil.create("div", "info legend");
+      let from;
+      let to;
 
-            let from;
-            let to;
+      for (let i = 0; i < grades.length; i++) {
+        from = grades[i];
+        to = grades[i + 1];
 
-            for (let i = 0; i < grades.length; i++) {
-                from = grades[i];
-                to = grades[i + 1];
+        labels.push(
+          `<div class="legend-item-wrapper"><i style="background:${getColor(
+            from
+          )}"></i>` +
+            `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
+            `</div>`
+        );
+      }
 
-                labels.push(
-                    `<i style="background:${getColor(from)}"></i>` +
-                    from + (to ? "&ndash;" + to : ">")
-                );
-            }
+      div.innerHTML = labels.join("<br>");
+      return div;
+    };
 
-            div.innerHTML = labels.join("<br>");
-            return div;
-        };
+    legend.addTo(map);
+  }, [map, legend]);
 
-        legend.addTo(map);
-    }, [map, legend]);
-
-    return null;
+  return null;
 }
 
 export default memo(MapLegend);
