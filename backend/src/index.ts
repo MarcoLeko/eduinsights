@@ -1,7 +1,7 @@
-import dependencyContainer from './di-config/inversify.config';
-import Express from './modules/server/express';
-import {TYPES} from './di-config/types';
-import {MongoDBClientProvider} from "./types/types";
+import dependencyContainer from "./di-config/inversify.config";
+import Express from "./modules/server/express";
+import { TYPES } from "./di-config/types";
+import { MongoDBClientProvider } from "./types/types";
 
 /**
  * This is the app entry point, where the object graph is constructed using an inversify container
@@ -9,10 +9,12 @@ import {MongoDBClientProvider} from "./types/types";
  * Afterwards the express server starts
  */
 
-const connect = dependencyContainer.get<MongoDBClientProvider>(TYPES.MONGO_DB_CLIENT_PROVIDER);
+const connect = dependencyContainer.get<MongoDBClientProvider>(
+  TYPES.MONGO_DB_CLIENT_PROVIDER
+);
 const app = dependencyContainer.get<Express>(TYPES.EXPRESS);
 
 (async () => {
-    await connect();
-    await app.start()
+  await connect();
+  await app.start();
 })();

@@ -1,44 +1,39 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import './app.scss';
 import SwipeableViews from 'react-swipeable-views';
-import Charities from '../charities/charities';
 import clsx from 'clsx';
 import MapOverlay from '../donations-map/map-overlay';
 import { connect } from 'react-redux';
 import ToggleableMenu from './toggleable-menu';
 import SideBar from './side-bar';
-import LiveDonations from '../live-donations/live-donations';
+import Statistics from '../statistics/statistics';
 import { useScrollTrigger } from '@material-ui/core';
-import EducationIcon from '@material-ui/icons/CastForEducation';
-import CharitiesIcon from '@material-ui/icons/FeaturedPlayListOutlined';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
 import MapIcon from '@material-ui/icons/MapRounded';
 import Poll from "@material-ui/icons/PollOutlined";
 
 import { useAppStyles } from './app-styles';
-import DonationStatistics from '../statistics/donation-statistics';
 
 function App({ canSwipe }) {
     const classes = useAppStyles();
     const trigger = useScrollTrigger({ threshold: 48 });
-    const [tabIndex, setTabIndex] = React.useState(1);
-    const [sideBarOpen, setSideBarOpen] = React.useState(false);
+    const [tabIndex, setTabIndex] = useState(1);
+    const [sideBarOpen, setSideBarOpen] = useState(false);
 
-    function tab(icon, text, index, iconOnly) {
+    function tab(icon, text, index) {
         return (
             <Tab
                 classes={{
                     wrapper: classes.tabContent,
-                    root: iconOnly && classes.iconTab
                 }}
                 key={index}
                 label={
                     <>
-                        <Hidden smDown={!iconOnly}>
+                        <Hidden>
                             <Box component="div"
                                 className={classes.iconSpacing}>{icon}</Box>
                         </Hidden>
@@ -49,10 +44,8 @@ function App({ canSwipe }) {
     }
 
     const labels = [
-        tab(<MapIcon />, undefined, 0, true),
-        tab(<EducationIcon />, 'Live', 1),
-        tab(<CharitiesIcon />, 'Charities', 2),
-        tab(<Poll />, 'Statistics', 3)
+        tab(<MapIcon />, 'Map', 0),
+        tab(<Poll />, 'Statistics', 1)
     ];
 
     function handleChange(event, newValue) {
@@ -76,7 +69,7 @@ function App({ canSwipe }) {
     }
 
     return (
-        <React.Fragment>
+        <>
             <AppBar
                 position="sticky"
                 color="default"
@@ -120,12 +113,10 @@ function App({ canSwipe }) {
                 slideStyle={{ overflow: 'hidden' }}
             >
                 <MapOverlay />
-                <LiveDonations />
-                <Charities />
-                <DonationStatistics />
+                <Statistics />
             </SwipeableViews>
             <SideBar isOpen={sideBarOpen} />
-        </React.Fragment>
+        </>
     );
 }
 
