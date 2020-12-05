@@ -32,6 +32,7 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
+  const [mapMode, setMapMode] = useState("light");
 
   const dispatch = useDispatch();
 
@@ -106,6 +107,10 @@ function MapOverlay({ toggleSwipe }) {
     }
   }
 
+  function toggleMapMode(args) {
+    setMapMode(mapMode === "light" ? "dark" : "light");
+  }
+
   return (
     <Map
       ref={mapRef}
@@ -127,10 +132,7 @@ function MapOverlay({ toggleSwipe }) {
       <TileLayer
         noWrap={true}
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
-        url={
-          "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=" +
-          process.env.REACT_APP_MAPBOX_KEY
-        }
+        url={`https://api.mapbox.com/styles/v1/mapbox/${mapMode}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
       />
       <GeoJSON
         data={geoJSON}
@@ -138,7 +140,7 @@ function MapOverlay({ toggleSwipe }) {
         ref={geoJSONRef}
         onEachFeature={onEachFeature}
       />
-      <MapSideBar />
+      <MapSideBar toggleMapMode={toggleMapMode} mapMode={mapMode} />
       <MapLegend />
       <MapInfoControl ref={infoControlRef} />
       <MapResetViewButton />
