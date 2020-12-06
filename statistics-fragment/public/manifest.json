@@ -1,0 +1,26 @@
+{
+  "short_name": "eduinsights",
+  "name": "eduinsights.eu",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-192.png",
+      "type": "image/png",
+      "sizes": "72x72 76x76 114x114 120x120 144x144 152x152 180x180 192x192"
+    },
+    {
+      "src": "favicon-310.png",
+      "type": "image/png",
+      "sizes": "310x310"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "display": "standalone",
+  "theme_color": "#A8F7BC",
+  "background_color": "#fff",
+  "orientation": "portrait"
+}
