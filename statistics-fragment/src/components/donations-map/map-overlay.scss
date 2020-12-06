@@ -1,0 +1,112 @@
+.leaflet-container {
+  height: calc(100vh - 48px);
+  width: 100%;
+  font: inherit;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: transparent;
+  color: transparent;
+  box-shadow: none
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+}
+
+.leaflet-popup {
+  margin-bottom: 0;
+  max-width: 350px;
+  max-height: 350px;
+  opacity: 1;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
+}
+
+.info {
+  padding: 6px 8px;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  max-width: 50%;
+}
+
+.info h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+
+.legend {
+  text-align: left;
+  color: #555;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+/* Ripple effect */
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+
+.ripple:hover {
+  background: rgba(232, 237, 240, 0) radial-gradient(circle, transparent 1%, rgba(155, 162, 161, 0.11) 1%) center/15000%;
+}
+
+.ripple:active {
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.legend-item-wrapper {
+  display: flex;
+  justify-content: initial;
+  align-content: baseline;
+}
+
+.button {
+  color: inherit;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  min-width: 64px;
+  box-sizing: border-box;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  background: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  vertical-align: middle;
+  -moz-appearance: none;
+  justify-content: center;
+  text-decoration: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-tap-highlight-color: transparent;
+  width: 80%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
