@@ -9,7 +9,7 @@ import MapLegend from "./map-legend";
 import MapInfoControl from "./map-info-control";
 import MapResetViewButton from "./map-reset-view-button";
 import { receiveMessageInterceptor } from "../../store/alert/alert-actions";
-import { getInternetAccessStatistics } from "../../store/thunks";
+import { getMapStatistics } from "../../store/thunks";
 import MapSideBar from "./map-side-bar";
 
 const { Map, TileLayer, GeoJSON } = ReactLeaflet;
@@ -32,6 +32,7 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
+  const [selectedStatistics] = useState("Internet for pedagogical purposes");
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
   );
@@ -50,13 +51,13 @@ function MapOverlay({ toggleSwipe }) {
   });
 
   const callback = useCallback(() => {
-    getInternetAccessStatistics()
+    getMapStatistics({ id: selectedStatistics })
       .then(async (result) => {
         setGeoJSON(result);
         geoJSONRef.current.leafletElement.clearLayers().addData(result);
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
-  }, [dispatch]);
+  }, [dispatch, selectedStatistics]);
 
   useEffect(() => {
     callback();

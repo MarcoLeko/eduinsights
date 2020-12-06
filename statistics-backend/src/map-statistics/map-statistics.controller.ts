@@ -1,12 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MapStatisticsService } from './map-statistics.service';
+import { MapStatisticsDocument } from './map-statistics.schema';
+import { MapStatisticsDto } from './map-statistics.dto';
 
-@Controller()
+@Controller('api/v1/map-statistics')
 export class MapStatisticsController {
   constructor(private readonly mapStatisticsService: MapStatisticsService) {}
 
-  @Get('api/v1/statistics/internet-access')
-  getInternetAccessStatistics(): string {
-    return this.mapStatisticsService.getInternetAccess();
+  @Post()
+  async getMapStatistics(
+    @Body() clientMapStatisticsDto: MapStatisticsDto,
+  ): Promise<MapStatisticsDocument[]> {
+    return this.mapStatisticsService.getMapStatisticsById(
+      clientMapStatisticsDto.id,
+    );
   }
 }

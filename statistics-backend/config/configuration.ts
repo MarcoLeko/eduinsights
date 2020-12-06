@@ -1,33 +1,30 @@
-import environment, {
-  Environment,
-} from '../../backend/src/modules/utils/environment';
-import { Logger } from '@nestjs/common';
+import environment, { Environment } from './environment';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
 
-const logger = new Logger('Configuration');
+const envConfig = dotenv.parse(fs.readFileSync('../.env'));
 
 const CONFIG_PRODUCTION = {
   env: environment,
   PATH_TO_STATIC_FILES: 'web/build',
-  PORT: process.env.PORT,
-  DB_USERNAME: process.env.DB_USERNAME,
-  DB_PASSWORD: process.env.DB_PASSWORD,
+  PORT: envConfig.PORT,
+  DB_USERNAME: envConfig.DB_USERNAME,
+  DB_PASSWORD: envConfig.DB_PASSWORD,
 };
 
-const CONFIG_LOCAL = Object.assign({}, CONFIG_PRODUCTION, {
+const CONFIG_DEVELOPMENT = Object.assign({}, CONFIG_PRODUCTION, {
   PATH_TO_STATIC_FILES: '../web/build',
 });
 
 const config =
-  environment === Environment.local
-    ? CONFIG_LOCAL
-    : environment === Environment.production && CONFIG_PRODUCTION;
+  environment === Environment.development
+    ? CONFIG_DEVELOPMENT
+    : CONFIG_PRODUCTION;
 
-export default () => {
-  return {
-    port: parseInt(config.PORT, 10) || 3000,
-    database: {
-      username: config.DB_USERNAME,
-      password: config.DB_PASSWORD,
-    },
-  };
-};
+export default () => ({
+  port: parseInt(config.PORT, 10) || 3000,
+  database: {
+    username: config.DB_USERNAME,
+    password: config.DB_PASSWORD,
+  },
+});

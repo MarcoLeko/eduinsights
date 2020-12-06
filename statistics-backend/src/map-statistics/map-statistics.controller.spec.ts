@@ -18,9 +18,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(mapStatisticsController.getInternetAccessStatistics()).toBe(
-        'Hello World!',
-      );
+      expect(mapStatisticsController.getMapStatistics()).toBe('Hello World!');
     });
   });
 });
