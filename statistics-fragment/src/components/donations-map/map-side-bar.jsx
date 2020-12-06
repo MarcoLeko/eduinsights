@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
-import { ReactComponent as Moon } from "../../assets/moon.svg";
-import { ReactComponent as Sun } from "../../assets/sun.svg";
 import { FormControlLabel, makeStyles, Switch } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 
 const maxDrawerWidth = 480;
-const drawerWidth = "calc(97.5% - 49px)";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -17,12 +14,10 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 48,
     width: 48,
     height: 56,
-    position: "absolute",
-    background: "#fff",
-    borderRadius: 0,
+    position: "relative",
+    background: "rgba(255, 255, 255, 0.8)",
+    borderRadius: 4,
     zIndex: 9999,
-    opacity: 0.75,
-    right: -49,
   },
   spacerDiv: {
     width: 0,
@@ -31,9 +26,12 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "start",
+    height: "100%",
   },
   spacerDivOpen: {
-    width: drawerWidth,
     maxWidth: maxDrawerWidth,
     position: "relative",
     transition: theme.transitions.create(["width"], {
@@ -41,20 +39,19 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  paperAnchorLeft: { left: "unset" },
+  paperAnchorLeft: { border: 0 },
   drawer: {
-    width: drawerWidth,
     maxWidth: maxDrawerWidth,
     flexShrink: 0,
     display: "flex",
     height: "inherit",
-    background: theme.palette.paper,
     whiteSpace: "nowrap",
     zIndex: 9999,
   },
   drawerOpen: {
-    width: drawerWidth,
+    position: "relative",
     maxWidth: maxDrawerWidth,
+    background: "rgba(255, 255, 255, 0.8)",
     height: "inherit",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -93,6 +90,35 @@ function MapSideBar({ toggleMapMode, mapMode }) {
           [classes.spacerDivOpen]: open,
         })}
       >
+        <Drawer
+          variant="permanent"
+          elevation={0}
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+            paperAnchorLeft: classes.paperAnchorLeft,
+          }}
+        >
+          <div className={classes.sideBarContent}>
+            <FormControlLabel
+              control={
+                <Switch
+                  size="medium"
+                  checked={mapMode === "dark"}
+                  onChange={toggleMapMode}
+                  color="primary"
+                />
+              }
+              label={`Switch to ${mapMode === "light" ? "dark" : "light"} mode`}
+            />
+          </div>
+        </Drawer>
         <Button
           variant="contained"
           className={classes.button}
@@ -102,38 +128,6 @@ function MapSideBar({ toggleMapMode, mapMode }) {
           {open ? <ArrowBackIosRoundedIcon /> : <ArrowForwardIosRoundedIcon />}
         </Button>
       </div>
-
-      <Drawer
-        variant="permanent"
-        elevation={16}
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-          paperAnchorLeft: classes.paperAnchorLeft,
-        }}
-      >
-        <div className={classes.sideBarContent}>
-          <FormControlLabel
-            control={
-              <Switch
-                size="medium"
-                checkedIcon={<Moon height={20} />}
-                icon={<Sun height={20} />}
-                checked={mapMode === "dark"}
-                onChange={toggleMapMode}
-                color="primary"
-              />
-            }
-            label={`Switch to ${mapMode === "light" ? "dark" : "light"} mode`}
-          />
-        </div>
-      </Drawer>
     </>
   );
 }

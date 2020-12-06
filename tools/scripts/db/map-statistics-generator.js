@@ -76,6 +76,10 @@ const fetch = require("node-fetch");
       (data) => data.id === "REF_AREA"
     );
 
+    const typeOfEvaluation = UNESCOStatisticsJSON.structure.dimensions.series.find(
+      (data) => data.id === "INFRASTR"
+    );
+
     availableCountriesStatistics.values.forEach((statisticsCountries, i) =>
       countriesGeoJSON.features.forEach((geoJSONCountries) => {
         if (geoJSONCountries.properties.ADMIN === statisticsCountries.name) {
@@ -206,6 +210,7 @@ const fetch = require("node-fetch");
 
     const output = {
       type: "FeatureCollection",
+      id: typeOfEvaluation.values[0].name,
       features: resultArrayWithCountryMatches.concat(
         resultArrayWithRegionMatches
       ),
