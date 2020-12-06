@@ -6,14 +6,14 @@ const envConfig = dotenv.parse(fs.readFileSync('../.env'));
 
 const CONFIG_PRODUCTION = {
   env: environment,
-  PATH_TO_STATIC_FILES: 'web/build',
+  PATH_TO_STATIC_FILES: '../statistics-fragment/build',
   PORT: envConfig.PORT,
   DB_USERNAME: envConfig.DB_USERNAME,
   DB_PASSWORD: envConfig.DB_PASSWORD,
 };
 
 const CONFIG_DEVELOPMENT = Object.assign({}, CONFIG_PRODUCTION, {
-  PATH_TO_STATIC_FILES: '../web/build',
+  PATH_TO_STATIC_FILES: '../../../statistics-fragment/build',
 });
 
 const config =
@@ -23,6 +23,7 @@ const config =
 
 export default () => ({
   port: parseInt(config.PORT, 10) || 3000,
+  pathToStaticFiles: config.PATH_TO_STATIC_FILES,
   database: {
     username: config.DB_USERNAME,
     password: config.DB_PASSWORD,
