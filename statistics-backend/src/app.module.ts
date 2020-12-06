@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import { join } from 'path';
 import configuration from '../config/configuration';
 import { DatabaseModule } from './database.module';
@@ -14,8 +14,12 @@ import { MapStatisticsModule } from './map-statistics/map-statistics.module';
       envFilePath: ['../.env'],
       load: [configuration],
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../..', 'web/build'),
+    ServeStaticModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ([{
+        rootPath: join(__dirname, configService.get('pathToStaticFiles')),
+      }]),
+      inject: [ConfigService],
     }),
   ],
 })
