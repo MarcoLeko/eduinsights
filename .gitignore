@@ -2,15 +2,15 @@
 
 # dependencies
 statistics-fragment/node_modules
-backend/node_modules
+statistics-backend/node_modules
 tools/node_modules
 
 # testing
 statistics-fragment/coverage
-backend/coverage
+statistics-backend/coverage
 
 # production
-backend/build
+statistics-backend/build
 statistics-fragment/build
 
 # ide
