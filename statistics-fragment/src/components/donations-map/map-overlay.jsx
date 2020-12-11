@@ -15,17 +15,17 @@ import MapSideBar from "./map-side-bar";
 const { Map, TileLayer, GeoJSON } = ReactLeaflet;
 
 export function getColor(d) {
-  return d > 100
-    ? "#800026"
-    : d > 90
-    ? "#E31A1C"
-    : d > 75
-    ? "#FD8D3C"
+  return d > 90
+    ? "#228B22"
+    : d > 80
+    ? "#9ACD32"
+    : d > 70
+    ? "#FFEDA0"
     : d > 50
-    ? "#FEB24C"
+    ? "#FD8D3C"
     : d > 25
-    ? "#FED976"
-    : "#FFEDA0";
+    ? "#FF6347"
+    : "#800026";
 }
 
 function MapOverlay({ toggleSwipe }) {
@@ -116,7 +116,7 @@ function MapOverlay({ toggleSwipe }) {
     }
   }
 
-  function toggleMapMode(args) {
+  function toggleMapMode() {
     setMapMode(mapMode === "light" ? "dark" : "light");
   }
 
