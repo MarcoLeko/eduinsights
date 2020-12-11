@@ -4,43 +4,64 @@ const path = require("path");
 const chalk = require("chalk");
 const fetch = require("node-fetch");
 
-// Paste the url into line 48 in the fetch argument
-// Example statistics url from UNESCO: Get proportion of primary schools with access to internet for pedagogical purposes (%)
-// https://api.uis.unesco.org/sdmx/data/SDG4/SCH.PT.L1._T._T._T._T.INST_T._Z._T._Z.NET_PP._T._T._T._Z._Z._Z.?startPeriod=2018&endPeriod=2018&format=sdmx-json&subscription-key=*
-(async function () {
-  const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY,
+
+const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY,
     outputPath = path.join(__dirname, "output"),
     tempPath = path.join(__dirname, "temp"),
     resApiFromCountryCodeToName =
-      "https://restcountries.eu/rest/v2/alpha?codes=",
+        "https://restcountries.eu/rest/v2/alpha?codes=",
     notMatchingCountries = [],
     UNESCORegions = new Map(),
     UNESCOCountries = [],
     log = console.log;
 
-  function getUnescoStatisticsEntityByIndex(i, json) {
-    return json.dataSets[0].series[`0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:${i}`]
-      .observations["0"][0];
-  }
+// Paste the url into line 48 in the fetch argument
+// Example statistics url from UNESCO: Get proportion of primary schools with access to internet for pedagogical purposes (%)
+// https://api.uis.unesco.org/sdmx/data/SDG4/SCH.PT.L1._T._T._T._T.INST_T._Z._T._Z.NET_PP._T._T._T._Z._Z._Z.?startPeriod=2018&endPeriod=2018&format=sdmx-json&subscription-key=*
 
+function getUnescoStatisticsEntityByIndex(i, json) {
+  return json.dataSets[0].series[`0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:${i}`]
+      .observations["0"][0];
+}
+
+
+function constructResultJSON(typeOfEvaluation, resultArrayWithCountryMatches, resultArrayWithRegionMatches) {
+  return {
+    type: typeOfEvaluation.values[0].name,
+    features: resultArrayWithCountryMatches.concat(
+        resultArrayWithRegionMatches
+    ),
+  };
+}
+
+async function fetchUnescoCodeListFromArea() {
+  const responseHierarchicalCodeList = await fetch(
+      "https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/all/latest?format=sdmx-json&subscription-key=" +
+      UNESCOSubscriptionKey
+  );
+  return await responseHierarchicalCodeList.json();
+}
+
+function ensureDirectory(path) {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path);
+  }
+}
+
+(async function () {
   try {
     let UNESCOStatisticsJSON,
       countriesGeoJSON,
       UNESCOCodeListJSON,
-      UNESCOHierarchicalCodeListJSON;
+        unescoHierarchicalCodeListJSON;
 
-    if (!fs.existsSync(tempPath)) {
-      fs.mkdirSync(tempPath);
-    }
+    ensureDirectory(tempPath);
 
-    const responseHierarchicalCodeList = await fetch(
-      "https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/all/latest?format=sdmx-json&subscription-key=" +
-        UNESCOSubscriptionKey
-    );
-    UNESCOHierarchicalCodeListJSON = await responseHierarchicalCodeList.json();
+    unescoHierarchicalCodeListJSON = await fetchUnescoCodeListFromArea();
+
     fs.writeFileSync(
       path.join(tempPath, "unesco-hierarchical-code-list.json"),
-      JSON.stringify(UNESCOHierarchicalCodeListJSON)
+      JSON.stringify(unescoHierarchicalCodeListJSON)
     );
 
     const responseCodeList = await fetch(
@@ -116,7 +137,7 @@ const fetch = require("node-fetch");
     for (const r of UNESCORegions.keys()) {
       log("UNESCO region is: " + chalk.bold.underline(r));
 
-      for (const list of UNESCOHierarchicalCodeListJSON.HierarchicalCodelist) {
+      for (const list of   unescoHierarchicalCodeListJSON.HierarchicalCodelist) {
         for (const entity of list.hierarchies) {
           if (r === entity.id) {
             for (const sub of entity.codes[0].codes) {
@@ -207,23 +228,15 @@ const fetch = require("node-fetch");
         }
       }
     }
+    const output = constructResultJSON(typeOfEvaluation, resultArrayWithCountryMatches, resultArrayWithRegionMatches);
 
-    const output = {
-      type: "FeatureCollection",
-      id: typeOfEvaluation.values[0].name,
-      features: resultArrayWithCountryMatches.concat(
-        resultArrayWithRegionMatches
-      ),
-    };
-
-    if (!fs.existsSync(outputPath)) {
-      fs.mkdirSync(outputPath);
-    }
+    ensureDirectory(outputPath);
 
     fs.writeFileSync(
       path.join(outputPath, "output.json"),
       JSON.stringify(output)
     );
+
     log(
       chalk.bold(
         "Outputfile generated at: " + chalk.green.underline(outputPath)

@@ -12,7 +12,7 @@ export class MapStatisticsController {
     @Body() clientMapStatisticsDto: MapStatisticsDto,
   ): Promise<MapStatisticsDocument[]> {
     return this.mapStatisticsService.getMapStatisticsById(
-      clientMapStatisticsDto.id,
+      clientMapStatisticsDto.type,
     );
   }
 }

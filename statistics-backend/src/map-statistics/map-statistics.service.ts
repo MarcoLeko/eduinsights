@@ -11,7 +11,7 @@ export class MapStatisticsService {
     @InjectConnection() private connection: Connection,
   ) {}
 
-  getMapStatisticsById(id: string): Promise<MapStatisticsDocument[]> {
-    return this.mapStatisticsModel.find({ id }).exec();
+  getMapStatisticsById(type: string): Promise<MapStatisticsDocument[]> {
+    return this.mapStatisticsModel.find({ type }).exec();
   }
 }
