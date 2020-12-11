@@ -11,7 +11,7 @@ function MapLegend() {
   const legend = L.control({ position: "bottomright" });
 
   useEffect(() => {
-    const grades = [100, 90, 75, 50, 25];
+    const grades = [100, 90, 80, 70, 50, 25];
     const labels = [];
 
     legend.onAdd = () => {
@@ -25,11 +25,10 @@ function MapLegend() {
         to = grades[i + 1];
 
         labels.push(
-          `<div class="legend-item-wrapper"><i style="background:${getColor(
-            from
-          )}"></i>` +
-            `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
-            `</div>`
+          `<div class="legend-item-wrapper">
+               <i style="background:${getColor(from)}"></i>` +
+               `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
+          `</div>`
         );
       }
 
