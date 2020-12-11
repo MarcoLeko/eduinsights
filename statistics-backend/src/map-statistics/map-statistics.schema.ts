@@ -6,8 +6,6 @@ export type MapStatisticsDocument = MapStatistics & Document;
 @Schema()
 export class MapStatistics {
   @Prop()
-  id: string;
-  @Prop()
   type: string;
   @Prop()
   features: [];

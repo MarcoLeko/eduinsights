@@ -46,12 +46,12 @@ function MapOverlay({ toggleSwipe }) {
   const dispatch = useDispatch();
 
   const [geoJSON, setGeoJSON] = useState({
-    type: "FeatureCollection",
+    type: "",
     features: [],
   });
 
   const callback = useCallback(() => {
-    getMapStatistics({ id: selectedStatistics })
+    getMapStatistics({ type: selectedStatistics })
       .then(async (result) => {
         setGeoJSON(result);
         geoJSONRef.current.leafletElement.clearLayers().addData(result);

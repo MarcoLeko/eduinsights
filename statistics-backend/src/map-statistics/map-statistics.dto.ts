@@ -1,3 +1,3 @@
 export class MapStatisticsDto {
-  id: string;
+  type: string;
 }
