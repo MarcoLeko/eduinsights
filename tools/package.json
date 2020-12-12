@@ -1,7 +1,6 @@
 {
   "name": "eduinsights-tools",
   "version": "1.0.0",
-  "type": "module",
   "description": "Contains useful scripts",
   "main": "index.js",
   "scripts": {

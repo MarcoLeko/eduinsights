@@ -1,21 +1,16 @@
 "use strict";
 
-import path from "path";
-import chalk from "chalk";
-import countries from "i18n-iso-countries";
-
-import {
-  ensureDirectory,
-  fetchEnhancedCountryInformation,
+const countries = require("i18n-iso-countries");
+const chalk = require("chalk");
+const path = require("path");
+const {
   fetchGeoCountriesPolygons,
-  fetchUnescoHierarchicalCodeList,
   fetchUnescoStatistics,
   writeToFileSync,
-} from "./map-statistics-generator.service.js";
+  fetchUnescoHierarchicalCodeList,
+  ensureDirectory,
+} = require("./map-statistics-generator.service");
 
-const __dirname = path.resolve(
-  path.dirname(decodeURI(new URL(import.meta.url).pathname))
-);
 const outputPath = path.join(__dirname, "output"),
   tempPath = path.join(__dirname, "temp"),
   unescoRegions = new Map(),
@@ -36,13 +31,13 @@ function matchUnescoCountriesWithGeoJsonPolygon(
   availableCountriesStatistics,
   unescoStatisticsJson
 ) {
-  for (const geoJSONCountry of countriesGeoJson.features) {
+  for (const geoJsonCountry of countriesGeoJson.features) {
     for (const [
       index,
       statisticsCountry,
     ] of availableCountriesStatistics.values.entries()) {
       const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
-        geoJSONCountry.properties.ISO_A3
+        geoJsonCountry.properties.ISO_A3
       );
       const statisticsCountryCodeAlpha3 = countries.alpha2ToAlpha3(
         statisticsCountry.id
@@ -55,12 +50,13 @@ function matchUnescoCountriesWithGeoJsonPolygon(
         );
 
         resultArrayWithCountryMatches.push({
-          geometry: geoJSONCountry.geometry,
+          type: geoJsonCountry.type,
           properties: {
-            name: statisticsCountry.name,
+            name: geoJsonCountry.properties.ADMIN,
             id: statisticsCountry.id,
             value: Math.round(Number(value)),
           },
+          geometry: geoJsonCountry.geometry,
         });
 
         log(
@@ -119,26 +115,23 @@ async function matchUnescoRegionsWithGeoJsonPolygon(
                   countryWithinRegion.id
               );
 
-              const countryInformation = await fetchEnhancedCountryInformation(
-                countryWithinRegion.id
-              );
-
-              if (!countryInformation[0] || !geoJsonCountry) {
+              if (!geoJsonCountry) {
                 continue;
               }
 
               resultArrayWithCountryMatches.push({
-                ...geoJsonCountry.geometry,
+                type: geoJsonCountry.type,
                 properties: {
-                  name: countryInformation[0].name,
+                  name: geoJsonCountry.properties.ADMIN,
                   id: countryWithinRegion.id,
                   value: Math.round(Number(value)),
                 },
+                geometry: geoJsonCountry.geometry,
               });
 
               log(
                 `Found matching geoJson polygon for country: ${chalk.blue(
-                  countryInformation[0].name
+                  geoJsonCountry.properties.ADMIN
                 )} with value: ${chalk.green.bold.underline(value)}`
               );
             }
