@@ -58,7 +58,7 @@ function matchUnescoCountriesWithGeoJsonPolygon(
           geometry: geoJSONCountry.geometry,
           properties: {
             name: statisticsCountry.name,
-            code: statisticsCountry.id,
+            id: statisticsCountry.id,
             value: Math.round(Number(value)),
           },
         });
@@ -100,8 +100,8 @@ async function matchUnescoRegionsWithGeoJsonPolygon(
         if (region === entity.id) {
           for await (const countryWithinRegion of entity.codes[0].codes) {
             if (
-              !resultArrayWithCountryMatches.find(
-                (country) => countryWithinRegion.id === country.id
+              !resultArrayWithCountryMatches.some(
+                (country) => countryWithinRegion.id === country.properties.id
               )
             ) {
               const indexOfRegionInUnescoStatistic = availableCountriesStatistics.values.findIndex(
