@@ -4,7 +4,7 @@ const path = require("path");
 const chalk = require("chalk");
 const MongoClient = require("mongodb").MongoClient;
 
-(function () {
+(async function () {
   const username = process.env.DB_USERNAME,
     password = process.env.DB_PASSWORD,
     args = process.argv.slice(3),
@@ -15,7 +15,7 @@ const MongoClient = require("mongodb").MongoClient;
       useUnifiedTopology: true,
     });
 
-  let database, documents, collection;
+  let database, document, collection, connectionManager;
 
   if (args.length === 2) {
     database = args[0];
@@ -29,32 +29,36 @@ const MongoClient = require("mongodb").MongoClient;
       )
     );
 
-    documents = JSON.parse(
+    document = JSON.parse(
       fs.readFileSync(path.join(__dirname, "/output/output.json"), "utf8")
     );
 
-    if (!Array.isArray(documents)) {
-      documents = new Array(documents);
-    }
-
-    log(`Found entities: ${chalk.bold.magenta(documents.length)}`);
     log("Will parse to database...");
 
-    mongoClient
-      .connect()
-      .then((connManager) =>
-        connManager.db(database).collection(collection).insertMany(documents)
-      )
-      .then(() =>
-        log(
-          chalk.blue.bold(
-            `Successfully transferred ${chalk.yellow.bold.underline(
-              documents.length
-            )} documents.`
-          )
-        )
-      )
-      .catch((e) => log(chalk.bold.red("Ooops! Something wrong happened" + e)))
+    connectionManager = await mongoClient.connect();
+
+    await connectionManager
+      .db(database)
+      .collection(collection)
+      .createIndex({ type: "text" }, { unique: true });
+
+    const mapStatisticsCollection = connectionManager
+      .db(database)
+      .collection(collection);
+
+    const changeStream = mapStatisticsCollection.watch();
+
+    changeStream.on("change", (event) => {
+      log(event);
+    });
+
+    log("next is", next);
+    connectionManager
+      .db(database)
+      .collection(collection)
+      .updateOne({ type: document.type }, { $set: document }, { upsert: true })
+      .then(() => log(chalk.blue.bold(`Successfully transferred document.`)))
+      .catch((e) => log(chalk.bold.red("Ooops! Something wrong happened " + e)))
       .then(() => mongoClient.close());
   } else {
     log(

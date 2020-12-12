@@ -65,13 +65,13 @@
 }
 
 .ripple:hover {
-  background: rgba(232, 237, 240, 0) radial-gradient(circle, transparent 1%, rgba(155, 162, 161, 0.11) 1%) center/15000%;
+  background: rgba(155, 162, 161, 0.8);
 }
 
-.ripple:active {
-  background-size: 100%;
-  transition: background 0s;
-}
+//.ripple:active {
+//  background-size: 100%;
+//  transition: background 0s;
+//}
 
 .legend-item-wrapper {
   display: flex;
@@ -91,7 +91,6 @@
   border-radius: 4px;
   letter-spacing: 0.02857em;
   text-transform: uppercase;
-  background: inherit;
   border: 0;
   cursor: pointer;
   margin: 0;
