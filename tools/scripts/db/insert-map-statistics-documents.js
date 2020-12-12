@@ -4,6 +4,11 @@ const path = require("path");
 const chalk = require("chalk");
 const MongoClient = require("mongodb").MongoClient;
 
+async function cleanupConnections(changeStream, mongoClient) {
+  await changeStream.close();
+  await mongoClient.close();
+}
+
 (async function () {
   const username = process.env.DB_USERNAME,
     password = process.env.DB_PASSWORD,
@@ -48,24 +53,36 @@ const MongoClient = require("mongodb").MongoClient;
 
     const changeStream = mapStatisticsCollection.watch();
 
-    changeStream.on("change", (event) => {
-      log(event);
+    changeStream.on("change", async () => {
+      log(
+        `${chalk.red.bold(`!!!`)}
+        Document changes detected
+        ${chalk.red.bold(`!!!`)}`
+      );
+      await connectionManager
+        .db(database)
+        .collection("mapstatisticslist")
+        .update({ $addToSet: { statistics: document.type } });
+      await cleanupConnections(changeStream, mongoClient);
     });
 
-    log("next is", next);
-    connectionManager
+    await connectionManager
       .db(database)
       .collection(collection)
       .updateOne({ type: document.type }, { $set: document }, { upsert: true })
       .then(() => log(chalk.blue.bold(`Successfully transferred document.`)))
-      .catch((e) => log(chalk.bold.red("Ooops! Something wrong happened " + e)))
-      .then(() => mongoClient.close());
+      .catch((e) =>
+        log(chalk.bold.red("Ooops! Something wrong happened " + e))
+      );
+
+    await cleanupConnections(changeStream, mongoClient);
   } else {
     log(
       chalk.bold.red(
         "A database and a collection has to be specified!\n 1. Database\n 2. Collection"
       )
     );
+    await mongoClient.close();
     process.exit(1);
   }
 })();
