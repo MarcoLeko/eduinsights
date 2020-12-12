@@ -43,7 +43,7 @@ const MongoClient = require("mongodb").MongoClient;
     mongoClient
       .connect()
       .then((connManager) =>
-        connManager.db(database).collection(collection).insertMany(documents)
+        connManager.db.chunks.collection(collection).insertMany(documents)
       )
       .then(() =>
         log(
