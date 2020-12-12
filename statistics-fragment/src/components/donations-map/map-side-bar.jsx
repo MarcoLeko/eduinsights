@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
   drawerOpen: {
     position: "relative",
     maxWidth: maxDrawerWidth,
+    width: 250,
     background: "rgba(255, 255, 255, 0.8)",
     height: "inherit",
     transition: theme.transitions.create("width", {
