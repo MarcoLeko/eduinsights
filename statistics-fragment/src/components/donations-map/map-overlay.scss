@@ -64,14 +64,9 @@
   transition: background 0.8s;
 }
 
-.ripple:hover {
+.ripple:hover, .ripple:active {
   background: rgba(155, 162, 161, 0.8);
 }
-
-//.ripple:active {
-//  background-size: 100%;
-//  transition: background 0s;
-//}
 
 .legend-item-wrapper {
   display: flex;
