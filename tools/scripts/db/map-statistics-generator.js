@@ -1,19 +1,21 @@
 "use strict";
-const fs = require("fs");
-const path = require("path");
+
+const countries = require("i18n-iso-countries");
 const chalk = require("chalk");
-const fetch = require("node-fetch");
+const path = require("path");
+const {
+  fetchGeoCountriesPolygons,
+  fetchUnescoStatistics,
+  writeToFileSync,
+  fetchUnescoHierarchicalCodeList,
+  ensureDirectory,
+} = require("./map-statistics-generator.service");
 
-
-const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY,
-    outputPath = path.join(__dirname, "output"),
-    tempPath = path.join(__dirname, "temp"),
-    resApiFromCountryCodeToName =
-        "https://restcountries.eu/rest/v2/alpha?codes=",
-    notMatchingCountries = [],
-    UNESCORegions = new Map(),
-    UNESCOCountries = [],
-    log = console.log;
+const outputPath = path.join(__dirname, "output"),
+  tempPath = path.join(__dirname, "temp"),
+  unescoRegions = new Map(),
+  resultArrayWithCountryMatches = [],
+  log = console.log;
 
 // Paste the url into line 48 in the fetch argument
 // Example statistics url from UNESCO: Get proportion of primary schools with access to internet for pedagogical purposes (%)
@@ -21,225 +23,191 @@ const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY,
 
 function getUnescoStatisticsEntityByIndex(i, json) {
   return json.dataSets[0].series[`0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:${i}`]
-      .observations["0"][0];
+    .observations["0"][0];
 }
 
+function matchUnescoCountriesWithGeoJsonPolygon(
+  countriesGeoJson,
+  availableCountriesStatistics,
+  unescoStatisticsJson
+) {
+  for (const geoJsonCountry of countriesGeoJson.features) {
+    for (const [
+      index,
+      statisticsCountry,
+    ] of availableCountriesStatistics.values.entries()) {
+      const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
+        geoJsonCountry.properties.ISO_A3
+      );
+      const statisticsCountryCodeAlpha3 = countries.alpha2ToAlpha3(
+        statisticsCountry.id
+      );
 
-function constructResultJSON(typeOfEvaluation, resultArrayWithCountryMatches, resultArrayWithRegionMatches) {
-  return {
-    type: typeOfEvaluation.values[0].name,
-    features: resultArrayWithCountryMatches.concat(
-        resultArrayWithRegionMatches
-    ),
-  };
-}
+      if (geoJsonCountryCodeAlpha2 === statisticsCountry.id) {
+        const value = getUnescoStatisticsEntityByIndex(
+          index,
+          unescoStatisticsJson
+        );
 
-async function fetchUnescoCodeListFromArea() {
-  const responseHierarchicalCodeList = await fetch(
-      "https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/all/latest?format=sdmx-json&subscription-key=" +
-      UNESCOSubscriptionKey
-  );
-  return await responseHierarchicalCodeList.json();
-}
+        resultArrayWithCountryMatches.push({
+          type: geoJsonCountry.type,
+          properties: {
+            name: geoJsonCountry.properties.ADMIN,
+            id: statisticsCountry.id,
+            value: Math.round(Number(value)),
+          },
+          geometry: geoJsonCountry.geometry,
+        });
 
-function ensureDirectory(path) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
+        log(
+          `Found matching geoJson polygon for country: ${chalk.green(
+            statisticsCountry.name
+          )} with value: ${chalk.green.bold.underline(value)}`
+        );
+      } else {
+        if (
+          !unescoRegions.has(statisticsCountry.id) &&
+          !countriesGeoJson.features.includes(statisticsCountryCodeAlpha3) &&
+          !statisticsCountryCodeAlpha3
+        ) {
+          unescoRegions.set(statisticsCountry.id, []);
+          log(
+            `Could not find GeoJson polygon for area: ${chalk.red.bold(
+              statisticsCountry.id
+            )}`
+          );
+        }
+      }
+    }
   }
 }
 
-(async function () {
-  try {
-    let UNESCOStatisticsJSON,
-      countriesGeoJSON,
-      UNESCOCodeListJSON,
-        unescoHierarchicalCodeListJSON;
+async function matchUnescoRegionsWithGeoJsonPolygon(
+  unescoHierarchicalCodeListJson,
+  availableCountriesStatistics,
+  unescoStatisticsJson,
+  countriesGeoJson
+) {
+  for await (const region of unescoRegions.keys()) {
+    log("UNESCO region is: " + chalk.bold.underline(region));
 
-    ensureDirectory(tempPath);
+    for await (const list of unescoHierarchicalCodeListJson.HierarchicalCodelist) {
+      for await (const entity of list.hierarchies) {
+        if (region === entity.id) {
+          for await (const countryWithinRegion of entity.codes[0].codes) {
+            if (
+              !resultArrayWithCountryMatches.some(
+                (country) => countryWithinRegion.id === country.properties.id
+              )
+            ) {
+              const indexOfRegionInUnescoStatistic = availableCountriesStatistics.values.findIndex(
+                (statistic) => statistic.id === region
+              );
 
-    unescoHierarchicalCodeListJSON = await fetchUnescoCodeListFromArea();
+              const value = getUnescoStatisticsEntityByIndex(
+                indexOfRegionInUnescoStatistic,
+                unescoStatisticsJson
+              );
 
-    fs.writeFileSync(
-      path.join(tempPath, "unesco-hierarchical-code-list.json"),
-      JSON.stringify(unescoHierarchicalCodeListJSON)
-    );
+              const geoJsonCountry = countriesGeoJson.features.find(
+                (geoJSONCountry) =>
+                  countries.alpha3ToAlpha2(geoJSONCountry.properties.ISO_A3) ===
+                  countryWithinRegion.id
+              );
 
-    const responseCodeList = await fetch(
-      "https://api.uis.unesco.org/sdmx/codelist/UNESCO/CL_AREA/latest?format=sdmx-json&subscription-key=" +
-        UNESCOSubscriptionKey
-    );
-    UNESCOCodeListJSON = await responseCodeList.json();
-    fs.writeFileSync(
-      path.join(tempPath, "unesco-code-list.json"),
-      JSON.stringify(UNESCOCodeListJSON)
-    );
-
-    const responseCountriesGeoJSON = await fetch(
-      "https://datahub.io/core/geo-countries/r/countries.geojson"
-    );
-    countriesGeoJSON = await responseCountriesGeoJSON.json();
-    fs.writeFileSync(
-      path.join(tempPath, "countries.geojson"),
-      JSON.stringify(countriesGeoJSON)
-    );
-
-    const responseUnescoStatistics = await fetch(
-      "https://api.uis.unesco.org/sdmx/data/SDG4/SCH.PT.L1._T._T._T._T.INST_T._Z._T._Z.NET_PP._T._T._T._Z._Z._Z.?startPeriod=2018&endPeriod=2018&format=sdmx-json&subscription-key=" +
-        UNESCOSubscriptionKey
-    );
-    UNESCOStatisticsJSON = await responseUnescoStatistics.json();
-    fs.writeFileSync(
-      path.join(tempPath, "unesco-statistics.json"),
-      JSON.stringify(UNESCOStatisticsJSON)
-    );
-
-    const availableCountriesStatistics = UNESCOStatisticsJSON.structure.dimensions.series.find(
-      (data) => data.id === "REF_AREA"
-    );
-
-    const typeOfEvaluation = UNESCOStatisticsJSON.structure.dimensions.series.find(
-      (data) => data.id === "INFRASTR"
-    );
-
-    availableCountriesStatistics.values.forEach((statisticsCountries, i) =>
-      countriesGeoJSON.features.forEach((geoJSONCountries) => {
-        if (geoJSONCountries.properties.ADMIN === statisticsCountries.name) {
-          UNESCOCountries.push(statisticsCountries.name);
-          log(
-            `Found matched contries within geoJSON/statistics sheet: ${chalk.green(
-              geoJSONCountries.properties.ADMIN
-            )}`
-          );
-        } else {
-          if (
-            !notMatchingCountries.includes(statisticsCountries.name) &&
-            /^[a-z]+_[a-z]+$/i.test(availableCountriesStatistics.values[i].id)
-          ) {
-            notMatchingCountries.push(statisticsCountries.name);
-          }
-        }
-      })
-    );
-
-    notMatchingCountries.forEach((c) => {
-      log(
-        `Could not found values matched contries within geoJSON/statistics sheet: ${chalk.red.bold(
-          c
-        )}`
-      );
-      UNESCOCodeListJSON.Codelist[0].items.forEach((unR) => {
-        if (c === unR.names[0].value) {
-          UNESCORegions.set(unR.id, []);
-        }
-      });
-    });
-
-    for (const r of UNESCORegions.keys()) {
-      log("UNESCO region is: " + chalk.bold.underline(r));
-
-      for (const list of   unescoHierarchicalCodeListJSON.HierarchicalCodelist) {
-        for (const entity of list.hierarchies) {
-          if (r === entity.id) {
-            for (const sub of entity.codes[0].codes) {
-              try {
-                const response = await fetch(
-                  resApiFromCountryCodeToName + sub.id
-                );
-                const result = await response.json();
-                log(
-                  `Id: ${chalk.yellow.bold(sub.id)} Name: ${chalk.magenta(
-                    result[0].name
-                  )}`
-                );
-                UNESCORegions.get(r).push(result[0].name);
-              } catch (e) {
-                log(
-                  `Could not fetch country name for id: ${chalk.red.bold(
-                    sub.id
-                  )} ` + e
-                );
+              if (!geoJsonCountry) {
+                continue;
               }
+
+              resultArrayWithCountryMatches.push({
+                type: geoJsonCountry.type,
+                properties: {
+                  name: geoJsonCountry.properties.ADMIN,
+                  id: countryWithinRegion.id,
+                  value: Math.round(Number(value)),
+                },
+                geometry: geoJsonCountry.geometry,
+              });
+
+              log(
+                `Found matching geoJson polygon for country: ${chalk.blue(
+                  geoJsonCountry.properties.ADMIN
+                )} with value: ${chalk.green.bold.underline(value)}`
+              );
             }
           }
         }
       }
     }
+  }
+}
 
-    const resultArrayWithCountryMatches = UNESCOCountries.reduce(
-      (acc, curr) => {
-        for (const geo of countriesGeoJSON.features) {
-          if (geo.properties.ADMIN === curr) {
-            const valueIndex = availableCountriesStatistics.values.findIndex(
-              (country) => country.name === curr
-            );
-            const value = Math.round(
-              Number(
-                getUnescoStatisticsEntityByIndex(
-                  valueIndex,
-                  UNESCOStatisticsJSON
-                )
-              )
-            );
-            const geoJSONIndex = countriesGeoJSON.features.findIndex(
-              (obj) => obj.properties.ADMIN === curr
-            );
-            const { properties } = countriesGeoJSON.features[geoJSONIndex];
-            delete properties.ADMIN;
-            delete properties["ISO_A3"];
-            Object.assign(properties, { name: curr, value });
-            acc.push(countriesGeoJSON.features[geoJSONIndex]);
-            return acc;
-          }
-        }
-      },
-      []
+(async function () {
+  try {
+    ensureDirectory(tempPath);
+
+    const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
+    writeToFileSync(
+      unescoHierarchicalCodeListJson,
+      path.join(tempPath, "unesco-hierarchical-code-list.json")
     );
 
-    const resultArrayWithRegionMatches = [];
+    const countriesGeoJson = await fetchGeoCountriesPolygons();
+    writeToFileSync(countriesGeoJson, path.join(tempPath, "countries.geojson"));
 
-    for (const [key, value] of UNESCORegions.entries()) {
-      const statisticIndex = availableCountriesStatistics.values.findIndex(
-        (obj) => obj.id === key
-      );
+    const unescoStatisticsJson = await fetchUnescoStatistics();
+    writeToFileSync(
+      unescoStatisticsJson,
+      path.join(tempPath, "unesco-statistics.json")
+    );
 
-      for (const c of value) {
-        for (const geo of countriesGeoJSON.features) {
-          // check if the country has its own statistics as it is higher prioritized
-          if (geo.properties.ADMIN === c && !UNESCOCountries.includes(c)) {
-            const value = Math.round(
-              Number(
-                getUnescoStatisticsEntityByIndex(
-                  statisticIndex,
-                  UNESCOStatisticsJSON
-                )
-              )
-            );
-            const geoJSONIndex = countriesGeoJSON.features.findIndex(
-              (obj) => obj.properties.ADMIN === c
-            );
-            const { properties } = countriesGeoJSON.features[geoJSONIndex];
-            delete properties.ADMIN;
-            delete properties["ISO_A3"];
-            Object.assign(properties, { name: c, value });
-            resultArrayWithRegionMatches.push(
-              countriesGeoJSON.features[geoJSONIndex]
-            );
-          }
-        }
-      }
-    }
-    const output = constructResultJSON(typeOfEvaluation, resultArrayWithCountryMatches, resultArrayWithRegionMatches);
+    const availableCountriesStatistics = unescoStatisticsJson.structure.dimensions.series.find(
+      (data) => data.id === "REF_AREA"
+    );
 
-    ensureDirectory(outputPath);
+    const typeOfEvaluation = unescoStatisticsJson.structure.dimensions.series.find(
+      (data) => data.id === "INFRASTR"
+    );
 
-    fs.writeFileSync(
-      path.join(outputPath, "output.json"),
-      JSON.stringify(output)
+    matchUnescoCountriesWithGeoJsonPolygon(
+      countriesGeoJson,
+      availableCountriesStatistics,
+      unescoStatisticsJson
     );
 
     log(
+      `Total hits of matching countries: ${chalk.bold.green(
+        resultArrayWithCountryMatches.length
+      )}`
+    );
+
+    log(
+      `Total hits of not matching countries/areas: ${chalk.bold.red(
+        unescoRegions.size
+      )}`
+    );
+    await matchUnescoRegionsWithGeoJsonPolygon(
+      unescoHierarchicalCodeListJson,
+      availableCountriesStatistics,
+      unescoStatisticsJson,
+      countriesGeoJson
+    );
+
+    const output = {
+      type: typeOfEvaluation.values[0].name,
+      features: resultArrayWithCountryMatches,
+    };
+
+    ensureDirectory(outputPath);
+    writeToFileSync(output, path.join(outputPath, "output.json"));
+
+    log(
       chalk.bold(
-        "Outputfile generated at: " + chalk.green.underline(outputPath)
+        `Output file generated at: ${chalk.green.underline(
+          outputPath
+        )} with: ${chalk.green.underline(
+          resultArrayWithCountryMatches.length
+        )} countries`
       )
     );
   } catch (e) {
