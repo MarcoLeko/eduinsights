@@ -12,7 +12,6 @@ async function cleanupConnections(changeStream, mongoClient) {
 (async function () {
   const username = process.env.DB_USERNAME,
     password = process.env.DB_PASSWORD,
-    args = process.argv.slice(3),
     log = console.log,
     uri = `mongodb+srv://${username}:${password}@eduinsights.vj2pu.mongodb.net?retryWrites=true/`,
     mongoClient = new MongoClient(uri, {
@@ -20,69 +19,88 @@ async function cleanupConnections(changeStream, mongoClient) {
       useUnifiedTopology: true,
     });
 
-  let database, document, collection, connectionManager;
-
-  if (args.length === 2) {
-    database = args[0];
-    collection = args[1];
-
-    log(
-      chalk.blue(
-        `Writing to database: ${chalk.yellow.bold.underline(
-          database
-        )} and to collection: ${chalk.yellow.bold.underline(collection)} `
-      )
-    );
-
+  const database = "statistics",
+    collectionToBeInserted = "mapstatistics",
+    changeStreamCollection = collectionToBeInserted + "list",
     document = JSON.parse(
       fs.readFileSync(path.join(__dirname, "/output/output.json"), "utf8")
     );
 
+  let connectionManager, changeStream;
+
+  log(
+    chalk.blue(
+      `Writing to database: ${chalk.yellow.bold.underline(
+        database
+      )} and to collection: ${chalk.yellow.bold.underline(
+        collectionToBeInserted
+      )} `
+    )
+  );
+
+  try {
     log("Will parse to database...");
 
     connectionManager = await mongoClient.connect();
 
-    await connectionManager
-      .db(database)
-      .collection(collection)
-      .createIndex({ type: "text" }, { unique: true });
-
     const mapStatisticsCollection = connectionManager
       .db(database)
-      .collection(collection);
+      .collection(collectionToBeInserted);
 
-    const changeStream = mapStatisticsCollection.watch();
+    const mapStatisticsListCollection = connectionManager
+      .db(database)
+      .collection(changeStreamCollection);
+
+    // ensure indexes for collections
+    await mapStatisticsCollection.createIndex(
+      { type: "text" },
+      { unique: true }
+    );
+
+    await mapStatisticsListCollection.createIndex(
+      { type: "text" },
+      { unique: true }
+    );
+
+    changeStream = mapStatisticsCollection.watch();
+    log("Will listen to collection changes...");
 
     changeStream.on("change", async () => {
       log(
-        `${chalk.red.bold(`!!!`)}
-        Document changes detected
-        ${chalk.red.bold(`!!!`)}`
+        `${chalk.red.bold(`!!!`)}Document changes detected${chalk.red.bold(
+          `!!!`
+        )}`
       );
-      await connectionManager
-        .db(database)
-        .collection("mapstatisticslist")
-        .update({ $addToSet: { statistics: document.type } });
-      await cleanupConnections(changeStream, mongoClient);
+      const keys = await mapStatisticsCollection
+        .find({})
+        .project({ _id: 0, features: 0 })
+        .toArray();
+
+      await mapStatisticsListCollection
+        .updateOne(
+          { type: "list" },
+          { $set: { statistics: keys.flatMap((obj) => obj.type) } },
+          { upsert: true }
+        )
+        .catch((e) =>
+          log(chalk.bold.red("Ooops! Something wrong happened " + e))
+        );
+
+      await cleanupConnections();
     });
 
-    await connectionManager
-      .db(database)
-      .collection(collection)
+    await mapStatisticsCollection
       .updateOne({ type: document.type }, { $set: document }, { upsert: true })
       .then(() => log(chalk.blue.bold(`Successfully transferred document.`)))
       .catch((e) =>
         log(chalk.bold.red("Ooops! Something wrong happened " + e))
       );
 
-    await cleanupConnections(changeStream, mongoClient);
-  } else {
-    log(
-      chalk.bold.red(
-        "A database and a collection has to be specified!\n 1. Database\n 2. Collection"
-      )
-    );
-    await mongoClient.close();
+    // cleanup after 5secs
+    setTimeout(async () => await cleanupConnections(), 5000);
+  } catch (e) {
+    log(chalk.bold.red("Oooops! An error occured " + e));
+    await cleanupConnections();
     process.exit(1);
   }
 })();
