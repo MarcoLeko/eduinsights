@@ -54,7 +54,7 @@ async function cleanupConnections(changeStream, mongoClient) {
     // ensure indexes for collections
     await mapStatisticsCollection.createIndex(
       { type: "text" },
-      { unique: true }
+      { unique: true, collation: { locale: "simple" } }
     );
 
     await mapStatisticsListCollection.createIndex(
@@ -76,17 +76,18 @@ async function cleanupConnections(changeStream, mongoClient) {
         .project({ _id: 0, features: 0 })
         .toArray();
 
+      const flattenKeys = keys.flatMap((obj) => obj.type);
       await mapStatisticsListCollection
         .updateOne(
           { type: "list" },
-          { $set: { statistics: keys.flatMap((obj) => obj.type) } },
+          { $set: { statistics: flattenKeys } },
           { upsert: true }
         )
         .catch((e) =>
           log(chalk.bold.red("Ooops! Something wrong happened " + e))
         );
 
-      await cleanupConnections();
+      await cleanupConnections(changeStream, mongoClient);
     });
 
     await mapStatisticsCollection
@@ -97,10 +98,12 @@ async function cleanupConnections(changeStream, mongoClient) {
       );
 
     // cleanup after 5secs
-    setTimeout(async () => await cleanupConnections(), 5000);
+    setTimeout(async () => {
+      await cleanupConnections(changeStream, mongoClient);
+    }, 5000);
   } catch (e) {
     log(chalk.bold.red("Oooops! An error occured " + e));
-    await cleanupConnections();
+    await cleanupConnections(changeStream, mongoClient);
     process.exit(1);
   }
 })();
