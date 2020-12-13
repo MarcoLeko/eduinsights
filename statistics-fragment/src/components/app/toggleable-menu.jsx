@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   logo: {
-    height: 48,
-    width: 48,
+    height: 40,
+    width: 40,
     marginRight: theme.spacing(1),
   },
   divider: {
