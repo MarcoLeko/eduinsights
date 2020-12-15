@@ -22,9 +22,7 @@ async function cleanupConnections(changeStream, mongoClient) {
   const database = "statistics",
     collectionToBeInserted = "mapstatistics",
     changeStreamCollection = collectionToBeInserted + "list",
-    document = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "/output/output.json"), "utf8")
-    );
+    selectedPath = path.join(__dirname, "output");
 
   let connectionManager, changeStream;
 
@@ -86,16 +84,28 @@ async function cleanupConnections(changeStream, mongoClient) {
         .catch((e) =>
           log(chalk.bold.red("Ooops! Something wrong happened " + e))
         );
-
-      await cleanupConnections(changeStream, mongoClient);
     });
 
-    await mapStatisticsCollection
-      .updateOne({ type: document.type }, { $set: document }, { upsert: true })
-      .then(() => log(chalk.blue.bold(`Successfully transferred document.`)))
-      .catch((e) =>
-        log(chalk.bold.red("Ooops! Something wrong happened " + e))
-      );
+    for await (const file of fs.readdirSync(selectedPath)) {
+      const filePath = path.join(selectedPath, file);
+      const document = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      await mapStatisticsCollection
+        .updateOne(
+          { type: document.type },
+          { $set: document },
+          { upsert: true }
+        )
+        .then(() =>
+          log(
+            `Successfully transferred document from path: ${chalk.blue.bold(
+              filePath
+            )}`
+          )
+        )
+        .catch((e) =>
+          log(chalk.bold.red("Ooops! Something wrong happened " + e))
+        );
+    }
 
     // cleanup after 5secs
     setTimeout(async () => {
