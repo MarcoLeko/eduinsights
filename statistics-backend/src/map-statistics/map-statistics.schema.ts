@@ -1,14 +1,49 @@
 import { Document } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type MapStatisticsDocument = MapStatistics & Document;
+export type MapStatisticsListDocument = MapStatisticsList & Document;
 
 @Schema()
-export class MapStatistics {
+class MapStatisticsMetaData {
   @Prop()
-  type: string;
+  key: string;
   @Prop()
-  features: [];
+  description: string;
+  @Prop()
+  startYear: number;
+  @Prop()
+  endYear: number;
 }
 
-export const MapStatisticsSchema = SchemaFactory.createForClass(MapStatistics);
+@Schema()
+export class MapStatisticsList {
+  @Prop()
+  key: string;
+  @Prop()
+  statistics: Array<MapStatisticsMetaData>;
+}
+
+@Schema()
+export class MapStatistics extends MapStatisticsMetaData {
+  @Prop(
+    raw({
+      countries: {
+        type: { type: String },
+        geometries: { type: Array },
+      },
+    }),
+  )
+  objects: Record<string, any>;
+  @Prop()
+  arcs: [];
+  @Prop()
+  type: 'Topology';
+}
+
+export const MapStatisticsSchema = SchemaFactory.createForClass(
+  MapStatistics,
+).set('collection', 'mapStatistics');
+export const MapStatisticsListSchema = SchemaFactory.createForClass(
+  MapStatisticsList,
+).set('collection', 'mapStatisticsList');

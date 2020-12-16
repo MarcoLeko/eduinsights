@@ -1,8 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MapStatisticsService } from './map-statistics.service';
-import { MapStatisticsDocument } from './map-statistics.schema';
+import {
+  MapStatisticsDocument,
+  MapStatisticsListDocument,
+} from './map-statistics.schema';
 import { MapStatisticsDto } from './map-statistics.dto';
 
+// TODO: remove console.log
 @Controller('api/v1/map-statistics')
 export class MapStatisticsController {
   constructor(private readonly mapStatisticsService: MapStatisticsService) {}
@@ -10,9 +14,14 @@ export class MapStatisticsController {
   @Post()
   async getMapStatistics(
     @Body() clientMapStatisticsDto: MapStatisticsDto,
-  ): Promise<MapStatisticsDocument[]> {
+  ): Promise<MapStatisticsDocument> {
     return this.mapStatisticsService.getMapStatisticsById(
-      clientMapStatisticsDto.type,
+      clientMapStatisticsDto.key,
     );
+  }
+
+  @Get('/list')
+  async getMapStatisticsList(): Promise<MapStatisticsListDocument> {
+    return this.mapStatisticsService.getMapStatisticsList();
   }
 }

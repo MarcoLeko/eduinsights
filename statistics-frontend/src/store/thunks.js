@@ -1,4 +1,4 @@
-export async function getMapStatistics(body) {
+export async function getMapStatisticsById(body) {
   const response = await fetch("api/v1/map-statistics", {
     method: "POST",
     headers: {
@@ -6,6 +6,12 @@ export async function getMapStatistics(body) {
     },
     body: JSON.stringify(body),
   });
+
+  return handleResponse(response);
+}
+
+export async function getMapStatisticsList() {
+  const response = await fetch("api/v1/map-statistics/list");
 
   return handleResponse(response);
 }
