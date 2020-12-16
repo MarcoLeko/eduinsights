@@ -65,7 +65,8 @@ module.exports = {
     resultArrayWithCountryMatches,
     unescoRegions
   ) {
-    for (const geoJsonCountry of countriesGeoJson.features) {
+    for (const geoJsonCountry of countriesGeoJson.objects.countries
+      .geometries) {
       for (const [
         index,
         statisticsCountry,
@@ -85,12 +86,12 @@ module.exports = {
 
           resultArrayWithCountryMatches.push({
             type: geoJsonCountry.type,
+            arcs: geoJsonCountry.arcs,
             properties: {
               name: geoJsonCountry.properties.ADMIN,
               id: statisticsCountry.id,
               value: Math.round(Number(value)),
             },
-            geometry: geoJsonCountry.geometry,
           });
 
           log(
@@ -101,7 +102,9 @@ module.exports = {
         } else {
           if (
             !unescoRegions.has(statisticsCountry.id) &&
-            !countriesGeoJson.features.includes(statisticsCountryCodeAlpha3) &&
+            !countriesGeoJson.objects.countries.geometries.includes(
+              statisticsCountryCodeAlpha3
+            ) &&
             !statisticsCountryCodeAlpha3
           ) {
             unescoRegions.set(statisticsCountry.id, []);
@@ -115,7 +118,7 @@ module.exports = {
       }
     }
   },
-  matchUnescoRegionsWithGeoJsonPolygon: async function matchUnescoRegionsWithGeoJsonPolygon(
+  matchUnescoRegionsWithGeoJsonPolygon: function matchUnescoRegionsWithGeoJsonPolygon(
     unescoHierarchicalCodeListJson,
     availableCountriesStatistics,
     unescoStatisticsJson,
@@ -123,13 +126,13 @@ module.exports = {
     resultArrayWithCountryMatches,
     unescoRegions
   ) {
-    for await (const region of unescoRegions.keys()) {
+    for (const region of unescoRegions.keys()) {
       log("UNESCO region is: " + chalk.bold.underline(region));
 
-      for await (const list of unescoHierarchicalCodeListJson.HierarchicalCodelist) {
-        for await (const entity of list.hierarchies) {
+      for (const list of unescoHierarchicalCodeListJson.HierarchicalCodelist) {
+        for (const entity of list.hierarchies) {
           if (region === entity.id) {
-            for await (const countryWithinRegion of entity.codes[0].codes) {
+            for (const countryWithinRegion of entity.codes[0].codes) {
               if (
                 !resultArrayWithCountryMatches.some(
                   (country) => countryWithinRegion.id === country.properties.id
@@ -148,7 +151,7 @@ module.exports = {
                   unescoStatisticsJson
                 );
 
-                const geoJsonCountry = countriesGeoJson.features.find(
+                const geoJsonCountry = countriesGeoJson.objects.countries.geometries.find(
                   (geoJSONCountry) =>
                     countries.alpha3ToAlpha2(
                       geoJSONCountry.properties.ISO_A3
@@ -161,12 +164,12 @@ module.exports = {
 
                 resultArrayWithCountryMatches.push({
                   type: geoJsonCountry.type,
+                  arcs: geoJsonCountry.arcs,
                   properties: {
                     name: geoJsonCountry.properties.ADMIN,
                     id: countryWithinRegion.id,
                     value: Math.round(Number(value)),
                   },
-                  geometry: geoJsonCountry.geometry,
                 });
 
                 log(

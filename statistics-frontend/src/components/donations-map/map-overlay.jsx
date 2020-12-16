@@ -31,13 +31,8 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
-  const { geoJSON, allMapStatistics, selectedStatistic } = useMapStatistics(
-    geoJSONRef
-  );
+  const { geoJSON } = useMapStatistics(geoJSONRef);
 
-  console.log("rerendered!");
-  console.log(selectedStatistic);
-  console.log(allMapStatistics);
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
   );

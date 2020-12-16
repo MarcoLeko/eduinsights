@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type MapStatisticsDocument = MapStatistics & Document;
 export type MapStatisticsListDocument = MapStatisticsList & Document;
@@ -26,8 +26,19 @@ export class MapStatisticsList {
 
 @Schema()
 export class MapStatistics extends MapStatisticsMetaData {
+  @Prop(
+    raw({
+      countries: {
+        type: { type: String },
+        geometries: { type: Array },
+      },
+    }),
+  )
+  objects: Record<string, any>;
   @Prop()
-  features: [];
+  arcs: [];
+  @Prop()
+  type: 'Topology';
 }
 
 export const MapStatisticsSchema = SchemaFactory.createForClass(

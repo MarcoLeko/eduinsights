@@ -14,7 +14,7 @@ import { useScrollTrigger } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import Box from "@material-ui/core/Box";
 import MapIcon from "@material-ui/icons/MapRounded";
-import Poll from "@material-ui/icons/PollOutlined";
+import Public from "@material-ui/icons/Public";
 
 import { useAppStyles } from "./app-styles";
 
@@ -45,7 +45,7 @@ function App({ canSwipe }) {
     );
   }
 
-  const labels = [tab(<MapIcon />, "Map", 0), tab(<Poll />, "Statistics", 1)];
+  const labels = [tab(<MapIcon />, "Map", 0), tab(<Public />, "3D", 1)];
 
   function handleChange(event, newValue) {
     setTabIndex(newValue);

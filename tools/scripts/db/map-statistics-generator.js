@@ -13,7 +13,8 @@ const {
   createMapStatisticsTempPath,
 } = require("./map-statistics-generator.service");
 const mapStatistics = require("./map-statistics");
-
+const topojson = require("topojson-server");
+const topojsonSimplify = require("topojson-simplify");
 const log = console.log;
 
 (async function () {
@@ -26,9 +27,19 @@ const log = console.log;
       createMapStatisticsTempPath("unesco-hierarchical-code-list.json")
     );
 
-    const countriesGeoJson = await fetchGeoCountriesPolygons();
+    const countriesGeoJsonResponse = await fetchGeoCountriesPolygons();
+    const preSimplyfiedTopojson = topojsonSimplify.presimplify(
+      topojson.topology({
+        countries: countriesGeoJsonResponse,
+      })
+    );
+
+    const countriesGeoJsonCompressed = topojsonSimplify.simplify(
+      preSimplyfiedTopojson,
+      0.0005
+    );
     writeToFileSync(
-      countriesGeoJson,
+      countriesGeoJsonCompressed,
       createMapStatisticsTempPath("countries.json")
     );
 
@@ -50,7 +61,7 @@ const log = console.log;
       );
 
       matchUnescoCountriesWithGeoJsonPolygon(
-        countriesGeoJson,
+        countriesGeoJsonCompressed,
         availableCountriesStatistics,
         unescoStatisticsJson,
         resultArrayWithCountryMatches,
@@ -72,7 +83,7 @@ const log = console.log;
         unescoHierarchicalCodeListJson,
         availableCountriesStatistics,
         unescoStatisticsJson,
-        countriesGeoJson,
+        countriesGeoJsonCompressed,
         resultArrayWithCountryMatches,
         unescoRegions
       );
@@ -82,7 +93,15 @@ const log = console.log;
         description: statistic.description,
         startYear: statistic.startYear,
         endYear: statistic.endYear,
-        features: resultArrayWithCountryMatches,
+        type: countriesGeoJsonCompressed.type,
+        arcs: countriesGeoJsonCompressed.arcs,
+        objects: {
+          countries: {
+            bbox: countriesGeoJsonCompressed.bbox,
+            type: countriesGeoJsonCompressed.objects.countries.type,
+            geometries: resultArrayWithCountryMatches,
+          },
+        },
       };
 
       ensureDirectory(createMapStatisticsOutputPath(""));
