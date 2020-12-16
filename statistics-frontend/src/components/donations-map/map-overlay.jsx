@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "./map-overlay.scss";
 import * as ReactLeaflet from "react-leaflet";
@@ -31,8 +31,12 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
-  const { geoJSON, allMapStatistics } = useMapStatistics(geoJSONRef);
+  const { geoJSON, allMapStatistics, selectedStatistic } = useMapStatistics(
+    geoJSONRef
+  );
 
+  console.log("rerendered!");
+  console.log(selectedStatistic);
   console.log(allMapStatistics);
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
@@ -142,4 +146,4 @@ const dispatchMapToProps = (dispatch) => ({
   toggleSwipe: (val) => dispatch(setSwipeState(val)),
 });
 
-export default connect(null, dispatchMapToProps)(MapOverlay);
+export default connect(null, dispatchMapToProps)(memo(MapOverlay));

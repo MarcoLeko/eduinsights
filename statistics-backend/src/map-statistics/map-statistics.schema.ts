@@ -5,22 +5,34 @@ export type MapStatisticsDocument = MapStatistics & Document;
 export type MapStatisticsListDocument = MapStatisticsList & Document;
 
 @Schema()
-export class MapStatisticsList {
+class MapStatisticsMetaData {
   @Prop()
-  type: string;
+  key: string;
   @Prop()
-  statistics: [];
+  description: string;
+  @Prop()
+  startYear: number;
+  @Prop()
+  endYear: number;
 }
 
 @Schema()
-export class MapStatistics {
+export class MapStatisticsList {
   @Prop()
-  type: string;
+  key: string;
+  @Prop()
+  statistics: Array<MapStatisticsMetaData>;
+}
+
+@Schema()
+export class MapStatistics extends MapStatisticsMetaData {
   @Prop()
   features: [];
 }
 
-export const MapStatisticsSchema = SchemaFactory.createForClass(MapStatistics);
+export const MapStatisticsSchema = SchemaFactory.createForClass(
+  MapStatistics,
+).set('collection', 'mapStatistics');
 export const MapStatisticsListSchema = SchemaFactory.createForClass(
   MapStatisticsList,
-);
+).set('collection', 'mapStatisticsList');

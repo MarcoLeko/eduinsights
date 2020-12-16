@@ -14,16 +14,14 @@ export class MapStatisticsController {
   @Post()
   async getMapStatistics(
     @Body() clientMapStatisticsDto: MapStatisticsDto,
-  ): Promise<MapStatisticsDocument[]> {
-    console.log('endpoint called by id');
+  ): Promise<MapStatisticsDocument> {
     return this.mapStatisticsService.getMapStatisticsById(
-      clientMapStatisticsDto.type,
+      clientMapStatisticsDto.key,
     );
   }
 
   @Get('/list')
-  async getMapStatisticsList(): Promise<MapStatisticsListDocument[]> {
-    console.log('endpoint called list');
+  async getMapStatisticsList(): Promise<MapStatisticsListDocument> {
     return this.mapStatisticsService.getMapStatisticsList();
   }
 }
