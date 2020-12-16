@@ -2,11 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getMapStatisticsById, getMapStatisticsList } from "../store/thunks";
 import { receiveMessageInterceptor } from "../store/alert/alert-actions";
 import { useDispatch } from "react-redux";
+import * as topojson from "topojson-client";
 
 export function useMapStatistics(geoJSONRef) {
   const selectedStatistic = useRef(null);
   const [allMapStatistics, setAllMapStatistics] = useState(null);
-  const [geoJSON, setGeoJSON] = useState({
+  const [geoJson, setGeoJson] = useState({
     key: null,
     description: null,
     startYear: null,
@@ -20,8 +21,11 @@ export function useMapStatistics(geoJSONRef) {
   const fetchMapStatisticsById = useCallback(() => {
     getMapStatisticsById({ key: selectedStatistic.current })
       .then((result) => {
-        setGeoJSON(result);
-        geoJSONRef.current.leafletElement.clearLayers().addData(result);
+        const convertedTopojson = topojson.feature(result, "countries");
+        setGeoJson(convertedTopojson);
+        geoJSONRef.current.leafletElement
+          .clearLayers()
+          .addData(convertedTopojson);
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
   }, [dispatch, geoJSONRef]);
@@ -29,7 +33,6 @@ export function useMapStatistics(geoJSONRef) {
   const fetchInitialMapStatistics = useCallback(() => {
     getMapStatisticsList()
       .then((list) => {
-        console.log(list);
         setAllMapStatistics(list.statistics);
         selectedStatistic.current = list.statistics[0].key;
       })
@@ -43,7 +46,7 @@ export function useMapStatistics(geoJSONRef) {
   }, [fetchInitialMapStatistics]);
 
   return {
-    geoJSON,
+    geoJson,
     allMapStatistics,
     selectedStatistic: selectedStatistic.current,
     fetchMapStatisticsById,

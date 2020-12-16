@@ -20,7 +20,7 @@ module.exports = mapStatistics = [
     description: "Percentage of female teachers: Tertiary education",
     key: "PERCENTAGE_OF_FEMALE_TEACHERS_TERTIARY_EDUCATION_2018_2018",
     url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/FTP..L5T8...................AD+AF+AG+AIMS_ASIA_PAC+AIMS_CAS+AIMS_EAS+AIMS_EAS_PAC+AIMS_SAS_WAS+AL+AM+AZ+BA+BB+BD+BF+BH+BI+BJ+BM+BN+BO+BS+BT+BY+BZ+CM+CN+CO+CU+CV+DJ+DZ+EG+GD+GE+GH+GM+HK+HN+ID+IN+KG+KH+KP+KY+KZ+LC+LK+LS+MA+MDG_EAS_NOCHINA+MDG_NAFR+ME+MG+MM+MN+MO+MY+NE+PS+QA+RS+RW+SA+SC+SDG_CAS+SDG_EUR+SM+SN+SV+TG+UIS_ARAB+UIS_CAS+UNICEF_AFRICA+UNICEF_ALL+UZ+VG+WB_LAC_IBRD_IDA+WB_LAC_IDA+WB_MENA?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/FTP..L5T8...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
     startYear: 2018,
     endYear: 2018,
   },

@@ -18,6 +18,8 @@
     "dotenv": "^8.2.0",
     "i18n-iso-countries": "^6.3.0",
     "mongodb": "^3.6.3",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "topojson-server": "^3.0.1",
+    "topojson-simplify": "^3.0.3"
   }
 }
