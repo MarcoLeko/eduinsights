@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "./map-overlay.scss";
 import * as ReactLeaflet from "react-leaflet";
 import { setSwipeState } from "../../store/ui/ui-actions";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import L from "leaflet";
 import MapLegend from "./map-legend";
 import MapInfoControl from "./map-info-control";
 import MapResetViewButton from "./map-reset-view-button";
-import { receiveMessageInterceptor } from "../../store/alert/alert-actions";
-import { getMapStatistics } from "../../store/thunks";
 import MapSideBar from "./map-side-bar";
+import { useMapStatistics } from "../../hooks/useMapStatistics";
 
 const { Map, TileLayer, GeoJSON } = ReactLeaflet;
 
@@ -32,7 +31,8 @@ function MapOverlay({ toggleSwipe }) {
   const mapRef = useRef(null);
   const geoJSONRef = useRef(null);
   const infoControlRef = useRef(null);
-  const [selectedStatistics] = useState("Internet for pedagogical purposes");
+  const { geoJSON } = useMapStatistics(geoJSONRef);
+
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
   );
@@ -42,26 +42,6 @@ function MapOverlay({ toggleSwipe }) {
     .addEventListener("change", (e) => {
       setMapMode(e.matches ? "dark" : "light");
     });
-
-  const dispatch = useDispatch();
-
-  const [geoJSON, setGeoJSON] = useState({
-    type: "",
-    features: [],
-  });
-
-  const callback = useCallback(() => {
-    getMapStatistics({ type: selectedStatistics })
-      .then(async (result) => {
-        setGeoJSON(result);
-        geoJSONRef.current.leafletElement.clearLayers().addData(result);
-      })
-      .catch((e) => dispatch(receiveMessageInterceptor(e)));
-  }, [dispatch, selectedStatistics]);
-
-  useEffect(() => {
-    callback();
-  }, [callback]);
 
   function style(feature) {
     return {
@@ -161,4 +141,4 @@ const dispatchMapToProps = (dispatch) => ({
   toggleSwipe: (val) => dispatch(setSwipeState(val)),
 });
 
-export default connect(null, dispatchMapToProps)(MapOverlay);
+export default connect(null, dispatchMapToProps)(memo(MapOverlay));

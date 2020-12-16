@@ -9,7 +9,7 @@ import muiBackground from "../shared/material-ui-background";
 
 import Fingerprint from "@material-ui/icons/Fingerprint";
 import Box from "@material-ui/core/Box";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Link, makeStyles, Typography } from "@material-ui/core";
 import Contribute from "@material-ui/icons/Code";
 import Copyright from "../shared/copyright";
 
@@ -34,6 +34,17 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-start",
   },
+  linkItem: {
+    width: "inherit",
+    display: "flex",
+    justifyItems: "center",
+    alignItems: "center",
+    textDecoration: "none",
+    color: "inherit",
+  },
+  listItemText: {
+    flex: "0.5 0.5 auto",
+  },
 }));
 
 function SideBar(props) {
@@ -42,12 +53,12 @@ function SideBar(props) {
     {
       icon: <Fingerprint />,
       name: "Imprint",
-      onClick: (e) => console.log(e),
+      link: "/imprint",
     },
     {
       icon: <Contribute />,
-      name: "Contribute",
-      onClick: (e) => console.log(e),
+      name: "Code",
+      link: "https://github.com/MarcoLeko/eduinsights",
     },
   ];
 
@@ -63,10 +74,12 @@ function SideBar(props) {
       }}
     >
       <List>
-        {navItems.map(({ icon, name, onClick }, index) => (
-          <ListItem button key={index} onClick={onClick}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText primary={name} />
+        {navItems.map(({ icon, name, link }, index) => (
+          <ListItem button key={index}>
+            <Link href={link} className={classes.linkItem}>
+              <ListItemIcon className={classes.logoPanel}>{icon}</ListItemIcon>
+              <ListItemText primary={name} className={classes.listItemText} />
+            </Link>
           </ListItem>
         ))}
       </List>

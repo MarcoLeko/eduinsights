@@ -1,17 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-statistics-fragment/node_modules
+statistics-frontend/node_modules
 statistics-backend/node_modules
 tools/node_modules
 
 # testing
-statistics-fragment/coverage
+statistics-frontend/coverage
 statistics-backend/coverage
 
 # production
 statistics-backend/build
-statistics-fragment/build
+statistics-frontend/build
 
 # ide
 /.idea
@@ -25,7 +25,7 @@ statistics-fragment/build
 .env.production.local
 
 # environmental properties
-statistics-fragment/.env
+statistics-frontend/.env
 .env
 
 # packaging
