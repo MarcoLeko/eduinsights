@@ -20,8 +20,8 @@ async function cleanupConnections(changeStream, mongoClient) {
     });
 
   const database = "statistics",
-    collectionToBeInserted = "mapstatistics",
-    changeStreamCollection = collectionToBeInserted + "list",
+    collectionToBeInserted = "mapStatistics",
+    changeStreamCollection = `${collectionToBeInserted}List`,
     selectedPath = path.join(__dirname, "output");
 
   let connectionManager, changeStream;
@@ -51,12 +51,12 @@ async function cleanupConnections(changeStream, mongoClient) {
 
     // ensure indexes for collections
     await mapStatisticsCollection.createIndex(
-      { type: "text" },
+      { key: "text" },
       { unique: true, collation: { locale: "simple" } }
     );
 
     await mapStatisticsListCollection.createIndex(
-      { type: "text" },
+      { key: "text" },
       { unique: true }
     );
 
@@ -74,11 +74,10 @@ async function cleanupConnections(changeStream, mongoClient) {
         .project({ _id: 0, features: 0 })
         .toArray();
 
-      const flattenKeys = keys.flatMap((obj) => obj.type);
       await mapStatisticsListCollection
         .updateOne(
-          { type: "list" },
-          { $set: { statistics: flattenKeys } },
+          { key: "list" },
+          { $set: { statistics: keys } },
           { upsert: true }
         )
         .catch((e) =>
@@ -90,11 +89,7 @@ async function cleanupConnections(changeStream, mongoClient) {
       const filePath = path.join(selectedPath, file);
       const document = JSON.parse(fs.readFileSync(filePath, "utf8"));
       await mapStatisticsCollection
-        .updateOne(
-          { type: document.type },
-          { $set: document },
-          { upsert: true }
-        )
+        .updateOne({ key: document.key }, { $set: document }, { upsert: true })
         .then(() =>
           log(
             `Successfully transferred document from path: ${chalk.blue.bold(

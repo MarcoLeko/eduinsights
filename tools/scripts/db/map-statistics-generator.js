@@ -29,20 +29,20 @@ const log = console.log;
     const countriesGeoJson = await fetchGeoCountriesPolygons();
     writeToFileSync(
       countriesGeoJson,
-      createMapStatisticsTempPath("countries.geojson")
+      createMapStatisticsTempPath("countries.json")
     );
 
-    for (const [index, statistic] of Object.keys(mapStatistics).entries()) {
+    for (const [index, statistic] of mapStatistics.entries()) {
       const unescoRegions = new Map(),
         resultArrayWithCountryMatches = [];
 
       const unescoStatisticsJson = await fetchUnescoStatisticWithUrl(
-        Object.values(mapStatistics)[index]
+        Object.values(mapStatistics)[index].url
       );
 
       writeToFileSync(
         unescoStatisticsJson,
-        createMapStatisticsTempPath(`${statistic}.json`)
+        createMapStatisticsTempPath(`${statistic.key}.json`)
       );
 
       const availableCountriesStatistics = unescoStatisticsJson.structure.dimensions.series.find(
@@ -78,20 +78,23 @@ const log = console.log;
       );
 
       const output = {
-        type: statistic,
+        key: statistic.key,
+        description: statistic.description,
+        startYear: statistic.startYear,
+        endYear: statistic.endYear,
         features: resultArrayWithCountryMatches,
       };
 
       ensureDirectory(createMapStatisticsOutputPath(""));
       writeToFileSync(
         output,
-        createMapStatisticsOutputPath(`${statistic}.json`)
+        createMapStatisticsOutputPath(`${statistic.key}.json`)
       );
 
       log(
         chalk.bold(
           `Output file generated at: ${chalk.green.underline(
-            createMapStatisticsOutputPath(`${statistic}.json`)
+            createMapStatisticsOutputPath(`${statistic.key}.json`)
           )} with: ${chalk.green.underline(
             resultArrayWithCountryMatches.length
           )} countries`
