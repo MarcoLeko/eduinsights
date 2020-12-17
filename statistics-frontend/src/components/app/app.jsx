@@ -5,7 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import "./app.scss";
 import SwipeableViews from "react-swipeable-views";
 import clsx from "clsx";
-import MapOverlay from "../donations-map/map-overlay";
 import { connect } from "react-redux";
 import ToggleableMenu from "./toggleable-menu";
 import SideBar from "./side-bar";
@@ -17,6 +16,7 @@ import MapIcon from "@material-ui/icons/MapRounded";
 import Public from "@material-ui/icons/Public";
 
 import { useAppStyles } from "./app-styles";
+import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 
 function App({ canSwipe }) {
   const classes = useAppStyles();
@@ -114,7 +114,7 @@ function App({ canSwipe }) {
         disabled={!canSwipe}
         slideStyle={{ overflow: "hidden" }}
       >
-        <MapOverlay />
+        <MapOverlay2D />
         <Statistics />
       </SwipeableViews>
       <SideBar isOpen={sideBarOpen} />

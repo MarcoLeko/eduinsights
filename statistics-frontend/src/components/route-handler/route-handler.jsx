@@ -2,7 +2,7 @@ import Home from "../app/app";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppNotifier from "../shared/app-notifier";
-import { Imprint } from "../Imprint/Imprint";
+import { Imprint } from "../imprint/imprint";
 
 function RouteHandler() {
   return (
