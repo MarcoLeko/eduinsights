@@ -9,12 +9,18 @@ import MapInfoControl from "../map-info-control/map-info-control";
 import MapSideBar from "./map-side-bar";
 import { GeoJson } from "../geoJson/geojson";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
+import { useMapStatistics } from "../../hooks/use-map-statistics";
+import { useLeaflet } from "react-leaflet";
 
 const { Map, TileLayer } = ReactLeaflet;
 
 function MapOverlay2D({ toggleSwipe }) {
-  const mapRef = useRef(null);
+  const { map } = useLeaflet();
+  const geoJsonRef = useRef(null);
   const infoControlRef = useRef(null);
+  const { geoJsonFromSelectedStatistic, selectedStatistic } = useMapStatistics(
+    geoJsonRef
+  );
 
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
@@ -34,10 +40,8 @@ function MapOverlay2D({ toggleSwipe }) {
   }, [mediaQueryThemeMode]);
 
   function centerMapView(e) {
-    const { leafletElement } = mapRef.current;
-
     if (e) {
-      leafletElement.panTo(e.popup._latlng, { animate: true });
+      map.panTo(e.popup._latlng, { animate: true });
     }
   }
 
@@ -47,7 +51,6 @@ function MapOverlay2D({ toggleSwipe }) {
 
   return (
     <Map
-      ref={mapRef}
       center={[45.0, 10.0]}
       zoom={3}
       tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
@@ -68,10 +71,20 @@ function MapOverlay2D({ toggleSwipe }) {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
         url={`https://api.mapbox.com/styles/v1/mapbox/${mapMode}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
       />
-      <GeoJson mapRef={mapRef} infoControlRef={infoControlRef} />
+      <GeoJson
+        geoJsonRef={geoJsonRef}
+        data={geoJsonFromSelectedStatistic}
+        infoControlRef={infoControlRef}
+      />
       <MapSideBar toggleMapMode={toggleMapMode} mapMode={mapMode} />
       <MapLegend />
-      <MapInfoControl ref={infoControlRef} />
+      {selectedStatistic && geoJsonFromSelectedStatistic.description && (
+        <MapInfoControl
+          selectedStatisticMetaData={geoJsonFromSelectedStatistic}
+          geoJsonRef={geoJsonRef}
+          ref={infoControlRef}
+        />
+      )}
       <ResetViewMapButton />
     </Map>
   );

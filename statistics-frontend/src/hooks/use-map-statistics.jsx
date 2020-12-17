@@ -4,7 +4,7 @@ import { receiveMessageInterceptor } from "../store/alert/alert-actions";
 import { useDispatch } from "react-redux";
 import * as topojson from "topojson-client";
 
-export function useMapStatistics(geoJSONRef) {
+export function useMapStatistics(geoJSONRef = null) {
   const [selectedStatistic, setSelectedStatistic] = useState(null);
   const [allMapStatistics, setAllMapStatistics] = useState(null);
   const [

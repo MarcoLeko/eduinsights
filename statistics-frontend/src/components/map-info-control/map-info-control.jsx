@@ -1,22 +1,25 @@
 import { useLeaflet } from "react-leaflet";
-import { useEffect, forwardRef, useImperativeHandle, memo } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle } from "react";
 import L from "leaflet";
 import "./map-info-control.scss";
 
 /**
  * @return {null}
  */
-function MapInfoControl(props, ref) {
+function MapInfoControl({ geoJsonRef, selectedStatisticMetaData }, ref) {
   const { map } = useLeaflet();
   const info = L.control();
   const div = L.DomUtil.create("div", "info");
 
-  info.update = function (args) {
-    return (div.innerHTML =
-      `<h4>Proportion of primary schools with access to internet</h4>` +
+  info.update = (args) => {
+    div.innerHTML =
+      `<h4 class="header">${selectedStatisticMetaData.description}</h4>` +
+      `<p>${selectedStatisticMetaData.startYear} - ${selectedStatisticMetaData.endYear}</p>` +
+      `<span>` +
       (args
         ? `<b>${args.name}</b>&emsp;${args.value}&nbsp;%`
-        : "Touch/Hover over a state"));
+        : "Hover over a state") +
+      `</span>`;
   };
 
   info.onAdd = function () {
@@ -28,7 +31,7 @@ function MapInfoControl(props, ref) {
 
   useEffect(() => {
     info.addTo(map);
-  }, [div, info, map]);
+  }, [info, map]);
 
   return null;
 }
