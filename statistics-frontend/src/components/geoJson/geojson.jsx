@@ -1,15 +1,13 @@
-import React, { useRef } from "react";
+import React from "react";
 import * as ReactLeaflet from "react-leaflet";
-import { useMapStatistics } from "../../hooks/use-map-statistics";
+import { useLeaflet } from "react-leaflet";
 import L from "leaflet";
 import { getColor } from "../shared/getColor";
 
 const { GeoJSON } = ReactLeaflet;
 
-function GeoJson({ infoControlRef, mapRef }) {
-  const geoJSONRef = useRef(null);
-
-  const { geoJsonFromSelectedStatistic } = useMapStatistics(geoJSONRef);
+function GeoJson({ geoJsonRef, infoControlRef, data }) {
+  const { map } = useLeaflet();
 
   function style(feature) {
     return {
@@ -46,20 +44,21 @@ function GeoJson({ infoControlRef, mapRef }) {
 
     infoControlRef.current.info.update(layer.feature.properties);
   }
+
   function resetHighlight(e) {
-    geoJSONRef.current.leafletElement.resetStyle(e.target);
+    geoJsonRef.current.leafletElement.resetStyle(e.target);
     infoControlRef.current.info.update();
   }
 
   function zoomToCountry(e) {
-    mapRef.current.leafletElement.fitBounds(e.target.getBounds());
+    map.fitBounds(e.target.getBounds());
   }
 
   return (
     <GeoJSON
-      data={geoJsonFromSelectedStatistic}
+      data={data}
       style={style}
-      ref={geoJSONRef}
+      ref={geoJsonRef}
       onEachFeature={onEachFeature}
     />
   );

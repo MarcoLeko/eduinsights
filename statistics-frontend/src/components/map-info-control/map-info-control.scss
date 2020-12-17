@@ -11,3 +11,25 @@
   margin: 0 0 5px;
   color: #777;
 }
+
+p {
+  margin: .5em 0;
+}
+
+.statsAndButtonWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  @media (max-width: 576px) {
+    white-space: nowrap;
+  }
+}
+
+.header:hover, .header:active {
+  white-space: normal;
+}
