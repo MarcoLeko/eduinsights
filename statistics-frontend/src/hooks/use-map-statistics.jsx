@@ -66,6 +66,7 @@ export function useMapStatistics(geoJSONRef = null) {
     geoJsonFromSelectedStatistic,
     allMapStatistics,
     selectedStatistic,
+    setSelectedStatistic,
     fetchMapStatisticsById,
     fetchInitialMapStatistics,
   };

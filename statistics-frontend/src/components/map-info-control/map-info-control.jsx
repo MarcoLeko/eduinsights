@@ -3,23 +3,24 @@ import { forwardRef, memo, useEffect, useImperativeHandle } from "react";
 import L from "leaflet";
 import "./map-info-control.scss";
 
+const div = L.DomUtil.create("div", "info");
+
 /**
  * @return {null}
  */
 function MapInfoControl({ geoJsonRef, selectedStatisticMetaData }, ref) {
   const { map } = useLeaflet();
   const info = L.control();
-  const div = L.DomUtil.create("div", "info");
 
   info.update = (args) => {
-    div.innerHTML =
+    return (div.innerHTML =
       `<h4 class="header">${selectedStatisticMetaData.description}</h4>` +
       `<p>${selectedStatisticMetaData.startYear} - ${selectedStatisticMetaData.endYear}</p>` +
       `<span>` +
       (args
         ? `<b>${args.name}</b>&emsp;${args.value}&nbsp;%`
         : "Hover over a state") +
-      `</span>`;
+      `</span>`);
   };
 
   info.onAdd = function () {

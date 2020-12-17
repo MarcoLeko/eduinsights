@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
-import { FormControlLabel, makeStyles, Switch } from "@material-ui/core";
+import {
+  FormControlLabel,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  makeStyles,
+  Switch,
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
 
-const maxDrawerWidth = 480;
+const drawerWidth = "calc(100% - 48px)";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -19,40 +27,26 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
     zIndex: 9999,
   },
-  spacerDiv: {
-    width: 0,
+  mapSideBarContainer: {
     position: "relative",
-    transition: theme.transitions.create(["width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
     display: "flex",
     flexDirection: "row",
     justifyContent: "start",
     height: "100%",
   },
-  spacerDivOpen: {
-    maxWidth: maxDrawerWidth,
-    position: "relative",
-    transition: theme.transitions.create(["width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
   paperAnchorLeft: { border: 0 },
   drawer: {
-    maxWidth: maxDrawerWidth,
     flexShrink: 0,
     display: "flex",
     height: "inherit",
     whiteSpace: "nowrap",
     zIndex: 9999,
+    width: drawerWidth,
+    backgroundColor: theme.palette.background.paper,
   },
   drawerOpen: {
     position: "relative",
-    maxWidth: maxDrawerWidth,
-    width: 250,
-    background: "rgba(255, 255, 255, 0.8)",
+    width: drawerWidth,
     height: "inherit",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -61,10 +55,20 @@ const useStyles = makeStyles((theme) => ({
   },
   sideBarContent: {
     margin: theme.spacing(2),
+    width: "inherit",
     display: "flex",
     flexDirection: "column",
-    height: "inherit",
     position: "relative",
+  },
+  list: {
+    backgroundColor: theme.palette.background.paper,
+    width: "100%",
+  },
+  nestedListItem: {
+    paddingLeft: theme.spacing(4),
+  },
+  listItem: {
+    padding: `${theme.spacing(2)} 0`,
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -72,11 +76,18 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: 0,
+    width: "0%",
   },
 }));
 
-function MapSideBar({ toggleMapMode, mapMode }) {
+function MapSideBar({
+  toggleMapMode,
+  mapMode,
+  mapStatistics,
+  setSelectedStatistic,
+  fetchMapStatisticsById,
+  selectedStatistic,
+}) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -84,13 +95,14 @@ function MapSideBar({ toggleMapMode, mapMode }) {
     setOpen(!open);
   }
 
+  function handleActiveStatisticItem(key) {
+    setSelectedStatistic(key);
+    fetchMapStatisticsById(key);
+  }
+
   return (
     <>
-      <div
-        className={clsx(classes.spacerDiv, {
-          [classes.spacerDivOpen]: open,
-        })}
-      >
+      <div className={classes.mapSideBarContainer}>
         <Drawer
           variant="permanent"
           elevation={0}
@@ -119,6 +131,38 @@ function MapSideBar({ toggleMapMode, mapMode }) {
               label={`Switch to ${mapMode === "light" ? "dark" : "light"} mode`}
             />
           </div>
+          <List
+            className={classes.list}
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Select statistics powered by UNESCO
+              </ListSubheader>
+            }
+          >
+            {mapStatistics &&
+              mapStatistics.map((statistic, index) => (
+                <div key={statistic.key} className={classes.listItem}>
+                  <ListItem
+                    role={undefined}
+                    dense
+                    selected={
+                      index ===
+                      mapStatistics.findIndex(
+                        (obj) => obj.key === selectedStatistic
+                      )
+                    }
+                    button
+                    onClick={() => handleActiveStatisticItem(statistic.key)}
+                  >
+                    <ListItemText
+                      id={statistic.key}
+                      primary={statistic.description}
+                    />
+                  </ListItem>
+                </div>
+              ))}
+          </List>
         </Drawer>
         <Button
           variant="contained"
@@ -133,4 +177,4 @@ function MapSideBar({ toggleMapMode, mapMode }) {
   );
 }
 
-export default MapSideBar;
+export default memo(MapSideBar);
