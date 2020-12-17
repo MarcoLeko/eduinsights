@@ -1,11 +1,12 @@
 import { useLeaflet } from "react-leaflet";
 import { memo, useEffect } from "react";
 import L from "leaflet";
+import "./reset-view-map-button.scss";
 
 /**
  * @return {null}
  */
-function MapResetViewButton() {
+function ResetViewMapButton() {
   const { map } = useLeaflet();
   const button = L.control({ position: "bottomleft" });
 
@@ -35,4 +36,4 @@ function MapResetViewButton() {
   return null;
 }
 
-export default memo(MapResetViewButton);
+export default memo(ResetViewMapButton);

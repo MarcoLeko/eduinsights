@@ -1,0 +1,84 @@
+import React, { memo, useEffect, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
+import "./map-overlay.scss";
+import * as ReactLeaflet from "react-leaflet";
+import { setSwipeState } from "../../store/ui/ui-actions";
+import { connect } from "react-redux";
+import MapLegend from "./map-legend";
+import MapInfoControl from "../map-info-control/map-info-control";
+import MapSideBar from "./map-side-bar";
+import { GeoJson } from "../geoJson/geojson";
+import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
+
+const { Map, TileLayer } = ReactLeaflet;
+
+function MapOverlay2D({ toggleSwipe }) {
+  const mapRef = useRef(null);
+  const infoControlRef = useRef(null);
+
+  const [mapMode, setMapMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
+
+  const mediaQueryThemeMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function setMapModeWrapper(e) {
+    setMapMode(e.matches ? "dark" : "light");
+  }
+
+  useEffect(() => {
+    mediaQueryThemeMode.addEventListener("change", setMapModeWrapper);
+
+    return () =>
+      mediaQueryThemeMode.removeEventListener("change", setMapModeWrapper);
+  }, [mediaQueryThemeMode]);
+
+  function centerMapView(e) {
+    const { leafletElement } = mapRef.current;
+
+    if (e) {
+      leafletElement.panTo(e.popup._latlng, { animate: true });
+    }
+  }
+
+  function toggleMapMode() {
+    setMapMode(mapMode === "light" ? "dark" : "light");
+  }
+
+  return (
+    <Map
+      ref={mapRef}
+      center={[45.0, 10.0]}
+      zoom={3}
+      tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
+      onPopupopen={centerMapView.bind(this)}
+      zoomControl={false}
+      onMovestart={() => toggleSwipe(false)}
+      onMoveend={() => toggleSwipe(true)}
+      minZoom={3}
+      bounceAtZoomLimits={true}
+      maxBoundsViscosity={0.95}
+      maxBounds={[
+        [-90, -175],
+        [80, 175],
+      ]}
+    >
+      <TileLayer
+        noWrap={true}
+        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
+        url={`https://api.mapbox.com/styles/v1/mapbox/${mapMode}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
+      />
+      <GeoJson mapRef={mapRef} infoControlRef={infoControlRef} />
+      <MapSideBar toggleMapMode={toggleMapMode} mapMode={mapMode} />
+      <MapLegend />
+      <MapInfoControl ref={infoControlRef} />
+      <ResetViewMapButton />
+    </Map>
+  );
+}
+
+const dispatchMapToProps = (dispatch) => ({
+  toggleSwipe: (val) => dispatch(setSwipeState(val)),
+});
+
+export default connect(null, dispatchMapToProps)(memo(MapOverlay2D));

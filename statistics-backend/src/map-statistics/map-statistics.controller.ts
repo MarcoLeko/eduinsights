@@ -6,7 +6,6 @@ import {
 } from './map-statistics.schema';
 import { MapStatisticsDto } from './map-statistics.dto';
 
-// TODO: remove console.log
 @Controller('api/v1/map-statistics')
 export class MapStatisticsController {
   constructor(private readonly mapStatisticsService: MapStatisticsService) {}

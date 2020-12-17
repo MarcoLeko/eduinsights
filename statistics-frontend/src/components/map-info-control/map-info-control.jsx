@@ -1,6 +1,7 @@
 import { useLeaflet } from "react-leaflet";
 import { useEffect, forwardRef, useImperativeHandle, memo } from "react";
 import L from "leaflet";
+import "./map-info-control.scss";
 
 /**
  * @return {null}
@@ -12,7 +13,7 @@ function MapInfoControl(props, ref) {
 
   info.update = function (args) {
     return (div.innerHTML =
-      "<h4>Proportion of primary schools with access to internet</h4>" +
+      `<h4>Proportion of primary schools with access to internet</h4>` +
       (args
         ? `<b>${args.name}</b>&emsp;${args.value}&nbsp;%`
         : "Touch/Hover over a state"));

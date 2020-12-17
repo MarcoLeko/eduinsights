@@ -1,7 +1,7 @@
 import { useLeaflet } from "react-leaflet";
 import { memo, useEffect } from "react";
 import L from "leaflet";
-import { getColor } from "./map-overlay";
+import { getColor } from "../shared/getColor";
 
 /**
  * @return {null}
@@ -27,8 +27,8 @@ function MapLegend() {
         labels.push(
           `<div class="legend-item-wrapper">
                <i style="background:${getColor(from)}"></i>` +
-               `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
-          `</div>`
+            `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
+            `</div>`
         );
       }
 
