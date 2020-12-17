@@ -18,9 +18,13 @@ function MapOverlay2D({ toggleSwipe }) {
   const { map } = useLeaflet();
   const geoJsonRef = useRef(null);
   const infoControlRef = useRef(null);
-  const { geoJsonFromSelectedStatistic, selectedStatistic } = useMapStatistics(
-    geoJsonRef
-  );
+  const {
+    geoJsonFromSelectedStatistic,
+    selectedStatistic,
+    allMapStatistics,
+    setSelectedStatistic,
+    fetchMapStatisticsById,
+  } = useMapStatistics(geoJsonRef);
 
   const [mapMode, setMapMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
@@ -76,7 +80,14 @@ function MapOverlay2D({ toggleSwipe }) {
         data={geoJsonFromSelectedStatistic}
         infoControlRef={infoControlRef}
       />
-      <MapSideBar toggleMapMode={toggleMapMode} mapMode={mapMode} />
+      <MapSideBar
+        mapStatistics={allMapStatistics}
+        toggleMapMode={toggleMapMode}
+        mapMode={mapMode}
+        setSelectedStatistic={setSelectedStatistic}
+        fetchMapStatisticsById={fetchMapStatisticsById}
+        selectedStatistic={selectedStatistic}
+      />
       <MapLegend />
       {selectedStatistic && geoJsonFromSelectedStatistic.description && (
         <MapInfoControl
