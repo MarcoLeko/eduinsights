@@ -4,7 +4,7 @@ import "./map-overlay.scss";
 import * as ReactLeaflet from "react-leaflet";
 import { setSwipeState } from "../../store/ui/ui-actions";
 import { connect } from "react-redux";
-import MapLegend from "./map-legend";
+import MapLegend from "../map-legend/map-legend";
 import MapInfoControl from "../map-info-control/map-info-control";
 import MapSideBar from "./map-side-bar";
 import { GeoJson } from "../geoJson/geojson";
@@ -75,11 +75,6 @@ function MapOverlay2D({ toggleSwipe }) {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> | &amp;copy <a href="https://apps.mapbox.com/feedback/">Mapbox</a>'
         url={`https://api.mapbox.com/styles/v1/mapbox/${mapMode}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
       />
-      <GeoJson
-        geoJsonRef={geoJsonRef}
-        data={geoJsonFromSelectedStatistic}
-        infoControlRef={infoControlRef}
-      />
       <MapSideBar
         mapStatistics={allMapStatistics}
         toggleMapMode={toggleMapMode}
@@ -88,13 +83,19 @@ function MapOverlay2D({ toggleSwipe }) {
         fetchMapStatisticsById={fetchMapStatisticsById}
         selectedStatistic={selectedStatistic}
       />
-      <MapLegend />
       {selectedStatistic && geoJsonFromSelectedStatistic.description && (
-        <MapInfoControl
-          selectedStatisticMetaData={geoJsonFromSelectedStatistic}
-          geoJsonRef={geoJsonRef}
-          ref={infoControlRef}
-        />
+        <>
+          <GeoJson
+            geoJsonRef={geoJsonRef}
+            data={geoJsonFromSelectedStatistic}
+            infoControlRef={infoControlRef}
+          />
+          <MapInfoControl
+            selectedStatisticMetaData={geoJsonFromSelectedStatistic}
+            ref={infoControlRef}
+          />
+          <MapLegend selectedStatisticMetaData={geoJsonFromSelectedStatistic} />
+        </>
       )}
       <ResetViewMapButton />
     </Map>

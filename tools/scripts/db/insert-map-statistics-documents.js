@@ -71,7 +71,14 @@ async function cleanupConnections(changeStream, mongoClient) {
       );
       const keys = await mapStatisticsCollection
         .find({})
-        .project({ _id: 0, features: 0, bbox: 0, objects: 0, type: 0, arcs: 0 })
+        .project({
+          key: 1,
+          description: 1,
+          startYear: 1,
+          endYear: 1,
+          evaluationType: 1,
+          evaluation: 1,
+        })
         .toArray();
 
       await mapStatisticsListCollection

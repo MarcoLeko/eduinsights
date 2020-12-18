@@ -93,6 +93,8 @@ const log = console.log;
         description: statistic.description,
         startYear: statistic.startYear,
         endYear: statistic.endYear,
+        evaluationType: statistic.evaluationType,
+        evaluation: statistic.evaluation,
         type: countriesGeoJsonCompressed.type,
         arcs: countriesGeoJsonCompressed.arcs,
         objects: {
