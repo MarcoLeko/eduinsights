@@ -112,7 +112,7 @@ async function cleanupConnections(changeStream, mongoClient) {
     // cleanup after 5secs
     setTimeout(async () => {
       await cleanupConnections(changeStream, mongoClient);
-    }, 5000);
+    }, 25000);
   } catch (e) {
     log(chalk.bold.red("Oooops! An error occured " + e));
     await cleanupConnections(changeStream, mongoClient);

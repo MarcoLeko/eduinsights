@@ -8,7 +8,6 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import ToggleableMenu from "./toggleable-menu";
 import SideBar from "./side-bar";
-import Statistics from "../statistics/statistics";
 import { useScrollTrigger } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import Box from "@material-ui/core/Box";
@@ -17,6 +16,7 @@ import Public from "@material-ui/icons/Public";
 
 import { useAppStyles } from "./app-styles";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
+import Introduction from "../map-overlay-3D/introduction";
 
 function App({ canSwipe }) {
   const classes = useAppStyles();
@@ -115,7 +115,7 @@ function App({ canSwipe }) {
         slideStyle={{ overflow: "hidden" }}
       >
         <MapOverlay2D />
-        <Statistics />
+        <Introduction />
       </SwipeableViews>
       <SideBar isOpen={sideBarOpen} />
     </>
