@@ -16,6 +16,8 @@ export function useMapStatistics(geoJSONRef = null) {
     startYear: null,
     endYear: null,
     type: null,
+    evaluationType: null,
+    evaluation: [],
     features: [],
   });
 
@@ -25,7 +27,14 @@ export function useMapStatistics(geoJSONRef = null) {
     (key) => {
       getMapStatisticsById({ key })
         .then((topoJson) => {
-          const { description, startYear, endYear, key } = topoJson;
+          const {
+            description,
+            startYear,
+            endYear,
+            key,
+            evaluationType,
+            evaluation,
+          } = topoJson;
           const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 
           setGeoJsonFromSelectedStatistic({
@@ -34,6 +43,8 @@ export function useMapStatistics(geoJSONRef = null) {
             description,
             startYear,
             endYear,
+            evaluationType,
+            evaluation,
           });
           geoJSONRef.current.leafletElement
             .clearLayers()

@@ -149,29 +149,27 @@ function MapSideBar({
           >
             {mapStatistics &&
               mapStatistics.map((statistic, index) => (
-                <>
+                <div key={statistic.key} className={classes.listItem}>
                   <Divider />
-                  <div key={statistic.key} className={classes.listItem}>
-                    <ListItem
-                      role={undefined}
-                      dense
-                      selected={
-                        index ===
-                        mapStatistics.findIndex(
-                          (obj) => obj.key === selectedStatistic
-                        )
-                      }
-                      button
-                      classes={{ root: classes.listItemRoot }}
-                      onClick={() => handleActiveStatisticItem(statistic.key)}
-                    >
-                      <ListItemText
-                        id={statistic.key}
-                        primary={statistic.description}
-                      />
-                    </ListItem>
-                  </div>
-                </>
+                  <ListItem
+                    role={undefined}
+                    dense
+                    selected={
+                      index ===
+                      mapStatistics.findIndex(
+                        (obj) => obj.key === selectedStatistic
+                      )
+                    }
+                    button
+                    classes={{ root: classes.listItemRoot }}
+                    onClick={() => handleActiveStatisticItem(statistic.key)}
+                  >
+                    <ListItemText
+                      id={statistic.key}
+                      primary={statistic.description}
+                    />
+                  </ListItem>
+                </div>
               ))}
           </List>
         </Drawer>

@@ -18,10 +18,10 @@ html, body, #root {
 }
 
 .background {
-  background: rgb(124,211,247);
-  background: -moz-linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
-  background: -webkit-linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
-  background: linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
+  background: rgb(63, 177, 255);
+  background: -moz-linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
+  background: -webkit-linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
+  background: linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
 }
 
 .background-transparent {

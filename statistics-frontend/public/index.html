@@ -22,90 +22,73 @@
     -->
   <title>Eduinsights</title>
   <style>
-    #root:not(:empty)+.sk-cube-grid {
+    #root:not(:empty)+.spinner {
       display: none;
     }
-  
-    .sk-cube-grid {
-      width: 25vmin;
-      height: 25vmin;
+
+    .spinner {
+      height: 10vmin;
       position: absolute;
       transform: translate(-50%, -50%);
       top: 50%;
       left: 50%;
     }
-  
-    .sk-cube-grid .sk-cube {
-      width: 33%;
-      height: 33%;
-      background: linear-gradient(90deg, rgba(124,211,247,0.8015581232492998) 0%, rgba(168,247,188,0.7959558823529411) 100%);
-      float: left;
-      animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+
+    .spinner > div {
+      background-color: #333;
+      height: 100%;
+      width: 6px;
+      display: inline-block;
+
+      -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+      animation: sk-stretchdelay 1.2s infinite ease-in-out;
     }
-  
-    .sk-cube-grid .sk-cube1 {
-      animation-delay: 0.2s;
+
+    .spinner .rect2 {
+      -webkit-animation-delay: -1.1s;
+      animation-delay: -1.1s;
     }
-  
-    .sk-cube-grid .sk-cube2 {
-      animation-delay: 0.3s;
+
+    .spinner .rect3 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
     }
-  
-    .sk-cube-grid .sk-cube3 {
-      animation-delay: 0.4s;
+
+    .spinner .rect4 {
+      -webkit-animation-delay: -0.9s;
+      animation-delay: -0.9s;
     }
-  
-    .sk-cube-grid .sk-cube4 {
-      animation-delay: 0.1s;
+
+    .spinner .rect5 {
+      -webkit-animation-delay: -0.8s;
+      animation-delay: -0.8s;
     }
-  
-    .sk-cube-grid .sk-cube5 {
-      animation-delay: 0.2s;
+
+    @-webkit-keyframes sk-stretchdelay {
+      0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+      20% { -webkit-transform: scaleY(1.0) }
     }
-  
-    .sk-cube-grid .sk-cube6 {
-      animation-delay: 0.3s;
-    }
-  
-    .sk-cube-grid .sk-cube7 {
-      animation-delay: 0s;
-    }
-  
-    .sk-cube-grid .sk-cube8 {
-      animation-delay: 0.1s;
-    }
-  
-    .sk-cube-grid .sk-cube9 {
-      animation-delay: 0.2s;
-    }
-  
-    @keyframes sk-cubeGridScaleDelay {
-  
-      0%,
-      70%,
-      100% {
-        transform: scale3D(1, 1, 1);
-      }
-  
-      35% {
-        transform: scale3D(0, 0, 1);
-      }
+
+    @keyframes sk-stretchdelay {
+      0%, 40%, 100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+      }  20% {
+           transform: scaleY(1.0);
+           -webkit-transform: scaleY(1.0);
+         }
     }
   </style>  
 </head>
 <body>
   <div id="root"></div>
 
-  <div class="sk-cube-grid">
-    <div class="sk-cube sk-cube1"></div>
-    <div class="sk-cube sk-cube2"></div>
-    <div class="sk-cube sk-cube3"></div>
-    <div class="sk-cube sk-cube4"></div>
-    <div class="sk-cube sk-cube5"></div>
-    <div class="sk-cube sk-cube6"></div>
-    <div class="sk-cube sk-cube7"></div>
-    <div class="sk-cube sk-cube8"></div>
-    <div class="sk-cube sk-cube9"></div>
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
   </div>
 </body>
 </html>

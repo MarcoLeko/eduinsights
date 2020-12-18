@@ -9,9 +9,17 @@ const { GeoJSON } = ReactLeaflet;
 function GeoJson({ geoJsonRef, infoControlRef, data }) {
   const { map } = useLeaflet();
 
+  function inRange(x, min, max) {
+    return (x - min) * (x - max) <= 0;
+  }
+
   function style(feature) {
+    const getRange = data.evaluation.find((obj) =>
+      inRange(feature.properties.value, obj.value[0], obj.value[1])
+    );
+
     return {
-      fillColor: getColor(feature.properties.value),
+      fillColor: getColor(getRange.key),
       weight: 2,
       opacity: 1,
       color: "white",

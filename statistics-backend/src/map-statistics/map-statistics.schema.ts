@@ -14,6 +14,10 @@ class MapStatisticsMetaData {
   startYear: number;
   @Prop()
   endYear: number;
+  @Prop()
+  evaluationType: string;
+  @Prop()
+  evaluation: Array<{ key: string; value: Array<number> }>;
 }
 
 @Schema()

@@ -8,7 +8,7 @@ const div = L.DomUtil.create("div", "info");
 /**
  * @return {null}
  */
-function MapInfoControl({ geoJsonRef, selectedStatisticMetaData }, ref) {
+function MapInfoControl({ selectedStatisticMetaData }, ref) {
   const { map } = useLeaflet();
   const info = L.control();
 

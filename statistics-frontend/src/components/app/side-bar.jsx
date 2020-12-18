@@ -5,13 +5,13 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import muiBackground from "../shared/material-ui-background";
 
 import Fingerprint from "@material-ui/icons/Fingerprint";
 import Box from "@material-ui/core/Box";
 import { Link, makeStyles, Typography } from "@material-ui/core";
 import Contribute from "@material-ui/icons/Code";
 import Copyright from "../shared/copyright";
+import { muiBackground } from "../shared/material-ui-background";
 
 export const drawerWidth = 240;
 

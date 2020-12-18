@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     width: 2,
   },
+  header: { fontWeight: 300 },
   actionButtons: {
     display: "flex",
     alignItems: "center",
@@ -48,7 +49,11 @@ function ToggleableMenu({ isOpen, toggle }) {
     <Toolbar className={classes.root}>
       <Link to="/" className={classes.logoPanel}>
         <Logo className={classes.logo} />
-        <Typography variant={"h6"} color="primary">
+        <Typography
+          variant={"h5"}
+          color="primary"
+          classes={{ root: classes.header }}
+        >
           Eduinsights
         </Typography>
       </Link>
