@@ -2,6 +2,7 @@ import React, { memo, useState } from "react";
 import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import {
+  Divider,
   FormControlLabel,
   ListItem,
   ListItemText,
@@ -15,6 +16,7 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 
 const drawerWidth = "calc(100% - 48px)";
+const maxDrawerWidth = 560;
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -47,8 +49,9 @@ const useStyles = makeStyles((theme) => ({
   drawerOpen: {
     position: "relative",
     width: drawerWidth,
+    maxWidth: maxDrawerWidth,
     height: "inherit",
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create("max-width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -69,14 +72,18 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     padding: `${theme.spacing(2)} 0`,
+    whiteSpace: "normal",
+  },
+  listItemRoot: {
+    minHeight: 56,
   },
   drawerClose: {
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create("max-width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: "0%",
+    maxWidth: "0%",
   },
 }));
 
@@ -142,25 +149,29 @@ function MapSideBar({
           >
             {mapStatistics &&
               mapStatistics.map((statistic, index) => (
-                <div key={statistic.key} className={classes.listItem}>
-                  <ListItem
-                    role={undefined}
-                    dense
-                    selected={
-                      index ===
-                      mapStatistics.findIndex(
-                        (obj) => obj.key === selectedStatistic
-                      )
-                    }
-                    button
-                    onClick={() => handleActiveStatisticItem(statistic.key)}
-                  >
-                    <ListItemText
-                      id={statistic.key}
-                      primary={statistic.description}
-                    />
-                  </ListItem>
-                </div>
+                <>
+                  <Divider />
+                  <div key={statistic.key} className={classes.listItem}>
+                    <ListItem
+                      role={undefined}
+                      dense
+                      selected={
+                        index ===
+                        mapStatistics.findIndex(
+                          (obj) => obj.key === selectedStatistic
+                        )
+                      }
+                      button
+                      classes={{ root: classes.listItemRoot }}
+                      onClick={() => handleActiveStatisticItem(statistic.key)}
+                    >
+                      <ListItemText
+                        id={statistic.key}
+                        primary={statistic.description}
+                      />
+                    </ListItem>
+                  </div>
+                </>
               ))}
           </List>
         </Drawer>
