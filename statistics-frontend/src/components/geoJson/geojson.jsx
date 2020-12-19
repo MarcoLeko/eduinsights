@@ -18,11 +18,7 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
   }
 
   function inRange(x, min, max) {
-    if (min > max) {
-      return (x - min) * (x - max) >= 0;
-    } else {
-      return (x - min) * (x - max) <= 0;
-    }
+    return (x - min) * (x - max) <= 0;
   }
 
   function style(feature) {
@@ -30,10 +26,6 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
       inRange(feature.properties.value, obj.value[1], obj.value[0])
     );
 
-    if (getRange === undefined) {
-      console.log(feature.properties);
-      console.log(data.evaluation);
-    }
     return {
       fillColor: getColor(getRange.key),
       weight: 2,
@@ -81,9 +73,4 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
   );
 }
 
-export default memo(
-  GeoJson,
-  (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data.evaluation) ===
-    JSON.stringify(nextProps.data.evaluation)
-);
+export default memo(GeoJson);
