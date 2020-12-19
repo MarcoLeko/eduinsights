@@ -9,10 +9,10 @@ module.exports = mapStatistics = [
     evaluationType: "percentage",
     evaluation: [
       { key: "firstRange", value: [100, 98] },
-      { key: "secondRange", value: [95, 90] },
+      { key: "secondRange", value: [97, 90] },
       { key: "thirdRange", value: [89, 85] },
       { key: "fourthRange", value: [84, 70] },
-      { key: "fifthRange", value: [49, 0] },
+      { key: "fifthRange", value: [69, 0] },
     ],
   },
   {

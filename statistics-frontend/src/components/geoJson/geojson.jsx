@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import * as ReactLeaflet from "react-leaflet";
 import { useLeaflet } from "react-leaflet";
 import L from "leaflet";
@@ -9,15 +9,31 @@ const { GeoJSON } = ReactLeaflet;
 function GeoJson({ geoJsonRef, infoControlRef, data }) {
   const { map } = useLeaflet();
 
+  function onEachFeature(feature, layer) {
+    layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToCountry,
+    });
+  }
+
   function inRange(x, min, max) {
-    return (x - min) * (x - max) <= 0;
+    if (min > max) {
+      return (x - min) * (x - max) >= 0;
+    } else {
+      return (x - min) * (x - max) <= 0;
+    }
   }
 
   function style(feature) {
     const getRange = data.evaluation.find((obj) =>
-      inRange(feature.properties.value, obj.value[0], obj.value[1])
+      inRange(feature.properties.value, obj.value[1], obj.value[0])
     );
 
+    if (getRange === undefined) {
+      console.log(feature.properties);
+      console.log(data.evaluation);
+    }
     return {
       fillColor: getColor(getRange.key),
       weight: 2,
@@ -26,14 +42,6 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
       dashArray: "2",
       fillOpacity: 0.7,
     };
-  }
-
-  function onEachFeature(feature, layer) {
-    layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-      click: zoomToCountry,
-    });
   }
 
   function highlightFeature(e) {
@@ -64,6 +72,7 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
 
   return (
     <GeoJSON
+      key={new Date()}
       data={data}
       style={style}
       ref={geoJsonRef}
@@ -72,4 +81,9 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
   );
 }
 
-export { GeoJson };
+export default memo(
+  GeoJson,
+  (prevProps, nextProps) =>
+    JSON.stringify(prevProps.data.evaluation) ===
+    JSON.stringify(nextProps.data.evaluation)
+);
