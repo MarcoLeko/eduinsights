@@ -1,22 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.scss";
-import configureStore from "./store/store";
 import * as serviceWorker from "./service-worker";
-import { Provider } from "react-redux";
 import theme from "./material-ui-theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import RouteHandler from "./components/route-handler/route-handler";
-import { UiContextProvider } from "./context/ui.context";
+import { AlertContextProvider } from "./context/alert-context";
+import { UiContextProvider } from "./context/ui-context";
 
 function Bootstrap() {
   return (
     <ThemeProvider theme={theme}>
-      <Provider store={configureStore()}>
-        <UiContextProvider>
+      <UiContextProvider>
+        <AlertContextProvider>
           <RouteHandler />
-        </UiContextProvider>
-      </Provider>
+        </AlertContextProvider>
+      </UiContextProvider>
     </ThemeProvider>
   );
 }
