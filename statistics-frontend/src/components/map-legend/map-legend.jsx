@@ -27,7 +27,7 @@ function MapLegend({ selectedStatisticMetaData }) {
       labels.push(
         `<div class="legend-item-wrapper">
                <i style="background:${getColor(range)}"></i>` +
-          `<span>${from + (to ? "&ndash;" + to : ">")}</span>` +
+          `<span>${from + (to ? " &ndash; " + to : " > ")}</span>` +
           `</div>`
       );
     }

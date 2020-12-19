@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import MapLegend from "../map-legend/map-legend";
 import MapInfoControl from "../map-info-control/map-info-control";
 import MapSideBar from "./map-side-bar";
-import { GeoJson } from "../geoJson/geojson";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
 import { useMapStatistics } from "../../hooks/use-map-statistics";
 import { useLeaflet } from "react-leaflet";
+import GeoJson from "../geoJson/geojson";
 
 const { Map, TileLayer } = ReactLeaflet;
 
