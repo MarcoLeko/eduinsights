@@ -7,19 +7,21 @@ import { Provider } from "react-redux";
 import theme from "./material-ui-theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import RouteHandler from "./components/route-handler/route-handler";
+import { UiContextProvider } from "./context/ui.context";
 
 function Bootstrap() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={configureStore()}>
-        <RouteHandler />
+        <UiContextProvider>
+          <RouteHandler />
+        </UiContextProvider>
       </Provider>
     </ThemeProvider>
   );
 }
 
-ReactDOM.render(<Bootstrap />, document.getElementById('root'));
-
+ReactDOM.render(<Bootstrap />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

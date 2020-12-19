@@ -5,7 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import "./app.scss";
 import SwipeableViews from "react-swipeable-views";
 import clsx from "clsx";
-import { connect } from "react-redux";
 import ToggleableMenu from "./toggleable-menu";
 import SideBar from "./side-bar";
 import { useScrollTrigger } from "@material-ui/core";
@@ -17,9 +16,13 @@ import Public from "@material-ui/icons/Public";
 import { useAppStyles } from "./app-styles";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import Introduction from "../map-overlay-3D/introduction";
+import { useUiContext } from "../../hooks/useUiContext";
 
-function App({ canSwipe }) {
+function App() {
   const classes = useAppStyles();
+  const {
+    state: { canSwipe },
+  } = useUiContext();
   const trigger = useScrollTrigger({ threshold: 48 });
   const [tabIndex, setTabIndex] = useState(0);
   const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -122,8 +125,4 @@ function App({ canSwipe }) {
   );
 }
 
-const mapStateToProps = (store) => ({
-  canSwipe: store.uiReducer.canSwipe,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
