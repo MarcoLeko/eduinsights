@@ -51,7 +51,7 @@ function ToggleableMenu({ isOpen, toggle }) {
         <Logo className={classes.logo} />
         <Typography
           variant={"h5"}
-          color="primary"
+          color="secondary"
           classes={{ root: classes.header }}
         >
           Eduinsights

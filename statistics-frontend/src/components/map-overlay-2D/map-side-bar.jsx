@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     whiteSpace: "nowrap",
     zIndex: 9999,
+    background: theme.palette.background.default,
     width: drawerWidth,
     backgroundColor: theme.palette.background.paper,
   },

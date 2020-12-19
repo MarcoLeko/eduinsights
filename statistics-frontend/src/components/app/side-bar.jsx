@@ -11,44 +11,49 @@ import Box from "@material-ui/core/Box";
 import { Link, makeStyles, Typography } from "@material-ui/core";
 import Contribute from "@material-ui/icons/Code";
 import Copyright from "../shared/copyright";
-import { muiBackground } from "../shared/material-ui-background";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 export const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    background: muiBackground,
-    boxShadow:
-      "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-    justifyContent: "space-between",
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-start",
-  },
-  linkItem: {
-    width: "inherit",
-    display: "flex",
-    justifyItems: "center",
-    alignItems: "center",
-    textDecoration: "none",
-    color: "inherit",
-  },
-  listItemText: {
-    flex: "0.5 0.5 auto",
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  return {
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+    drawerPaper: {
+      width: drawerWidth,
+      boxShadow:
+        "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+      justifyContent: "space-between",
+    },
+    drawerHeader: {
+      display: "flex",
+      alignItems: "center",
+      padding: theme.spacing(0, 1),
+      ...theme.mixins.toolbar,
+      justifyContent: "flex-start",
+    },
+    linkItem: {
+      width: "inherit",
+      display: "flex",
+      justifyItems: "center",
+      alignItems: "center",
+      textDecoration: "none",
+      color: "inherit",
+    },
+    listItemText: {
+      flex: "0.5 0.5 auto",
+    },
+  };
+});
 
 function SideBar(props) {
-  const classes = useStyles();
+  const {
+    state: { theme },
+  } = useUiContext();
+  const classes = useStyles({ uiState: theme });
+
   const navItems = [
     {
       icon: <Fingerprint />,
@@ -64,12 +69,13 @@ function SideBar(props) {
 
   return (
     <Drawer
-      className={classes.drawer}
+      color="default"
       variant="persistent"
       elevation={2}
       anchor="right"
       open={props.isOpen}
       classes={{
+        root: classes.drawer,
         paper: classes.drawerPaper,
       }}
     >

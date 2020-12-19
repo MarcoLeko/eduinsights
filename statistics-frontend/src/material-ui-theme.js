@@ -1,17 +1,24 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { blueGrey, grey } from "@material-ui/core/colors";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#474747",
-    },
-    secondary: {
-      main: "#6f8f9e",
-    },
-  },
-  typography: {
-    fontFamily: ["Montserrat", "sans-serif"].join(","),
-  },
-});
+const getMaterialUiTheme = (theme) => {
+  const mainPrimaryColor = theme === "dark" ? blueGrey[200] : blueGrey[500];
+  const mainSecondaryColor = theme === "dark" ? grey[100] : grey[800];
 
-export default theme;
+  return createMuiTheme({
+    palette: {
+      type: theme,
+      primary: {
+        main: mainPrimaryColor,
+      },
+      secondary: {
+        main: mainSecondaryColor,
+      },
+    },
+    typography: {
+      fontFamily: ["Montserrat", "sans-serif"].join(","),
+    },
+  });
+};
+
+export default getMaterialUiTheme;
