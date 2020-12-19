@@ -12,17 +12,19 @@ import { Link, makeStyles, Typography } from "@material-ui/core";
 import Contribute from "@material-ui/icons/Code";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
+import { grey } from "@material-ui/core/colors";
 
 export const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => {
-  return {
+const useStyles = (params) =>
+  makeStyles((theme) => ({
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
     },
     drawerPaper: {
       width: drawerWidth,
+      backgroundColor: params === "dark" ? grey[900] : grey[100],
       boxShadow:
         "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
       justifyContent: "space-between",
@@ -45,14 +47,13 @@ const useStyles = makeStyles((theme) => {
     listItemText: {
       flex: "0.5 0.5 auto",
     },
-  };
-});
+  }));
 
 function SideBar(props) {
   const {
     state: { theme },
   } = useUiContext();
-  const classes = useStyles({ uiState: theme });
+  const classes = useStyles(theme)();
 
   const navItems = [
     {
@@ -69,7 +70,6 @@ function SideBar(props) {
 
   return (
     <Drawer
-      color="default"
       variant="persistent"
       elevation={2}
       anchor="right"
