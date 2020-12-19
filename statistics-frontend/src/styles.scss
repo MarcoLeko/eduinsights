@@ -16,14 +16,3 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.background {
-  background: rgb(63, 177, 255);
-  background: -moz-linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
-  background: -webkit-linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
-  background: linear-gradient(90deg, #4ce4ff 0%, rgb(63, 177, 255) 100%);
-}
-
-.background-transparent {
-  background: transparent !important;
-}

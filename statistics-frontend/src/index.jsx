@@ -2,21 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.scss";
 import * as serviceWorker from "./service-worker";
-import theme from "./material-ui-theme";
-import { ThemeProvider } from "@material-ui/core/styles";
 import RouteHandler from "./components/route-handler/route-handler";
 import { AlertContextProvider } from "./context/alert-context";
 import { UiContextProvider } from "./context/ui-context";
 
 function Bootstrap() {
   return (
-    <ThemeProvider theme={theme}>
-      <UiContextProvider>
-        <AlertContextProvider>
-          <RouteHandler />
-        </AlertContextProvider>
-      </UiContextProvider>
-    </ThemeProvider>
+    <UiContextProvider>
+      <AlertContextProvider>
+        <RouteHandler />
+      </AlertContextProvider>
+    </UiContextProvider>
   );
 }
 

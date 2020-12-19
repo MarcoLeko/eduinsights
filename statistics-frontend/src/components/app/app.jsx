@@ -15,8 +15,8 @@ import Public from "@material-ui/icons/Public";
 
 import { useAppStyles } from "./app-styles";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
-import Introduction from "../map-overlay-3D/introduction";
 import { useUiContext } from "../../hooks/use-ui-context";
+import MapOverlay3D from "../map-overlay-3D/map-overlay-3D";
 
 function App() {
   const classes = useAppStyles();
@@ -75,13 +75,9 @@ function App() {
       <AppBar
         position="sticky"
         color="default"
-        className={clsx(
-          classes.appBar,
-          {
-            [classes.appBarShift]: sideBarOpen,
-          },
-          "background"
-        )}
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: sideBarOpen,
+        })}
         style={{
           transform: `translateY(-${transitionY()}px)`,
         }}
@@ -118,7 +114,7 @@ function App() {
         slideStyle={{ overflow: "hidden" }}
       >
         <MapOverlay2D />
-        <Introduction />
+        <MapOverlay3D />
       </SwipeableViews>
       <SideBar isOpen={sideBarOpen} />
     </>
