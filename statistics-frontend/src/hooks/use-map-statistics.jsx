@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { getMapStatisticsById, getMapStatisticsList } from "../store/thunks";
-import { receiveMessageInterceptor } from "../store/alert/alert-actions";
-import { useDispatch } from "react-redux";
+import {
+  getMapStatisticsById,
+  getMapStatisticsList,
+} from "../components/shared/thunks";
+import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
+import { useAlertContext } from "./use-alert-context";
 
 export function useMapStatistics(geoJSONRef = null) {
   const [selectedStatistic, setSelectedStatistic] = useState(null);
   const [allMapStatistics, setAllMapStatistics] = useState(null);
+  const { dispatch } = useAlertContext();
   const [
     geoJsonFromSelectedStatistic,
     setGeoJsonFromSelectedStatistic,
@@ -20,8 +24,6 @@ export function useMapStatistics(geoJSONRef = null) {
     evaluation: [],
     features: [],
   });
-
-  const dispatch = useDispatch();
 
   const fetchMapStatisticsById = useCallback(
     (key) => {

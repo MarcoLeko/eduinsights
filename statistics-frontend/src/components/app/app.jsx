@@ -16,7 +16,7 @@ import Public from "@material-ui/icons/Public";
 import { useAppStyles } from "./app-styles";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import Introduction from "../map-overlay-3D/introduction";
-import { useUiContext } from "../../hooks/useUiContext";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 function App() {
   const classes = useAppStyles();

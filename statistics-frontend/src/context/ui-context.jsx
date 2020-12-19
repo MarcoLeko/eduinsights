@@ -28,7 +28,7 @@ function uiReducer(state = initialState, action) {
   }
 }
 
-const UiStateContext = createContext(initialState);
+const UiContext = createContext(initialState);
 
 function UiContextProvider({ children }) {
   const [state, dispatch] = useReducer(uiReducer, initialState);
@@ -48,10 +48,10 @@ function UiContextProvider({ children }) {
   }, [mediaQueryThemeMode]);
 
   return (
-    <UiStateContext.Provider value={{ state, dispatch }}>
+    <UiContext.Provider value={{ state, dispatch }}>
       {children}
-    </UiStateContext.Provider>
+    </UiContext.Provider>
   );
 }
 
-export { UiStateContext, UiContextProvider };
+export { UiContext, UiContextProvider };
