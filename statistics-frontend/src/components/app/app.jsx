@@ -16,7 +16,7 @@ import Public from "@material-ui/icons/Public";
 import { useAppStyles } from "./app-styles";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { useUiContext } from "../../hooks/use-ui-context";
-import MapOverlay3D from "../map-overlay-3D/map-overlay-3D";
+import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 
 function App() {
   const classes = useAppStyles();
@@ -24,7 +24,7 @@ function App() {
     state: { canSwipe },
   } = useUiContext();
   const trigger = useScrollTrigger({ threshold: 48 });
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   function tab(icon, text, index) {
