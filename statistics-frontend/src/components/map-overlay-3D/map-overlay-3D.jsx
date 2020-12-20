@@ -6,6 +6,7 @@ import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
 import { useUiContext } from "../../hooks/use-ui-context";
 import UpIcon from "@material-ui/icons/KeyboardArrowUp";
+import { useMapStatistics } from "../../hooks/use-map-statistics";
 
 const useStyles = makeStyles((theme) => ({
   containerRoot: {
@@ -23,25 +24,33 @@ function MapOverlay3D() {
     state: { theme },
   } = useUiContext();
   const classes = useStyles();
+  const { geoJsonFromSelectedStatistic } = useMapStatistics();
 
   return (
     <Container disableGutters classes={{ root: classes.containerRoot }}>
       <Introduction />
-      <Globe globeImageUrl={theme === "dark" ? EarthNight : EarthDay} />
-      <Fab
-        aria-label="Scroll down"
-        className={classes.fab}
-        color="inherit"
-        onClick={() =>
-          window.scroll({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-          })
-        }
-      >
-        {<UpIcon />}
-      </Fab>
+      {geoJsonFromSelectedStatistic.features && (
+        <>
+          <Globe
+            globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
+            polygonsData={geoJsonFromSelectedStatistic.features}
+          />
+          <Fab
+            aria-label="Scroll down"
+            className={classes.fab}
+            color="inherit"
+            onClick={() =>
+              window.scroll({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              })
+            }
+          >
+            {<UpIcon />}
+          </Fab>
+        </>
+      )}
     </Container>
   );
 }
