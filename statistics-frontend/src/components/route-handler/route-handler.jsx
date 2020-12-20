@@ -6,6 +6,7 @@ import { Imprint } from "../imprint/imprint";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useUiContext } from "../../hooks/use-ui-context";
 import getMaterialUiTheme from "../../material-ui-theme";
+import { CssBaseline } from "@material-ui/core";
 
 function RouteHandler() {
   const {
@@ -13,13 +14,15 @@ function RouteHandler() {
   } = useUiContext();
   return (
     <ThemeProvider theme={getMaterialUiTheme(theme)}>
-      <Router>
-        <AppNotifier />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/imprint" component={Imprint} />
-        </Switch>
-      </Router>
+      <CssBaseline>
+        <Router>
+          <AppNotifier />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/imprint" component={Imprint} />
+          </Switch>
+        </Router>
+      </CssBaseline>
     </ThemeProvider>
   );
 }
