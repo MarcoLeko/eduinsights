@@ -6,7 +6,7 @@ const envConfig = dotenv.parse(fs.readFileSync('../.env'));
 
 const CONFIG_PRODUCTION = {
   env: environment,
-  PATH_TO_STATIC_FILES: '../statistics-fragment/build',
+  PATH_TO_STATIC_FILES: '../build',
   PORT: envConfig.PORT,
   DB_USERNAME: envConfig.DB_USERNAME,
   DB_PASSWORD: envConfig.DB_PASSWORD,
