@@ -1,22 +1,19 @@
 branch-defaults:
   master:
-    environment: eduinsights-production
+    environment: eduinsights-app
+    group_suffix: null
 deploy:
   artifact: ./tools/scripts/aws/eduinsights@1.0.0.zip
-environment-defaults:
-  eduinsights-prod:
-    branch: null
-    repository: null
 global:
-  application_name: eduinsights-app
+  application_name: eduinsights
   default_ec2_keyname: null
-  default_platform: arn:aws:elasticbeanstalk:eu-central-1::platform/Node.js running
-    on 64bit Amazon Linux/4.13.1
+  default_platform: arn:aws:elasticbeanstalk:eu-central-1::platform/Node.js 12 running
+    on 64bit Amazon Linux 2/5.2.3
   default_region: eu-central-1
   include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: eduinsights
+  profile: eb-cli
   sc: git
   workspace_type: Application
