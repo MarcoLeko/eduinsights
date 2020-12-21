@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
+  menuItemRoot: {
+    whiteSpace: "normal",
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -110,7 +113,11 @@ export function MapOverlay3D() {
             className={classes.labelTop}
           >
             {allMapStatistics.map((item) => (
-              <MenuItem key={item.key} value={item.key}>
+              <MenuItem
+                classes={{ root: classes.menuItemRoot }}
+                key={item.key}
+                value={item.key}
+              >
                 {item.description}
               </MenuItem>
             ))}
