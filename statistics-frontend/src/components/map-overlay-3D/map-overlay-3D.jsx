@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
-  Fab,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -15,21 +14,12 @@ import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
 import EarthTopology from "../../assets/earth-topology.png";
 import { useUiContext } from "../../hooks/use-ui-context";
-import UpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { useMapStatistics } from "../../hooks/use-map-statistics";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
 
 const useStyles = makeStyles((theme) => ({
-  containerRoot: {
-    position: "relative",
-  },
-  fab: {
-    position: "absolute",
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
   menuItemRoot: {
     whiteSpace: "normal",
   },
@@ -53,6 +43,7 @@ const defaultCameraRoation = new Euler(
   3.749399456654644e-33
 );
 const defaultControlsTarget = new Vector3(0, 0, 0);
+
 export function MapOverlay3D() {
   const {
     state: { theme },
@@ -96,8 +87,9 @@ export function MapOverlay3D() {
   function getGlobeWidth() {
     return document.body.clientWidth > 1280 ? 1280 : document.body.clientWidth;
   }
+
   return (
-    <Container disableGutters classes={{ root: classes.containerRoot }}>
+    <Container disableGutters>
       <Introduction />
       {selectedStatistic && (
         <FormControl className={classes.formControl}>
@@ -128,49 +120,31 @@ export function MapOverlay3D() {
         </FormControl>
       )}
       {geoJsonFromSelectedStatistic.features && (
-        <>
-          <Globe
-            ref={globeRef}
-            width={getGlobeWidth()}
-            globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
-            bumpImageUrl={EarthTopology}
-            polygonStrokeColor={() => "#111"}
-            polygonSideColor={() => "#111"}
-            polygonCapColor={(layer) =>
-              layer === activeHoveredPolygon
-                ? "steelblue"
-                : getColor(
-                    getColorRange(
-                      geoJsonFromSelectedStatistic.evaluation,
-                      layer
-                    ).key
-                  )
-            }
-            polygonLabel={({ properties: layer }) => `
+        <Globe
+          ref={globeRef}
+          width={getGlobeWidth()}
+          globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
+          bumpImageUrl={EarthTopology}
+          polygonStrokeColor={() => "#111"}
+          polygonSideColor={() => "#111"}
+          polygonCapColor={(layer) =>
+            layer === activeHoveredPolygon
+              ? "steelblue"
+              : getColor(
+                  getColorRange(geoJsonFromSelectedStatistic.evaluation, layer)
+                    .key
+                )
+          }
+          polygonLabel={({ properties: layer }) => `
         <div class="polygon-label"><b>${layer.name} (${layer.id}):</b> <br />
         value: <i>${layer.value}%</i><br/>
         capital: <i>${layer.capital}</i>
         </div>
       `}
-            onPolygonHover={setActiveHoveredPolygon}
-            polygonsTransitionDuration={300}
-            polygonsData={geoJsonFromSelectedStatistic.features}
-          />
-          <Fab
-            aria-label="Scroll down"
-            className={classes.fab}
-            color="inherit"
-            onClick={() =>
-              window.scroll({
-                top: 0,
-                left: 0,
-                behavior: "smooth",
-              })
-            }
-          >
-            {<UpIcon />}
-          </Fab>
-        </>
+          onPolygonHover={setActiveHoveredPolygon}
+          polygonsTransitionDuration={300}
+          polygonsData={geoJsonFromSelectedStatistic.features}
+        />
       )}
     </Container>
   );

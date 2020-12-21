@@ -1,16 +1,16 @@
-import {makeStyles} from '@material-ui/core';
-import {drawerWidth} from './side-bar';
+import { makeStyles } from "@material-ui/core";
+import { drawerWidth } from "./side-bar";
 
-export const useAppStyles = makeStyles(theme => ({
+export const useAppStyles = makeStyles((theme) => ({
   appBar: {
-    transition: theme.transitions.create(['transform', 'margin'], {
+    transition: theme.transitions.create(["transform", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
   },
   appBarShift: {
-    transition: theme.transitions.create(['margin'], {
+    transition: theme.transitions.create(["margin"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -18,17 +18,17 @@ export const useAppStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    height: '100%',
-    width: '100%',
-    transition: theme.transitions.create(['margin'], {
+    height: "100%",
+    width: "100%",
+    transition: theme.transitions.create(["margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    position: 'relative',
+    position: "relative",
     marginLeft: 0,
   },
   contentShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -38,10 +38,16 @@ export const useAppStyles = makeStyles(theme => ({
     height: 4,
   },
   tabContent: {
-    flexDirection: 'row',
-    alignItems: 'initial',
+    flexDirection: "row",
+    alignItems: "initial",
   },
   iconSpacing: {
     padding: theme.spacing(0, 1),
+  },
+  fab: {
+    position: "fixed",
+    zIndex: 1,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }));
