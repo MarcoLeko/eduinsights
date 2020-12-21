@@ -2,7 +2,16 @@ import environment, { Environment } from './environment';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
-const envConfig = dotenv.parse(fs.readFileSync('../.env'));
+let envConfig;
+try {
+  envConfig = dotenv.parse(fs.readFileSync('../.env'));
+} catch {
+  envConfig = {
+    DB_USERNAME: process.env.DB_USERNAME,
+    PORT: process.env.PORT,
+    DB_PASSWORD: process.env.DB_PASSWORD,
+  };
+}
 
 const CONFIG_PRODUCTION = {
   env: environment,
