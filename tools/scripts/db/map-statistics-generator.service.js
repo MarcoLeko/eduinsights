@@ -26,7 +26,14 @@ module.exports = {
       fs.mkdirSync(path);
     }
   },
-
+  fetchEnhancedCountryInformation: async function fetchEnhancedCountryInformation(
+    countryCode
+  ) {
+    const responseExtendedCountryInformation = await fetch(
+      "https://restcountries.eu/rest/v2/alpha?codes=" + countryCode
+    );
+    return responseExtendedCountryInformation.json();
+  },
   fetchUnescoCodeList: async function fetchUnescoCodeList() {
     const responseCodeList = await fetch(
       "https://api.uis.unesco.org/sdmx/codelist/all/all/latest?locale=en&format=sdmx-json&subscription-key=" +
