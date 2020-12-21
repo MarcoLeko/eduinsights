@@ -11,6 +11,7 @@ const {
   matchUnescoCountriesWithGeoJsonPolygon,
   createMapStatisticsOutputPath,
   createMapStatisticsTempPath,
+  fetchEnhancedCountryInformation,
 } = require("./map-statistics-generator.service");
 const mapStatistics = require("./map-statistics");
 const topojson = require("topojson-server");
@@ -87,6 +88,18 @@ const log = console.log;
         resultArrayWithCountryMatches,
         unescoRegions
       );
+
+      for await (const country of resultArrayWithCountryMatches) {
+        const [{ latlng, capital }] = await fetchEnhancedCountryInformation(
+          country.properties.id
+        );
+        country.properties = {
+          ...country.properties,
+          latitude: latlng[0],
+          longitude: latlng[1],
+          capital,
+        };
+      }
 
       const output = {
         key: statistic.key,

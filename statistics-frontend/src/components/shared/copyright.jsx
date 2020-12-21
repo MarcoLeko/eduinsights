@@ -9,7 +9,7 @@ function Copyright() {
       <Link color="inherit" href="https://eduinsights.eu/">
         eduinsights
       </Link>
-      {" - Marco Leko -"}
+      {" - Marco Leko - "}
       {new Date().getFullYear()}
       {"."}
     </Typography>

@@ -13,3 +13,13 @@ export function getColor(key) {
       return "#800026";
   }
 }
+
+function inRange(x, min, max) {
+  return (x - min) * (x - max) <= 0;
+}
+
+export function getColorRange(evaluation, feature) {
+  return evaluation.find((obj) =>
+    inRange(feature.properties.value, obj.value[1], obj.value[0])
+  );
+}

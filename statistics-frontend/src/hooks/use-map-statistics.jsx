@@ -48,9 +48,11 @@ export function useMapStatistics(geoJSONRef = null) {
             evaluationType,
             evaluation,
           });
-          geoJSONRef.current.leafletElement
-            .clearLayers()
-            .addData(topoJson2GeoJson);
+          if (geoJSONRef) {
+            geoJSONRef.current.leafletElement
+              .clearLayers()
+              .addData(topoJson2GeoJson);
+          }
         })
         .catch((e) => {
           dispatch(receiveMessageInterceptor(e));

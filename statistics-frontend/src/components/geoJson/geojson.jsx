@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import * as ReactLeaflet from "react-leaflet";
 import { useLeaflet } from "react-leaflet";
 import L from "leaflet";
-import { getColor } from "../shared/getColor";
+import { getColor, getColorRange } from "../shared/getColor";
 
 const { GeoJSON } = ReactLeaflet;
 
@@ -17,17 +17,9 @@ function GeoJson({ geoJsonRef, infoControlRef, data }) {
     });
   }
 
-  function inRange(x, min, max) {
-    return (x - min) * (x - max) <= 0;
-  }
-
   function style(feature) {
-    const getRange = data.evaluation.find((obj) =>
-      inRange(feature.properties.value, obj.value[1], obj.value[0])
-    );
-
     return {
-      fillColor: getColor(getRange.key),
+      fillColor: getColor(getColorRange(data.evaluation, feature).key),
       weight: 2,
       opacity: 1,
       color: "white",
