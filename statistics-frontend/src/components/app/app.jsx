@@ -5,9 +5,9 @@ import Tab from "@material-ui/core/Tab";
 import "./app.scss";
 import SwipeableViews from "react-swipeable-views";
 import clsx from "clsx";
-import ToggleableMenu from "./toggleable-menu";
+import ToolbarMenu from "./toolbar-menu";
 import SideBar from "./side-bar";
-import { Fab, useScrollTrigger, useTheme, Zoom } from "@material-ui/core";
+import { Fab, useTheme, Zoom } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import Box from "@material-ui/core/Box";
 import MapIcon from "@material-ui/icons/MapRounded";
@@ -26,8 +26,7 @@ function App() {
   const {
     state: { canSwipe },
   } = useUiContext();
-  const trigger = useScrollTrigger({ threshold: 48 });
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const { isScrolledToBottom } = useScrollYObserverForTab(tabIndex);
   const theme = useTheme();
@@ -68,18 +67,6 @@ function App() {
     setTabIndex(index);
   }
 
-  function transitionY() {
-    if (tabIndex === 0) {
-      return 48;
-    } else {
-      if (!trigger) {
-        return 0;
-      } else {
-        return 48;
-      }
-    }
-  }
-
   return (
     <>
       <AppBar
@@ -88,12 +75,8 @@ function App() {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: sideBarOpen,
         })}
-        style={{
-          transform: `translateY(-${transitionY()}px)`,
-        }}
       >
-        <ToggleableMenu
-          trigger={trigger}
+        <ToolbarMenu
           tabIndex={tabIndex}
           toggle={setSideBarOpen}
           isOpen={sideBarOpen}

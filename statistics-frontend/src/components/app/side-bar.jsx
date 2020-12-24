@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -8,11 +8,19 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import Fingerprint from "@material-ui/icons/Fingerprint";
 import Box from "@material-ui/core/Box";
-import { Link, makeStyles, Typography } from "@material-ui/core";
-import Contribute from "@material-ui/icons/Code";
+import {
+  Link,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@material-ui/core";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
+import { setTheme } from "../../context/ui-actions";
 
 export const drawerWidth = 240;
 
@@ -47,26 +55,53 @@ const useStyles = (params) =>
     listItemText: {
       flex: "0.5 0.5 auto",
     },
+    menuPaper: {
+      width: 220,
+    },
   }));
+
+const themeOptions = [
+  { label: "Dark", value: "dark" },
+  { label: "Light", value: "light" },
+];
+
+const navItems = [
+  {
+    icon: <Fingerprint />,
+    name: "Imprint",
+    link: "/imprint",
+  },
+  {
+    icon: <Brightness4Icon />,
+    name: "Design",
+    link: null,
+  },
+  {
+    icon: <GitHubIcon />,
+    name: "Code",
+    link: "https://github.com/MarcoLeko/eduinsights",
+  },
+];
 
 function SideBar(props) {
   const {
     state: { theme },
+    dispatch,
   } = useUiContext();
   const classes = useStyles(theme)();
+  const [menuElement, setMenuElement] = useState(null);
 
-  const navItems = [
-    {
-      icon: <Fingerprint />,
-      name: "Imprint",
-      link: "/imprint",
-    },
-    {
-      icon: <Contribute />,
-      name: "Code",
-      link: "https://github.com/MarcoLeko/eduinsights",
-    },
-  ];
+  const handleDesignMenuClick = (event) => {
+    setMenuElement(event.currentTarget);
+  };
+
+  const handleDesignMenuClose = () => {
+    setMenuElement(null);
+  };
+
+  const handleMenuItemClick = (event, value) => {
+    dispatch(setTheme(value));
+  };
 
   return (
     <Drawer
@@ -81,12 +116,65 @@ function SideBar(props) {
     >
       <List>
         {navItems.map(({ icon, name, link }, index) => (
-          <ListItem button key={index}>
-            <Link href={link} className={classes.linkItem}>
-              <ListItemIcon className={classes.logoPanel}>{icon}</ListItemIcon>
-              <ListItemText primary={name} className={classes.listItemText} />
-            </Link>
-          </ListItem>
+          <div key={index}>
+            {link ? (
+              <ListItem button>
+                <Link href={link} className={classes.linkItem}>
+                  <ListItemIcon className={classes.logoPanel}>
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={name}
+                    className={classes.listItemText}
+                  />
+                </Link>
+              </ListItem>
+            ) : (
+              name === "Design" && (
+                <>
+                  <ListItem
+                    button
+                    component="button"
+                    aria-controls="design-menu"
+                    aria-haspopup="true"
+                    onClick={handleDesignMenuClick}
+                  >
+                    <ListItemIcon className={classes.logoPanel}>
+                      {icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={name}
+                      className={classes.listItemText}
+                    />
+                  </ListItem>
+                  <Menu
+                    id="design-menu"
+                    anchorEl={menuElement}
+                    keepMounted
+                    open={Boolean(menuElement)}
+                    onClose={handleDesignMenuClose}
+                    classes={{ paper: classes.menuPaper }}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                  >
+                    {themeOptions.map((option, index) => (
+                      <MenuItem
+                        key={option.label}
+                        selected={option.value === theme}
+                        onClick={(event) =>
+                          handleMenuItemClick(event, option.value)
+                        }
+                      >
+                        <Typography variant="inherit">
+                          {option.label}
+                        </Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )
+            )}
+          </div>
         ))}
       </List>
       <Box p={2}>

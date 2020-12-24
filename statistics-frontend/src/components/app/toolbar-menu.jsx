@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ToggleableMenu({ isOpen, toggle }) {
+function ToolbarMenu({ isOpen, toggle }) {
   const classes = useStyles();
 
   return (
@@ -69,4 +69,4 @@ function ToggleableMenu({ isOpen, toggle }) {
   );
 }
 
-export default ToggleableMenu;
+export default ToolbarMenu;

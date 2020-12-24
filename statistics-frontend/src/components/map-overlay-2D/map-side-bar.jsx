@@ -3,12 +3,10 @@ import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounde
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import {
   Divider,
-  FormControlLabel,
   ListItem,
   ListItemText,
   ListSubheader,
   makeStyles,
-  Switch,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
@@ -16,7 +14,6 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 
 const drawerWidth = "calc(100% - 48px)";
-const maxDrawerWidth = 560;
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -50,9 +47,8 @@ const useStyles = makeStyles((theme) => ({
   drawerOpen: {
     position: "relative",
     width: drawerWidth,
-    maxWidth: maxDrawerWidth,
     height: "inherit",
-    transition: theme.transitions.create("max-width", {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -79,18 +75,16 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 56,
   },
   drawerClose: {
-    transition: theme.transitions.create("max-width", {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    maxWidth: "0%",
+    width: 0,
   },
 }));
 
 function MapSideBar({
-  toggleMapMode,
-  mapMode,
   mapStatistics,
   setSelectedStatistic,
   fetchMapStatisticsById,
@@ -126,19 +120,6 @@ function MapSideBar({
             paperAnchorLeft: classes.paperAnchorLeft,
           }}
         >
-          <div className={classes.sideBarContent}>
-            <FormControlLabel
-              control={
-                <Switch
-                  size="medium"
-                  checked={mapMode === "dark"}
-                  onChange={toggleMapMode}
-                  color="primary"
-                />
-              }
-              label={`Switch to ${mapMode === "light" ? "dark" : "light"} mode`}
-            />
-          </div>
           <List
             className={classes.list}
             aria-labelledby="nested-list-subheader"
