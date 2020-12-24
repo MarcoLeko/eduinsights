@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 48,
+    minHeight: 52,
     display: "flex",
     alignItems: "center",
     padding: "0 4px",

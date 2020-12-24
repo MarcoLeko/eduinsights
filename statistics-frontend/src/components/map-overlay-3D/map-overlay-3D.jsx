@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Container,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -8,7 +7,6 @@ import {
   MenuItem,
   Select,
 } from "@material-ui/core";
-import Introduction from "./introduction";
 import Globe from "react-globe.gl";
 import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
@@ -89,8 +87,7 @@ export function MapOverlay3D() {
   }
 
   return (
-    <Container disableGutters>
-      <Introduction />
+    <>
       {selectedStatistic && (
         <FormControl className={classes.formControl}>
           <InputLabel id="select-statistic-label">Statistic</InputLabel>
@@ -146,6 +143,6 @@ export function MapOverlay3D() {
           polygonsData={geoJsonFromSelectedStatistic.features}
         />
       )}
-    </Container>
+    </>
   );
 }

@@ -1,9 +1,8 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { CAN_SWIPE, THEME } from "./ui-action-types";
+import { THEME } from "./ui-action-types";
 import { setTheme } from "./ui-actions";
 
 const initialState = {
-  canSwipe: true,
   theme: window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light",
@@ -11,12 +10,6 @@ const initialState = {
 
 function uiReducer(state = initialState, action) {
   switch (action.type) {
-    case CAN_SWIPE: {
-      return {
-        ...state,
-        canSwipe: action.canSwipe,
-      };
-    }
     case THEME: {
       return {
         ...state,
