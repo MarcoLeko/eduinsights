@@ -9,7 +9,6 @@ import MapSideBar from "./map-side-bar";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
 import { useMapStatistics } from "../../hooks/use-map-statistics";
 import GeoJson from "../geoJson/geojson";
-import { setSwipe } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 
 const { Map, TileLayer } = ReactLeaflet;
@@ -27,7 +26,6 @@ function MapOverlay2D() {
   } = useMapStatistics(geoJsonRef);
   const {
     state: { theme },
-    dispatch,
   } = useUiContext();
 
   function centerMapView(e) {
@@ -43,8 +41,6 @@ function MapOverlay2D() {
       tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
       onPopupopen={centerMapView.bind(this)}
       zoomControl={false}
-      onMovestart={() => dispatch(setSwipe(false))}
-      onMoveend={() => dispatch(setSwipe(true))}
       minZoom={3}
       bounceAtZoomLimits={true}
       maxBoundsViscosity={0.95}
