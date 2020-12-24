@@ -9,7 +9,7 @@ import MapSideBar from "./map-side-bar";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
 import { useMapStatistics } from "../../hooks/use-map-statistics";
 import GeoJson from "../geoJson/geojson";
-import { setSwipe, setTheme } from "../../context/ui-actions";
+import { setSwipe } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 
 const { Map, TileLayer } = ReactLeaflet;
@@ -60,10 +60,6 @@ function MapOverlay2D() {
       />
       <MapSideBar
         mapStatistics={allMapStatistics}
-        toggleMapMode={() =>
-          dispatch(setTheme(theme === "light" ? "dark" : "light"))
-        }
-        mapMode={theme}
         setSelectedStatistic={setSelectedStatistic}
         fetchMapStatisticsById={fetchMapStatisticsById}
         selectedStatistic={selectedStatistic}
