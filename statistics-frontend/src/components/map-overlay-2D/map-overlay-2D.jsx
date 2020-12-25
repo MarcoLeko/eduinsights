@@ -7,7 +7,7 @@ import MapLegend from "../map-legend/map-legend";
 import MapInfoControl from "../map-info-control/map-info-control";
 import MapSideBar from "./map-side-bar";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
-import { useMapStatistics } from "../../hooks/use-map-statistics";
+import { useStatistics } from "../../hooks/use-statistics";
 import GeoJson from "../geoJson/geojson";
 import { useUiContext } from "../../hooks/use-ui-context";
 
@@ -20,10 +20,10 @@ function MapOverlay2D() {
   const {
     geoJsonFromSelectedStatistic,
     selectedStatistic,
-    allMapStatistics,
+    statisticsList,
     setSelectedStatistic,
     fetchMapStatisticsById,
-  } = useMapStatistics(geoJsonRef);
+  } = useStatistics(geoJsonRef);
   const {
     state: { theme },
   } = useUiContext();
@@ -55,7 +55,7 @@ function MapOverlay2D() {
         url={`https://api.mapbox.com/styles/v1/mapbox/${theme}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
       />
       <MapSideBar
-        mapStatistics={allMapStatistics}
+        mapStatistics={statisticsList}
         setSelectedStatistic={setSelectedStatistic}
         fetchMapStatisticsById={fetchMapStatisticsById}
         selectedStatistic={selectedStatistic}

@@ -1,7 +1,8 @@
 import { makeStyles } from "@material-ui/core";
-import { drawerWidth } from "./side-bar";
 
-export const useHeaderStyles = makeStyles((theme) => ({
+const drawerWidth = 240;
+
+const useHeaderStyles = makeStyles((theme) => ({
   appBar: {
     transition: theme.transitions.create(["transform", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -34,14 +35,6 @@ export const useHeaderStyles = makeStyles((theme) => ({
     }),
     marginLeft: -drawerWidth,
   },
-  indicator: {
-    height: 4,
-  },
-  tabContent: {
-    flexDirection: "row",
-    alignItems: "initial",
-  },
-  iconSpacing: {
-    padding: theme.spacing(0, 1),
-  },
 }));
+
+export { drawerWidth, useHeaderStyles };

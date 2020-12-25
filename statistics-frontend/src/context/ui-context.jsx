@@ -1,15 +1,22 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { THEME } from "./ui-action-types";
+import { THEME, SIDEBAR } from "./ui-action-types";
 import { setTheme } from "./ui-actions";
 
 const initialState = {
   theme: window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light",
+  sidebarOpen: false,
 };
 
 function uiReducer(state = initialState, action) {
   switch (action.type) {
+    case SIDEBAR: {
+      return {
+        ...state,
+        sidebarOpen: action.sidebarOpen,
+      };
+    }
     case THEME: {
       return {
         ...state,
