@@ -3,11 +3,20 @@ import UpIcon from "@material-ui/icons/KeyboardArrowUp";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import React from "react";
 import { useScrollYObserver } from "../../hooks/use-scroll-y-observer";
-import { useAppStyles } from "./app-styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: "fixed",
+    zIndex: 1,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
 
 export function ScrollButtonHelper({ condition }) {
   const theme = useTheme();
-  const classes = useAppStyles();
+  const classes = useStyles();
   const { isScrolledToBottom } = useScrollYObserver(condition);
 
   const transitionDuration = {
@@ -34,7 +43,6 @@ export function ScrollButtonHelper({ condition }) {
           })
         }
         timeout={transitionDuration}
-        unmountOnExit
       >
         {isScrolledToBottom ? <UpIcon /> : <DownIcon />}
       </Fab>
