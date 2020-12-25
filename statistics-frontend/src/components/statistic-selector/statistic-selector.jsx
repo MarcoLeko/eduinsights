@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(0, 2),
     borderRadius: 4,
     justifyContent: "center",
     margin: "auto",
@@ -77,7 +77,7 @@ export function StatisticSelector() {
     props.position.setValue(index);
   }
 
-  return (
+  return props.position ? (
     <div className={classes.container}>
       <SwipeableViews
         index={index}
@@ -98,7 +98,7 @@ export function StatisticSelector() {
           const scale = interpolatePositionProps(
             inputRange,
             inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
-          ).interpolate((x) => `scale(${x})`);
+          );
 
           const opacity = interpolatePositionProps(
             inputRange,
@@ -108,12 +108,16 @@ export function StatisticSelector() {
           const translateX = interpolatePositionProps(
             inputRange,
             inputRange.map((i) => (100 / 2) * (i - currentIndex))
-          ).interpolate((x) => `translateX(${x}px)`);
+          );
 
           const scaleAndTranslateX = interpolate(
-            [scale, translateX],
+            [
+              scale.interpolate((x) => `scale(${x})`),
+              translateX.interpolate((x) => `translateX(${x}px)`),
+            ],
             (scale, translateX) => `${scale} ${translateX}`
           );
+
           return (
             <animated.div
               key={String(currentIndex)}
@@ -154,5 +158,5 @@ export function StatisticSelector() {
         })}
       </SwipeableViews>
     </div>
-  );
+  ) : null;
 }
