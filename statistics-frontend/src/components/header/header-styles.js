@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { drawerWidth } from "./side-bar";
 
-export const useAppStyles = makeStyles((theme) => ({
+export const useHeaderStyles = makeStyles((theme) => ({
   appBar: {
     transition: theme.transitions.create(["transform", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -43,11 +43,5 @@ export const useAppStyles = makeStyles((theme) => ({
   },
   iconSpacing: {
     padding: theme.spacing(0, 1),
-  },
-  fab: {
-    position: "fixed",
-    zIndex: 1,
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
   },
 }));
