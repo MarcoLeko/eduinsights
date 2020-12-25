@@ -21,8 +21,7 @@ import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
 import { setTheme } from "../../context/ui-actions";
-
-export const drawerWidth = 240;
+import { drawerWidth } from "./header-styles";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({

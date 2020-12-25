@@ -8,6 +8,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import { name as projectName } from "../../../package.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,11 +55,11 @@ function ToolbarMenu({ isOpen, toggle }) {
           color="secondary"
           classes={{ root: classes.header }}
         >
-          Eduinsights
+          {projectName}
         </Typography>
       </Link>
       <div className={classes.actionButtons}>
-        <Hidden xsDown>
+        <Hidden mdDown>
           <img src={googlePlay} height={40} alt="Get it on google play" />
         </Hidden>
         <IconButton onClick={toggle.bind(this, !isOpen)}>

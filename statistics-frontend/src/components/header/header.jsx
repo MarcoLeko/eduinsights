@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import clsx from "clsx";
 import { useHeaderStyles } from "./header-styles";
 import ToolbarMenu from "./toolbar-menu";
 import SideBar from "./side-bar";
+import { useUiContext } from "../../hooks/use-ui-context";
+import { setSidebarOpen } from "../../context/ui-actions";
 
 export function Header() {
   const classes = useHeaderStyles();
-  const [sideBarOpen, setSideBarOpen] = useState(false);
+  const {
+    state: { sidebarOpen },
+    dispatch,
+  } = useUiContext();
+
+  function dispatchSidebarState(args) {
+    dispatch(setSidebarOpen(args));
+  }
 
   return (
     <>
@@ -15,12 +24,12 @@ export function Header() {
         position="sticky"
         color="default"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: sideBarOpen,
+          [classes.appBarShift]: sidebarOpen,
         })}
       >
-        <ToolbarMenu toggle={setSideBarOpen} isOpen={sideBarOpen} />
+        <ToolbarMenu toggle={dispatchSidebarState} isOpen={sidebarOpen} />
       </AppBar>
-      <SideBar isOpen={sideBarOpen} />
+      <SideBar isOpen={sidebarOpen} />
     </>
   );
 }

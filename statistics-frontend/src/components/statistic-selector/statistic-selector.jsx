@@ -1,87 +1,158 @@
 import React, { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
-import { animated } from "react-spring";
+import { animated, interpolate, useSpring } from "react-spring";
 import { makeStyles } from "@material-ui/core/styles";
+import "./statistic-selector.scss";
+import { Button, Card, CardActions } from "@material-ui/core";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { useStatistics } from "../../hooks/use-statistics";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: theme.palette.background.paper,
-    padding: "0 50px",
+    [theme.breakpoints.up("ccSmallest")]: {
+      padding: "0px 14px",
+    },
+    [theme.breakpoints.up("ccXxxs")]: {
+      padding: "0px 30px",
+    },
+    [theme.breakpoints.up("ccXxs")]: {
+      padding: "0px 60px",
+    },
+    [theme.breakpoints.up("ccXs")]: {
+      padding: "0px 100px",
+    },
+    [theme.breakpoints.up("ccSm")]: {
+      padding: "0px 130px",
+    },
+    [theme.breakpoints.up("ccMd")]: {
+      padding: "0px 180px",
+    },
+  },
+  container: {
+    padding: theme.spacing(2),
+    borderRadius: 4,
+    justifyContent: "center",
+    margin: "auto",
   },
   slide: {
-    padding: `${theme.spacing(4)}px ${theme.spacing(3)}px`,
+    padding: theme.spacing(3, 2),
     color: theme.palette.text.primary,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
     display: "flex",
   },
-  img: {
-    width: 180,
-    height: 180,
-    display: "block",
-    marginBottom: theme.spacing(3),
+  cardRoot: {
+    padding: theme.spacing(0, 1),
+    minWidth: 250,
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  cardButton: {
+    marginLeft: "auto",
   },
 }));
 
-const albums = [
-  {
-    name: "Abbey Road",
-    src: "https://picsum.photos/200/300",
-  },
-  {
-    name: "Bat Out of Hell",
-    src: "https://picsum.photos/200/300",
-  },
-  {
-    name: "Homogenic",
-    src: "https://picsum.photos/200/300",
-  },
-  {
-    name: "Number of the Beast",
-    src: "https://picsum.photos/200/300",
-  },
-  {
-    name: "It's Blitz",
-    src: "https://picsum.photos/200/300",
-  },
-  {
-    name: "The Man-Machine",
-    src: "https://picsum.photos/200/300",
-  },
-];
-
 export function StatisticSelector() {
-  const [selectedStatistic, setSelectedStatistic] = useState({
-    index: 0,
-  });
   const classes = useStyles();
-  const handleChangeIndex = (index) => {
-    setSelectedStatistic({ ...selectedStatistic, index });
-  };
+  const { statisticsList } = useStatistics();
+  const [index, setIndex] = useState(0);
+  const [props, start] = useSpring(() => ({
+    from: { position: 0 },
+  }));
 
-  const handleSwitch = (index, type) => {
+  function handleChangeIndex(indexNum) {
+    setIndex(indexNum);
+  }
+
+  function handleSwitch(index, type) {
     if (type === "end") {
+      start({
+        from: { position: props.position.value },
+        to: { position: Math.round(index) },
+      });
       return;
     }
-    setSelectedStatistic({
-      ...selectedStatistic,
-    });
-  };
+    props.position.setValue(index);
+  }
 
   return (
-    <SwipeableViews
-      index={selectedStatistic.index}
-      className={classes.root}
-      onChangeIndex={handleChangeIndex}
-      onSwitching={handleSwitch}
-    >
-      {albums.map((album, currentIndex) => (
-        <animated.div key={String(currentIndex)} className={classes.slide}>
-          <img className={classes.img} src={album.src} alt="cover" />
-          {album.name}
-        </animated.div>
-      ))}
-    </SwipeableViews>
+    <div className={classes.container}>
+      <SwipeableViews
+        index={index}
+        className={classes.root}
+        onChangeIndex={handleChangeIndex}
+        onSwitching={handleSwitch}
+        enableMouseEvents
+      >
+        {statisticsList.map((statistic, currentIndex) => {
+          function interpolatePositionProps(range, output) {
+            return props.position.interpolate({
+              range,
+              output,
+            });
+          }
+
+          const inputRange = statisticsList.map((_, i) => i);
+          const scale = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
+          ).interpolate((x) => `scale(${x})`);
+
+          const opacity = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
+          );
+
+          const translateX = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (100 / 2) * (i - currentIndex))
+          ).interpolate((x) => `translateX(${x}px)`);
+
+          const scaleAndTranslateX = interpolate(
+            [scale, translateX],
+            (scale, translateX) => `${scale} ${translateX}`
+          );
+          return (
+            <animated.div
+              key={String(currentIndex)}
+              className={classes.slide}
+              style={Object.assign({
+                opacity,
+                transform: scaleAndTranslateX,
+              })}
+            >
+              <Card className={classes.cardRoot}>
+                <CardContent>
+                  <Typography variant="h6" component="h2">
+                    {statistic.description}
+                  </Typography>
+                  <Typography className={classes.pos}>Year:</Typography>
+                  <Typography variant="body2" component="p">
+                    Start: {statistic.startYear}
+                    <br />
+                    End: {statistic.endYear}
+                  </Typography>
+                  <Typography className={classes.title} gutterBottom>
+                    This statistic provides data for 189 / 193 Countries
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    classes={{ root: classes.cardButton }}
+                  >
+                    Select
+                  </Button>
+                </CardActions>
+              </Card>
+            </animated.div>
+          );
+        })}
+      </SwipeableViews>
+    </div>
   );
 }

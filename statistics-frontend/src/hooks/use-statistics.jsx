@@ -7,9 +7,9 @@ import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
 
-export function useMapStatistics(geoJSONRef = null) {
+export function useStatistics(geoJSONRef = null) {
   const [selectedStatistic, setSelectedStatistic] = useState(null);
-  const [allMapStatistics, setAllMapStatistics] = useState(null);
+  const [statisticsList, setStatisticsList] = useState([]);
   const { dispatch } = useAlertContext();
   const [
     geoJsonFromSelectedStatistic,
@@ -64,7 +64,7 @@ export function useMapStatistics(geoJSONRef = null) {
   const fetchInitialMapStatistics = useCallback(() => {
     getMapStatisticsList()
       .then((list) => {
-        setAllMapStatistics(list.statistics);
+        setStatisticsList(list.statistics);
         setSelectedStatistic(list.statistics[0].key);
         return list.statistics[0].key;
       })
@@ -79,7 +79,7 @@ export function useMapStatistics(geoJSONRef = null) {
 
   return {
     geoJsonFromSelectedStatistic,
-    allMapStatistics,
+    statisticsList,
     selectedStatistic,
     setSelectedStatistic,
     fetchMapStatisticsById,

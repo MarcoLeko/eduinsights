@@ -12,7 +12,7 @@ import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
 import EarthTopology from "../../assets/earth-topology.png";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { useMapStatistics } from "../../hooks/use-map-statistics";
+import { useStatistics } from "../../hooks/use-statistics";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
@@ -51,10 +51,10 @@ export function MapOverlay3D() {
   const {
     geoJsonFromSelectedStatistic,
     selectedStatistic,
-    allMapStatistics,
+    statisticsList,
     setSelectedStatistic,
     fetchMapStatisticsById,
-  } = useMapStatistics(null);
+  } = useStatistics(null);
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
 
   function resetCameraPosition(camera, controls) {
@@ -101,7 +101,7 @@ export function MapOverlay3D() {
             }}
             className={classes.labelTop}
           >
-            {allMapStatistics.map((item) => (
+            {statisticsList.map((item) => (
               <MenuItem
                 classes={{ root: classes.menuItemRoot }}
                 key={item.key}

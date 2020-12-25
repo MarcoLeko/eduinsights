@@ -1,9 +1,11 @@
 import React from "react";
-import "./home.scss";
 import { Container } from "@material-ui/core";
 import Introduction from "../map-overlay-3D/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
 import { ScrollButtonHelper } from "./scroll-button-helper";
+import { useHeaderStyles } from "../header/header-styles";
+import clsx from "clsx";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 // TODO: condition when to show the scrollHelperButton, will change logic later
 // TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready
@@ -12,11 +14,22 @@ import { ScrollButtonHelper } from "./scroll-button-helper";
 const condition = true;
 
 function Home() {
+  const classes = useHeaderStyles();
+  const {
+    state: { sidebarOpen },
+  } = useUiContext();
+
   return (
-    <Container disableGutters>
+    <Container
+      disableGutters
+      className={clsx(classes.content, {
+        [classes.contentShift]: sidebarOpen,
+      })}
+    >
       <Introduction />
       <StatisticSelector />
       <ScrollButtonHelper condition={condition} />
+      <div style={{ height: "50vh" }} />
     </Container>
   );
 }
