@@ -6,10 +6,10 @@ import { ScrollButtonHelper } from "./scroll-button-helper";
 import { useHeaderStyles } from "../header/header-styles";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
+import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
 // TODO: condition when to show the scrollHelperButton, will change logic later
 // TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready
-// TODO: add animations for statistic selector like in here: https://react-swipeable-views.com/demos/demos/
 // TODO: Make the stepper listen for query params '?statistic=foo&visualization=bar'
 const condition = true;
 
@@ -27,7 +27,7 @@ function Home() {
       })}
     >
       <Introduction />
-      <StatisticSelector />
+      <StatisticStepper children={<StatisticSelector />} />
       <ScrollButtonHelper condition={condition} />
       <div style={{ height: "50vh" }} />
     </Container>

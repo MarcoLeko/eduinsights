@@ -38,7 +38,10 @@ tools/scripts/db/output
 # environment zip bundle
 tools/scripts/aws/*.zip
 
-# Elastic Beanstalk Files
+# elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# eslint cache
+.eslintcache
