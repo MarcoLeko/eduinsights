@@ -74,7 +74,6 @@ export function useStatisticData(geoJSONRef = null) {
     if (!statisticsList.length) {
       fetchInitialMapStatistics();
     }
-    console.log(selectedStatistic);
     if (selectedStatistic) {
       fetchMapStatisticsById();
     }

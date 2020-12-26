@@ -10,7 +10,6 @@ import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
 import GeoJson from "../geoJson/geojson";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useStatisticData } from "../../hooks/use-statistic-data";
-
 const { Map, TileLayer } = ReactLeaflet;
 
 function MapOverlay2D() {
