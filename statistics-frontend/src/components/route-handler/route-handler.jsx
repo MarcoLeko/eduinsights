@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppNotifier from "../shared/app-notifier";
 import { Imprint } from "../imprint/imprint";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useUiContext } from "../../hooks/use-ui-context";
 import getMaterialUiTheme from "../../material-ui-theme";
 import { CssBaseline } from "@material-ui/core";
@@ -16,7 +16,7 @@ function RouteHandler() {
   } = useUiContext();
 
   return (
-    <ThemeProvider theme={getMaterialUiTheme(theme)}>
+    <ThemeProvider theme={responsiveFontSizes(getMaterialUiTheme(theme))}>
       <CssBaseline>
         <Router>
           <AppNotifier />

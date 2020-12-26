@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     width: 2,
   },
-  header: { fontWeight: 300 },
+  header: { fontWeight: 300, fontStyle: "italic" },
   actionButtons: {
     display: "flex",
     alignItems: "center",
@@ -51,7 +51,7 @@ function ToolbarMenu({ isOpen, toggle }) {
       <Link to="/" className={classes.logoPanel}>
         <Logo className={classes.logo} />
         <Typography
-          variant={"h5"}
+          variant={"h4"}
           color="secondary"
           classes={{ root: classes.header }}
         >
