@@ -12,14 +12,14 @@ import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 
-// TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready
+// TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready - show scroll helper button afterwards
 
 function Home() {
   const classes = useHeaderStyles();
   const {
     state: { sidebarOpen },
   } = useUiContext();
-  const { activeStep, queryParams } = useStatisticStepListener();
+  const { activeStep, queryParams, handleNext } = useStatisticStepListener();
   function getStatisticStepChildren() {
     switch (activeStep) {
       case 2:
@@ -32,7 +32,7 @@ function Home() {
         return <Visualization />;
       case 0:
       default:
-        return <StatisticSelector />;
+        return <StatisticSelector onStatisticClick={handleNext} />;
     }
   }
   return (

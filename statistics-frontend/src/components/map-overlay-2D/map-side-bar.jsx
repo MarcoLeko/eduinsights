@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
+import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
 
 const drawerWidth = "calc(100% - 48px)";
 
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
   drawerOpen: {
     position: "relative",
     width: drawerWidth,
-    height: "inherit",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -84,22 +84,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MapSideBar({
-  mapStatistics,
-  setSelectedStatistic,
-  fetchMapStatisticsById,
-  selectedStatistic,
-}) {
+function MapSideBar({ mapStatistics, selectedStatistic }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { handleNext } = useStatisticStepListener();
 
   function toggleSidebar() {
     setOpen(!open);
   }
 
-  function handleActiveStatisticItem(key) {
-    setSelectedStatistic(key);
-    fetchMapStatisticsById(key);
+  function handleActiveStatisticItem(e, key) {
+    handleNext(e, key);
   }
 
   return (
@@ -144,7 +139,7 @@ function MapSideBar({
                     }
                     button
                     classes={{ root: classes.listItemRoot }}
-                    onClick={() => handleActiveStatisticItem(statistic.key)}
+                    onClick={(e) => handleActiveStatisticItem(e, statistic.key)}
                   >
                     <ListItemText
                       id={statistic.key}

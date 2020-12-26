@@ -7,7 +7,7 @@ export function useStatisticStepListener() {
   const history = useHistory();
   const [queryParams, setQueryParams] = useState(qs.parse(location.search));
 
-  const getInitialStep = (params) => {
+  const getStep = (params) => {
     if (params.statistic && params.visualization) {
       return 2;
     }
@@ -18,51 +18,44 @@ export function useStatisticStepListener() {
 
     return 0;
   };
-  const [activeStep, setActiveStep] = useState(getInitialStep(queryParams));
+  const [activeStep, setActiveStep] = useState(getStep(queryParams));
 
   useEffect(() => {
     setQueryParams(qs.parse(location.search));
-    setActiveStep(getInitialStep(qs.parse(location.search)));
+    setActiveStep(getStep(qs.parse(location.search)));
   }, [location.search, activeStep]);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-      history.push({
-        search: qs.stringify(
-          {
-            statistic: prevActiveStep === 1 ? undefined : queryParams.statistic,
-            visualization:
-              prevActiveStep === 2 ? undefined : queryParams.visualization,
-          },
-          {
-            skipNull: true,
-          }
-        ),
-      });
-      return prevActiveStep + 1;
+  const handleNext = (e, key) => {
+    history.push({
+      search: qs.stringify(
+        {
+          statistic:
+            activeStep === 0 || activeStep === 2 ? key : queryParams.statistic,
+          visualization: activeStep === 1 ? key : queryParams.visualization,
+        },
+        {
+          skipNull: true,
+        }
+      ),
     });
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => {
-      history.push({
-        search: qs.stringify(
-          {
-            statistic: prevActiveStep === 1 ? undefined : queryParams.statistic,
-            visualization:
-              prevActiveStep === 2 ? undefined : queryParams.visualization,
-          },
-          {
-            skipNull: true,
-          }
-        ),
-      });
-      return prevActiveStep - 1;
+    history.push({
+      search: qs.stringify(
+        {
+          statistic: activeStep === 1 ? undefined : queryParams.statistic,
+          visualization:
+            activeStep === 2 ? undefined : queryParams.visualization,
+        },
+        {
+          skipNull: true,
+        }
+      ),
     });
   };
 
   const handleReset = () => {
-    setActiveStep(0);
     history.push({ search: qs.stringify({}) });
   };
   return {

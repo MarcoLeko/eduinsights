@@ -28,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("ccMd")]: {
       padding: "0px 180px",
     },
+    [theme.breakpoints.up("ccLg")]: {
+      padding: "0px 260px",
+    },
+    [theme.breakpoints.up("ccXl")]: {
+      padding: "0px 400px",
+    },
+    [theme.breakpoints.up("ccXxl")]: {
+      padding: "0px 500px",
+    },
   },
   container: {
     padding: theme.spacing(0, 2),
@@ -54,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function StatisticSelector() {
+export function StatisticSelector({ onStatisticClick }) {
   const classes = useStyles();
   const { statisticsList } = useStatisticData();
   const [index, setIndex] = useState(0);
@@ -147,6 +156,7 @@ export function StatisticSelector() {
                     color="secondary"
                     size="small"
                     classes={{ root: classes.cardButton }}
+                    onClick={(e) => onStatisticClick(e, statistic.key)}
                   >
                     Select
                   </Button>

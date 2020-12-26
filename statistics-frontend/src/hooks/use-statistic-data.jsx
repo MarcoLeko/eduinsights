@@ -6,9 +6,13 @@ import {
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
+import { useStatisticStepListener } from "./use-statistic-step-listener";
 
 export function useStatisticData(geoJSONRef = null) {
-  const [selectedStatistic, setSelectedStatistic] = useState(null);
+  const { queryParams } = useStatisticStepListener();
+  const [selectedStatistic, setSelectedStatistic] = useState(
+    queryParams.statistic
+  );
   const [statisticsList, setStatisticsList] = useState([]);
   const { dispatch } = useAlertContext();
   const [
@@ -25,64 +29,63 @@ export function useStatisticData(geoJSONRef = null) {
     features: [],
   });
 
-  const fetchMapStatisticsById = useCallback(
-    (key) => {
-      getMapStatisticsById({ key })
-        .then((topoJson) => {
-          const {
-            description,
-            startYear,
-            endYear,
-            key,
-            evaluationType,
-            evaluation,
-          } = topoJson;
-          const topoJson2GeoJson = topojson.feature(topoJson, "countries");
+  const fetchMapStatisticsById = useCallback(() => {
+    getMapStatisticsById({ key: selectedStatistic })
+      .then((topoJson) => {
+        const {
+          description,
+          startYear,
+          endYear,
+          key,
+          evaluationType,
+          evaluation,
+        } = topoJson;
+        const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 
-          setGeoJsonFromSelectedStatistic({
-            ...topoJson2GeoJson,
-            key,
-            description,
-            startYear,
-            endYear,
-            evaluationType,
-            evaluation,
-          });
-          if (geoJSONRef) {
-            geoJSONRef.current.leafletElement
-              .clearLayers()
-              .addData(topoJson2GeoJson);
-          }
-        })
-        .catch((e) => {
-          dispatch(receiveMessageInterceptor(e));
+        setGeoJsonFromSelectedStatistic({
+          ...topoJson2GeoJson,
+          key,
+          description,
+          startYear,
+          endYear,
+          evaluationType,
+          evaluation,
         });
-    },
-    [dispatch, geoJSONRef]
-  );
+        if (geoJSONRef) {
+          geoJSONRef.current.leafletElement
+            .clearLayers()
+            .addData(topoJson2GeoJson);
+        }
+      })
+      .catch((e) => {
+        dispatch(receiveMessageInterceptor(e));
+      });
+  }, [dispatch, geoJSONRef, selectedStatistic]);
 
   const fetchInitialMapStatistics = useCallback(() => {
     getMapStatisticsList()
       .then((list) => {
         setStatisticsList(list.statistics);
-        setSelectedStatistic(list.statistics[0].key);
-        return list.statistics[0].key;
       })
-      .catch((e) => dispatch(receiveMessageInterceptor(e)))
-      .then((key) => fetchMapStatisticsById(key));
-  }, [dispatch, fetchMapStatisticsById]);
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchInitialMapStatistics();
+    if (!statisticsList.length) {
+      fetchInitialMapStatistics();
+    }
+    console.log(selectedStatistic);
+    if (selectedStatistic) {
+      fetchMapStatisticsById();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedStatistic]);
 
   return {
     geoJsonFromSelectedStatistic,
     statisticsList,
     selectedStatistic,
     setSelectedStatistic,
-    fetchMapStatisticsById,
     fetchInitialMapStatistics,
   };
 }

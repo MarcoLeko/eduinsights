@@ -9,13 +9,20 @@ const getMaterialUiTheme = (theme) => {
     // breakpoints are specifically used for card carousel slider
     breakpoints: {
       values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1920,
         ccSmallest: 320,
         ccXxxs: 370,
         ccXxs: 425,
         ccXs: 512,
         ccSm: 567,
         ccMd: 680,
-        ccLg: 1280,
+        ccLg: 901,
+        ccXl: 1210,
+        ccXxl: 1400,
       },
     },
     palette: {
