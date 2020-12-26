@@ -7,7 +7,7 @@ import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
 
-export function useStatistics(geoJSONRef = null) {
+export function useStatisticData(geoJSONRef = null) {
   const [selectedStatistic, setSelectedStatistic] = useState(null);
   const [statisticsList, setStatisticsList] = useState([]);
   const { dispatch } = useAlertContext();

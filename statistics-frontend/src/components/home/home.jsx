@@ -7,18 +7,34 @@ import { useHeaderStyles } from "../header/header-styles";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
+import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
+import { Visualization } from "../visualization/visualization";
+import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
+import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 
-// TODO: condition when to show the scrollHelperButton, will change logic later
 // TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready
-// TODO: Make the stepper listen for query params '?statistic=foo&visualization=bar'
-const condition = true;
 
 function Home() {
   const classes = useHeaderStyles();
   const {
     state: { sidebarOpen },
   } = useUiContext();
+  const { activeStep, queryParams } = useStatisticStepListener();
+  function getStatisticStepChildren() {
+    switch (activeStep) {
+      case 2:
+        if (queryParams.visualization === "globe") {
+          return <MapOverlay3D />;
+        }
 
+        return <MapOverlay2D />;
+      case 1:
+        return <Visualization />;
+      case 0:
+      default:
+        return <StatisticSelector />;
+    }
+  }
   return (
     <Container
       disableGutters
@@ -27,9 +43,9 @@ function Home() {
       })}
     >
       <Introduction />
-      <StatisticStepper children={<StatisticSelector />} />
-      <ScrollButtonHelper condition={condition} />
-      <div style={{ height: "50vh" }} />
+      <StatisticStepper />
+      {getStatisticStepChildren()}
+      <ScrollButtonHelper condition={activeStep === 3} />
     </Container>
   );
 }
