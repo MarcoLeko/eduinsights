@@ -75,6 +75,7 @@ async function cleanupConnections(changeStream, mongoClient) {
           key: 1,
           description: 1,
           startYear: 1,
+          amountOfCountries: 1,
           endYear: 1,
           evaluationType: 1,
           evaluation: 1,

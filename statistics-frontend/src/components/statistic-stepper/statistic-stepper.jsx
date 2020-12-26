@@ -4,7 +4,8 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import { useStatisticData } from "../../hooks/use-statistic-data";
+import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   instructions: {
-    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     textAlign: "center",
     width: "100%",
@@ -23,10 +23,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "center",
+    margin: theme.spacing(1, 0),
   },
 }));
 
-function getSteps() {
+function getStepsDescription() {
   return [
     "Select educational statistic",
     "Choose a visualization",
@@ -34,81 +35,66 @@ function getSteps() {
   ];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return "Swipe and choose a statistic";
-    case 1:
-      return "Choose map or globe mode";
-    case 2:
-      return "...we are already there";
-    default:
-      return "Unknown step";
-  }
-}
-
-export default function StatisticStepper({ children }) {
+export default function StatisticStepper() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
+  const { statisticsList } = useStatisticData();
+  const {
+    handleReset,
+    handleBack,
+    queryParams,
+    activeStep,
+  } = useStatisticStepListener();
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const isFirstStepFailed = (step) => {
+    return (
+      queryParams.statistic &&
+      !statisticsList.some(({ key }) => key === queryParams.statistic) &&
+      step === 0
+    );
   };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
+  const isSecondStepFailed = (step) => {
+    return (
+      queryParams.visualization &&
+      !["map", "globe"].includes(queryParams.visualization) &&
+      step === 1
+    );
   };
 
   return (
     <div className={classes.root}>
       <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
+        {getStepsDescription().map((label, i) => {
+          const labelProps = {};
+          const stepProps = {};
+          if (isFirstStepFailed(i)) {
+            labelProps.error = true;
+          }
+          if (isSecondStepFailed(i)) {
+            labelProps.error = true;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
       </Stepper>
-      {children}
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Button
-              onClick={handleReset}
-              className={classes.button}
-              variant="outlined"
-            >
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <>
-            <Typography className={classes.instructions} color="secondary">
-              {getStepContent(activeStep)}
-            </Typography>
-            <div className={classes.stepNavigationButtons}>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </div>
-          </>
-        )}
+      <div className={classes.stepNavigationButtons}>
+        <Button
+          disabled={activeStep === 0}
+          onClick={handleBack}
+          className={classes.button}
+        >
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleReset}
+          className={classes.button}
+        >
+          Reset
+        </Button>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import "./statistic-selector.scss";
 import { Button, Card, CardActions } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { useStatistics } from "../../hooks/use-statistics";
+import { useStatisticData } from "../../hooks/use-statistic-data";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function StatisticSelector() {
   const classes = useStyles();
-  const { statisticsList } = useStatistics();
+  const { statisticsList } = useStatisticData();
   const [index, setIndex] = useState(0);
   const [props, start] = useSpring(() => ({
     from: { position: 0 },
@@ -133,13 +133,12 @@ export function StatisticSelector() {
                     {statistic.description}
                   </Typography>
                   <Typography className={classes.pos}>Year:</Typography>
-                  <Typography variant="body2" component="p">
-                    Start: {statistic.startYear}
-                    <br />
-                    End: {statistic.endYear}
+                  <Typography variant="body1" component="span">
+                    Start: {statistic.startYear} - End: {statistic.endYear}
                   </Typography>
-                  <Typography className={classes.title} gutterBottom>
-                    This statistic provides data for 189 / 193 Countries
+                  <Typography variant="overline" component="div">
+                    This statistic provides data for{" "}
+                    {statistic.amountOfCountries} / 255 Countries
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>

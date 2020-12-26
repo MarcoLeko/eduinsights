@@ -14,6 +14,7 @@ function RouteHandler() {
   const {
     state: { theme },
   } = useUiContext();
+
   return (
     <ThemeProvider theme={getMaterialUiTheme(theme)}>
       <CssBaseline>
