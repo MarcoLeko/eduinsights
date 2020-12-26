@@ -22,7 +22,6 @@ const getMaterialUiTheme = (theme) => {
         ccMd: 680,
         ccLg: 901,
         ccXl: 1210,
-        ccXxl: 1400,
       },
     },
     palette: {
