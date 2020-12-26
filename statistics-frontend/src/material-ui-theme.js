@@ -35,6 +35,21 @@ const getMaterialUiTheme = (theme) => {
     },
     typography: {
       fontFamily: ["Montserrat", "sans-serif"].join(","),
+      h5: {
+        fontWeight: 600,
+        fontSize: 18,
+        padding: "6px 0px",
+      },
+      h3: {
+        fontWeight: 700,
+        fontSize: 26,
+        padding: "10px 0px",
+      },
+      h4: {
+        fontWeight: 600,
+        fontSize: 22,
+        padding: "8px 0px",
+      },
     },
   });
 };
