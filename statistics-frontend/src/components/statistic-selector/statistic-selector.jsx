@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("ccXl")]: {
       padding: "0px 400px",
     },
-    [theme.breakpoints.up("ccXxl")]: {
-      padding: "0px 500px",
-    },
   },
   container: {
     padding: theme.spacing(0, 2),
