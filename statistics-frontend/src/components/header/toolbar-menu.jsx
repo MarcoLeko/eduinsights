@@ -59,7 +59,7 @@ function ToolbarMenu({ isOpen, toggle }) {
         </Typography>
       </Link>
       <div className={classes.actionButtons}>
-        <Hidden mdDown>
+        <Hidden xsDown>
           <img src={googlePlay} height={40} alt="Get it on google play" />
         </Hidden>
         <IconButton onClick={toggle.bind(this, !isOpen)}>

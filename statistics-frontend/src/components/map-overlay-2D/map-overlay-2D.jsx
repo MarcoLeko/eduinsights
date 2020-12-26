@@ -21,8 +21,6 @@ function MapOverlay2D() {
     geoJsonFromSelectedStatistic,
     selectedStatistic,
     statisticsList,
-    setSelectedStatistic,
-    fetchMapStatisticsById,
   } = useStatisticData(geoJsonRef);
   const {
     state: { theme },
@@ -56,8 +54,6 @@ function MapOverlay2D() {
       />
       <MapSideBar
         mapStatistics={statisticsList}
-        setSelectedStatistic={setSelectedStatistic}
-        fetchMapStatisticsById={fetchMapStatisticsById}
         selectedStatistic={selectedStatistic}
       />
       {selectedStatistic && geoJsonFromSelectedStatistic.description && (
