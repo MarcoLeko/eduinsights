@@ -5,8 +5,6 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
-import Fingerprint from "@material-ui/icons/Fingerprint";
 import Box from "@material-ui/core/Box";
 import {
   Link,
@@ -15,13 +13,12 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
 import { setTheme } from "../../context/ui-actions";
 import { drawerWidth } from "./header-styles";
+import { navItems } from "./navItems";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({
@@ -62,24 +59,6 @@ const useStyles = (params) =>
 const themeOptions = [
   { label: "Dark", value: "dark" },
   { label: "Light", value: "light" },
-];
-
-const navItems = [
-  {
-    icon: <Fingerprint />,
-    name: "Imprint",
-    link: "/imprint",
-  },
-  {
-    icon: <Brightness4Icon />,
-    name: "Design",
-    link: null,
-  },
-  {
-    icon: <GitHubIcon />,
-    name: "Code",
-    link: "https://github.com/MarcoLeko/eduinsights",
-  },
 ];
 
 function SideBar(props) {

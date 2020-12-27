@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { THEME, SIDEBAR } from "./ui-action-types";
+import { THEME, SIDEBAR, ACTIVE_TAB } from "./ui-action-types";
 import { setTheme } from "./ui-actions";
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
     ? "dark"
     : "light",
   sidebarOpen: false,
+  activeTab: 0,
 };
 
 function uiReducer(state = initialState, action) {
@@ -21,6 +22,12 @@ function uiReducer(state = initialState, action) {
       return {
         ...state,
         theme: action.theme,
+      };
+    }
+    case ACTIVE_TAB: {
+      return {
+        ...state,
+        activeTab: action.activeTab,
       };
     }
     default:

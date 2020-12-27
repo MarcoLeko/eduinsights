@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../map-overlay-3D/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
@@ -11,6 +11,7 @@ import { useStatisticStepListener } from "../../hooks/use-statistic-step-listene
 import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
+import { setActiveTab } from "../../context/ui-actions";
 
 // TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready - show scroll helper button afterwards
 
@@ -18,8 +19,15 @@ function Home() {
   const classes = useHeaderStyles();
   const {
     state: { sidebarOpen },
+    dispatch,
   } = useUiContext();
   const { activeStep, queryParams, handleNext } = useStatisticStepListener();
+
+  useEffect(() => {
+    dispatch(setActiveTab(0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function getStatisticStepChildren() {
     switch (activeStep) {
       case 2:

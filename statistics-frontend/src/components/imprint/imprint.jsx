@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Link, List, ListItem } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { setActiveTab } from "../../context/ui-actions";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -9,8 +11,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Imprint = () => {
+export function Imprint() {
   const classes = useStyles();
+  const { dispatch } = useUiContext();
+
+  useEffect(() => {
+    dispatch(setActiveTab(1));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container maxWidth="md" classes={{ root: classes.root }}>
       <Typography variant="h3" component="h1" gutterBottom>
@@ -19,7 +28,7 @@ export const Imprint = () => {
       <Typography variant="body1" component="p">
         Informationspflicht laut § 5 TMG.
       </Typography>
-      <Typography variant="body1" component="p" gutterBottom>
+      <Typography variant="body1" component="div" gutterBottom>
         <Typography variant="body1" component="p">
           Marco Leko
         </Typography>
@@ -548,4 +557,4 @@ export const Imprint = () => {
       </Typography>
     </Container>
   );
-};
+}

@@ -62,9 +62,11 @@ function ToolbarMenu({ isOpen, toggle }) {
         <Hidden xsDown>
           <img src={googlePlay} height={40} alt="Get it on google play" />
         </Hidden>
-        <IconButton onClick={toggle.bind(this, !isOpen)}>
-          {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
-        </IconButton>
+        <Hidden only={["sm", "md", "lg"]}>
+          <IconButton onClick={toggle.bind(this, !isOpen)}>
+            {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
+          </IconButton>
+        </Hidden>
       </div>
     </Toolbar>
   );
