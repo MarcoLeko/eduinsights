@@ -83,86 +83,90 @@ export function StatisticSelector({ onStatisticClick }) {
     props.position.setValue(index);
   }
 
-  return props.position ? (
-    <div className={classes.container}>
-      <SwipeableViews
-        index={index}
-        className={classes.root}
-        onChangeIndex={handleChangeIndex}
-        onSwitching={handleSwitch}
-        enableMouseEvents
-      >
-        {statisticsList.map((statistic, currentIndex) => {
-          function interpolatePositionProps(range, output) {
-            return props.position.interpolate({
-              range,
-              output,
-            });
-          }
+  return (
+    statisticsList && (
+      <div className={classes.container}>
+        <SwipeableViews
+          index={index}
+          className={classes.root}
+          onChangeIndex={handleChangeIndex}
+          onSwitching={handleSwitch}
+          enableMouseEvents
+        >
+          {statisticsList.map((statistic, currentIndex) => {
+            function interpolatePositionProps(range, output) {
+              return props.position.interpolate({
+                range,
+                output,
+              });
+            }
 
-          const inputRange = statisticsList.map((_, i) => i);
-          const scale = interpolatePositionProps(
-            inputRange,
-            inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
-          );
+            const inputRange = statisticsList.map((_, i) => i);
+            const scale = interpolatePositionProps(
+              inputRange,
+              inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
+            );
 
-          const opacity = interpolatePositionProps(
-            inputRange,
-            inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
-          );
+            const opacity = interpolatePositionProps(
+              inputRange,
+              inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
+            );
 
-          const translateX = interpolatePositionProps(
-            inputRange,
-            inputRange.map((i) => (100 / 2) * (i - currentIndex))
-          );
+            const translateX = interpolatePositionProps(
+              inputRange,
+              inputRange.map((i) => (100 / 2) * (i - currentIndex))
+            );
 
-          const scaleAndTranslateX = interpolate(
-            [
-              scale.interpolate((x) => `scale(${x})`),
-              translateX.interpolate((x) => `translateX(${x}px)`),
-            ],
-            (scale, translateX) => `${scale} ${translateX}`
-          );
+            const scaleAndTranslateX = interpolate(
+              [
+                scale.interpolate((x) => `scale(${x})`),
+                translateX.interpolate((x) => `translateX(${x}px)`),
+              ],
+              (scale, translateX) => `${scale} ${translateX}`
+            );
 
-          return (
-            <animated.div
-              key={String(currentIndex)}
-              className={classes.slide}
-              style={Object.assign({
-                opacity,
-                transform: scaleAndTranslateX,
-              })}
-            >
-              <Card className={classes.cardRoot}>
-                <CardContent>
-                  <Typography variant="h6" component="h2">
-                    {statistic.description}
-                  </Typography>
-                  <Typography className={classes.pos}>Year:</Typography>
-                  <Typography variant="body1" component="span">
-                    Start: {statistic.startYear} - End: {statistic.endYear}
-                  </Typography>
-                  <Typography variant="overline" component="div">
-                    This statistic provides data for{" "}
-                    {statistic.amountOfCountries} / 255 Countries
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    classes={{ root: classes.cardButton }}
-                    onClick={(e) => onStatisticClick(e, statistic.key)}
-                  >
-                    Select
-                  </Button>
-                </CardActions>
-              </Card>
-            </animated.div>
-          );
-        })}
-      </SwipeableViews>
-    </div>
-  ) : null;
+            return (
+              <animated.div
+                key={String(currentIndex)}
+                className={classes.slide}
+                style={Object.assign({
+                  opacity,
+                  transform: scaleAndTranslateX,
+                })}
+              >
+                <Card className={classes.cardRoot}>
+                  <CardContent>
+                    <Typography variant="h6" component="h2">
+                      {statistic.description}
+                    </Typography>
+                    <Typography className={classes.pos}>Year:</Typography>
+                    <Typography variant="body1" component="span">
+                      Start: {statistic.startYear} - End: {statistic.endYear}
+                    </Typography>
+                    <Typography variant="overline" component="div">
+                      This statistic provides data for{" "}
+                      {statistic.amountOfCountries} / 255 Countries
+                    </Typography>
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      classes={{ root: classes.cardButton }}
+                      onClick={() =>
+                        onStatisticClick({ statistic: statistic.key })
+                      }
+                    >
+                      Select
+                    </Button>
+                  </CardActions>
+                </Card>
+              </animated.div>
+            );
+          })}
+        </SwipeableViews>
+      </div>
+    )
+  );
 }

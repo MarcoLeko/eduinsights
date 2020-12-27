@@ -20,7 +20,7 @@ function AlertContextProvider({ children }) {
   const [state, dispatch] = useReducer(alertReducer, {});
 
   return (
-    <AlertContext.Provider value={{ state, dispatch }}>
+    <AlertContext.Provider value={{ ...state, dispatch }}>
       {children}
     </AlertContext.Provider>
   );

@@ -19,9 +19,7 @@ function MapOverlay2D() {
   const { geoJsonFromSelectedStatistic, selectedStatistic } = useStatisticData(
     geoJsonRef
   );
-  const {
-    state: { theme },
-  } = useUiContext();
+  const { theme } = useUiContext();
 
   function centerMapView(e) {
     if (e) {

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Grid, makeStyles, Paper } from "@material-ui/core";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
-import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
+import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,13 +28,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Visualization() {
+export function Visualization({ addNextQueryParam }) {
   const classes = useStyles();
-  const { handleNext } = useStatisticStepListener();
-
-  function selectVisualization(e, key) {
-    handleNext(e, key);
-  }
 
   const visualizations = [
     {
@@ -63,7 +58,9 @@ export function Visualization() {
               {visualization.label}
             </Typography>
             <Button
-              onClick={(e) => selectVisualization(e, visualization.key)}
+              onClick={() =>
+                addNextQueryParam({ visualization: visualization.key })
+              }
               size={"small"}
               variant="contained"
               color="primary"

@@ -6,10 +6,10 @@ import {
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
-import { useStatisticStepListener } from "./use-statistic-step-listener";
+import { useQueryParamsListener } from "./use-query-params-listener";
 
 export function useStatisticData(geoJSONRef = null) {
-  const { queryParams } = useStatisticStepListener();
+  const { queryParams } = useQueryParamsListener();
   const [selectedStatistic, setSelectedStatistic] = useState(
     queryParams.statistic
   );

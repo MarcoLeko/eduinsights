@@ -62,10 +62,7 @@ const themeOptions = [
 ];
 
 function SideBar(props) {
-  const {
-    state: { theme },
-    dispatch,
-  } = useUiContext();
+  const { theme, dispatch } = useUiContext();
   const classes = useStyles(theme)();
   const [menuElement, setMenuElement] = useState(null);
 

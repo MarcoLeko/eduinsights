@@ -11,11 +11,14 @@ const useStyles = makeStyles((theme) => ({
   paperRoot: {
     padding: theme.spacing(1, 2),
   },
+  box: {
+    margin: theme.spacing(1, 0),
+  },
 }));
 function Introduction() {
   const classes = useStyles();
   return (
-    <Box component={"section"} m={1}>
+    <Box component={"section"} className={classes.box}>
       <Paper
         variant={"outlined"}
         square

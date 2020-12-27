@@ -5,7 +5,6 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import { useStatisticData } from "../../hooks/use-statistic-data";
-import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,19 +30,18 @@ function getStepsDescription() {
   return [
     "Select educational statistic",
     "Choose a visualization",
-    "Wait for visualization to be ready...",
+    "Wait for visualization to be ready",
   ];
 }
 
-export default function StatisticStepper() {
+export default function StatisticStepper({
+  queryParams,
+  activeStep,
+  resetQueryParams,
+  removeLastQueryParam,
+}) {
   const classes = useStyles();
   const { statisticsList } = useStatisticData();
-  const {
-    handleReset,
-    handleBack,
-    queryParams,
-    activeStep,
-  } = useStatisticStepListener();
 
   const isFirstStepFailed = (step) => {
     return (
@@ -82,7 +80,7 @@ export default function StatisticStepper() {
       <div className={classes.stepNavigationButtons}>
         <Button
           disabled={activeStep === 0}
-          onClick={handleBack}
+          onClick={() => removeLastQueryParam(activeStep)}
           className={classes.button}
         >
           Back
@@ -90,7 +88,7 @@ export default function StatisticStepper() {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleReset}
+          onClick={resetQueryParams}
           className={classes.button}
         >
           Reset

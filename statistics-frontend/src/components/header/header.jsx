@@ -11,10 +11,7 @@ import TabBar from "./tab-bar";
 
 export function Header() {
   const classes = useHeaderStyles();
-  const {
-    state: { sidebarOpen },
-    dispatch,
-  } = useUiContext();
+  const { sidebarOpen, dispatch } = useUiContext();
 
   function dispatchSidebarState(args) {
     dispatch(setSidebarOpen(args));

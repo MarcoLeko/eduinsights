@@ -1,14 +1,21 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import * as ReactLeaflet from "react-leaflet";
 import { useLeaflet } from "react-leaflet";
 import L from "leaflet";
 import { getColor, getColorRange } from "../shared/getColor";
+import { setVisualizationLoaded } from "../../context/ui-actions";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 const { GeoJSON } = ReactLeaflet;
 
 function GeoJson({ geoJsonRef, infoControlRef, data }) {
   const { map } = useLeaflet();
-
+  const { dispatch } = useUiContext();
+  useEffect(() => {
+    dispatch(setVisualizationLoaded(true));
+    return () => dispatch(setVisualizationLoaded(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   function onEachFeature(feature, layer) {
     layer.on({
       mouseover: highlightFeature,

@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ScrollButtonHelper({ condition }) {
+export function ScrollButtonHelper({ show }) {
   const theme = useTheme();
   const classes = useStyles();
-  const { isScrolledToBottom } = useScrollYObserver(condition);
+  const { isScrolledToBottom } = useScrollYObserver(show);
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
@@ -25,10 +25,10 @@ export function ScrollButtonHelper({ condition }) {
   };
   return (
     <Zoom
-      in={condition}
+      in={show}
       timeout={transitionDuration}
       style={{
-        transitionDelay: `${condition ? transitionDuration.exit : 0}ms`,
+        transitionDelay: `${show ? transitionDuration.exit : 0}ms`,
       }}
       unmountOnExit
     >

@@ -18,10 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AppNotifier() {
   const classes = useStyles();
-  const {
-    dispatch,
-    state: { message },
-  } = useAlertContext();
+  const { message, dispatch } = useAlertContext();
 
   function handleClose() {
     dispatch(clearMessage());

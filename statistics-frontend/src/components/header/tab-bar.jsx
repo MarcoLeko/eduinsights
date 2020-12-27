@@ -32,8 +32,10 @@ const useStyles = makeStyles((muiBaseTheme) => ({
     color: muiBaseTheme.palette.primary.main,
   },
   wrapper: {
+    flexDirection: "row",
     "& svg": {
       fontSize: 26.25,
+      margin: muiBaseTheme.spacing(0, 1),
     },
   },
 }));
@@ -41,9 +43,7 @@ const useStyles = makeStyles((muiBaseTheme) => ({
 function TabBar() {
   const classes = useStyles();
   const history = useHistory();
-  const {
-    state: { activeTab },
-  } = useUiContext();
+  const { activeTab } = useUiContext();
   const navItemsForTabBar = navItems.map((item) => {
     if (!item.link) {
       return {

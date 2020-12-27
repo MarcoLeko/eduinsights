@@ -8,7 +8,7 @@ import { useStatisticData } from "../../hooks/use-statistic-data";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
-import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
+import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -23,13 +23,10 @@ const defaultCameraRoation = new Euler(
 const defaultControlsTarget = new Vector3(0, 0, 0);
 
 export function MapOverlay3D() {
-  const {
-    state: { theme },
-  } = useUiContext();
+  const { theme } = useUiContext();
   const globeRef = useRef(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData(null);
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
-  const { handleNext } = useStatisticStepListener();
 
   function resetCameraPosition(camera, controls) {
     camera.position.set(

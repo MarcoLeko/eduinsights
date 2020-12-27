@@ -11,9 +11,7 @@ import { Header } from "../header/header";
 import "../../styles.scss";
 
 function RouteHandler() {
-  const {
-    state: { theme },
-  } = useUiContext();
+  const { theme } = useUiContext();
 
   return (
     <ThemeProvider theme={responsiveFontSizes(getMaterialUiTheme(theme))}>

@@ -1,5 +1,10 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { THEME, SIDEBAR, ACTIVE_TAB } from "./ui-action-types";
+import {
+  THEME,
+  SIDEBAR,
+  ACTIVE_TAB,
+  VISUALIZATION_LOADED,
+} from "./ui-action-types";
 import { setTheme } from "./ui-actions";
 
 const initialState = {
@@ -8,6 +13,7 @@ const initialState = {
     : "light",
   sidebarOpen: false,
   activeTab: 0,
+  visualizationLoaded: false,
 };
 
 function uiReducer(state = initialState, action) {
@@ -28,6 +34,12 @@ function uiReducer(state = initialState, action) {
       return {
         ...state,
         activeTab: action.activeTab,
+      };
+    }
+    case VISUALIZATION_LOADED: {
+      return {
+        ...state,
+        visualizationLoaded: action.visualizationLoaded,
       };
     }
     default:
@@ -55,7 +67,7 @@ function UiContextProvider({ children }) {
   }, [mediaQueryThemeMode]);
 
   return (
-    <UiContext.Provider value={{ state, dispatch }}>
+    <UiContext.Provider value={{ ...state, dispatch }}>
       {children}
     </UiContext.Provider>
   );
