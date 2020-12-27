@@ -1,0 +1,95 @@
+import React, { useState } from "react";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import { makeStyles } from "@material-ui/core/styles";
+import { navItems } from "./navItems";
+import { useUiContext } from "../../hooks/use-ui-context";
+import { useHistory } from "react-router-dom";
+import { Home } from "@material-ui/icons";
+
+const useStyles = makeStyles((muiBaseTheme) => ({
+  MuiTabsRoot: {
+    width: "100%",
+  },
+  indicator: {
+    height: 3,
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    backgroundColor: muiBaseTheme.palette.primary.main,
+  },
+  MuiTabRoot: {
+    minHeight: 53,
+    minWidth: 0,
+    [muiBaseTheme.breakpoints.up("md")]: {
+      minWidth: 0,
+    },
+    "&:hover": {
+      backgroundColor: "none",
+      color: muiBaseTheme.palette.primary.main,
+    },
+  },
+  selected: {
+    color: muiBaseTheme.palette.primary.main,
+  },
+  wrapper: {
+    "& svg": {
+      fontSize: 26.25,
+    },
+  },
+}));
+
+function TabBar() {
+  const classes = useStyles();
+  const history = useHistory();
+  const {
+    state: { activeTab },
+  } = useUiContext();
+  const navItemsForTabBar = navItems.map((item) => {
+    if (!item.link) {
+      return {
+        icon: <Home />,
+        name: "Home",
+        link: "/",
+      };
+    }
+    return item;
+  });
+
+  const [index, onChange] = useState(activeTab);
+
+  function navigate(val) {
+    onChange(val);
+
+    if (navItemsForTabBar[val].link.includes("https://")) {
+      window.location.href = navItemsForTabBar[val].link;
+    } else {
+      history.push(navItemsForTabBar[val].link);
+    }
+  }
+  return (
+    <Tabs
+      variant={"fullWidth"}
+      centered
+      classes={{ root: classes.MuiTabsRoot, indicator: classes.indicator }}
+      value={index}
+      onChange={(e, val) => navigate(val)}
+    >
+      {navItemsForTabBar.map(({ name, link, icon }, i) => (
+        <Tab
+          key={name}
+          selected={i === activeTab}
+          classes={{
+            wrapper: classes.wrapper,
+            selected: classes.selected,
+            root: classes.MuiTabRoot,
+          }}
+          icon={icon}
+          label={name}
+          disableRipple
+        />
+      ))}
+    </Tabs>
+  );
+}
+
+export default TabBar;
