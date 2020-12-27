@@ -8,6 +8,7 @@ import { useStatisticData } from "../../hooks/use-statistic-data";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
+import { useStatisticStepListener } from "../../hooks/use-statistic-step-listener";
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -28,6 +29,7 @@ export function MapOverlay3D() {
   const globeRef = useRef(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData(null);
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
+  const { handleNext } = useStatisticStepListener();
 
   function resetCameraPosition(camera, controls) {
     camera.position.set(
@@ -48,10 +50,13 @@ export function MapOverlay3D() {
   }
 
   useEffect(() => {
-    const camera = globeRef?.current?.camera();
-    const controls = globeRef?.current?.controls();
-    resetCameraPosition(camera, controls);
-    camera.updateProjectionMatrix();
+    if (globeRef?.current) {
+      const camera = globeRef.current.camera();
+      const controls = globeRef.current.controls();
+      resetCameraPosition(camera, controls);
+      camera.updateProjectionMatrix();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geoJsonFromSelectedStatistic]);
 
   function getGlobeWidth() {
