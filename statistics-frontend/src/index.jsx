@@ -22,9 +22,3 @@ ReactDOM.render(<Bootstrap />, document.getElementById("root"));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
-
-const { screen } = window;
-screen.orientation
-  .lock("portrait-primary")
-  .then(() => console.log("Orientation successfully locked to portrait mode"))
-  .catch((e) => console.log("Cannot lock orientation: ", e));

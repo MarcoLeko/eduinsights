@@ -22,7 +22,7 @@ const CONFIG_PRODUCTION = {
 };
 
 const CONFIG_DEVELOPMENT = Object.assign({}, CONFIG_PRODUCTION, {
-  PATH_TO_STATIC_FILES: '../../../statistics-fragment/build',
+  PATH_TO_STATIC_FILES: '../../../statistics-frontend/build',
 });
 
 const config =

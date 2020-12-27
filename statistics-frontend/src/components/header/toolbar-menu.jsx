@@ -8,10 +8,11 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import { name as projectName } from "../../../package.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 48,
+    minHeight: 52,
     display: "flex",
     alignItems: "center",
     padding: "0 4px",
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     width: 2,
   },
-  header: { fontWeight: 300 },
+  header: { fontWeight: 300, fontStyle: "italic" },
   actionButtons: {
     display: "flex",
     alignItems: "center",
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ToggleableMenu({ isOpen, toggle }) {
+function ToolbarMenu({ isOpen, toggle }) {
   const classes = useStyles();
 
   return (
@@ -50,23 +51,25 @@ function ToggleableMenu({ isOpen, toggle }) {
       <Link to="/" className={classes.logoPanel}>
         <Logo className={classes.logo} />
         <Typography
-          variant={"h5"}
+          variant={"h4"}
           color="secondary"
           classes={{ root: classes.header }}
         >
-          Eduinsights
+          {projectName}
         </Typography>
       </Link>
       <div className={classes.actionButtons}>
         <Hidden xsDown>
           <img src={googlePlay} height={40} alt="Get it on google play" />
         </Hidden>
-        <IconButton onClick={toggle.bind(this, !isOpen)}>
-          {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
-        </IconButton>
+        <Hidden only={["sm", "md", "lg"]}>
+          <IconButton onClick={toggle.bind(this, !isOpen)}>
+            {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
+          </IconButton>
+        </Hidden>
       </div>
     </Toolbar>
   );
 }
 
-export default ToggleableMenu;
+export default ToolbarMenu;

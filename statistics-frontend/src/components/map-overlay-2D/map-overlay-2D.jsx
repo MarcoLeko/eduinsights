@@ -7,11 +7,9 @@ import MapLegend from "../map-legend/map-legend";
 import MapInfoControl from "../map-info-control/map-info-control";
 import MapSideBar from "./map-side-bar";
 import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
-import { useMapStatistics } from "../../hooks/use-map-statistics";
 import GeoJson from "../geoJson/geojson";
-import { setSwipe, setTheme } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-
+import { useStatisticData } from "../../hooks/use-statistic-data";
 const { Map, TileLayer } = ReactLeaflet;
 
 function MapOverlay2D() {
@@ -21,13 +19,10 @@ function MapOverlay2D() {
   const {
     geoJsonFromSelectedStatistic,
     selectedStatistic,
-    allMapStatistics,
-    setSelectedStatistic,
-    fetchMapStatisticsById,
-  } = useMapStatistics(geoJsonRef);
+    statisticsList,
+  } = useStatisticData(geoJsonRef);
   const {
     state: { theme },
-    dispatch,
   } = useUiContext();
 
   function centerMapView(e) {
@@ -43,8 +38,6 @@ function MapOverlay2D() {
       tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
       onPopupopen={centerMapView.bind(this)}
       zoomControl={false}
-      onMovestart={() => dispatch(setSwipe(false))}
-      onMoveend={() => dispatch(setSwipe(true))}
       minZoom={3}
       bounceAtZoomLimits={true}
       maxBoundsViscosity={0.95}
@@ -59,13 +52,7 @@ function MapOverlay2D() {
         url={`https://api.mapbox.com/styles/v1/mapbox/${theme}-v10/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_KEY}`}
       />
       <MapSideBar
-        mapStatistics={allMapStatistics}
-        toggleMapMode={() =>
-          dispatch(setTheme(theme === "light" ? "dark" : "light"))
-        }
-        mapMode={theme}
-        setSelectedStatistic={setSelectedStatistic}
-        fetchMapStatisticsById={fetchMapStatisticsById}
+        mapStatistics={statisticsList}
         selectedStatistic={selectedStatistic}
       />
       {selectedStatistic && geoJsonFromSelectedStatistic.description && (

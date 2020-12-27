@@ -1,36 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Container,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
-import Introduction from "./introduction";
 import Globe from "react-globe.gl";
 import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
 import EarthTopology from "../../assets/earth-topology.png";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { useMapStatistics } from "../../hooks/use-map-statistics";
+import { useStatisticData } from "../../hooks/use-statistic-data";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
-
-const useStyles = makeStyles((theme) => ({
-  menuItemRoot: {
-    whiteSpace: "normal",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  labelTop: {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -48,15 +25,8 @@ export function MapOverlay3D() {
   const {
     state: { theme },
   } = useUiContext();
-  const classes = useStyles();
   const globeRef = useRef(null);
-  const {
-    geoJsonFromSelectedStatistic,
-    selectedStatistic,
-    allMapStatistics,
-    setSelectedStatistic,
-    fetchMapStatisticsById,
-  } = useMapStatistics(null);
+  const { geoJsonFromSelectedStatistic } = useStatisticData(null);
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
 
   function resetCameraPosition(camera, controls) {
@@ -89,36 +59,7 @@ export function MapOverlay3D() {
   }
 
   return (
-    <Container disableGutters>
-      <Introduction />
-      {selectedStatistic && (
-        <FormControl className={classes.formControl}>
-          <InputLabel id="select-statistic-label">Statistic</InputLabel>
-          <Select
-            labelId="select-statistic-label"
-            id="statistic-select"
-            value={selectedStatistic}
-            onChange={(e) => {
-              setSelectedStatistic(e.target.value);
-              fetchMapStatisticsById(e.target.value);
-            }}
-            className={classes.labelTop}
-          >
-            {allMapStatistics.map((item) => (
-              <MenuItem
-                classes={{ root: classes.menuItemRoot }}
-                key={item.key}
-                value={item.key}
-              >
-                {item.description}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>
-            By choosing a new statistic the globe might take time to refresh
-          </FormHelperText>
-        </FormControl>
-      )}
+    <>
       {geoJsonFromSelectedStatistic.features && (
         <Globe
           ref={globeRef}
@@ -146,6 +87,6 @@ export function MapOverlay3D() {
           polygonsData={geoJsonFromSelectedStatistic.features}
         />
       )}
-    </Container>
+    </>
   );
 }

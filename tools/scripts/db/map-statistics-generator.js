@@ -39,6 +39,7 @@ const log = console.log;
       preSimplyfiedTopojson,
       0.0005
     );
+
     writeToFileSync(
       countriesGeoJsonCompressed,
       createMapStatisticsTempPath("countries.json")
@@ -110,6 +111,7 @@ const log = console.log;
         evaluation: statistic.evaluation,
         type: countriesGeoJsonCompressed.type,
         arcs: countriesGeoJsonCompressed.arcs,
+        amountOfCountries: resultArrayWithCountryMatches.length,
         objects: {
           countries: {
             bbox: countriesGeoJsonCompressed.bbox,

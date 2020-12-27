@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
-export function useScrollYObserverForTab(tabIndex) {
+export function useScrollYObserver(condition) {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  const onScroll = useCallback(function handleScroll(e) {
+  const onScroll = useCallback(function handleScroll() {
     const windowHeight =
       "innerHeight" in window
         ? window.innerHeight
@@ -22,10 +22,10 @@ export function useScrollYObserverForTab(tabIndex) {
   }, []);
 
   useEffect(() => {
-    if (tabIndex === 1) {
+    if (condition) {
       window.addEventListener("scroll", onScroll, false);
       return () => window.removeEventListener("scroll", onScroll, false);
     }
-  }, [onScroll, tabIndex]);
+  }, [onScroll, condition]);
   return { isScrolledToBottom };
 }
