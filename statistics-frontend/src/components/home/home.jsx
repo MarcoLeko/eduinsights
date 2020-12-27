@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Container } from "@material-ui/core";
-import Introduction from "../map-overlay-3D/introduction";
+import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
 import { ScrollButtonHelper } from "./scroll-button-helper";
 import { useHeaderStyles } from "../header/header-styles";
@@ -14,7 +14,6 @@ import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab } from "../../context/ui-actions";
 
 // TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready - show scroll helper button afterwards
-
 function Home() {
   const classes = useHeaderStyles();
   const {
