@@ -15,6 +15,7 @@ export function useStatisticData(geoJSONRef = null) {
   );
   const [statisticsList, setStatisticsList] = useState([]);
   const { dispatch } = useAlertContext();
+
   const [
     geoJsonFromSelectedStatistic,
     setGeoJsonFromSelectedStatistic,

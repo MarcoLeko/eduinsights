@@ -58,6 +58,7 @@ export function useStatisticStepListener() {
   const handleReset = () => {
     history.push({ search: qs.stringify({}) });
   };
+
   return {
     handleBack,
     handleNext,
