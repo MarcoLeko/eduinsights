@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     zIndex: 9999,
     bottom: theme.spacing(2),
-    left: "50%",
+    left: "calc(50% - 28px)",
   },
 }));
 

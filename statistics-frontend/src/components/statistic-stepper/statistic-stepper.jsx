@@ -10,6 +10,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
+  paper: {
+    position: "sticky",
+    top: 105,
+    zIndex: 1,
+    height: 128,
+    [theme.breakpoints.down("xs")]: {
+      top: 52,
+    },
+  },
   button: {
     marginRight: theme.spacing(1),
   },
@@ -22,15 +31,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "center",
-    margin: theme.spacing(1, 0),
+    padding: theme.spacing(1, 0),
   },
 }));
 
 function getStepsDescription() {
   return [
-    "Select educational statistic",
+    "Select statistic",
     "Choose a visualization",
-    "Wait for visualization to be ready",
+    "Finalize visualization",
   ];
 }
 
@@ -60,7 +69,11 @@ export default function StatisticStepper({
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel activeStep={activeStep}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        classes={{ root: classes.paper }}
+      >
         {getStepsDescription().map((label, i) => {
           const labelProps = {};
           const stepProps = {};

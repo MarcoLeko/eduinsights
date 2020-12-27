@@ -79,7 +79,7 @@ function Home() {
         resetQueryParams={resetQueryParams}
       />
       {getStatisticStepChildren()}
-      <ScrollButtonHelper show={activeStep === 3} />
+      <ScrollButtonHelper show={activeStep === 2 || activeStep === 3} />
     </Container>
   );
 }

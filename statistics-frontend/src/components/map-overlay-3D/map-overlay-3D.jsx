@@ -8,7 +8,8 @@ import { useStatisticData } from "../../hooks/use-statistic-data";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
-import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
+import { setVisualizationLoaded } from "../../context/ui-actions";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -23,7 +24,14 @@ const defaultCameraRoation = new Euler(
 const defaultControlsTarget = new Vector3(0, 0, 0);
 
 export function MapOverlay3D() {
-  const { theme } = useUiContext();
+  const { theme, dispatch } = useUiContext();
+  const materialUiTheme = useTheme();
+  const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
+  const height = matches
+    ? window.innerHeight - (128 + 52)
+    : window.innerHeight - (128 + 105);
+  console.log(height);
+
   const globeRef = useRef(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData(null);
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
@@ -53,6 +61,10 @@ export function MapOverlay3D() {
       resetCameraPosition(camera, controls);
       camera.updateProjectionMatrix();
     }
+    if (geoJsonFromSelectedStatistic.features.length) {
+      dispatch(setVisualizationLoaded(true));
+    }
+    return () => dispatch(setVisualizationLoaded(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geoJsonFromSelectedStatistic]);
 
@@ -64,6 +76,7 @@ export function MapOverlay3D() {
     <>
       {geoJsonFromSelectedStatistic.features && (
         <Globe
+          height={height}
           ref={globeRef}
           width={getGlobeWidth()}
           globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
