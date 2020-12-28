@@ -7,7 +7,7 @@ import { useUiContext } from "../../hooks/use-ui-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(2, 0),
+    padding: theme.spacing(2, 1),
   },
 }));
 
