@@ -29,7 +29,6 @@ function MapOverlay2D({ showLoadingScreen }) {
     }
   }
 
-  console.log();
   return (
     <div className="map-content-wrapper">
       <VisualizationLoadingProgress show={showLoadingScreen} />

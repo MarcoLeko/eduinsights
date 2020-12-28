@@ -31,7 +31,6 @@ export function MapOverlay3D({ showLoadingScreen }) {
   const height = matches
     ? window.innerHeight - (128 + 52)
     : window.innerHeight - (128 + 105);
-  console.log(height);
 
   const globeRef = useRef(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData(null);

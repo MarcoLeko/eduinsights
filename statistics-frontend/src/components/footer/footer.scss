@@ -1,0 +1,29 @@
+.custom-social-link {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  display: inline-flex;
+  padding: 12px;
+  font-size: 24px;
+  transition: 0.3s ease-out;
+  align-items: center;
+  border-radius: 40px;
+  margin-right: 8px;
+  &:hover, &:focus {
+    color: rgba(0, 0, 0, 0.87);
+    transform: translateY(-4px);
+    border-color: rgba(0, 0, 0, 0.54);
+
+    @media (prefers-color-scheme: dark) {
+      color: #fff;
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255, 0.7);
+    }
+  }
+  & > svg {
+    height: 1em;
+    width: 1em;
+  }
+}

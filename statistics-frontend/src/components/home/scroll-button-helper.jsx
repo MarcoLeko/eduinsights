@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO: fix scroll button behaviour to map - currently only scrolls to bottom
 export function ScrollButtonHelper({ show }) {
   const theme = useTheme();
   const classes = useStyles();

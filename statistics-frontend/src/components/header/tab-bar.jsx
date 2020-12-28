@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { navItems } from "./navItems";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useHistory } from "react-router-dom";
-import { Home } from "@material-ui/icons";
 
 const useStyles = makeStyles((muiBaseTheme) => ({
   MuiTabsRoot: {
@@ -47,7 +46,6 @@ function TabBar() {
   const navItemsForTabBar = navItems.map((item) => {
     if (!item.link) {
       return {
-        icon: <Home />,
         name: "Home",
         link: "/",
       };
@@ -74,7 +72,7 @@ function TabBar() {
       value={index}
       onChange={(e, val) => navigate(val)}
     >
-      {navItemsForTabBar.map(({ name, link, icon }, i) => (
+      {navItemsForTabBar.map(({ name, link }, i) => (
         <Tab
           key={name}
           selected={i === activeTab}
@@ -83,7 +81,6 @@ function TabBar() {
             selected: classes.selected,
             root: classes.MuiTabRoot,
           }}
-          icon={icon}
           label={name}
           disableRipple
         />

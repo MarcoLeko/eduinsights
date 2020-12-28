@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Imprint() {
+export function Legal() {
   const classes = useStyles();
   const { dispatch } = useUiContext();
 

@@ -11,8 +11,8 @@ export const navItems = [
   },
   {
     icon: <Fingerprint />,
-    name: "Imprint",
-    link: "/imprint",
+    name: "Legal",
+    link: "/legal",
   },
   {
     icon: <GitHubIcon />,
