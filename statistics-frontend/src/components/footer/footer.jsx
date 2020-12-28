@@ -18,7 +18,6 @@ import Copyright from "../shared/copyright";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as StackOverflowLogo } from "../../assets/stack-overflow-logo.svg";
 import { name as appName } from "../../../package.json";
-import "./footer.scss";
 import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles(
@@ -54,6 +53,30 @@ const useStyles = makeStyles(
     logo: {
       marginRight: spacing(1),
     },
+    customSocialLinkItem: {
+      display: "inline-flex",
+      padding: 12,
+      fontSize: spacing(3),
+      transition: "0.3s ease-out",
+      alignItems: "center",
+      borderRadius: 40,
+      border:
+        palette.type === "dark"
+          ? "1px solid rgba(255, 255, 255, 0.12)"
+          : "1px solid rgba(0, 0, 0, 0.12)",
+      "&:hover": {
+        transform: "translateY(-4px)",
+        color: palette.type === "dark" ? "#fff" : "rgba(0, 0, 0, 0.87)",
+        borderColor:
+          palette.type === "dark"
+            ? "rgba(255,255,255, 0.7)"
+            : "rgba(0, 0, 0, 0.54)",
+      },
+      "& > svg": {
+        height: "1em",
+        width: "1em",
+      },
+    },
   })
 );
 
@@ -80,7 +103,7 @@ export const Footer = React.memo(function () {
               <Box textAlign={"center"} mt={{ xs: 2, md: 0 }} my={2}>
                 <SocialProvider useStyles={useMoonSocialLinkStyles}>
                   <Link
-                    className="custom-social-link"
+                    classes={{ root: classes.customSocialLinkItem }}
                     target="_blank"
                     rel="noopener noreferrer"
                     href={
