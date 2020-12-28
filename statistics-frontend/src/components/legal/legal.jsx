@@ -22,8 +22,11 @@ export function Legal() {
 
   return (
     <Container maxWidth="md" classes={{ root: classes.root }}>
-      <Typography variant="h3" component="h1" gutterBottom>
-        Imprint (GER)
+      <Typography variant="h3" component="h1">
+        Legal
+      </Typography>
+      <Typography variant="caption" component="p" gutterBottom>
+        Currently only available in german.
       </Typography>
       <Typography variant="body1" component="p">
         Informationspflicht laut § 5 TMG.

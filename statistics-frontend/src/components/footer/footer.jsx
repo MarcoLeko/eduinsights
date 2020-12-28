@@ -19,6 +19,7 @@ import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as StackOverflowLogo } from "../../assets/stack-overflow-logo.svg";
 import { name as appName } from "../../../package.json";
 import "./footer.scss";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles(
   ({ typography, palette, breakpoints, spacing }) => ({
@@ -75,15 +76,16 @@ export const Footer = React.memo(function () {
             <Item grow maxWidth={500} mx={"auto"}>
               <Box textAlign={"center"} mt={{ xs: 2, md: 0 }} my={2}>
                 <SocialProvider useStyles={useMoonSocialLinkStyles}>
-                  <a
+                  <Link
                     className="custom-social-link"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href={
                       "https://stackoverflow.com/users/9032085/marcole?tab=profile"
                     }
                   >
                     <StackOverflowLogo />
-                  </a>
+                  </Link>
                   <SocialLink
                     brand={"GithubCircle"}
                     href={"https://www.github.com/MarcoLeko"}

@@ -14,11 +14,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// TODO: fix scroll button behaviour to map - currently only scrolls to bottom
-export function ScrollButtonHelper({ show }) {
+export function ScrollButtonHelper({
+  show,
+  rootContainerRef,
+  targetContainerRef,
+}) {
   const theme = useTheme();
   const classes = useStyles();
-  const { isScrolledToBottom } = useScrollYObserver(show);
+  const { isIntersecting, scrollDirection } = useScrollYObserver(
+    show,
+    targetContainerRef,
+    rootContainerRef
+  );
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
@@ -34,19 +41,24 @@ export function ScrollButtonHelper({ show }) {
       unmountOnExit
     >
       <Fab
-        aria-label={`Scroll ${isScrolledToBottom ? "up" : "down"}`}
+        aria-label={`Scroll ${isIntersecting ? "up" : "down"}`}
         className={classes.fab}
         color="primary"
         size={"small"}
         onClick={() =>
-          window.scroll({
-            top: isScrolledToBottom ? 0 : document.body.scrollHeight,
-            behavior: "smooth",
-          })
+          isIntersecting && scrollDirection === "toTop"
+            ? window.scroll({
+                top: 0,
+                behavior: "smooth",
+              })
+            : targetContainerRef.scrollIntoView({
+                block: "end",
+                behavior: "smooth",
+              })
         }
         timeout={transitionDuration}
       >
-        {isScrolledToBottom ? <UpIcon /> : <DownIcon />}
+        {scrollDirection === "toBottom" ? <DownIcon /> : <UpIcon />}
       </Fab>
     </Zoom>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
@@ -16,6 +16,8 @@ import { setActiveTab } from "../../context/ui-actions";
 function Home() {
   const classes = useHeaderStyles();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
+  const targetContainerRef = useRef(null);
+
   const {
     queryParams,
     addNextQueryParam,
@@ -50,11 +52,15 @@ function Home() {
     switch (activeStep) {
       case 3:
       case 2:
-        if (queryParams.visualization === "globe") {
-          return <MapOverlay3D showLoadingScreen={activeStep === 2} />;
-        }
-
-        return <MapOverlay2D showLoadingScreen={activeStep === 2} />;
+        return (
+          <div id="visualization-container" ref={targetContainerRef}>
+            {queryParams.visualization === "globe" ? (
+              <MapOverlay3D showLoadingScreen={activeStep === 2} />
+            ) : (
+              <MapOverlay2D showLoadingScreen={activeStep === 2} />
+            )}
+          </div>
+        );
       case 1:
         return <Visualization addNextQueryParam={addNextQueryParam} />;
       case 0:
@@ -78,7 +84,10 @@ function Home() {
         resetQueryParams={resetQueryParams}
       />
       {getStatisticStepChildren()}
-      <ScrollButtonHelper show={activeStep === 2 || activeStep === 3} />
+      <ScrollButtonHelper
+        show={activeStep === 2 || activeStep === 3}
+        targetContainerRef={targetContainerRef.current}
+      />
     </Container>
   );
 }
