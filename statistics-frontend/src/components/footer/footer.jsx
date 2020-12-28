@@ -45,6 +45,9 @@ const useStyles = makeStyles(
     newsletter: {
       fontSize: typography.caption.fontSize,
     },
+    box: {
+      alignItems: "center",
+    },
     navMenu: {
       flexWrap: "wrap",
     },
@@ -60,7 +63,7 @@ export const Footer = React.memo(function () {
     <Box bgcolor={"default"} width={"100%"}>
       <Container>
         <Box pt={8} pb={2}>
-          <Row wrap>
+          <Row wrap classes={{ root: classes.box }}>
             <Item grow={2}>
               <Row alignItems={"center"}>
                 <Item color={"#007bff"} fontSize={64} lineHeight={0}>
