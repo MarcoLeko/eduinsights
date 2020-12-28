@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Grid, makeStyles, Paper } from "@material-ui/core";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
-import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({

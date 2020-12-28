@@ -10,6 +10,7 @@ import * as ReactLeaflet from "react-leaflet";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { DialogContent } from "@material-ui/core";
+import "./tile-popup.scss";
 
 const { Popup } = ReactLeaflet;
 

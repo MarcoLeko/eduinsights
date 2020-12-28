@@ -2,6 +2,7 @@ import { useLeaflet } from "react-leaflet";
 import { memo, useEffect } from "react";
 import L from "leaflet";
 import { getColor } from "../shared/getColor";
+import "./map-legend.scss";
 
 const div = L.DomUtil.create("div", "info legend");
 

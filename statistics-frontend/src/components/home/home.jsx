@@ -13,7 +13,6 @@ import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab } from "../../context/ui-actions";
 
-// TODO: integrate stepper from MUI: 1.Step choose statistic; 2.Step: choose visualization; 3.Step wait for visualization to be ready - show scroll helper button afterwards
 function Home() {
   const classes = useHeaderStyles();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
@@ -52,10 +51,10 @@ function Home() {
       case 3:
       case 2:
         if (queryParams.visualization === "globe") {
-          return <MapOverlay3D />;
+          return <MapOverlay3D showLoadingScreen={activeStep === 2} />;
         }
 
-        return <MapOverlay2D />;
+        return <MapOverlay2D showLoadingScreen={activeStep === 2} />;
       case 1:
         return <Visualization addNextQueryParam={addNextQueryParam} />;
       case 0:

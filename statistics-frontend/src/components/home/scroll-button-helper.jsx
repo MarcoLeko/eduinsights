@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     zIndex: 9999,
     bottom: theme.spacing(2),
-    left: "calc(50% - 28px)",
+    left: "calc(50% - 20px)",
   },
 }));
 
@@ -36,6 +36,7 @@ export function ScrollButtonHelper({ show }) {
         aria-label={`Scroll ${isScrolledToBottom ? "up" : "down"}`}
         className={classes.fab}
         color="primary"
+        size={"small"}
         onClick={() =>
           window.scroll({
             top: isScrolledToBottom ? 0 : document.body.scrollHeight,

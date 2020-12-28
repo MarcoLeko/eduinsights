@@ -10,6 +10,7 @@ import "./map-overlay-3D.scss";
 import { Euler, Vector3 } from "three";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useMediaQuery, useTheme } from "@material-ui/core";
+import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -23,7 +24,7 @@ const defaultCameraRoation = new Euler(
 );
 const defaultControlsTarget = new Vector3(0, 0, 0);
 
-export function MapOverlay3D() {
+export function MapOverlay3D({ showLoadingScreen }) {
   const { theme, dispatch } = useUiContext();
   const materialUiTheme = useTheme();
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
@@ -73,7 +74,8 @@ export function MapOverlay3D() {
   }
 
   return (
-    <>
+    <div className="globe-content-wrapper">
+      <VisualizationLoadingProgress show={showLoadingScreen} />
       {geoJsonFromSelectedStatistic.features && (
         <Globe
           height={height}
@@ -102,6 +104,6 @@ export function MapOverlay3D() {
           polygonsData={geoJsonFromSelectedStatistic.features}
         />
       )}
-    </>
+    </div>
   );
 }
