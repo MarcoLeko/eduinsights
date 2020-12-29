@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
 function ToolbarMenu({ isOpen, toggle }) {
   const classes = useStyles();
 
+  function toggleByButtonClick() {
+    toggle(!isOpen);
+  }
   return (
     <Toolbar className={classes.root}>
       <Link to="/" className={classes.logoPanel}>
@@ -65,7 +68,7 @@ function ToolbarMenu({ isOpen, toggle }) {
           </List>
         </Hidden>
         <Hidden only={["sm", "md", "lg"]}>
-          <IconButton onClick={toggle.bind(this, !isOpen)}>
+          <IconButton onClick={toggleByButtonClick}>
             {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
           </IconButton>
         </Hidden>

@@ -6,12 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Box from "@material-ui/core/Box";
-import {
-  ClickAwayListener,
-  Link,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Link, makeStyles, Typography } from "@material-ui/core";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
@@ -55,60 +50,49 @@ const useStyles = (params) =>
     },
   }));
 
-function SideBar({ isOpen, toggle }) {
+function SideBar({ isOpen }) {
   const { theme } = useUiContext();
   const classes = useStyles(theme)();
 
-  function onClickAway() {
-    if (isOpen) {
-      toggle(false);
-    }
-  }
   return (
-    <ClickAwayListener
-      onClickAway={onClickAway}
-      mouseEvent="onMouseDown"
-      touchEvent="onTouchStart"
+    <Drawer
+      variant="persistent"
+      elevation={2}
+      anchor="right"
+      open={isOpen}
+      classes={{
+        root: classes.drawer,
+        paper: classes.drawerPaper,
+      }}
     >
-      <Drawer
-        variant="persistent"
-        elevation={2}
-        anchor="right"
-        open={isOpen}
-        classes={{
-          root: classes.drawer,
-          paper: classes.drawerPaper,
-        }}
-      >
-        <List>
-          {navItems.map(({ icon, name, link }, index) => (
-            <div key={index}>
-              {link ? (
-                <ListItem button>
-                  <Link href={link} className={classes.linkItem}>
-                    <ListItemIcon className={classes.logoPanel}>
-                      {icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={name}
-                      className={classes.listItemText}
-                    />
-                  </Link>
-                </ListItem>
-              ) : (
-                name === "Design" && <ThemeSelector />
-              )}
-            </div>
-          ))}
-        </List>
-        <Box p={2}>
-          <Divider />
-          <Typography variant={"subtitle1"}>
-            <Copyright />
-          </Typography>
-        </Box>
-      </Drawer>
-    </ClickAwayListener>
+      <List>
+        {navItems.map(({ icon, name, link }, index) => (
+          <div key={index}>
+            {link ? (
+              <ListItem button>
+                <Link href={link} className={classes.linkItem}>
+                  <ListItemIcon className={classes.logoPanel}>
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={name}
+                    className={classes.listItemText}
+                  />
+                </Link>
+              </ListItem>
+            ) : (
+              name === "Design" && <ThemeSelector />
+            )}
+          </div>
+        ))}
+      </List>
+      <Box p={2}>
+        <Divider />
+        <Typography variant={"subtitle1"}>
+          <Copyright />
+        </Typography>
+      </Box>
+    </Drawer>
   );
 }
 

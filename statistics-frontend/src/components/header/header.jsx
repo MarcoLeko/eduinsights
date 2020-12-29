@@ -12,6 +12,7 @@ import TabBar from "./tab-bar";
 export function Header() {
   const classes = useHeaderStyles();
   const materialUiTheme = useTheme();
+
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
   const { sidebarOpen, dispatch } = useUiContext();
   const dispatchSidebarState = useCallback(
@@ -41,7 +42,7 @@ export function Header() {
           <TabBar />
         </Hidden>
       </AppBar>
-      <SideBar isOpen={sidebarOpen} toggle={dispatchSidebarState} />
+      <SideBar isOpen={sidebarOpen} />
     </>
   );
 }
