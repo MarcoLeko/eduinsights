@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Hidden, Toolbar } from "@material-ui/core";
+import { Hidden, List, Toolbar } from "@material-ui/core";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
-import googlePlay from "../../assets/google-play.png";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -9,6 +8,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import { name as projectName } from "../../../package.json";
+import { ThemeSelector } from "../shared/theme-selector";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +60,9 @@ function ToolbarMenu({ isOpen, toggle }) {
       </Link>
       <div className={classes.actionButtons}>
         <Hidden xsDown>
-          <img src={googlePlay} height={40} alt="Get it on google play" />
+          <List>
+            <ThemeSelector />
+          </List>
         </Hidden>
         <Hidden only={["sm", "md", "lg"]}>
           <IconButton onClick={toggle.bind(this, !isOpen)}>

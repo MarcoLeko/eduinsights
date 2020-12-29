@@ -33,7 +33,7 @@ function Introduction() {
           must be matched by quality."
         </Typography>
       </Paper>
-      <Typography variant={"body1"}>
+      <Typography variant={"body1"} color="textSecondary">
         {
           "However there are still huge inequalities between nations, That's why member states of the United Nations Sustainable Development Summit formally adopted the "
         }
@@ -43,7 +43,7 @@ function Introduction() {
           {"2030 Agenda for Sustainable Development"}
         </Typography>
       </Link>
-      <Typography variant={"body1"}>
+      <Typography variant={"body1"} color="textSecondary">
         {
           "The agenda contains 17 goals including a new global education goal (SDG 4). SDG 4 is to ensure inclusive and equitable quality education and promote lifelong learning opportunities for all’ and has seven targets and three means of implementation. - source: "
         }
