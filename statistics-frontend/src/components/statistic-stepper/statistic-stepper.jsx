@@ -12,9 +12,10 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     position: "sticky",
-    top: 105,
+    top: 117,
     zIndex: 1,
     height: 128,
+    background: theme.palette.background.default,
     [theme.breakpoints.down("xs")]: {
       top: 52,
     },

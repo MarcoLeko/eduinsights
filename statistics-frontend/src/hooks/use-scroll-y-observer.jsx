@@ -6,7 +6,7 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
   const [scrollDirection, setScrollDirection] = useState(null);
   const materialUiTheme = useTheme();
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
-  const rootMarginTop = matches ? -52 : -105;
+  const rootMarginTop = matches ? -52 : -117;
   const intersectionObserver = useRef(null);
 
   const getScrollDirection = useCallback(
@@ -36,7 +36,7 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
       },
       {
         threshold: 1.0,
-        rootMargin: `${rootMarginTop}px 0px 0px 0px`,
+        rootMargin: `${rootMarginTop}px 0px 1px 0px`,
       }
     );
 

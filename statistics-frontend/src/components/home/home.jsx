@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
@@ -11,13 +11,18 @@ import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
-import { setActiveTab } from "../../context/ui-actions";
+import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 
 function Home() {
   const classes = useHeaderStyles();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const targetContainerRef = useRef(null);
-
+  const dispatchSidebarState = useCallback(
+    function (args) {
+      dispatch(setSidebarOpen(args));
+    },
+    [dispatch]
+  );
   const {
     queryParams,
     addNextQueryParam,
@@ -69,9 +74,16 @@ function Home() {
     }
   }
 
+  function closeSidebar() {
+    if (sidebarOpen) {
+      dispatchSidebarState(false);
+    }
+  }
+
   return (
     <Container
       disableGutters
+      onClick={closeSidebar}
       className={clsx(classes.content, {
         [classes.contentShift]: sidebarOpen,
       })}

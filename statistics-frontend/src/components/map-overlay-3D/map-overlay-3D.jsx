@@ -30,7 +30,7 @@ export function MapOverlay3D({ showLoadingScreen }) {
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
   const height = matches
     ? window.innerHeight - (128 + 52)
-    : window.innerHeight - (128 + 105);
+    : window.innerHeight - (128 + 117);
 
   const globeRef = useRef(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData(null);

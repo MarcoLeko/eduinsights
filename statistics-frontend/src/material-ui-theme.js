@@ -1,9 +1,9 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { blueGrey, grey } from "@material-ui/core/colors";
+import { grey } from "@material-ui/core/colors";
 
 const getMaterialUiTheme = (theme) => {
-  const mainPrimaryColor = theme === "dark" ? blueGrey[200] : blueGrey[500];
-  const mainSecondaryColor = theme === "dark" ? grey[100] : grey[800];
+  const mainPrimaryColor = theme === "dark" ? "#3eb0ff" : "#2483cf";
+  const mainSecondaryColor = theme === "dark" ? grey[200] : grey[600];
 
   return createMuiTheme({
     // breakpoints are specifically used for card carousel slider

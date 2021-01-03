@@ -22,25 +22,35 @@ export function Legal() {
 
   return (
     <Container maxWidth="md" classes={{ root: classes.root }}>
-      <Typography variant="h3" component="h1">
+      <Typography color="textSecondary" variant="h3" component="h1">
         Legal
       </Typography>
-      <Typography variant="caption" component="p" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="caption"
+        component="p"
+        gutterBottom
+      >
         Currently only available in german.
       </Typography>
-      <Typography variant="body1" component="p">
+      <Typography color="textSecondary" variant="body1" component="p">
         Informationspflicht laut § 5 TMG.
       </Typography>
-      <Typography variant="body1" component="div" gutterBottom>
-        <Typography variant="body1" component="p">
+      <Typography
+        color="textSecondary"
+        variant="body1"
+        component="div"
+        gutterBottom
+      >
+        <Typography color="textSecondary" variant="body1" component="p">
           Marco Leko
         </Typography>
-        <Typography variant="body1" component="p">
+        <Typography color="textSecondary" variant="body1" component="p">
           Putzbrunnerstraße, 130a, <br />
           85521 Ottobrunn, <br />
           Deutschland
         </Typography>
-        <Typography variant="body1" component="p">
+        <Typography color="textSecondary" variant="body1" component="p">
           <strong>Tel.:</strong> 017642013393
           <br />
           <strong>E-Mail:</strong>{" "}
@@ -49,10 +59,15 @@ export function Legal() {
           </Link>
         </Typography>
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         EU-Streitschlichtung
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Gemäß Verordnung über Online-Streitbeilegung in
         Verbraucherangelegenheiten (ODR-Verordnung) möchten wir Sie über die
         Online-Streitbeilegungsplattform (OS-Plattform) informieren.
@@ -69,15 +84,25 @@ export function Legal() {
         zu richten. Die dafür notwendigen Kontaktdaten finden Sie oberhalb in
       </Typography>
       <br />
-      <Typography variant="body2" component="p" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="body2"
+        component="p"
+        gutterBottom
+      >
         Wir möchten Sie jedoch darauf hinweisen, dass wir nicht bereit oder
         verpflichtet sind, an Streitbeilegungsverfahren vor einer
         Verbraucherschlichtungsstelle teilzunehmen.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Haftung für Inhalte dieser Website
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wir entwickeln die Inhalte dieser Webseite ständig weiter und bemühen
         uns korrekte und aktuelle Informationen bereitzustellen. Laut
         Telemediengesetz{" "}
@@ -97,21 +122,26 @@ export function Legal() {
         Informationen zu überwachen oder nach Umständen zu forschen, die auf
         eine rechtswidrige Tätigkeit hinweisen.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Unsere Verpflichtungen zur Entfernung von Informationen oder zur
         Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen
         aufgrund von gerichtlichen oder behördlichen Anordnungen bleiben auch im
         Falle unserer Nichtverantwortlichkeit nach den §§ 8 bis 10 unberührt.{" "}
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitte
         wir Sie uns umgehend zu kontaktieren, damit wir die rechtswidrigen
         Inhalte entfernen können. Sie finden die Kontaktdaten im Impressum.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Haftung für Links auf dieser Website
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Unsere Webseite enthält Links zu anderen Webseiten für deren Inhalt wir
         nicht verantwortlich sind. Haftung für verlinkte Websites besteht für
         uns nicht, da wir keine Kenntnis rechtswidriger Tätigkeiten hatten und
@@ -119,14 +149,19 @@ export function Legal() {
         und wir Links sofort entfernen würden, wenn uns Rechtswidrigkeiten
         bekannt werden.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Ihnen rechtswidrige Links auf unserer Website auffallen, bitte wir
         Sie uns zu kontaktieren. Sie finden die Kontaktdaten im Impressum.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Urheberrechtshinweis
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Alle Inhalte dieser Webseite (Bilder, Fotos, Texte, Videos) unterliegen
         dem Urheberrecht der Bundesrepublik Deutschland. Bitte fragen Sie uns
         bevor Sie die Inhalte dieser Website verbreiten, vervielfältigen oder
@@ -134,18 +169,23 @@ export function Legal() {
         Falls notwendig, werden wir die unerlaubte Nutzung von Teilen der
         Inhalte unserer Seite rechtlich verfolgen.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Sollten Sie auf dieser Webseite Inhalte finden, die das Urheberrecht
         verletzen, bitten wir Sie uns zu kontaktieren.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Bildernachweis
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Die Bilder, Fotos und Grafiken auf dieser Webseite sind urheberrechtlich
         geschützt.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Die Bilderrechte liegen bei den folgenden Fotografen und Unternehmen:
       </Typography>
       <List>
@@ -156,13 +196,23 @@ export function Legal() {
           </Link>
         </ListItem>
       </List>
-      <Typography variant="h3" component="h3" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h3"
+        component="h3"
+        gutterBottom
+      >
         Datenschutzerklärung
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Datenschutz
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wir haben diese Datenschutzerklärung (Fassung 26.12.2020-321244534)
         verfasst, um Ihnen gemäß der Vorgaben der{" "}
         <Link
@@ -176,15 +226,20 @@ export function Legal() {
         und welche Entscheidungsmöglichkeiten Sie als Besucher dieser Webseite
         haben.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Leider liegt es in der Natur der Sache, dass diese Erklärungen sehr
         technisch klingen, wir haben uns bei der Erstellung jedoch bemüht die
         wichtigsten Dinge so einfach und klar wie möglich zu beschreiben.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         TLS-Verschlüsselung mit https
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wir verwenden https um Daten abhörsicher im Internet zu übertragen
         (Datenschutz durch Technikgestaltung{" "}
         <Link
@@ -201,10 +256,15 @@ export function Legal() {
         Schloßsymbol links oben im Browser und der Verwendung des Schemas https
         (anstatt http) als Teil unserer Internetadresse.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         OpenStreetMap Datenschutzerklärung
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wir haben auf unserer Website Kartenausschnitte des Online-Kartentools
         „OpenStreetMap“ eingebunden. Dabei handelt es sich um ein sogenanntes
         Open-Source-Mapping, welches wir über eine API (Schnittstelle) abrufen
@@ -216,10 +276,15 @@ export function Legal() {
         Daten gespeichert werden und wie Sie diese Datenspeicherung verhindern
         können.
       </Typography>
-      <Typography variant="h5" component="h3" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h5"
+        component="h3"
+        gutterBottom
+      >
         Was ist OpenStreetMap?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Das Projekt OpenStreetMap wurde 2004 ins Leben gerufen. Ziel des
         Projekts ist und war es, eine freie Weltkarte zu erschaffen. User
         sammeln weltweit Daten etwa über Gebäude, Wälder, Flüsse und Straßen. So
@@ -227,10 +292,15 @@ export function Legal() {
         digitale Weltkarte. Selbstverständlich ist die Karte, nicht vollständig,
         aber in den meisten Regionen mit sehr vielen Daten ausgestattet.
       </Typography>
-      <Typography variant="h5" component="h3" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h5"
+        component="h3"
+        gutterBottom
+      >
         Warum verwenden wir OpenStreetMap auf unserer Website?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Unsere Website soll Ihnen in erster Linie hilfreich sein. Und das ist
         sie aus unserer Sicht immer dann, wenn man Information schnell und
         einfach findet. Da geht es natürlich einerseits um unsere
@@ -240,10 +310,15 @@ export function Legal() {
         genau zeigen, wie Sie unsere Firma finden. Die Karte zeigt Ihnen den
         besten Weg zu uns und Ihre Anfahrt wird zum Kinderspiel.
       </Typography>
-      <Typography variant="h5" component="h3" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h5"
+        component="h3"
+        gutterBottom
+      >
         Welche Daten werden von OpenStreetMap gespeichert?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie eine unserer Webseiten besuchen, die OpenStreetMap anbietet,
         werden Nutzerdaten an den Dienst übermittelt und dort gespeichert.
         OpenStreetMap sammelt etwa Informationen über Ihre Interaktionen mit der
@@ -253,18 +328,18 @@ export function Legal() {
         Aufzeichnung von Userinteraktionen verwendet. Das Unternehmen gibt hier
         in der eigenen Datenschutzerklärung das Analysetool „Piwik“ an.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Die erhobenen Daten sind in Folge den entsprechenden Arbeitsgruppen der
         OpenStreetMap Foundation zugänglich. Laut dem Unternehmen werden
         persönliche Daten nicht an andere Personen oder Firmen weitergegeben,
         außer dies ist rechtlich notwendig. Der Drittanbieter Piwik speichert
         zwar Ihre IP-Adresse, allerdings in gekürzter Form.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Folgendes Cookie kann in Ihrem Browser gesetzt werden, wenn Sie mit
         OpenStreetMap auf unserer Website interagieren:
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Name:</strong> _osm_location
         <br />
         <strong>Wert:</strong> 9.63312%7C52.41500%7C17%7CM
@@ -274,12 +349,12 @@ export function Legal() {
         <br />
         <strong>Ablaufdatum:</strong> nach 10 Jahren
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie sich das Vollbild der Karte ansehen wollen, werden Sie auf die
         OpenStreetMap-Website verlinkt. Dort können unter anderem folgende
         Cookies in Ihrem Browser gespeichert werden:
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Name:</strong> _osm_totp_token
         <br />
         <strong>Wert:</strong> 148253321244534-2
@@ -289,7 +364,7 @@ export function Legal() {
         <br />
         <strong>Ablaufdatum:</strong> nach einer Stunde
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Name:</strong> _osm_session
         <br />
         <strong>Wert:</strong> 1d9bfa122e0259d5f6db4cb8ef653a1c
@@ -299,7 +374,7 @@ export function Legal() {
         <br />
         <strong>Ablaufdatum:</strong> nach Sitzungsende
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Name:</strong> _pk_id.1.cf09
         <br />
         <strong>Wert:</strong> 4a5.1593684142.2.1593688396.1593688396321244534-9
@@ -309,20 +384,30 @@ export function Legal() {
         <br />
         <strong>Ablaufdatum:</strong> nach einem Jahr
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Wie lange und wo werden die Daten gespeichert?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Die API-Server, die Datenbanken und die Server von Hilfsdiensten
         befinden sich derzeit im Vereinten Königreich (Großbritannien und
         Nordirland) und in den Niederlanden. Ihre IP-Adresse und
         Userinformationen, die in gekürzter Form durch das Webanalysetool Piwik
         gespeichert werden, werden nach 180 Tagen wieder gelöscht.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Wie kann ich meine Daten löschen bzw. die Datenspeicherung verhindern?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Sie haben jederzeit das Recht auf Ihre personenbezogenen Daten
         zuzugreifen und Einspruch gegen die Nutzung und Verarbeitung zu erheben.
         Cookies, die von OpenStreetMap möglicherweise gesetzt werden, können Sie
@@ -332,7 +417,7 @@ export function Legal() {
         Deaktivierung von Cookies etwas anders. Im Folgenden finden Sie Links zu
         den Anleitungen der bekanntesten Browser:
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.google.com/chrome/answer/95647?tid=321244534"
           target="_blank"
@@ -341,7 +426,7 @@ export function Legal() {
           Chrome: Cookies in Chrome löschen, aktivieren und verwalten
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.apple.com/de-at/guide/safari/sfri11471/mac?tid=321244534"
           target="_blank"
@@ -350,7 +435,7 @@ export function Legal() {
           Safari: Verwalten von Cookies und Websitedaten mit Safari
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.mozilla.org/de/kb/cookies-und-website-daten-in-firefox-loschen?tid=321244534"
           target="_blank"
@@ -360,7 +445,7 @@ export function Legal() {
           Ihrem Computer abgelegt haben
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.microsoft.com/de-at/help/17442/windows-internet-explorer-delete-manage-cookies?tid=321244534"
           target="_blank"
@@ -369,7 +454,7 @@ export function Legal() {
           Internet Explorer: Löschen und Verwalten von Cookies
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.microsoft.com/de-at/help/4027947/windows-delete-cookies?tid=321244534"
           target="_blank"
@@ -378,7 +463,7 @@ export function Legal() {
           Microsoft Edge: Löschen und Verwalten von Cookies
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie mehr über die Datenverarbeitung durch OpenStreetMap erfahren
         wollen, empfehlen wir Ihnen die Datenschutzerklärung des Unternehmens
         unter{" "}
@@ -390,10 +475,15 @@ export function Legal() {
           https://wiki.osmfoundation.org/wiki/Privacy_Policy.
         </Link>
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Mapbox API Datenschutzerklärung
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Auf unserer Website nutzen wir die Mapbox API des amerikanischen
         Software-Unternehmens Mapbox Inc., 740 15th Street NW, 5th Floor,
         District of Columbia 20005, USA. Mapbox ist ein Online-Kartentool
@@ -404,10 +494,15 @@ export function Legal() {
         und vor allem welche Daten gespeichert werden und wie Sie das verhindern
         können.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Was ist Mapbox API?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Mapbox ist ein amerikanisches Software-Unternehmen, das
         benutzerdefinierte Online-Karten für Websites anbieten. Mit Mapbox kann
         man Inhalte auf unserer Website illustrieren oder beispielsweise
@@ -417,20 +512,30 @@ export function Legal() {
         Umgebung, die Routenauskunft erfolgt in Echtzeit und Daten werden
         visualisiert dargestellt.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Warum verwenden wir Mapbox API auf unserer Website?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wir wollen Ihnen auch auf unserer Website einen umfassenden Service
         bieten und dieser soll nicht einfach bei unseren Dienstleistungen oder
         Produkten enden. Nein, auch unsere gesamten Inhalte sollen Ihnen von
         Nutzen sein. Und dazu zählen zum Beispiel auch Anfahrtskarten, die Ihnen
         etwa den Weg zu unserem Unternehmen zeigen.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Welche Daten werden von Mapbox API gespeichert?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie eine unserer Unterseiten aufrufen, die eine Online-Karte von
         Mapbox eingebunden hat, können Daten über Ihr Nutzerverhalten gesammelt
         und gespeichert werden. Das muss sein, damit die eingebundenen
@@ -441,7 +546,7 @@ export function Legal() {
         explizit beauftragt. Die Karteninhalte werden direkt an Ihren Browser
         übermittelt und in unsere Website eingebunden.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Mapbox erfasst automatisch bestimmte technische Informationen, wenn
         Anfragen an die APIs gestellt werden. Dazu zählen neben Ihrer IP-Adresse
         etwa Browserinformationen, Ihr Betriebssystem, Inhalt der Anfrage,
@@ -451,11 +556,11 @@ export function Legal() {
         sammelt Mapbox auch zufällig generierte IDs, um Nutzerverhalten zu
         analysieren und die Anzahl der aktiven User festzustellen.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie eine unserer Unterseiten nutzen und mit einer Online-Karte
         interagieren, setzt Mapbox folgendes Cookie in Ihrem Browser:
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Name:</strong> ppcbb-enable-content-mapbox_js
         <br />
         <strong>Wert:</strong> 1605795587321244534-4
@@ -466,31 +571,41 @@ export function Legal() {
         <br />
         <strong>Ablaufdatum:</strong> nach einem Jahr
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <strong>Anmerkung:</strong> Bei unseren Tests haben wir im
         Chrome-Browser kein Cookie gefunden, in anderen Browsern allerdings
         schon.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Wo und wie lange werden Daten gespeichert?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Die erhobenen Daten werden auf amerikanischen Servern des Unternehmens
         Mapbox gespeichert und verarbeitet. Ihre IP-Adresse wird aus
         Sicherheitsgründen für 30 Tage aufbewahrt und anschließend gelöscht.
         Zufällig generierte IDs (keine personenbezogenen Daten), die die Nutzung
         der APIs analysieren werden nach 36 Monaten wieder gelöscht.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom>
+      <Typography
+        color="textSecondary"
+        variant="h4"
+        component="h2"
+        gutterBottom
+      >
         Wie kann ich meine Daten löschen bzw. die Datenspeicherung verhindern?
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie nicht wollen, dass Mapbox Daten über Sie bzw. Ihr Userverhalten
         verarbeitet, können Sie in Ihren Browsereinstellungen JavaScript
         deaktivieren. Natürlich können Sie dann allerdings auch die
         entsprechenden Funktionen nicht mehr im vollen Ausmaß nutzen.
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Sie haben jederzeit das Recht auf Ihre personenbezogenen Daten
         zuzugreifen und Einspruch gegen die Nutzung und Verarbeitung zu erheben.
         Cookies, die von Mapbox API möglicherweise gesetzt werden, können Sie in
@@ -500,7 +615,7 @@ export function Legal() {
         von Cookies etwas anders. Im Folgenden finden Sie Links zu den
         Anleitungen der bekanntesten Browser:
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.google.com/chrome/answer/95647?tid=321244534"
           target="_blank"
@@ -509,7 +624,7 @@ export function Legal() {
           Chrome: Cookies in Chrome löschen, aktivieren und verwalten
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.apple.com/de-at/guide/safari/sfri11471/mac?tid=321244534"
           target="_blank"
@@ -518,7 +633,7 @@ export function Legal() {
           Safari: Verwalten von Cookies und Websitedaten mit Safari
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.mozilla.org/de/kb/cookies-und-website-daten-in-firefox-loschen?tid=321244534"
           target="_blank"
@@ -528,7 +643,7 @@ export function Legal() {
           Ihrem Computer abgelegt haben
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.microsoft.com/de-at/help/17442/windows-internet-explorer-delete-manage-cookies?tid=321244534"
           target="_blank"
@@ -537,7 +652,7 @@ export function Legal() {
           Internet Explorer: Löschen und Verwalten von Cookies
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         <Link
           href="https://support.microsoft.com/de-at/help/4027947/windows-delete-cookies?tid=321244534"
           target="_blank"
@@ -546,7 +661,7 @@ export function Legal() {
           Microsoft Edge: Löschen und Verwalten von Cookies
         </Link>
       </Typography>
-      <Typography variant="body2" component="p">
+      <Typography color="textSecondary" variant="body2" component="p">
         Wenn Sie mehr über die Datenverarbeitung durch Mapbox erfahren wollen,
         empfehlen wir Ihnen die Datenschutzerklärung des Unternehmens unter{" "}
         <Link

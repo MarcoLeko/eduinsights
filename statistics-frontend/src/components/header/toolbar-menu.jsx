@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     width: 2,
   },
-  header: { fontWeight: 300, fontStyle: "italic" },
+  header: { fontWeight: 300 },
   actionButtons: {
     display: "flex",
     alignItems: "center",
@@ -49,6 +49,7 @@ function ToolbarMenu({ isOpen, toggle }) {
   function toggleByButtonClick() {
     toggle(!isOpen);
   }
+
   return (
     <Toolbar className={classes.root}>
       <Link to="/" className={classes.logoPanel}>
