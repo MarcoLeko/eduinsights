@@ -52,7 +52,8 @@ export function useStatisticData(geoJSONRef = null) {
           evaluationType,
           evaluation,
         });
-        if (geoJSONRef) {
+
+        if (geoJSONRef?.current?.leafletElement) {
           geoJSONRef.current.leafletElement
             .clearLayers()
             .addData(topoJson2GeoJson);

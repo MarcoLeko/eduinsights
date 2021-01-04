@@ -88,7 +88,6 @@ function Home() {
         [classes.contentShift]: sidebarOpen,
       })}
     >
-      <Introduction />
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}
@@ -96,6 +95,7 @@ function Home() {
         resetQueryParams={resetQueryParams}
       />
       {getStatisticStepChildren()}
+      <Introduction />
       <ScrollButtonHelper
         show={(activeStep === 2 || activeStep === 3) && !sidebarOpen}
         targetContainerRef={targetContainerRef.current}

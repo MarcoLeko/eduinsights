@@ -1,10 +1,8 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { Grid, Hidden, Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import GlobeGif from "../../assets/globe.gif";
-import MapGif from "../../assets/map.gif";
 import { AppDescription } from "../SEO/app-description";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,11 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     margin: theme.spacing(1),
-  },
-  paperVisualization: {
-    height: 250,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
   },
 }));
 
@@ -59,8 +52,7 @@ function Introduction() {
   return (
     <Box component={"section"} className={classes.box}>
       <Typography variant={"body1"} color="textSecondary" gutterBottom>
-        <Hidden xsDown>{content.explanation[0]}</Hidden>
-
+        {content.explanation[0]}
         {content.explanation[1]}
         <Link href="https://sdgs.un.org/2030agenda">
           {content.explanation[2]}
@@ -78,20 +70,6 @@ function Introduction() {
       >
         <Typography variant={"overline"}>{content.goal}</Typography>
       </Paper>
-      <Grid container justify={"center"}>
-        <Grid item xs={6} md={5}>
-          <Paper
-            classes={{ root: classes.paperVisualization }}
-            style={{ backgroundImage: `url(${MapGif})`, marginRight: 16 }}
-          />
-        </Grid>
-        <Grid item xs={6} md={5}>
-          <Paper
-            classes={{ root: classes.paperVisualization }}
-            style={{ backgroundImage: `url(${GlobeGif})` }}
-          />
-        </Grid>
-      </Grid>
       <AppDescription description={getTextContent(content)} />
     </Box>
   );
