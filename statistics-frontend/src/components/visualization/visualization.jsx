@@ -44,13 +44,12 @@ export function Visualization({ addNextQueryParam }) {
   ];
 
   return (
-    <Grid container justify="center" className={classes.root} spacing={4}>
+    <Grid container justify="center" className={classes.root} spacing={3}>
       {visualizations.map((visualization) => (
         <Grid key={visualization.key} item>
           <Paper
             className={classes.paper}
             classes={{ root: classes.paperRoot }}
-            variant={"outlined"}
           >
             {visualization.icon}
             <Typography variant="overline" component="h6" color={"textPrimary"}>

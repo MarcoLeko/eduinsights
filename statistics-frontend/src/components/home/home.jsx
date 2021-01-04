@@ -97,7 +97,7 @@ function Home() {
       />
       {getStatisticStepChildren()}
       <ScrollButtonHelper
-        show={activeStep === 2 || activeStep === 3}
+        show={(activeStep === 2 || activeStep === 3) && !sidebarOpen}
         targetContainerRef={targetContainerRef.current}
       />
     </Container>

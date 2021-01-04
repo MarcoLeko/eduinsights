@@ -11,6 +11,7 @@ import { Euler, Vector3 } from "three";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
+import { StatisticsMarkup } from "../SEO/statistics-markup";
 
 const defaultCameraPos = new Vector3(
   2.1431318985078682e-14,
@@ -33,7 +34,9 @@ export function MapOverlay3D({ showLoadingScreen }) {
     : window.innerHeight - (128 + 117);
 
   const globeRef = useRef(null);
-  const { geoJsonFromSelectedStatistic } = useStatisticData(null);
+  const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData(
+    null
+  );
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
 
   function resetCameraPosition(camera, controls) {
@@ -76,32 +79,42 @@ export function MapOverlay3D({ showLoadingScreen }) {
     <div className="globe-content-wrapper">
       <VisualizationLoadingProgress show={showLoadingScreen} />
       {geoJsonFromSelectedStatistic.features && (
-        <Globe
-          height={height}
-          ref={globeRef}
-          width={getGlobeWidth()}
-          globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
-          bumpImageUrl={EarthTopology}
-          polygonStrokeColor={() => "#111"}
-          polygonSideColor={() => "#111"}
-          polygonCapColor={(layer) =>
-            layer === activeHoveredPolygon
-              ? "steelblue"
-              : getColor(
-                  getColorRange(geoJsonFromSelectedStatistic.evaluation, layer)
-                    .key
-                )
-          }
-          polygonLabel={({ properties: layer }) => `
+        <>
+          <StatisticsMarkup
+            data={{
+              ...geoJsonFromSelectedStatistic,
+              statisticsList: statisticsList,
+            }}
+          />
+          <Globe
+            height={height}
+            ref={globeRef}
+            width={getGlobeWidth()}
+            globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
+            bumpImageUrl={EarthTopology}
+            polygonStrokeColor={() => "#111"}
+            polygonSideColor={() => "#111"}
+            polygonCapColor={(layer) =>
+              layer === activeHoveredPolygon
+                ? "steelblue"
+                : getColor(
+                    getColorRange(
+                      geoJsonFromSelectedStatistic.evaluation,
+                      layer
+                    ).key
+                  )
+            }
+            polygonLabel={({ properties: layer }) => `
         <div class="polygon-label"><b>${layer.name} (${layer.id}):</b> <br />
         value: <i>${layer.value}%</i><br/>
         capital: <i>${layer.capital}</i>
         </div>
       `}
-          onPolygonHover={setActiveHoveredPolygon}
-          polygonsTransitionDuration={300}
-          polygonsData={geoJsonFromSelectedStatistic.features}
-        />
+            onPolygonHover={setActiveHoveredPolygon}
+            polygonsTransitionDuration={300}
+            polygonsData={geoJsonFromSelectedStatistic.features}
+          />
+        </>
       )}
     </div>
   );

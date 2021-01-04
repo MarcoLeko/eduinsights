@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Hidden, Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import GlobeGif from "../../assets/globe.gif";
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.contrastText,
   },
   paperHeadline: {
-    padding: theme.spacing(2, 1),
+    padding: theme.spacing(2, 0),
     justifyContent: "center",
     background: "none",
     alignItems: "center",
@@ -34,12 +34,13 @@ const content = {
   goal:
     '„Education is a human right for all throughout life and that access must be matched by quality."',
   explanation: [
-    "However there are still huge inequalities between nations, That's why member states of the United Nations Sustainable Development Summit formally adopted the ",
+    "Education provides the basis for Knowledge as a good. Hence its getting more important to ensure equal standards and overcome financial and cultural boundaries. ",
+    "There are huge inequalities between nations, That's why member states of the United Nations Sustainable Development Summit formally adopted the ",
     "2030 Agenda for Sustainable Development. ",
     "The agenda contains 17 goals including a new global education goal (SDG 4). SDG 4 is to ensure inclusive and equitable quality education and promote lifelong learning opportunities for all’ and has seven targets and three means of implementation. - source: ",
     "UNESCO. ",
   ],
-  keyLine:
+  bottomLine:
     "Eduinsights is build to highlight those educational inequalities in 2D or 3D representations of the world.",
 };
 
@@ -57,6 +58,19 @@ function Introduction() {
 
   return (
     <Box component={"section"} className={classes.box}>
+      <Typography variant={"body1"} color="textSecondary" gutterBottom>
+        <Hidden xsDown>{content.explanation[0]}</Hidden>
+
+        {content.explanation[1]}
+        <Link href="https://sdgs.un.org/2030agenda">
+          {content.explanation[2]}
+        </Link>
+        {content.explanation[3]}
+        <Link href="https://en.unesco.org/gem-report/sdg-goal-4">
+          {content.explanation[4]}
+        </Link>
+        {content.bottomLine}
+      </Typography>
       <Paper
         classes={{
           root: classes.paperHeadline,
@@ -64,17 +78,6 @@ function Introduction() {
       >
         <Typography variant={"overline"}>{content.goal}</Typography>
       </Paper>
-      <Typography variant={"body1"} color="textSecondary" gutterBottom>
-        {content.explanation[0]}
-        <Link href="https://sdgs.un.org/2030agenda">
-          {content.explanation[1]}
-        </Link>
-        {content.explanation[2]}
-        <Link href="https://en.unesco.org/gem-report/sdg-goal-4">
-          {content.explanation[3]}
-        </Link>
-        {content.keyLine}
-      </Typography>
       <Grid container justify={"center"}>
         <Grid item xs={6} md={5}>
           <Paper

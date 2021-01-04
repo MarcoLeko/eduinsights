@@ -10,6 +10,7 @@ import GeoJson from "../geoJson/geojson";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
+import { StatisticsMarkup } from "../SEO/statistics-markup";
 
 const { Map, TileLayer } = ReactLeaflet;
 
@@ -19,9 +20,11 @@ function MapOverlay2D({ showLoadingScreen }) {
 
   const geoJsonRef = useRef(null);
   const infoControlRef = useRef(null);
-  const { geoJsonFromSelectedStatistic, selectedStatistic } = useStatisticData(
-    geoJsonRef
-  );
+  const {
+    geoJsonFromSelectedStatistic,
+    selectedStatistic,
+    statisticsList,
+  } = useStatisticData(geoJsonRef);
 
   function centerMapView(e) {
     if (e) {
@@ -64,6 +67,12 @@ function MapOverlay2D({ showLoadingScreen }) {
             />
             <MapLegend
               selectedStatisticMetaData={geoJsonFromSelectedStatistic}
+            />
+            <StatisticsMarkup
+              data={{
+                ...geoJsonFromSelectedStatistic,
+                statisticsList: statisticsList,
+              }}
             />
           </>
         )}
