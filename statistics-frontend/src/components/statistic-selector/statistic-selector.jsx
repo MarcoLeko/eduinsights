@@ -3,12 +3,13 @@ import SwipeableViews from "react-swipeable-views";
 import { animated, interpolate, useSpring } from "react-spring";
 import { makeStyles } from "@material-ui/core/styles";
 import "./statistic-selector.scss";
-import { Button, Card, CardActions } from "@material-ui/core";
+import { Button, Card, CardActions, Chip } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import { muiGradientBackground } from "../../material-ui-theme";
 import { StatisticsListMarkup } from "../SEO/statistics-list-markup";
+import { PublicSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,13 +149,15 @@ export function StatisticSelector({ onStatisticClick }) {
                     </Typography>
                     <Typography variant="overline" component="div">
                       This statistic provides data for{" "}
-                      {statistic.amountOfCountries} / 255 Countries
+                      <Chip
+                        label={`${statistic.amountOfCountries} / 204 UNESCO-Members`}
+                        avatar={<PublicSharp />}
+                      ></Chip>
                     </Typography>
                   </CardContent>
                   <CardActions disableSpacing>
                     <Button
                       variant="contained"
-                      color="secondary"
                       size="small"
                       classes={{ root: classes.cardButton }}
                       onClick={() =>
