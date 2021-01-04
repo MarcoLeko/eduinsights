@@ -87,7 +87,7 @@ export function StatisticSelector({ onStatisticClick }) {
   }
 
   return (
-    statisticsList.length && (
+   Boolean(statisticsList.length) && (
       <div className={classes.container}>
         <StatisticsListMarkup statisticsList={statisticsList} />
         <SwipeableViews
