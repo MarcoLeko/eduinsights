@@ -5,6 +5,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import { useStatisticData } from "../../hooks/use-statistic-data";
+import { muiGradientBackground } from "../../material-ui-theme";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,8 +21,10 @@ const useStyles = makeStyles((theme) => ({
       top: 52,
     },
   },
-  button: {
-    marginRight: theme.spacing(1),
+  button: { marginRight: theme.spacing(1) },
+  buttonNext: {
+    background: muiGradientBackground,
+    color: theme.palette.primary.contrastText,
   },
   instructions: {
     marginBottom: theme.spacing(1),
@@ -73,7 +76,9 @@ export default function StatisticStepper({
       <Stepper
         alternativeLabel
         activeStep={activeStep}
-        classes={{ root: classes.paper }}
+        classes={{
+          root: classes.paper,
+        }}
       >
         {getStepsDescription().map((label, i) => {
           const labelProps = {};
@@ -99,12 +104,7 @@ export default function StatisticStepper({
         >
           Back
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={resetQueryParams}
-          className={classes.button}
-        >
+        <Button onClick={resetQueryParams} className={classes.buttonNext}>
           Reset
         </Button>
       </div>

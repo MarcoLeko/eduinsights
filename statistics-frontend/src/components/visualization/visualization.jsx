@@ -3,6 +3,7 @@ import { Button, Grid, makeStyles, Paper } from "@material-ui/core";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
 import Typography from "@material-ui/core/Typography";
+import { muiGradientBackground } from "../../material-ui-theme";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   svgIcon: {
     width: "30%",
     height: "auto",
+  },
+  button: {
+    background: muiGradientBackground,
   },
 }));
 
@@ -61,7 +65,7 @@ export function Visualization({ addNextQueryParam }) {
               }
               size={"small"}
               variant="contained"
-              color="primary"
+              classes={{ root: classes.button }}
             >
               Select
             </Button>

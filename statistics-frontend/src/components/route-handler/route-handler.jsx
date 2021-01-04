@@ -5,11 +5,11 @@ import AppNotifier from "../shared/app-notifier";
 import { Legal } from "../legal/legal";
 import { responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useUiContext } from "../../hooks/use-ui-context";
-import getMaterialUiTheme from "../../material-ui-theme";
 import { CssBaseline } from "@material-ui/core";
 import { Header } from "../header/header";
 import "../../styles.scss";
 import { Footer } from "../footer/footer";
+import { getMaterialUiTheme } from "../../material-ui-theme";
 
 function RouteHandler() {
   const { theme } = useUiContext();

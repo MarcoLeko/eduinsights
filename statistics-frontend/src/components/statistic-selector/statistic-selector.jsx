@@ -7,6 +7,7 @@ import { Button, Card, CardActions } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useStatisticData } from "../../hooks/use-statistic-data";
+import { muiGradientBackground } from "../../material-ui-theme";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   cardRoot: {
     padding: theme.spacing(0, 1),
     minWidth: 250,
-    background: theme.palette.primary.main,
+    background: muiGradientBackground,
     color: theme.palette.primary.contrastText,
   },
   cardButton: {

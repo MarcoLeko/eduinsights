@@ -1,8 +1,11 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 import { grey } from "@material-ui/core/colors";
 
+const muiGradientBackground =
+  "linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%)";
+
 const getMaterialUiTheme = (theme) => {
-  const mainPrimaryColor = theme === "dark" ? "#3eb0ff" : "#2483cf";
+  const mainPrimaryColor = "rgb(75,225,255)";
   const mainSecondaryColor = theme === "dark" ? grey[200] : grey[600];
 
   return createMuiTheme({
@@ -54,4 +57,4 @@ const getMaterialUiTheme = (theme) => {
   });
 };
 
-export default getMaterialUiTheme;
+export { getMaterialUiTheme, muiGradientBackground };

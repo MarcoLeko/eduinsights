@@ -4,6 +4,7 @@ import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import React from "react";
 import { useScrollYObserver } from "../../hooks/use-scroll-y-observer";
 import { makeStyles } from "@material-ui/core/styles";
+import { muiGradientBackground } from "../../material-ui-theme";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 9999,
     bottom: theme.spacing(2),
     left: "calc(50% - 20px)",
+    background: muiGradientBackground,
   },
 }));
 
