@@ -1,6 +1,11 @@
+$color-default: rgba(0, 0, 0, 0.65);
+$font-format: Montserrat, sans-serif;
+
 html, body, #root {
   width: 100%;
   height: auto;
   margin: 0;
   padding: 0;
+  color: $color-default;
+  font-family: $font-format;
 }

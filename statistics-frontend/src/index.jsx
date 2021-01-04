@@ -6,6 +6,7 @@ import RouteHandler from "./components/route-handler/route-handler";
 import { AlertContextProvider } from "./context/alert-context";
 import { UiContextProvider } from "./context/ui-context";
 import activatePolyfill from "./activatePolyfill";
+import reportWebVitals from "./report-web-vitals";
 
 function Bootstrap() {
   return (
@@ -25,3 +26,8 @@ activatePolyfill().then(() =>
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
