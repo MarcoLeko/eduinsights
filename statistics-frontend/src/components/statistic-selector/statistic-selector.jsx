@@ -8,6 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import { muiGradientBackground } from "../../material-ui-theme";
+import { StatisticsListMarkup } from "../SEO/statistics-list-markup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,8 +86,9 @@ export function StatisticSelector({ onStatisticClick }) {
   }
 
   return (
-    statisticsList && (
+    statisticsList.length && (
       <div className={classes.container}>
+        <StatisticsListMarkup statisticsList={statisticsList} />
         <SwipeableViews
           index={index}
           className={classes.root}

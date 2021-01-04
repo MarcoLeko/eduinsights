@@ -12,6 +12,7 @@ import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
+import { AppMarkup } from "../SEO/app-markup";
 
 function Home() {
   const classes = useHeaderStyles();
@@ -88,6 +89,7 @@ function Home() {
         [classes.contentShift]: sidebarOpen,
       })}
     >
+      <AppMarkup />
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}
