@@ -51,7 +51,7 @@ export function ScrollButtonHelper({
                 top: 0,
                 behavior: "smooth",
               })
-            : targetContainerRef.scrollIntoView({
+            : targetContainerRef?.scrollIntoView({
                 block: "end",
                 behavior: "smooth",
               })
