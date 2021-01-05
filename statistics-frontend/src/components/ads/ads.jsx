@@ -79,10 +79,10 @@ export function Ads() {
         <DialogTitle id="dialog-title">Google's ads service</DialogTitle>
         <DialogContent>
           <DialogContentText id="dialog-description">
-            This site has maintenance cost on hardware and maintenance level
-            which need to be covered. Therefore Eduinsights decided to place a
-            google ads snippet to partially compensate those. Please take this
-            into consideration, when you might see pop up one of this 'annoying'
+            This site has costs on hardware and on maintenance level which need
+            to be covered. Therefore Eduinsights decided to place a google ads
+            snippet to partially compensate those. Please take this into
+            consideration, when you might see pop up one of this 'annoying'
             ads.help apps determine location.
           </DialogContentText>
         </DialogContent>
