@@ -13,6 +13,7 @@ import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
+import { Ads } from "../ads/ads";
 
 function Home() {
   const classes = useHeaderStyles();
@@ -98,6 +99,7 @@ function Home() {
       />
       {getStatisticStepChildren()}
       <Introduction />
+      <Ads />
       <ScrollButtonHelper
         show={(activeStep === 2 || activeStep === 3) && !sidebarOpen}
         targetContainerRef={targetContainerRef.current}
