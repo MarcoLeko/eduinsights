@@ -91,7 +91,7 @@ export function Ads() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Dismiss
+            Close
           </Button>
         </DialogActions>
       </Dialog>
