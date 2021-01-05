@@ -87,7 +87,7 @@ export function StatisticSelector({ onStatisticClick }) {
   }
 
   return (
-   Boolean(statisticsList.length) && (
+    Boolean(statisticsList.length) && (
       <div className={classes.container}>
         <StatisticsListMarkup statisticsList={statisticsList} />
         <SwipeableViews
@@ -150,7 +150,7 @@ export function StatisticSelector({ onStatisticClick }) {
                     <Typography variant="overline" component="div">
                       This statistic provides data for{" "}
                       <Chip
-                        label={`${statistic.amountOfCountries} / 204 UNESCO-Members`}
+                        label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
                         avatar={<PublicSharp />}
                       ></Chip>
                     </Typography>
