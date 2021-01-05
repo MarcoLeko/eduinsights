@@ -35,34 +35,36 @@ export function ScrollButtonHelper({
   };
 
   return (
-    <Zoom
-      in={show}
-      timeout={transitionDuration}
-      style={{
-        transitionDelay: `${show ? transitionDuration.exit : 0}ms`,
-      }}
-      unmountOnExit
-    >
-      <Fab
-        aria-label={`Scroll ${isIntersecting ? "up" : "down"}`}
-        className={classes.fab}
-        color="primary"
-        size={"small"}
-        onClick={() =>
-          isIntersecting && scrollDirection === "toTop"
-            ? window.scroll({
-                top: 0,
-                behavior: "smooth",
-              })
-            : targetContainerRef?.scrollIntoView({
-                block: "end",
-                behavior: "smooth",
-              })
-        }
+    scrollDirection && (
+      <Zoom
+        in={show}
         timeout={transitionDuration}
+        style={{
+          transitionDelay: `${show ? transitionDuration.exit : 0}ms`,
+        }}
+        unmountOnExit
       >
-        {scrollDirection === "toBottom" ? <DownIcon /> : <UpIcon />}
-      </Fab>
-    </Zoom>
+        <Fab
+          aria-label={`Scroll ${isIntersecting ? "up" : "down"}`}
+          className={classes.fab}
+          color="primary"
+          size={"small"}
+          onClick={() =>
+            isIntersecting && scrollDirection === "toTop"
+              ? window.scroll({
+                  top: 0,
+                  behavior: "smooth",
+                })
+              : targetContainerRef?.scrollIntoView({
+                  block: "end",
+                  behavior: "smooth",
+                })
+          }
+          timeout={transitionDuration}
+        >
+          {scrollDirection === "toBottom" ? <DownIcon /> : <UpIcon />}
+        </Fab>
+      </Zoom>
+    )
   );
 }
