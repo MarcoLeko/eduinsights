@@ -82,7 +82,8 @@ export function Ads() {
             This site has costs on hardware and on maintenance level which need
             to be covered. Therefore Eduinsights decided to place a google ads
             snippet to partially compensate those. Please take this into
-            consideration, when you might see pop up one of this 'annoying' ads.
+            consideration, when you might see pop up one of those 'annoying'
+            ads. 🙌
           </DialogContentText>
         </DialogContent>
         <DialogActions>
