@@ -18,7 +18,7 @@ import { useDetectAdBlock } from "../../hooks/useDetectAdBlock";
 
 const useStyles = makeStyles((theme) => ({
   cardRoot: {
-    margin: theme.spacing(2, "auto", 0, "auto"),
+    margin: theme.spacing(2, "auto", 1, "auto"),
     maxWidth: 1200,
   },
   cardHeaderRoot: {
