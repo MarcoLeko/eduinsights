@@ -23,7 +23,7 @@ activatePolyfill().then(() =>
   ReactDOM.render(<Bootstrap />, document.getElementById("root"))
 );
 
-ReactGA.initialize("G-5V45SCYC28");
+ReactGA.initialize("UA-186555914-1", { debug: true });
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

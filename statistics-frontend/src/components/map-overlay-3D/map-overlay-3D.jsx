@@ -33,7 +33,7 @@ export function MapOverlay3D({ showLoadingScreen }) {
     ? window.innerHeight - (128 + 52)
     : window.innerHeight - (128 + 117);
 
-  const globeRef = useRef(null);
+  const globeRef = useRef();
   const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData(
     null
   );
@@ -58,7 +58,7 @@ export function MapOverlay3D({ showLoadingScreen }) {
   }
 
   useEffect(() => {
-    if (globeRef?.current) {
+    if (globeRef.current) {
       const camera = globeRef.current.camera();
       const controls = globeRef.current.controls();
       resetCameraPosition(camera, controls);
