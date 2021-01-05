@@ -91,6 +91,7 @@ function Home() {
       })}
     >
       <AppMarkup />
+      <Ads />
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}
@@ -99,7 +100,6 @@ function Home() {
       />
       {getStatisticStepChildren()}
       <Introduction />
-      <Ads />
       <ScrollButtonHelper
         show={(activeStep === 2 || activeStep === 3) && !sidebarOpen}
         targetContainerRef={targetContainerRef.current}

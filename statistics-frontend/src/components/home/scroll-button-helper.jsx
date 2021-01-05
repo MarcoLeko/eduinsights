@@ -33,6 +33,7 @@ export function ScrollButtonHelper({
     enter: theme.transitions.duration.enteringScreen,
     exit: theme.transitions.duration.leavingScreen,
   };
+
   return (
     <Zoom
       in={show}

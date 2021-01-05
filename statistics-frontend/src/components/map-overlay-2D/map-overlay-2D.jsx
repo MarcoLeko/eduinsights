@@ -37,11 +37,11 @@ function MapOverlay2D({ showLoadingScreen }) {
       <VisualizationLoadingProgress show={showLoadingScreen} />
       <Map
         center={[45.0, 10.0]}
-        zoom={2}
+        zoom={3}
         tap={false} // disable tap events to let leaflet assume all map touch events are clean mouse events
         onPopupopen={centerMapView.bind(this)}
         zoomControl={false}
-        minZoom={2}
+        minZoom={3}
         bounceAtZoomLimits={true}
         maxBoundsViscosity={0.95}
         maxBounds={[

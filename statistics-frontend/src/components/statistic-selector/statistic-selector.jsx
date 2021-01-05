@@ -84,7 +84,6 @@ export function StatisticSelector({ onStatisticClick }) {
         from: { position: props.position.value },
         to: { position: Math.round(index) },
       });
-      return;
     }
     props.position.setValue(index);
   }

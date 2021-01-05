@@ -13,7 +13,7 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
     (entry) => {
       if (
         entry.isIntersecting === false &&
-        entry.intersectionRect.y + rootMarginTop === 0
+        entry.intersectionRect.y + rootMarginTop <= 0
       ) {
         return "toTop";
       }
@@ -36,7 +36,7 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
       },
       {
         threshold: 1.0,
-        rootMargin: `${rootMarginTop}px 0px 1px 0px`,
+        rootMargin: `${rootMarginTop}px 0px 0px 0px`,
       }
     );
 
