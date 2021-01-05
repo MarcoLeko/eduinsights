@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
   cardButton: {
     marginLeft: "auto",
   },
+  chipAvatarColorSecondary: {
+    background: "none !important",
+  },
 }));
 
 export function StatisticSelector({ onStatisticClick }) {
@@ -150,6 +153,11 @@ export function StatisticSelector({ onStatisticClick }) {
                     <Typography variant="overline" component="div">
                       This statistic provides data for{" "}
                       <Chip
+                        color="secondary"
+                        classes={{
+                          avatarColorSecondary:
+                            classes.chipAvatarColorSecondary,
+                        }}
                         label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
                         avatar={<PublicSharp />}
                       ></Chip>
@@ -159,6 +167,7 @@ export function StatisticSelector({ onStatisticClick }) {
                     <Button
                       variant="contained"
                       size="small"
+                      color="secondary"
                       classes={{ root: classes.cardButton }}
                       onClick={() =>
                         onStatisticClick({ statistic: statistic.key })

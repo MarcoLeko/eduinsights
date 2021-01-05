@@ -83,7 +83,10 @@ export function Ads() {
             to be covered. Therefore Eduinsights decided to place a google ads
             snippet to partially compensate those. Please take this into
             consideration, when you might see pop up one of those 'annoying'
-            ads. 🙌
+            ads.{" "}
+            <span role="img" aria-labelledby="hands-up">
+              🙌
+            </span>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
