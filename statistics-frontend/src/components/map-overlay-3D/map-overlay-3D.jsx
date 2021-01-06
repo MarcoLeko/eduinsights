@@ -40,7 +40,6 @@ export function MapOverlay3D({ showLoadingScreen }) {
     return document.body.clientWidth > 1280 ? 1280 : document.body.clientWidth;
   }
 
-  console.log(geoJsonFromSelectedStatistic.features);
   return (
     <div className="globe-content-wrapper">
       <VisualizationLoadingProgress show={showLoadingScreen} />
@@ -66,7 +65,7 @@ export function MapOverlay3D({ showLoadingScreen }) {
             color={"secondary"}
             style={{
               position: "absolute",
-              bottom: 16,
+              top: 16,
               margin: "auto",
               zIndex: 2,
               width: "100%",
