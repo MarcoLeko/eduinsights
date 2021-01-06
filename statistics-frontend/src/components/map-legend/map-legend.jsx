@@ -27,13 +27,15 @@ function MapLegend({ selectedStatisticMetaData }) {
 
       labels.push(
         `<div class="legend-item-wrapper">
-               <i style="background:${getColor(range)}"></i>` +
+               <i class="legend-color-box" style="background:${getColor(
+                 range
+               )}"></i>` +
           `<span>${from + (to ? " &ndash; " + to : " > ")}</span>` +
           `</div>`
       );
     }
 
-    return (div.innerHTML = labels.join("<br>"));
+    return (div.innerHTML = labels.join(""));
   };
 
   legend.onAdd = function () {

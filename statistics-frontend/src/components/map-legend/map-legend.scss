@@ -3,7 +3,7 @@
   color: #555;
 }
 
-.legend i {
+.legend-color-box {
   width: 18px;
   height: 18px;
   float: left;
@@ -17,3 +17,6 @@
   align-content: baseline;
 }
 
+.legend-item-wrapper:not(:last-child) {
+  margin-bottom: 1rem;
+}

@@ -5,7 +5,7 @@ import * as ReactLeaflet from "react-leaflet";
 import { useLeaflet } from "react-leaflet";
 import MapLegend from "../map-legend/map-legend";
 import MapInfoControl from "../map-info-control/map-info-control";
-import ResetViewMapButton from "../reset-view-map-button/reset-view-map-button";
+import ResetViewMapButton from "../reset-view-visualization-button/reset-view-map-button";
 import GeoJson from "../geoJson/geojson";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useStatisticData } from "../../hooks/use-statistic-data";
