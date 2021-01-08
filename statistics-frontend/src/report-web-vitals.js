@@ -2,7 +2,7 @@ import ReactGA from "react-ga";
 import { getCLS, getFID, getFCP, getLCP, getTTFB } from "web-vitals";
 
 // TODO: set as env-var.
-ReactGA.initialize("UA-186555914-1", { debug: true });
+ReactGA.initialize("UA-186555914-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 const ga = ReactGA.ga();
