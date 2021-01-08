@@ -7,7 +7,6 @@ import { AlertContextProvider } from "./context/alert-context";
 import { UiContextProvider } from "./context/ui-context";
 import activatePolyfill from "./activatePolyfill";
 import { reportWebVitals, sendToAnalytics } from "./report-web-vitals";
-import ReactGA from "react-ga";
 
 function Bootstrap() {
   return (
@@ -23,9 +22,6 @@ activatePolyfill().then(() =>
   ReactDOM.render(<Bootstrap />, document.getElementById("root"))
 );
 
-// TODO: set as env-var.
-ReactGA.initialize("UA-186555914-1");
-ReactGA.pageview(window.location.pathname + window.location.search);
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

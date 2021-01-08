@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   chipAvatarColorSecondary: {
     background: "none !important",
   },
+  chipRoot: { margin: 0 },
 }));
 
 export function StatisticSelector({ onStatisticClick }) {
@@ -153,7 +154,9 @@ export function StatisticSelector({ onStatisticClick }) {
                       This statistic provides data for{" "}
                       <Chip
                         color="secondary"
+                        component="p"
                         classes={{
+                          root: classes.chipRoot,
                           avatarColorSecondary:
                             classes.chipAvatarColorSecondary,
                         }}
