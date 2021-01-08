@@ -10,6 +10,7 @@ import { useStatisticData } from "../../hooks/use-statistic-data";
 import { muiGradientBackground } from "../../material-ui-theme";
 import { StatisticsListMarkup } from "../SEO/statistics-list-markup";
 import { PublicSharp } from "@material-ui/icons";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +66,26 @@ const useStyles = makeStyles((theme) => ({
     background: "none !important",
   },
   chipRoot: { margin: 0 },
+  skeletonContainer: {
+    display: "flex",
+    flexWrap: "nowrap",
+    overflow: "hidden",
+  },
+  skeletonRoot: {
+    margin: theme.spacing(2, 3),
+    flexShrink: 0,
+    height: 175,
+    width: 150,
+    [theme.breakpoints.up("ccSmallest")]: {
+      width: 175,
+    },
+    [theme.breakpoints.up("ccXxxs")]: {
+      width: 250,
+    },
+    [theme.breakpoints.up("ccSm")]: {
+      width: 300,
+    },
+  },
 }));
 
 export function StatisticSelector({ onStatisticClick }) {
@@ -90,100 +111,112 @@ export function StatisticSelector({ onStatisticClick }) {
   }
 
   return (
-    Boolean(statisticsList.length) && (
-      <div className={classes.container}>
-        <StatisticsListMarkup statisticsList={statisticsList} />
-        <SwipeableViews
-          index={index}
-          className={classes.root}
-          onChangeIndex={handleChangeIndex}
-          onSwitching={handleSwitch}
-          enableMouseEvents
-        >
-          {statisticsList.map((statistic, currentIndex) => {
-            function interpolatePositionProps(range, output) {
-              return props.position.interpolate({
-                range,
-                output,
-              });
-            }
+    <>
+      {Boolean(statisticsList.length) ? (
+        <div className={classes.container}>
+          <StatisticsListMarkup statisticsList={statisticsList} />
+          <SwipeableViews
+            index={index}
+            className={classes.root}
+            onChangeIndex={handleChangeIndex}
+            onSwitching={handleSwitch}
+            enableMouseEvents
+          >
+            {statisticsList.map((statistic, currentIndex) => {
+              function interpolatePositionProps(range, output) {
+                return props.position.interpolate({
+                  range,
+                  output,
+                });
+              }
 
-            const inputRange = statisticsList.map((_, i) => i);
-            const scale = interpolatePositionProps(
-              inputRange,
-              inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
-            );
+              const inputRange = statisticsList.map((_, i) => i);
+              const scale = interpolatePositionProps(
+                inputRange,
+                inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
+              );
 
-            const opacity = interpolatePositionProps(
-              inputRange,
-              inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
-            );
+              const opacity = interpolatePositionProps(
+                inputRange,
+                inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
+              );
 
-            const translateX = interpolatePositionProps(
-              inputRange,
-              inputRange.map((i) => (100 / 2) * (i - currentIndex))
-            );
+              const translateX = interpolatePositionProps(
+                inputRange,
+                inputRange.map((i) => (100 / 2) * (i - currentIndex))
+              );
 
-            const scaleAndTranslateX = interpolate(
-              [
-                scale.interpolate((x) => `scale(${x})`),
-                translateX.interpolate((x) => `translateX(${x}px)`),
-              ],
-              (scale, translateX) => `${scale} ${translateX}`
-            );
+              const scaleAndTranslateX = interpolate(
+                [
+                  scale.interpolate((x) => `scale(${x})`),
+                  translateX.interpolate((x) => `translateX(${x}px)`),
+                ],
+                (scale, translateX) => `${scale} ${translateX}`
+              );
 
-            return (
-              <animated.div
-                key={String(currentIndex)}
-                className={classes.slide}
-                style={Object.assign({
-                  opacity,
-                  transform: scaleAndTranslateX,
-                })}
-              >
-                <Card className={classes.cardRoot}>
-                  <CardContent>
-                    <Typography variant="h6" component="h2">
-                      {statistic.description}
-                    </Typography>
-                    <Typography className={classes.pos}>Year:</Typography>
-                    <Typography variant="body1" component="span">
-                      Start: {statistic.startYear} - End: {statistic.endYear}
-                    </Typography>
-                    <Typography variant="overline" component="div">
-                      This statistic provides data for{" "}
-                      <Chip
+              return (
+                <animated.div
+                  key={String(currentIndex)}
+                  className={classes.slide}
+                  style={Object.assign({
+                    opacity,
+                    transform: scaleAndTranslateX,
+                  })}
+                >
+                  <Card className={classes.cardRoot}>
+                    <CardContent>
+                      <Typography variant="h6" component="h2">
+                        {statistic.description}
+                      </Typography>
+                      <Typography className={classes.pos}>Year:</Typography>
+                      <Typography variant="body1" component="span">
+                        Start: {statistic.startYear} - End: {statistic.endYear}
+                      </Typography>
+                      <Typography variant="overline" component="div">
+                        This statistic provides data for{" "}
+                        <Chip
+                          color="secondary"
+                          component="p"
+                          classes={{
+                            root: classes.chipRoot,
+                            avatarColorSecondary:
+                              classes.chipAvatarColorSecondary,
+                          }}
+                          label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
+                          avatar={<PublicSharp />}
+                        ></Chip>
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <Button
+                        variant="contained"
+                        size="small"
                         color="secondary"
-                        component="p"
-                        classes={{
-                          root: classes.chipRoot,
-                          avatarColorSecondary:
-                            classes.chipAvatarColorSecondary,
-                        }}
-                        label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
-                        avatar={<PublicSharp />}
-                      ></Chip>
-                    </Typography>
-                  </CardContent>
-                  <CardActions disableSpacing>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="secondary"
-                      classes={{ root: classes.cardButton }}
-                      onClick={() =>
-                        onStatisticClick({ statistic: statistic.key })
-                      }
-                    >
-                      Select
-                    </Button>
-                  </CardActions>
-                </Card>
-              </animated.div>
-            );
-          })}
-        </SwipeableViews>
-      </div>
-    )
+                        classes={{ root: classes.cardButton }}
+                        onClick={() =>
+                          onStatisticClick({ statistic: statistic.key })
+                        }
+                      >
+                        Select
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </animated.div>
+              );
+            })}
+          </SwipeableViews>
+        </div>
+      ) : (
+        <div className={classes.skeletonContainer}>
+          {Array.from(new Array(5)).map((undefined, index) => (
+            <Skeleton
+              key={index}
+              variant="rect"
+              classes={{ root: classes.skeletonRoot }}
+            />
+          ))}
+        </div>
+      )}
+    </>
   );
 }
