@@ -10,10 +10,11 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
-import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
+// import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import { Ads } from "../ads/ads";
+import D3GeoMap from "../d3-geo-map/d3-geo-map";
 
 function Home() {
   const classes = useHeaderStyles();
@@ -64,7 +65,10 @@ function Home() {
             {queryParams.visualization === "globe" ? (
               <MapOverlay3D showLoadingScreen={activeStep === 2} />
             ) : (
-              <MapOverlay2D showLoadingScreen={activeStep === 2} />
+              <>
+                <D3GeoMap />
+                {/*<MapOverlay2D showLoadingScreen={activeStep === 2} />*/}
+              </>
             )}
           </div>
         );

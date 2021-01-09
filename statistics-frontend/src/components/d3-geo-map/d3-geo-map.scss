@@ -1,0 +1,16 @@
+.svg-map {
+  display: block;
+}
+
+.svg-wrapper {
+ display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 16px;
+}
+
+svg .country:hover {
+  stroke: black;
+  stroke-width: 2px;
+  cursor: pointer;
+}

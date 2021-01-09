@@ -110,113 +110,108 @@ export function StatisticSelector({ onStatisticClick }) {
     props.position.setValue(index);
   }
 
-  return (
-    <>
-      {Boolean(statisticsList.length) ? (
-        <div className={classes.container}>
-          <StatisticsListMarkup statisticsList={statisticsList} />
-          <SwipeableViews
-            index={index}
-            className={classes.root}
-            onChangeIndex={handleChangeIndex}
-            onSwitching={handleSwitch}
-            enableMouseEvents
-          >
-            {statisticsList.map((statistic, currentIndex) => {
-              function interpolatePositionProps(range, output) {
-                return props.position.interpolate({
-                  range,
-                  output,
-                });
-              }
+  return Boolean(statisticsList.length) ? (
+    <div className={classes.container}>
+      <StatisticsListMarkup statisticsList={statisticsList} />
+      <SwipeableViews
+        index={index}
+        className={classes.root}
+        onChangeIndex={handleChangeIndex}
+        onSwitching={handleSwitch}
+        enableMouseEvents
+      >
+        {statisticsList.map((statistic, currentIndex) => {
+          function interpolatePositionProps(range, output) {
+            return props.position.interpolate({
+              range,
+              output,
+            });
+          }
 
-              const inputRange = statisticsList.map((_, i) => i);
-              const scale = interpolatePositionProps(
-                inputRange,
-                inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
-              );
+          const inputRange = statisticsList.map((_, i) => i);
+          const scale = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
+          );
 
-              const opacity = interpolatePositionProps(
-                inputRange,
-                inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
-              );
+          const opacity = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
+          );
 
-              const translateX = interpolatePositionProps(
-                inputRange,
-                inputRange.map((i) => (100 / 2) * (i - currentIndex))
-              );
+          const translateX = interpolatePositionProps(
+            inputRange,
+            inputRange.map((i) => (100 / 2) * (i - currentIndex))
+          );
 
-              const scaleAndTranslateX = interpolate(
-                [
-                  scale.interpolate((x) => `scale(${x})`),
-                  translateX.interpolate((x) => `translateX(${x}px)`),
-                ],
-                (scale, translateX) => `${scale} ${translateX}`
-              );
+          const scaleAndTranslateX = interpolate(
+            [
+              scale.interpolate((x) => `scale(${x})`),
+              translateX.interpolate((x) => `translateX(${x}px)`),
+            ],
+            (scale, translateX) => `${scale} ${translateX}`
+          );
 
-              return (
-                <animated.div
-                  key={String(currentIndex)}
-                  className={classes.slide}
-                  style={Object.assign({
-                    opacity,
-                    transform: scaleAndTranslateX,
-                  })}
-                >
-                  <Card className={classes.cardRoot}>
-                    <CardContent>
-                      <Typography variant="h6" component="h2">
-                        {statistic.description}
-                      </Typography>
-                      <Typography className={classes.pos}>Year:</Typography>
-                      <Typography variant="body1" component="span">
-                        Start: {statistic.startYear} - End: {statistic.endYear}
-                      </Typography>
-                      <Typography variant="overline" component="div">
-                        This statistic provides data for{" "}
-                        <Chip
-                          color="secondary"
-                          component="p"
-                          classes={{
-                            root: classes.chipRoot,
-                            avatarColorSecondary:
-                              classes.chipAvatarColorSecondary,
-                          }}
-                          label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
-                          avatar={<PublicSharp />}
-                        ></Chip>
-                      </Typography>
-                    </CardContent>
-                    <CardActions disableSpacing>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="secondary"
-                        classes={{ root: classes.cardButton }}
-                        onClick={() =>
-                          onStatisticClick({ statistic: statistic.key })
-                        }
-                      >
-                        Select
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </animated.div>
-              );
-            })}
-          </SwipeableViews>
-        </div>
-      ) : (
-        <div className={classes.skeletonContainer}>
-          {Array.from(new Array(5)).map((undefined, index) => (
-            <Skeleton
-              key={index}
-              variant="rect"
-              classes={{ root: classes.skeletonRoot }}
-            />
-          ))}
-        </div>
-      )}
-    </>
+          return (
+            <animated.div
+              key={String(currentIndex)}
+              className={classes.slide}
+              style={Object.assign({
+                opacity,
+                transform: scaleAndTranslateX,
+              })}
+            >
+              <Card className={classes.cardRoot}>
+                <CardContent>
+                  <Typography variant="h6" component="h2">
+                    {statistic.description}
+                  </Typography>
+                  <Typography className={classes.pos}>Year:</Typography>
+                  <Typography variant="body1" component="span">
+                    Start: {statistic.startYear} - End: {statistic.endYear}
+                  </Typography>
+                  <Typography variant="overline" component="div">
+                    This statistic provides data for{" "}
+                    <Chip
+                      color="secondary"
+                      component="p"
+                      classes={{
+                        root: classes.chipRoot,
+                        avatarColorSecondary: classes.chipAvatarColorSecondary,
+                      }}
+                      label={`${statistic.amountOfCountries} / 221 UNESCO-Members`}
+                      avatar={<PublicSharp />}
+                    ></Chip>
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="secondary"
+                    classes={{ root: classes.cardButton }}
+                    onClick={() =>
+                      onStatisticClick({ statistic: statistic.key })
+                    }
+                  >
+                    Select
+                  </Button>
+                </CardActions>
+              </Card>
+            </animated.div>
+          );
+        })}
+      </SwipeableViews>
+    </div>
+  ) : (
+    <div className={classes.skeletonContainer}>
+      {Array.from(new Array(5).fill(1)).map((v, i) => (
+        <Skeleton
+          key={v + i}
+          variant="rect"
+          classes={{ root: classes.skeletonRoot }}
+        />
+      ))}
+    </div>
   );
 }
