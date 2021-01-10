@@ -7,7 +7,6 @@ const useResizeObserver = (ref) => {
     const observeTarget = ref.current;
     const resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
-        console.log(entry);
         setDimensions(entry.contentRect);
       });
     });
