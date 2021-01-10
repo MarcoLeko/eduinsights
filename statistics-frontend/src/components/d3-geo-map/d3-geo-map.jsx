@@ -9,14 +9,18 @@ import {
 import "./d3-geo-map.scss";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import useResizeObserver from "../../hooks/useResizeObserver";
+import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
+import { setVisualizationLoaded } from "../../context/ui-actions";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 function getWidth(width) {
   return width > 1280 ? 1280 : width;
 }
 
-function GeoChart() {
+function GeoChart({ showLoadingScreen }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
+  const { dispatch } = useUiContext();
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData();
@@ -24,12 +28,16 @@ function GeoChart() {
   useEffect(() => {
     const svg = select(svgRef.current);
 
+    if (geoJsonFromSelectedStatistic.features.length) {
+      dispatch(setVisualizationLoaded(true));
+    }
+
     const { width, height } =
       dimensions || wrapperRef.current.getBoundingClientRect();
 
     const colorScale = scaleThreshold()
       .domain(
-        geoJsonFromSelectedStatistic.evaluation.map((item) => item.value[1])
+        geoJsonFromSelectedStatistic.evaluation.map((item) => item.value[0])
       )
       .range(schemeBlues[7]);
 
@@ -46,7 +54,7 @@ function GeoChart() {
         .selectAll(".country")
         .transition()
         .duration(200)
-        .style("opacity", 0.5);
+        .style("opacity", 0.4);
 
       select(this).transition().duration(200).style("opacity", 1);
     };
@@ -58,7 +66,7 @@ function GeoChart() {
         .transition()
         .duration(200)
         .style("opacity", 0.8);
-      select(this).transition().duration(200).style("opacity", 0.6);
+      select(this).transition().duration(200).style("opacity", 0.8);
     };
 
     // render each country
@@ -94,6 +102,7 @@ function GeoChart() {
 
   return (
     <div className="svg-wrapper" ref={wrapperRef}>
+      <VisualizationLoadingProgress show={showLoadingScreen} />
       <svg className="svg-map" ref={svgRef} />
     </div>
   );

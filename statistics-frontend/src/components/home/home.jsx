@@ -10,7 +10,6 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { Visualization } from "../visualization/visualization";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
-// import MapOverlay2D from "../map-overlay-2D/map-overlay-2D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import { Ads } from "../ads/ads";
@@ -66,8 +65,7 @@ function Home() {
               <MapOverlay3D showLoadingScreen={activeStep === 2} />
             ) : (
               <>
-                <D3GeoMap />
-                {/*<MapOverlay2D showLoadingScreen={activeStep === 2} />*/}
+                <D3GeoMap showLoadingScreen={activeStep === 2} />
               </>
             )}
           </div>
