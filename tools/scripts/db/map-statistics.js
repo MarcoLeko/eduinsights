@@ -3,7 +3,7 @@ module.exports = mapStatistics = [
     description: "Net enrolment rate for primary education",
     key: "NET_ENROLMENT_RATE_FOR_PRIMARY_EDUCATION_2018_2018",
     url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/NER.PT.L1...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/NER.PT.L1.._T.................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
@@ -48,36 +48,37 @@ module.exports = mapStatistics = [
       { key: "fifthRange", value: [50, 100] },
     ],
   },
-  {
-    description: "Percentage of qualified teachers secondary education",
-    key: "PERCENTAGE_OF_QUALIFIED_TEACHERS_SECONDARY_EDUCATION_2018_2018",
-    url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/QUTP.PT.L2_3...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
-    startYear: 2018,
-    endYear: 2018,
-    evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 95] },
-      { key: "secondRange", value: [94, 80] },
-      { key: "thirdRange", value: [79, 69] },
-      { key: "fourthRange", value: [68, 50] },
-      { key: "fifthRange", value: [49, 0] },
-    ],
-  },
-  {
-    description: "Graduation ratio of primary education",
-    key: "GRADUATION_RATIO_PERCENTAGE_OF_PRIMARY_EDUCATION_2018_2018",
-    url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/GR..L1...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
-    startYear: 2018,
-    endYear: 2018,
-    evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 95] },
-      { key: "secondRange", value: [94, 80] },
-      { key: "thirdRange", value: [79, 69] },
-      { key: "fourthRange", value: [68, 50] },
-      { key: "fifthRange", value: [49, 0] },
-    ],
-  },
+  // TODO: fix multi dimensions
+  // {
+  //   description: "Percentage of qualified teachers secondary education",
+  //   key: "PERCENTAGE_OF_QUALIFIED_TEACHERS_SECONDARY_EDUCATION_2018_2018",
+  //   url:
+  //     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/QUTP.PT.L2_3...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+  //   startYear: 2018,
+  //   endYear: 2018,
+  //   evaluationType: "percentage",
+  //   evaluation: [
+  //     { key: "firstRange", value: [100, 95] },
+  //     { key: "secondRange", value: [94, 80] },
+  //     { key: "thirdRange", value: [79, 69] },
+  //     { key: "fourthRange", value: [68, 50] },
+  //     { key: "fifthRange", value: [49, 0] },
+  //   ],
+  // },
+  // {
+  //   description: "Graduation ratio of primary education",
+  //   key: "GRADUATION_RATIO_PERCENTAGE_OF_PRIMARY_EDUCATION_2018_2018",
+  //   url:
+  //     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/GR..L1...................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+  //   startYear: 2018,
+  //   endYear: 2018,
+  //   evaluationType: "percentage",
+  //   evaluation: [
+  //     { key: "firstRange", value: [100, 95] },
+  //     { key: "secondRange", value: [94, 80] },
+  //     { key: "thirdRange", value: [79, 69] },
+  //     { key: "fourthRange", value: [68, 50] },
+  //     { key: "fifthRange", value: [49, 0] },
+  //   ],
+  // },
 ];

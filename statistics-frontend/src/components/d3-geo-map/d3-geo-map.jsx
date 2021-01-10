@@ -2,64 +2,66 @@ import React, { useRef, useEffect, useState } from "react";
 import {
   select,
   geoPath,
-  geoMercator,
-  min,
-  max,
-  scaleLinear,
+  scaleThreshold,
   schemeBlues,
+  geoEquirectangular,
 } from "d3";
 import "./d3-geo-map.scss";
 import { useStatisticData } from "../../hooks/use-statistic-data";
+import useResizeObserver from "../../hooks/useResizeObserver";
 
-const height = 800;
-const width = 800;
+function getWidth(width) {
+  return width > 1280 ? 1280 : width;
+}
 
 function GeoChart() {
   const svgRef = useRef();
+  const wrapperRef = useRef();
+  const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const { geoJsonFromSelectedStatistic } = useStatisticData();
 
   useEffect(() => {
     const svg = select(svgRef.current);
 
-    const minProp = min(
-      geoJsonFromSelectedStatistic.features,
-      (feature) => feature.properties.value
-    );
-    const maxProp = max(
-      geoJsonFromSelectedStatistic.features,
-      (feature) => feature.properties.value
-    );
-    const colorScale = scaleLinear()
-      .domain([minProp, maxProp])
+    const { width, height } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
+
+    const colorScale = scaleThreshold()
+      .domain(
+        geoJsonFromSelectedStatistic.evaluation.map((item) => item.value[1])
+      )
       .range(schemeBlues[7]);
 
-    const projection = geoMercator()
-      .scale(200)
-      .center([0, 20])
-      .translate([width / 2, height / 2]);
+    const projection = geoEquirectangular()
+      .scale((getWidth(width) / 640) * 100)
+      .center([0, 75])
+      .translate([getWidth(width) / 2, height / 4]);
 
-    // transforms that into the d attribute of a path element
     const pathGenerator = geoPath().projection(projection);
+
+    const highlight = function (e, feature) {
+      setSelectedCountry(selectedCountry === feature ? null : feature);
+    };
+
+    const resetHighlight = function () {
+      setSelectedCountry(null);
+      svg.selectAll(".country").style("opacity", 0.8);
+    };
 
     // render each country
     svg
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
       .join("path")
-      .on("click", (e, feature) => {
-        setSelectedCountry(selectedCountry === feature ? null : feature);
-      })
-      .on("mouseover", (e, feature) => {
-        setSelectedCountry(selectedCountry === feature ? null : feature);
-      })
-      .on("mouseout", () => {
-        setSelectedCountry(null);
-      })
-      .transition()
-      .duration(200)
+      .on("click", highlight)
+      .on("mouseover", highlight)
+      .on("mouseout", resetHighlight)
       .attr("class", "country")
-      .attr("fill", (feature) => colorScale(feature.properties.value || 0))
+      .style("stroke-width", 1)
+      .style("stroke", "black")
+      .transition()
+      .attr("fill", (feature) => colorScale(feature.properties.value))
       .attr("d", (feature) => pathGenerator(feature));
 
     svg
@@ -70,17 +72,18 @@ function GeoChart() {
       .text(
         (feature) =>
           feature &&
+          feature.properties?.value &&
           feature.properties?.name +
             ": " +
             feature.properties?.value.toLocaleString()
       )
       .attr("x", 10)
       .attr("y", 25);
-  }, [selectedCountry, geoJsonFromSelectedStatistic]);
+  }, [selectedCountry, dimensions, geoJsonFromSelectedStatistic]);
 
   return (
-    <div className="svg-wrapper">
-      <svg className="svg-map" ref={svgRef} width={width} height={height} />
+    <div className="svg-wrapper" ref={wrapperRef}>
+      <svg className="svg-map" ref={svgRef} />
     </div>
   );
 }

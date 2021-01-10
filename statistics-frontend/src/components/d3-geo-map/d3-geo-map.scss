@@ -1,5 +1,10 @@
 .svg-map {
   display: block;
+  width: 100%;
+  @media (max-width: 600px) {
+    height: calc(100vh - (52px + 128px));
+  }
+  height: calc(100vh - (117px + 128px));
 }
 
 .svg-wrapper {
@@ -9,8 +14,10 @@
   margin-bottom: 16px;
 }
 
+
 svg .country:hover {
   stroke: black;
   stroke-width: 2px;
   cursor: pointer;
+  opacity: 1;
 }
