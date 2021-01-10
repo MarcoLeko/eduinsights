@@ -13,6 +13,7 @@ import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import { Ads } from "../ads/ads";
+import "./home.scss";
 import D3GeoMap from "../d3-geo-map/d3-geo-map";
 
 function Home() {
@@ -60,7 +61,11 @@ function Home() {
       case 3:
       case 2:
         return (
-          <div id="visualization-container" ref={targetContainerRef}>
+          <div
+            id="visualization-container"
+            className="visualization-container"
+            ref={targetContainerRef}
+          >
             {queryParams.visualization === "globe" ? (
               <MapOverlay3D showLoadingScreen={activeStep === 2} />
             ) : (

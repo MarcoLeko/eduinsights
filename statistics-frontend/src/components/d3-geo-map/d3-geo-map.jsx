@@ -2,9 +2,12 @@ import React, { useRef, useEffect, useState } from "react";
 import {
   select,
   geoPath,
-  scaleThreshold,
-  schemeBlues,
+  scaleSequential,
+  interpolateBlues,
   geoEquirectangular,
+  scaleLinear,
+  extent,
+  axisBottom,
 } from "d3";
 import "./d3-geo-map.scss";
 import { useStatisticData } from "../../hooks/use-statistic-data";
@@ -12,10 +15,6 @@ import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-
-function getWidth(width) {
-  return width > 1280 ? 1280 : width;
-}
 
 function GeoChart({ showLoadingScreen }) {
   const svgRef = useRef();
@@ -35,38 +34,31 @@ function GeoChart({ showLoadingScreen }) {
     const { width, height } =
       dimensions || wrapperRef.current.getBoundingClientRect();
 
-    const colorScale = scaleThreshold()
+    const colorScale = scaleSequential(interpolateBlues);
+    const unitScale = scaleLinear()
       .domain(
-        geoJsonFromSelectedStatistic.evaluation.map((item) => item.value[0])
+        extent(
+          geoJsonFromSelectedStatistic.features.map(
+            (item) => item.properties.value
+          )
+        )
       )
-      .range(schemeBlues[7]);
+      .range([0, 1]);
 
-    const projection = geoEquirectangular()
-      .scale((getWidth(width) / 640) * 100)
-      .center([0, 75])
-      .translate([getWidth(width) / 2, height / 4]);
-
+    const projection = geoEquirectangular().fitSize(
+      [width, height],
+      geoJsonFromSelectedStatistic
+    );
     const pathGenerator = geoPath().projection(projection);
 
     const highlight = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
-      svg
-        .selectAll(".country")
-        .transition()
-        .duration(200)
-        .style("opacity", 0.4);
-
-      select(this).transition().duration(200).style("opacity", 1);
+      select(this).transition().style("opacity", 1);
     };
 
     const resetHighlight = function () {
       setSelectedCountry(null);
-      svg
-        .selectAll(".country")
-        .transition()
-        .duration(200)
-        .style("opacity", 0.8);
-      select(this).transition().duration(200).style("opacity", 0.8);
+      select(this).transition().style("opacity", 0.75);
     };
 
     // render each country
@@ -74,14 +66,20 @@ function GeoChart({ showLoadingScreen }) {
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
       .join("path")
-      .style("opacity", 0.8)
+      .style("opacity", 0.75)
+      .style("stroke-width", 0.5)
+      .style("stroke", "black")
       .on("mouseover", highlight)
       .on("mouseout", resetHighlight)
       .attr("class", "country")
-      .style("stroke-width", 1)
-      .style("stroke", "black")
-      .attr("fill", (feature) => colorScale(feature.properties.value))
-      .attr("d", (feature) => pathGenerator(feature));
+      .transition()
+      .attr("fill", (feature) =>
+        feature.properties.value === null
+          ? "#ccc"
+          : colorScale(unitScale(feature.properties.value))
+      )
+      .attr("d", (feature) => pathGenerator(feature))
+      .attr("transform", "scale(1, 1.3)");
 
     svg
       .selectAll(".label")
@@ -98,7 +96,40 @@ function GeoChart({ showLoadingScreen }) {
       )
       .attr("x", 10)
       .attr("y", 25);
-  }, [selectedCountry, dimensions, geoJsonFromSelectedStatistic]);
+
+    // legend scale
+    const legendWidth = 0.5 * width;
+    const legendHeight = 30;
+    const numCells = 100;
+    const cellWidth = legendWidth / numCells;
+    const legendUnitScale = scaleLinear()
+      .domain([0, legendWidth])
+      .range([0, 1]);
+    const axisScale = scaleLinear()
+      .domain(
+        extent(geoJsonFromSelectedStatistic.features, (d) => d.properties.value)
+      )
+      .range([0, legendWidth]);
+
+    //legend
+    const legend = svg
+      .append("svg")
+      .attr("id", "legend")
+      .attr("width", legendWidth * 1.25)
+      .attr("height", legendHeight)
+      .attr("x", 0.25 * width)
+      .attr("y", 20);
+    for (let i = 0; i < numCells; i++) {
+      legend
+        .append("rect")
+        .attr("x", i * cellWidth)
+        .attr("width", cellWidth)
+        .attr("height", legendHeight - 20)
+        .attr("fill", colorScale(legendUnitScale(i * cellWidth)));
+    }
+    const axis = axisBottom(axisScale);
+    legend.append("g").attr("transform", `translate(0,10)`).call(axis);
+  }, [selectedCountry, dimensions, geoJsonFromSelectedStatistic, dispatch]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef}>
