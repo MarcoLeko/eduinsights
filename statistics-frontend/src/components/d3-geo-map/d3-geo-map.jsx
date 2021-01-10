@@ -42,11 +42,23 @@ function GeoChart() {
 
     const highlight = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
+      svg
+        .selectAll(".country")
+        .transition()
+        .duration(200)
+        .style("opacity", 0.5);
+
+      select(this).transition().duration(200).style("opacity", 1);
     };
 
     const resetHighlight = function () {
       setSelectedCountry(null);
-      svg.selectAll(".country").style("opacity", 0.8);
+      svg
+        .selectAll(".country")
+        .transition()
+        .duration(200)
+        .style("opacity", 0.8);
+      select(this).transition().duration(200).style("opacity", 0.6);
     };
 
     // render each country
@@ -54,13 +66,12 @@ function GeoChart() {
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
       .join("path")
-      .on("click", highlight)
+      .style("opacity", 0.8)
       .on("mouseover", highlight)
       .on("mouseout", resetHighlight)
       .attr("class", "country")
       .style("stroke-width", 1)
       .style("stroke", "black")
-      .transition()
       .attr("fill", (feature) => colorScale(feature.properties.value))
       .attr("d", (feature) => pathGenerator(feature));
 
