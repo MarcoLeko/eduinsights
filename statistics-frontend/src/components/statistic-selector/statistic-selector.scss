@@ -1,4 +1,57 @@
+@import "../../styles";
+
 .react-swipeable-view-container > div {
   overflow: unset !important;
   height: 100%;
+}
+
+.statistic-selector {
+  max-width: 400px;
+  padding: 0 8px;
+  min-width: 250px;
+  background: $background-paper-default,
+}
+
+.slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
+.chip-root {
+  background: $app-background;
+
+  > svg {
+    background: none !important;
+  }
+}
+
+.card-button {
+  margin-left: auto !important;
+  background: $app-background;
+}
+
+.statistic-selector-container {
+  padding: 0px 16px;
+  justify-content: center;
+  margin: auto;
+  margin: auto;
+  max-width: 1200px;
+}
+
+.skeleton-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin: auto;
+  max-width: 1200px;
+}
+
+.skeleton-root {
+  margin: 16px 24px;
+  flex-shrink: 0;
+  height: 175px !important;
+  width: 250px;
 }

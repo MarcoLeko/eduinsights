@@ -2,26 +2,8 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import { Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import { AppDescription } from "../SEO/app-description";
-
-const useStyles = makeStyles((theme) => ({
-  captionRoot: {
-    color: theme.palette.primary.contrastText,
-  },
-  paperHeadline: {
-    padding: theme.spacing(2, 0),
-    justifyContent: "center",
-    background: "none",
-    alignItems: "center",
-    display: "flex",
-    boxShadow: "none",
-    marginBottom: theme.spacing(1),
-  },
-  box: {
-    margin: theme.spacing(1),
-  },
-}));
+import "./introduction.scss";
 
 const content = {
   goal:
@@ -47,10 +29,11 @@ function getTextContent(obj) {
 }
 
 function Introduction() {
-  const classes = useStyles();
-
   return (
-    <Box component={"section"} className={classes.box}>
+    <Box component={"section"} className="box">
+      <Paper className="bottom-line">
+        <Typography variant={"overline"}>{content.goal}</Typography>
+      </Paper>
       <Typography variant={"body1"} color="textSecondary" gutterBottom>
         {content.explanation[0]}
         {content.explanation[1]}
@@ -63,13 +46,6 @@ function Introduction() {
         </Link>
         {content.bottomLine}
       </Typography>
-      <Paper
-        classes={{
-          root: classes.paperHeadline,
-        }}
-      >
-        <Typography variant={"overline"}>{content.goal}</Typography>
-      </Paper>
       <AppDescription description={getTextContent(content)} />
     </Box>
   );
