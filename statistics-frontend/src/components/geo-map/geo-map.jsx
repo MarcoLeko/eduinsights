@@ -7,14 +7,14 @@ import {
   geoEquirectangular,
   scaleLinear,
   extent,
-  axisBottom,
 } from "d3";
-import "./d3-geo-map.scss";
+import "./geo-map.scss";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
+import GeoLegend from "../geo-legend/geo-legend";
 
 function GeoChart({ showLoadingScreen }) {
   const svgRef = useRef();
@@ -61,7 +61,6 @@ function GeoChart({ showLoadingScreen }) {
       select(this).transition().style("opacity", 0.75);
     };
 
-    // render each country
     svg
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
@@ -96,45 +95,23 @@ function GeoChart({ showLoadingScreen }) {
       )
       .attr("x", 10)
       .attr("y", 25);
-
-    // legend scale
-    const legendWidth = 0.5 * width;
-    const legendHeight = 30;
-    const numCells = 100;
-    const cellWidth = legendWidth / numCells;
-    const legendUnitScale = scaleLinear()
-      .domain([0, legendWidth])
-      .range([0, 1]);
-    const axisScale = scaleLinear()
-      .domain(
-        extent(geoJsonFromSelectedStatistic.features, (d) => d.properties.value)
-      )
-      .range([0, legendWidth]);
-
-    //legend
-    const legend = svg
-      .append("svg")
-      .attr("id", "legend")
-      .attr("width", legendWidth * 1.25)
-      .attr("height", legendHeight)
-      .attr("x", 0.25 * width)
-      .attr("y", 20);
-    for (let i = 0; i < numCells; i++) {
-      legend
-        .append("rect")
-        .attr("x", i * cellWidth)
-        .attr("width", cellWidth)
-        .attr("height", legendHeight - 20)
-        .attr("fill", colorScale(legendUnitScale(i * cellWidth)));
-    }
-    const axis = axisBottom(axisScale);
-    legend.append("g").attr("transform", `translate(0,10)`).call(axis);
   }, [selectedCountry, dimensions, geoJsonFromSelectedStatistic, dispatch]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef}>
       <VisualizationLoadingProgress show={showLoadingScreen} />
       <svg className="svg-map" ref={svgRef} />
+      {Boolean(
+        svgRef.current &&
+          geoJsonFromSelectedStatistic.features.length &&
+          dimensions?.width
+      ) && (
+        <GeoLegend
+          geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+          svgRef={svgRef}
+          width={dimensions.width}
+        />
+      )}
     </div>
   );
 }

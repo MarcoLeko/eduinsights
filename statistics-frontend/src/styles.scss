@@ -1,4 +1,4 @@
-$color-default: rgba(0, 0, 0, 0.87);
+$color-default: rgba(0, 0, 0, 0.87) !important;
 $font-format: Montserrat, sans-serif;
 $app-background: linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%);
 $breakpoint-xs : 600px;
@@ -6,7 +6,7 @@ $background-paper-default: #fafafa;
 
 @media (prefers-color-scheme: dark) {
   $background-paper-default: #303030;
-  $color-default: #fff;
+  $color-default: #fff !important;
 }
 
 html, body, #root {

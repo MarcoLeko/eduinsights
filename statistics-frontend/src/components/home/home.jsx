@@ -14,7 +14,7 @@ import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import { Ads } from "../ads/ads";
 import "./home.scss";
-import D3GeoMap from "../d3-geo-map/d3-geo-map";
+import GeoChart from "../geo-map/geo-map";
 
 function Home() {
   const classes = useHeaderStyles();
@@ -70,7 +70,7 @@ function Home() {
               <MapOverlay3D showLoadingScreen={activeStep === 2} />
             ) : (
               <>
-                <D3GeoMap showLoadingScreen={activeStep === 2} />
+                <GeoChart showLoadingScreen={activeStep === 2} />
               </>
             )}
           </div>
