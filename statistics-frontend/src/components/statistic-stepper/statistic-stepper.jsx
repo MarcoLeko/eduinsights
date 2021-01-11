@@ -1,43 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import { useStatisticData } from "../../hooks/use-statistic-data";
-import { muiGradientBackground } from "../../material-ui-theme";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-  paper: {
-    position: "sticky",
-    top: 117,
-    zIndex: 1,
-    height: 128,
-    background: theme.palette.background.default,
-    [theme.breakpoints.down("xs")]: {
-      top: 52,
-    },
-  },
-  button: { marginRight: theme.spacing(1) },
-  buttonNext: {
-    background: muiGradientBackground,
-    color: theme.palette.primary.contrastText,
-  },
-  instructions: {
-    marginBottom: theme.spacing(1),
-    textAlign: "center",
-    width: "100%",
-  },
-  stepNavigationButtons: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    padding: theme.spacing(1, 0),
-  },
-}));
+import "./statistic-stepper.scss";
 
 function getStepsDescription() {
   return [
@@ -53,7 +20,6 @@ export default function StatisticStepper({
   resetQueryParams,
   removeLastQueryParam,
 }) {
-  const classes = useStyles();
   const { statisticsList } = useStatisticData();
 
   const isFirstStepFailed = (step) => {
@@ -72,14 +38,8 @@ export default function StatisticStepper({
   };
 
   return (
-    <div className={classes.root}>
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        classes={{
-          root: classes.paper,
-        }}
-      >
+    <>
+      <Stepper alternativeLabel activeStep={activeStep} className="stepper">
         {getStepsDescription().map((label, i) => {
           const labelProps = {};
           const stepProps = {};
@@ -96,18 +56,19 @@ export default function StatisticStepper({
           );
         })}
       </Stepper>
-      <div className={classes.stepNavigationButtons}>
+      <div className="step-navigation-buttons">
         <Button
+          color="secondary"
           disabled={activeStep === 0}
           onClick={() => removeLastQueryParam(activeStep)}
-          className={classes.button}
+          className="back-button"
         >
           Back
         </Button>
-        <Button onClick={resetQueryParams} className={classes.buttonNext}>
+        <Button onClick={resetQueryParams} color="secondary">
           Reset
         </Button>
       </div>
-    </div>
+    </>
   );
 }

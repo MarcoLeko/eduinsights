@@ -6,20 +6,20 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
   const [scrollDirection, setScrollDirection] = useState(null);
   const materialUiTheme = useTheme();
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
-  const rootMarginTop = matches ? -52 : -117;
+  const rootMarginTop = matches ? 52 : 117;
   const intersectionObserver = useRef();
 
   const getScrollDirection = useCallback(
     (entry) => {
       if (
         entry.isIntersecting === false &&
-        entry.intersectionRect.y + rootMarginTop <= 0
+        entry.intersectionRect.y - rootMarginTop <= 0
       ) {
         return "toTop";
       }
       if (
         entry.isIntersecting &&
-        entry.intersectionRect.y + rootMarginTop >= 0
+        entry.intersectionRect.y - rootMarginTop >= 0
       ) {
         return "toTop";
       }
@@ -36,7 +36,7 @@ export function useScrollYObserver(observerEnabled, targetElement, root) {
       },
       {
         threshold: 1.0,
-        rootMargin: `${rootMarginTop}px 0px 0px 0px`,
+        rootMargin: `-${rootMarginTop}px 0px 0px 0px`,
       }
     );
 

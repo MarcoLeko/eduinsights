@@ -1,60 +1,29 @@
 import React from "react";
-import { Button, Grid, makeStyles, Paper } from "@material-ui/core";
+import { Button, Grid, Paper } from "@material-ui/core";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
 import Typography from "@material-ui/core/Typography";
-import { muiGradientBackground } from "../../material-ui-theme";
+import "./visualization.scss";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    margin: theme.spacing(1, 0),
-    width: "100%",
+const visualizations = [
+  {
+    label: "2D Display",
+    icon: <MapTwoToneIcon className="svg-icon" />,
+    key: "map",
   },
-  paper: {
-    padding: theme.spacing(2, 1),
-    maxHeight: 320,
-    maxWidth: 240,
+  {
+    label: "3D Display",
+    icon: <PublicTwoToneIcon className="svg-icon" />,
+    key: "globe",
   },
-  paperRoot: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
-  svgIcon: {
-    width: "30%",
-    height: "auto",
-  },
-  button: {
-    background: muiGradientBackground,
-  },
-}));
+];
 
 export function Visualization({ addNextQueryParam }) {
-  const classes = useStyles();
-
-  const visualizations = [
-    {
-      label: "2D Display",
-      icon: <MapTwoToneIcon classes={{ root: classes.svgIcon }} />,
-      key: "map",
-    },
-    {
-      label: "3D Display",
-      icon: <PublicTwoToneIcon classes={{ root: classes.svgIcon }} />,
-      key: "globe",
-    },
-  ];
-
   return (
-    <Grid container justify="center" className={classes.root} spacing={3}>
+    <Grid container justify="center" spacing={2} wrap="nowrap">
       {visualizations.map((visualization) => (
         <Grid key={visualization.key} item>
-          <Paper
-            className={classes.paper}
-            classes={{ root: classes.paperRoot }}
-          >
+          <Paper className="paper-root">
             {visualization.icon}
             <Typography variant="overline" component="h6" color={"textPrimary"}>
               {visualization.label}
@@ -65,7 +34,7 @@ export function Visualization({ addNextQueryParam }) {
               }
               size={"small"}
               variant="contained"
-              classes={{ root: classes.button }}
+              className="visualization-button"
             >
               Select
             </Button>

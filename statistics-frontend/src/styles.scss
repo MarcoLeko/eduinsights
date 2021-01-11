@@ -1,5 +1,12 @@
 $color-default: rgba(0, 0, 0, 0.65);
 $font-format: Montserrat, sans-serif;
+$app-background: linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%);
+$breakpoint-xs : 600px;
+$background-paper-default: #fafafa;
+
+@media (prefers-color-scheme: dark) {
+  $background-paper-default: #303030;
+}
 
 html, body, #root {
   width: 100%;
