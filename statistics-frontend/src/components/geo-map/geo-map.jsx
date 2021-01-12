@@ -15,6 +15,7 @@ import { VisualizationLoadingProgress } from "../shared/visualization-loading-pr
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 function GeoMap({ showLoadingScreen }) {
   const svgRef = useRef();
@@ -24,6 +25,31 @@ function GeoMap({ showLoadingScreen }) {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData();
   const isDarkTheme = theme === "dark";
+  const muiTheme = useTheme();
+  const verySmallViewport = useMediaQuery(muiTheme.breakpoints.between(0, 361));
+  const smallViewport = useMediaQuery(muiTheme.breakpoints.between(362, "xs"));
+  const mediumViewport = useMediaQuery(
+    muiTheme.breakpoints.between("xs", "md")
+  );
+  const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
+
+  const getHeight = () => {
+    if (verySmallViewport) {
+      return 250;
+    }
+    if (smallViewport) {
+      return 350;
+    }
+    if (mediumViewport) {
+      return 450;
+    }
+
+    if (largeViewport) {
+      return 600;
+    }
+
+    return 640;
+  };
 
   useEffect(() => {
     const svg = select(svgRef.current);
@@ -90,7 +116,7 @@ function GeoMap({ showLoadingScreen }) {
   return (
     <div className="svg-wrapper" ref={wrapperRef}>
       <VisualizationLoadingProgress show={showLoadingScreen} />
-      <svg className="svg-map" ref={svgRef} />
+      <svg className="svg-map" ref={svgRef} height={getHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup

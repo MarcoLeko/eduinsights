@@ -38,7 +38,7 @@ export default function StatisticStepper({
   };
 
   return (
-    <>
+    <div className="stepper-container">
       <Stepper alternativeLabel activeStep={activeStep} className="stepper">
         {getStepsDescription().map((label, i) => {
           const labelProps = {};
@@ -69,6 +69,6 @@ export default function StatisticStepper({
           Reset
         </Button>
       </div>
-    </>
+    </div>
   );
 }
