@@ -136,7 +136,11 @@ function GeoMap({ showLoadingScreen }) {
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">
       <VisualizationLoadingProgress show={showLoadingScreen} />
       {geoJsonFromSelectedStatistic.description && (
-        <Typography variant="subtitle1" className="statistic-description">
+        <Typography
+          variant="subtitle1"
+          className="statistic-description"
+          color="textSecondary"
+        >
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
