@@ -16,6 +16,8 @@ import { useMediaQuery } from "@material-ui/core";
  * @param width
  * @returns {null}
  */
+
+//TODO: on small viewport place legend to the bottom x-axis - on large on the left on the y-axis also append it to the container not svg
 function GeoLegend({ svgRef, geoJsonFromSelectedStatistic, width }) {
   const media = useMediaQuery("(prefers-color-scheme: dark)");
 

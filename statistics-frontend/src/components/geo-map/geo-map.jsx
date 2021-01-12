@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, memo } from "react";
 import {
   select,
   geoPath,
@@ -16,7 +16,7 @@ import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import GeoLegend from "../geo-legend/geo-legend";
 
-function GeoChart({ showLoadingScreen }) {
+function GeoMap({ showLoadingScreen }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch } = useUiContext();
@@ -31,8 +31,7 @@ function GeoChart({ showLoadingScreen }) {
       dispatch(setVisualizationLoaded(true));
     }
 
-    const { width, height } =
-      dimensions || wrapperRef.current.getBoundingClientRect();
+    const { width } = dimensions || wrapperRef.current.getBoundingClientRect();
 
     const colorScale = scaleSequential(interpolateBlues);
     const unitScale = scaleLinear()
@@ -45,8 +44,8 @@ function GeoChart({ showLoadingScreen }) {
       )
       .range([0, 1]);
 
-    const projection = geoEquirectangular().fitSize(
-      [width, height],
+    const projection = geoEquirectangular().fitWidth(
+      width,
       geoJsonFromSelectedStatistic
     );
     const pathGenerator = geoPath().projection(projection);
@@ -67,7 +66,7 @@ function GeoChart({ showLoadingScreen }) {
       .join("path")
       .style("opacity", 0.75)
       .style("stroke-width", 0.5)
-      .style("stroke", "black")
+      .style("stroke", "#303030")
       .on("mouseover", highlight)
       .on("mouseout", resetHighlight)
       .attr("class", "country")
@@ -116,4 +115,4 @@ function GeoChart({ showLoadingScreen }) {
   );
 }
 
-export default GeoChart;
+export default memo(GeoMap);
