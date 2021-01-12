@@ -12,7 +12,6 @@ import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
 import ResetViewGlobeButton from "../reset-view-visualization-button/reset-view-globe-button";
-import GlobeLegend from "../map-legend/globe-legend";
 
 export function MapOverlay3D({ showLoadingScreen }) {
   const { theme, dispatch } = useUiContext();
@@ -37,7 +36,7 @@ export function MapOverlay3D({ showLoadingScreen }) {
   }, [geoJsonFromSelectedStatistic]);
 
   function getGlobeWidth() {
-    return document.body.clientWidth > 1280 ? 1280 : document.body.clientWidth;
+    return document.body.clientWidth > 1200 ? 1200 : document.body.clientWidth;
   }
 
   return (
@@ -56,9 +55,6 @@ export function MapOverlay3D({ showLoadingScreen }) {
               ...geoJsonFromSelectedStatistic,
               statisticsList: statisticsList,
             }}
-          />
-          <GlobeLegend
-            selectedStatisticMetaData={geoJsonFromSelectedStatistic}
           />
           <Typography
             variant="caption"

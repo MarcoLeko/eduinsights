@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, useState, memo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  select,
-  geoPath,
-  scaleSequential,
-  interpolateBlues,
-  geoEquirectangular,
-  scaleLinear,
   extent,
+  geoEquirectangular,
+  geoPath,
+  interpolateBlues,
+  scaleLinear,
+  scaleSequential,
+  select,
 } from "d3";
 import "./geo-map.scss";
 import { useStatisticData } from "../../hooks/use-statistic-data";
@@ -14,15 +14,16 @@ import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-import GeoLegend from "../geo-legend/geo-legend";
+import { StatisticsMarkup } from "../SEO/statistics-markup";
 
 function GeoMap({ showLoadingScreen }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
-  const { dispatch } = useUiContext();
+  const { dispatch, theme } = useUiContext();
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const { geoJsonFromSelectedStatistic } = useStatisticData();
+  const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData();
+  const isDarkTheme = theme === "dark";
 
   useEffect(() => {
     const svg = select(svgRef.current);
@@ -66,7 +67,7 @@ function GeoMap({ showLoadingScreen }) {
       .join("path")
       .style("opacity", 0.75)
       .style("stroke-width", 0.5)
-      .style("stroke", "#303030")
+      .style("stroke", isDarkTheme ? "#303030" : "#fff")
       .on("mouseover", highlight)
       .on("mouseout", resetHighlight)
       .attr("class", "country")
@@ -78,41 +79,30 @@ function GeoMap({ showLoadingScreen }) {
       )
       .attr("d", (feature) => pathGenerator(feature))
       .attr("transform", "scale(1, 1.3)");
-
-    svg
-      .selectAll(".label")
-      .data([selectedCountry])
-      .join("text")
-      .attr("class", "label")
-      .text(
-        (feature) =>
-          feature &&
-          feature.properties?.value &&
-          feature.properties?.name +
-            ": " +
-            feature.properties?.value.toLocaleString()
-      )
-      .attr("x", 10)
-      .attr("y", 25);
-  }, [selectedCountry, dimensions, geoJsonFromSelectedStatistic, dispatch]);
+  }, [
+    selectedCountry,
+    dimensions,
+    geoJsonFromSelectedStatistic,
+    dispatch,
+    isDarkTheme,
+  ]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef}>
       <VisualizationLoadingProgress show={showLoadingScreen} />
       <svg className="svg-map" ref={svgRef} />
-      {Boolean(
-        svgRef.current &&
-          geoJsonFromSelectedStatistic.features.length &&
-          dimensions?.width
-      ) && (
-        <GeoLegend
-          geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-          svgRef={svgRef}
-          width={dimensions.width}
-        />
+      {Boolean(geoJsonFromSelectedStatistic.features.length) && (
+        <>
+          <StatisticsMarkup
+            data={{
+              ...geoJsonFromSelectedStatistic,
+              statisticsList: statisticsList,
+            }}
+          />
+        </>
       )}
     </div>
   );
 }
 
-export default memo(GeoMap);
+export default GeoMap;

@@ -5,16 +5,9 @@
 
 .svg-wrapper {
   width: 100%;
+  position: relative;
   @media (max-width: 600px) {
     height: calc(100vh - (52px + 128px));
   }
   height: calc(100vh - (117px + 128px));
-}
-
-
-svg .country:hover {
-  stroke: black;
-  stroke-width: 1px;
-  cursor: pointer;
-  opacity: 1;
 }
