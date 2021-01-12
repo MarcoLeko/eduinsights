@@ -74,37 +74,42 @@ module.exports = {
   ) {
     for (const geoJsonCountry of countriesGeoJson.objects.countries
       .geometries) {
+      let observationValue;
+      const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
+        geoJsonCountry.properties.ISO_A3
+      );
+
+      if (!geoJsonCountryCodeAlpha2) {
+        continue;
+      }
+
+      const geoJsonObject = {
+        type: geoJsonCountry.type,
+        arcs: geoJsonCountry.arcs,
+        properties: {
+          name: geoJsonCountry.properties.ADMIN,
+          id: geoJsonCountryCodeAlpha2,
+          value: null,
+        },
+      };
       for (const [
         index,
         statisticsCountry,
       ] of availableCountriesStatistics.values.entries()) {
-        const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
-          geoJsonCountry.properties.ISO_A3
-        );
         const statisticsCountryCodeAlpha3 = countries.alpha2ToAlpha3(
           statisticsCountry.id
         );
 
         if (geoJsonCountryCodeAlpha2 === statisticsCountry.id) {
-          const value = getUnescoStatisticsEntityByIndex(
+          observationValue = getUnescoStatisticsEntityByIndex(
             index,
             unescoStatisticsJson
           );
 
-          resultArrayWithCountryMatches.push({
-            type: geoJsonCountry.type,
-            arcs: geoJsonCountry.arcs,
-            properties: {
-              name: geoJsonCountry.properties.ADMIN,
-              id: statisticsCountry.id,
-              value: Math.round(Number(value)),
-            },
-          });
-
           log(
             `Found matching geoJson polygon for country: ${chalk.green(
               statisticsCountry.name
-            )} with value: ${chalk.green.bold.underline(value)}`
+            )} with value: ${chalk.green.bold.underline(observationValue)}`
           );
         } else {
           if (
@@ -123,6 +128,17 @@ module.exports = {
           }
         }
       }
+      resultArrayWithCountryMatches.push(
+        observationValue
+          ? {
+              ...geoJsonObject,
+              properties: {
+                ...geoJsonObject.properties,
+                value: Math.round(Number(observationValue)),
+              },
+            }
+          : geoJsonObject
+      );
     }
   },
   matchUnescoRegionsWithGeoJsonPolygon: function matchUnescoRegionsWithGeoJsonPolygon(
@@ -134,15 +150,15 @@ module.exports = {
     unescoRegions
   ) {
     for (const region of unescoRegions.keys()) {
-      log("UNESCO region is: " + chalk.bold.underline(region));
-
       for (const list of unescoHierarchicalCodeListJson.HierarchicalCodelist) {
         for (const entity of list.hierarchies) {
           if (region === entity.id) {
             for (const countryWithinRegion of entity.codes[0].codes) {
               if (
-                !resultArrayWithCountryMatches.some(
-                  (country) => countryWithinRegion.id === country.properties.id
+                resultArrayWithCountryMatches.some(
+                  (country) =>
+                    countryWithinRegion.id === country.properties.id &&
+                    country.properties.value === null
                 )
               ) {
                 const indexOfRegionInUnescoStatistic = availableCountriesStatistics.values.findIndex(
@@ -158,30 +174,22 @@ module.exports = {
                   unescoStatisticsJson
                 );
 
-                const geoJsonCountry = countriesGeoJson.objects.countries.geometries.find(
-                  (geoJSONCountry) =>
-                    countries.alpha3ToAlpha2(
-                      geoJSONCountry.properties.ISO_A3
-                    ) === countryWithinRegion.id
+                const geoJsonCountryIndex = resultArrayWithCountryMatches.findIndex(
+                  (item) => item.properties.id === countryWithinRegion.id
                 );
 
-                if (!geoJsonCountry) {
+                if (geoJsonCountryIndex < 0) {
                   continue;
                 }
 
-                resultArrayWithCountryMatches.push({
-                  type: geoJsonCountry.type,
-                  arcs: geoJsonCountry.arcs,
-                  properties: {
-                    name: geoJsonCountry.properties.ADMIN,
-                    id: countryWithinRegion.id,
-                    value: Math.round(Number(value)),
-                  },
-                });
+                resultArrayWithCountryMatches[
+                  geoJsonCountryIndex
+                ].properties.value = value;
 
                 log(
                   `Found matching geoJson polygon for country: ${chalk.blue(
-                    geoJsonCountry.properties.ADMIN
+                    resultArrayWithCountryMatches[geoJsonCountryIndex]
+                      .properties.name
                   )} with value: ${chalk.green.bold.underline(value)}`
                 );
               }

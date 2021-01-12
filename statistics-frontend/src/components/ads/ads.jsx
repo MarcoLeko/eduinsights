@@ -8,30 +8,15 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  makeStyles,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { InfoOutlined } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import { Adsense } from "@ctrl/react-adsense";
 import { useDetectAdBlock } from "../../hooks/useDetectAdBlock";
-
-const useStyles = makeStyles((theme) => ({
-  cardRoot: {
-    margin: theme.spacing(2, "auto", 1, "auto"),
-    maxWidth: 1200,
-  },
-  cardHeaderRoot: {
-    flexDirection: "row-reverse",
-    padding: theme.spacing(1),
-  },
-  cardHeaderAction: {
-    margin: 0,
-  },
-}));
+import "./ads.scss";
 
 export function Ads() {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const adBlockDetected = useDetectAdBlock();
 
@@ -45,12 +30,9 @@ export function Ads() {
 
   return !adBlockDetected ? (
     <>
-      <Card classes={{ root: classes.cardRoot }}>
+      <Card className="ad-paper">
         <CardHeader
-          classes={{
-            root: classes.cardHeaderRoot,
-            action: classes.cardHeaderAction,
-          }}
+          className="card-header"
           onClick={handleClickOpen}
           action={
             <IconButton aria-label="info">
@@ -63,7 +45,7 @@ export function Ads() {
           children={
             <Adsense
               client="ca-pub-4995540870576035"
-              style={{ display: "block", width: "100%" }}
+              className="adsense"
               layout="in-article"
               format="fluid"
             />

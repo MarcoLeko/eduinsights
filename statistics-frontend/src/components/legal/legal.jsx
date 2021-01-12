@@ -190,7 +190,9 @@ export function Legal() {
       </Typography>
       <List>
         <ListItem>
-          Freepik from &nbsp;
+          <Typography color="textSecondary" variant="body2" component="p">
+            Freepik von &nbsp;
+          </Typography>
           <Link href="https://www.flaticon.com/" title="Flaticon">
             www.flaticon.com
           </Link>

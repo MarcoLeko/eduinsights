@@ -5,28 +5,11 @@ const muiGradientBackground =
   "linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%)";
 
 const getMaterialUiTheme = (theme) => {
-  const mainPrimaryColor = "rgb(75,225,255)";
+  const mainPrimaryColor =
+    theme === "dark" ? "rgb(75,225,255)" : "rgba(62,175,255,1)";
   const mainSecondaryColor = theme === "dark" ? grey[200] : grey[600];
 
   return createMuiTheme({
-    // breakpoints are specifically used for card carousel slider
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
-        ccSmallest: 320,
-        ccXxxs: 370,
-        ccXxs: 425,
-        ccXs: 512,
-        ccSm: 567,
-        ccMd: 680,
-        ccLg: 901,
-        ccXl: 1210,
-      },
-    },
     palette: {
       type: theme,
       primary: {
@@ -52,6 +35,13 @@ const getMaterialUiTheme = (theme) => {
         fontWeight: 600,
         fontSize: 22,
         padding: "8px 0px",
+      },
+    },
+    overrides: {
+      MuiMobileStepper: {
+        dots: {
+          margin: "auto",
+        },
       },
     },
   });

@@ -1,0 +1,19 @@
+.svg-map {
+  width: 100%;
+}
+
+.svg-wrapper {
+  width: 100%;
+  position: relative;
+  @media (max-width: 600px) {
+    max-height: calc(100vh - (52px + 128px));
+  }
+  max-height: calc(100vh - (117px + 128px));
+}
+
+.statistic-description{
+  text-align: center;
+  padding: 8px 0;
+  font-size: 1.1875rem;
+  font-weight: 300 !important;
+}

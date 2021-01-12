@@ -16,6 +16,7 @@ const {
 const mapStatistics = require("./map-statistics");
 const topojson = require("topojson-server");
 const topojsonSimplify = require("topojson-simplify");
+const countries = require("i18n-iso-countries");
 const log = console.log;
 
 (async function () {
@@ -37,7 +38,7 @@ const log = console.log;
 
     const countriesGeoJsonCompressed = topojsonSimplify.simplify(
       preSimplyfiedTopojson,
-      0.0005
+      0.01
     );
 
     writeToFileSync(
@@ -62,6 +63,15 @@ const log = console.log;
         (data) => data.id === "REF_AREA"
       );
 
+      if (
+        availableCountriesStatistics.values.length !==
+        Object.keys(unescoStatisticsJson.dataSets[0].series).length
+      ) {
+        throw new Error(
+          "There are more Observations than REF_AREA countries - multi dimension observations are currently not supported"
+        );
+      }
+
       matchUnescoCountriesWithGeoJsonPolygon(
         countriesGeoJsonCompressed,
         availableCountriesStatistics,
@@ -72,7 +82,9 @@ const log = console.log;
 
       log(
         `Total hits of matching countries: ${chalk.bold.green(
-          resultArrayWithCountryMatches.length
+          resultArrayWithCountryMatches.filter(
+            (item) => item.properties.value !== null
+          ).length
         )}`
       );
 
@@ -81,6 +93,7 @@ const log = console.log;
           unescoRegions.size
         )}`
       );
+
       await matchUnescoRegionsWithGeoJsonPolygon(
         unescoHierarchicalCodeListJson,
         availableCountriesStatistics,
@@ -111,7 +124,9 @@ const log = console.log;
         evaluation: statistic.evaluation,
         type: countriesGeoJsonCompressed.type,
         arcs: countriesGeoJsonCompressed.arcs,
-        amountOfCountries: resultArrayWithCountryMatches.length,
+        amountOfCountries: resultArrayWithCountryMatches.filter(
+          (item) => item.properties.value !== null
+        ).length,
         objects: {
           countries: {
             bbox: countriesGeoJsonCompressed.bbox,
