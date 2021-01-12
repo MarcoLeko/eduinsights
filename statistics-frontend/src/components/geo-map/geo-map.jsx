@@ -15,7 +15,8 @@ import { VisualizationLoadingProgress } from "../shared/visualization-loading-pr
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { MapToolTip } from "../../map-tooltip/map-tooltip";
 
 function GeoMap({ showLoadingScreen }) {
   const svgRef = useRef();
@@ -23,14 +24,20 @@ function GeoMap({ showLoadingScreen }) {
   const { dispatch, theme } = useUiContext();
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
+
   const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData();
   const isDarkTheme = theme === "dark";
   const muiTheme = useTheme();
   const verySmallViewport = useMediaQuery(muiTheme.breakpoints.between(0, 361));
   const smallViewport = useMediaQuery(muiTheme.breakpoints.between(362, "xs"));
-  const mediumViewport = useMediaQuery(
-    muiTheme.breakpoints.between("xs", "md")
+  const midSmallViewport = useMediaQuery(
+    muiTheme.breakpoints.between("xs", 1000)
   );
+  const mediumViewport = useMediaQuery(
+    muiTheme.breakpoints.between(1001, "md")
+  );
+
   const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
 
   const getHeight = () => {
@@ -40,12 +47,14 @@ function GeoMap({ showLoadingScreen }) {
     if (smallViewport) {
       return 350;
     }
-    if (mediumViewport) {
-      return 450;
+    if (midSmallViewport) {
+      return 500;
     }
-
-    if (largeViewport) {
+    if (mediumViewport) {
       return 600;
+    }
+    if (largeViewport) {
+      return 640;
     }
 
     return 640;
@@ -75,11 +84,20 @@ function GeoMap({ showLoadingScreen }) {
       width,
       geoJsonFromSelectedStatistic
     );
+
     const pathGenerator = geoPath().projection(projection);
 
     const highlight = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
       select(this).transition().style("opacity", 1);
+    };
+
+    const mouseMove = function (e) {
+      const rect = wrapperRef.current?.getBoundingClientRect();
+      setToolTipPos({
+        pageX: e.clientX - rect.left,
+        pageY: e.clientY - rect.top,
+      });
     };
 
     const resetHighlight = function () {
@@ -95,6 +113,7 @@ function GeoMap({ showLoadingScreen }) {
       .style("stroke-width", 0.5)
       .style("stroke", isDarkTheme ? "#303030" : "#fff")
       .on("mouseover", highlight)
+      .on("mousemove", mouseMove)
       .on("mouseout", resetHighlight)
       .attr("class", "country")
       .transition()
@@ -114,8 +133,13 @@ function GeoMap({ showLoadingScreen }) {
   ]);
 
   return (
-    <div className="svg-wrapper" ref={wrapperRef}>
+    <div className="svg-wrapper" ref={wrapperRef} id="svg-container">
       <VisualizationLoadingProgress show={showLoadingScreen} />
+      {geoJsonFromSelectedStatistic.description && (
+        <Typography variant="subtitle1" className="statistic-description">
+          {geoJsonFromSelectedStatistic.description}
+        </Typography>
+      )}
       <svg className="svg-map" ref={svgRef} height={getHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
@@ -124,6 +148,10 @@ function GeoMap({ showLoadingScreen }) {
               ...geoJsonFromSelectedStatistic,
               statisticsList: statisticsList,
             }}
+          />
+          <MapToolTip
+            selectedCountry={selectedCountry}
+            tooltipPos={toolTipPos}
           />
         </>
       )}
