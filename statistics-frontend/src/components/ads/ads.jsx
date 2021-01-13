@@ -45,6 +45,7 @@ export function Ads() {
           children={
             <Adsense
               client="ca-pub-4995540870576035"
+              slot="7259870550"
               className="adsense"
               layout="in-article"
               format="fluid"
