@@ -11,11 +11,11 @@ import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { Visualization } from "../visualization/visualization";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
-import { Ads } from "../ads/ads";
 import "./home.scss";
 import GeoChart from "../geo-map/geo-map";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
+import { Ads } from "../ads/ads";
 
 function Home() {
   const classes = useHeaderStyles();

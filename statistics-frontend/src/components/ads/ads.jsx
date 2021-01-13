@@ -13,12 +13,10 @@ import Button from "@material-ui/core/Button";
 import { InfoOutlined } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import { Adsense } from "@ctrl/react-adsense";
-import { useDetectAdBlock } from "../../hooks/useDetectAdBlock";
 import "./ads.scss";
 
 export function Ads() {
   const [open, setOpen] = useState(false);
-  const adBlockDetected = useDetectAdBlock();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,7 +26,7 @@ export function Ads() {
     setOpen(false);
   };
 
-  return !adBlockDetected ? (
+  return (
     <>
       <Card className="ad-paper">
         <CardHeader
@@ -39,7 +37,7 @@ export function Ads() {
               <InfoOutlined />
             </IconButton>
           }
-          subheader={"Why am I seeing ads?"}
+          subheader={"Why we are showing ads?"}
         />
         <CardMedia
           children={
@@ -79,5 +77,5 @@ export function Ads() {
         </DialogActions>
       </Dialog>
     </>
-  ) : null;
+  );
 }

@@ -4,6 +4,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import "./statistic-stepper.scss";
+import Typography from "@material-ui/core/Typography";
 
 function getStepsDescription() {
   return [
@@ -13,6 +14,18 @@ function getStepsDescription() {
   ];
 }
 
+function getStepContent(stepIndex) {
+  switch (stepIndex) {
+    case 0:
+      return "Choose a statistic to visualize it. The data is provided by the UNESCO API.";
+    case 1:
+      return "Choose a visualization mode: 2D or 3D";
+    case 2:
+      return "Wait for data to be processed...";
+    default:
+      return "";
+  }
+}
 export default function StatisticStepper({
   queryParams,
   activeStep,
@@ -54,6 +67,16 @@ export default function StatisticStepper({
           );
         })}
       </Stepper>
+      {activeStep !== 3 && (
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          component="p"
+          className="step-description"
+        >
+          {getStepContent(activeStep)}
+        </Typography>
+      )}
       <div className="step-navigation-buttons">
         <Button
           color="secondary"

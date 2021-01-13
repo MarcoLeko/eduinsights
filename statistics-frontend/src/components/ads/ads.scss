@@ -3,11 +3,13 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .card-header {
   flex-direction: row-reverse;
-  padding: 8px !important;
+  padding: 0 8px !important;
   > div {
     margin: 0;
   }

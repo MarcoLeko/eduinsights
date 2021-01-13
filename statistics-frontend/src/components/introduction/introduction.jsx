@@ -4,6 +4,7 @@ import { Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import { AppDescription } from "../SEO/app-description";
 import "./introduction.scss";
+import { ReactComponent as MonitoringLogo } from "../../assets/global-education-monitoring-report-vector-logo.svg";
 
 const content = {
   goal:
@@ -32,7 +33,9 @@ function Introduction() {
   return (
     <Box component={"section"} className="box">
       <Paper className="bottom-line">
-        <Typography variant={"overline"}>{content.goal}</Typography>
+        <Typography variant={"body1"} color="textSecondary">
+          {content.goal}
+        </Typography>
       </Paper>
       <Typography variant={"body1"} color="textSecondary" gutterBottom>
         {content.explanation[0]}
@@ -47,6 +50,7 @@ function Introduction() {
         {content.bottomLine}
       </Typography>
       <AppDescription description={getTextContent(content)} />
+      <MonitoringLogo className="graphic" />
     </Box>
   );
 }
