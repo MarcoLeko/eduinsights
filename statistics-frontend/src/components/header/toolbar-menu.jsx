@@ -68,7 +68,7 @@ function ToolbarMenu({ isOpen, toggle }) {
             <ThemeSelector />
           </List>
         </Hidden>
-        <Hidden only={["sm", "md", "lg"]}>
+        <Hidden smUp>
           <IconButton onClick={toggleByButtonClick}>
             {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
           </IconButton>
