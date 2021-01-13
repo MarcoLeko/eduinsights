@@ -8,7 +8,7 @@ import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
 import { useQueryParamsListener } from "./use-query-params-listener";
 
-export function useStatisticData(geoJSONRef = null) {
+export function useStatisticData() {
   const { queryParams } = useQueryParamsListener();
   const [selectedStatistic, setSelectedStatistic] = useState(
     queryParams.statistic
@@ -52,17 +52,12 @@ export function useStatisticData(geoJSONRef = null) {
           evaluationType,
           evaluation,
         });
-
-        if (geoJSONRef?.current?.leafletElement) {
-          geoJSONRef.current.leafletElement
-            .clearLayers()
-            .addData(topoJson2GeoJson);
-        }
       })
       .catch((e) => {
         dispatch(receiveMessageInterceptor(e));
       });
-  }, [dispatch, geoJSONRef, selectedStatistic]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStatistic]);
 
   const fetchInitialMapStatistics = useCallback(() => {
     getMapStatisticsList()
@@ -70,7 +65,8 @@ export function useStatisticData(geoJSONRef = null) {
         setStatisticsList(list.statistics);
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!statisticsList.length) {

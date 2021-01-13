@@ -9,7 +9,6 @@ import {
   select,
 } from "d3";
 import "./geo-map.scss";
-import { useStatisticData } from "../../hooks/use-statistic-data";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
@@ -18,7 +17,11 @@ import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
 
-function GeoMap({ showLoadingScreen }) {
+function GeoMap({
+  showLoadingScreen,
+  geoJsonFromSelectedStatistic,
+  statisticsList,
+}) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
@@ -26,7 +29,6 @@ function GeoMap({ showLoadingScreen }) {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
 
-  const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData();
   const isDarkTheme = theme === "dark";
   const muiTheme = useTheme();
   const verySmallViewport = useMediaQuery(muiTheme.breakpoints.between(0, 361));

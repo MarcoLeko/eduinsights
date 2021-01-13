@@ -4,7 +4,6 @@ import EarthNight from "../../assets/earth-night.jpg";
 import EarthDay from "../../assets/earth-day.jpg";
 import EarthTopology from "../../assets/earth-topology.png";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { useStatisticData } from "../../hooks/use-statistic-data";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
 import { setVisualizationLoaded } from "../../context/ui-actions";
@@ -13,7 +12,11 @@ import { VisualizationLoadingProgress } from "../shared/visualization-loading-pr
 import { StatisticsMarkup } from "../SEO/statistics-markup";
 import ResetViewGlobeButton from "../reset-view-visualization-button/reset-view-globe-button";
 
-export function MapOverlay3D({ showLoadingScreen }) {
+export function MapOverlay3D({
+  showLoadingScreen,
+  geoJsonFromSelectedStatistic,
+  statisticsList,
+}) {
   const { theme, dispatch } = useUiContext();
   const materialUiTheme = useTheme();
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
@@ -22,9 +25,6 @@ export function MapOverlay3D({ showLoadingScreen }) {
     : window.innerHeight - (128 + 117);
 
   const globeRef = useRef();
-  const { geoJsonFromSelectedStatistic, statisticsList } = useStatisticData(
-    null
-  );
   const [activeHoveredPolygon, setActiveHoveredPolygon] = useState(null);
 
   useEffect(() => {

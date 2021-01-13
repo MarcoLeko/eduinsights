@@ -11,13 +11,15 @@ import {
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { useStatisticData } from "../../hooks/use-statistic-data";
 import { StatisticsListMarkup } from "../SEO/statistics-list-markup";
 import { PublicSharp } from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
 
-export function StatisticSelector({ onStatisticClick }) {
-  const { statisticsList } = useStatisticData();
+export function StatisticSelector({
+  onStatisticClick,
+  statisticsList,
+  setSelectedStatistic,
+}) {
   const [index, setIndex] = useState(0);
   const [props, start] = useSpring(() => ({
     from: { position: 0 },
@@ -102,7 +104,7 @@ export function StatisticSelector({ onStatisticClick }) {
                     className="chip-root"
                     label={`${statistic.amountOfCountries} / 221 UNESCO Member`}
                     avatar={<PublicSharp />}
-                  ></Chip>
+                  />
                 </CardContent>
                 <CardActions disableSpacing>
                   <Button
@@ -110,9 +112,10 @@ export function StatisticSelector({ onStatisticClick }) {
                     size="small"
                     color="secondary"
                     className="card-button"
-                    onClick={() =>
-                      onStatisticClick({ statistic: statistic.key })
-                    }
+                    onClick={() => {
+                      onStatisticClick({ statistic: statistic.key });
+                      setSelectedStatistic(statistic.key);
+                    }}
                   >
                     Select
                   </Button>

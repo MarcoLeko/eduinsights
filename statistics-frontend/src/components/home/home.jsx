@@ -9,15 +9,21 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { Visualization } from "../visualization/visualization";
-import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import { Ads } from "../ads/ads";
 import "./home.scss";
 import GeoChart from "../geo-map/geo-map";
+import { useStatisticData } from "../../hooks/use-statistic-data";
+import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 
 function Home() {
   const classes = useHeaderStyles();
+  const {
+    statisticsList,
+    geoJsonFromSelectedStatistic,
+    setSelectedStatistic,
+  } = useStatisticData();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const targetContainerRef = useRef(null);
   const dispatchSidebarState = useCallback(
@@ -67,10 +73,18 @@ function Home() {
             ref={targetContainerRef}
           >
             {queryParams.visualization === "globe" ? (
-              <MapOverlay3D showLoadingScreen={activeStep === 2} />
+              <MapOverlay3D
+                showLoadingScreen={activeStep === 2}
+                geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+                statisticsList={statisticsList}
+              />
             ) : (
               <>
-                <GeoChart showLoadingScreen={activeStep === 2} />
+                <GeoChart
+                  showLoadingScreen={activeStep === 2}
+                  geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+                  statisticsList={statisticsList}
+                />
               </>
             )}
           </div>
@@ -79,7 +93,13 @@ function Home() {
         return <Visualization addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
-        return <StatisticSelector onStatisticClick={addNextQueryParam} />;
+        return (
+          <StatisticSelector
+            onStatisticClick={addNextQueryParam}
+            statisticsList={statisticsList}
+            setSelectedStatistic={setSelectedStatistic}
+          />
+        );
     }
   }
 
@@ -104,6 +124,7 @@ function Home() {
         removeLastQueryParam={removeLastQueryParam}
         queryParams={queryParams}
         resetQueryParams={resetQueryParams}
+        statisticsList={statisticsList}
       />
       {getStatisticStepChildren()}
       <Introduction />

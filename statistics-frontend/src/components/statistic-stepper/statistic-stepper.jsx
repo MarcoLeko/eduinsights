@@ -3,7 +3,6 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
-import { useStatisticData } from "../../hooks/use-statistic-data";
 import "./statistic-stepper.scss";
 
 function getStepsDescription() {
@@ -19,9 +18,8 @@ export default function StatisticStepper({
   activeStep,
   resetQueryParams,
   removeLastQueryParam,
+  statisticsList,
 }) {
-  const { statisticsList } = useStatisticData();
-
   const isFirstStepFailed = (step) => {
     return (
       queryParams.statistic &&
