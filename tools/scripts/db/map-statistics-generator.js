@@ -16,7 +16,6 @@ const {
 const mapStatistics = require("./map-statistics");
 const topojson = require("topojson-server");
 const topojsonSimplify = require("topojson-simplify");
-const countries = require("i18n-iso-countries");
 const log = console.log;
 
 (async function () {

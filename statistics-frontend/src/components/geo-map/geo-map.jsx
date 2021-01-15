@@ -13,9 +13,8 @@ const {
   extent,
   geoEquirectangular,
   geoPath,
-  interpolateBlues,
+  interpolateMagma,
   scaleLinear,
-  scaleSequential,
   select,
 } = d3;
 
@@ -30,39 +29,38 @@ function GeoMap({
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
-
-  const isDarkTheme = theme === "dark";
   const muiTheme = useTheme();
-  const verySmallViewport = useMediaQuery(muiTheme.breakpoints.between(0, 361));
-  const smallViewport = useMediaQuery(muiTheme.breakpoints.between(362, "xs"));
+
   const midSmallViewport = useMediaQuery(
     muiTheme.breakpoints.between("xs", 1000)
   );
+
   const mediumViewport = useMediaQuery(
     muiTheme.breakpoints.between(1001, "md")
   );
 
   const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
 
-  const getHeight = () => {
-    if (verySmallViewport) {
-      return 250;
-    }
-    if (smallViewport) {
-      return 350;
-    }
-    if (midSmallViewport) {
-      return 500;
-    }
-    if (mediumViewport) {
-      return 600;
-    }
-    if (largeViewport) {
-      return 640;
+  const getDesktopHeight = () => {
+    // Viewport is probably rotated e.g. Mobile
+    if (window.innerHeight > window.innerWidth) {
+      return "100%";
     }
 
-    return 640;
+    if (midSmallViewport) {
+      return "550px";
+    }
+    if (mediumViewport) {
+      return "600px";
+    }
+    if (largeViewport) {
+      return "640px";
+    }
+
+    return "100%";
   };
+
+  const isDarkTheme = theme === "dark";
 
   useEffect(() => {
     const svg = select(svgRef.current);
@@ -71,9 +69,9 @@ function GeoMap({
       dispatch(setVisualizationLoaded(true));
     }
 
-    const { width } = dimensions || wrapperRef.current.getBoundingClientRect();
+    const { width, height } =
+      dimensions || wrapperRef.current?.getBoundingClientRect();
 
-    const colorScale = scaleSequential(interpolateBlues);
     const unitScale = scaleLinear()
       .domain(
         extent(
@@ -82,10 +80,10 @@ function GeoMap({
           )
         )
       )
-      .range([0, 1]);
+      .range(isDarkTheme ? [0, 1] : [1, 0]);
 
-    const projection = geoEquirectangular().fitWidth(
-      width,
+    const projection = geoEquirectangular().fitSize(
+      [width, height],
       geoJsonFromSelectedStatistic
     );
 
@@ -93,7 +91,6 @@ function GeoMap({
 
     const highlight = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
-      select(this).transition().style("opacity", 1);
     };
 
     const mouseMove = function (e) {
@@ -106,14 +103,13 @@ function GeoMap({
 
     const resetHighlight = function () {
       setSelectedCountry(null);
-      select(this).transition().style("opacity", 0.75);
     };
 
     svg
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
       .join("path")
-      .style("opacity", 0.75)
+      .style("opacity", 0.8)
       .style("stroke-width", 0.5)
       .style("stroke", isDarkTheme ? "#303030" : "#fff")
       .on("mouseover", highlight)
@@ -124,10 +120,10 @@ function GeoMap({
       .attr("fill", (feature) =>
         feature.properties.value === null
           ? "#ccc"
-          : colorScale(unitScale(feature.properties.value))
+          : interpolateMagma(unitScale(feature.properties.value))
       )
       .attr("d", (feature) => pathGenerator(feature))
-      .attr("transform", "scale(1, 1.3)");
+      .attr("transform", "scale(1, 1.2)");
   }, [
     selectedCountry,
     dimensions,
@@ -148,7 +144,11 @@ function GeoMap({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg className="svg-map" ref={svgRef} height={getHeight()} />
+      <svg
+        className="svg-map"
+        ref={svgRef}
+        style={{ height: `${getDesktopHeight()}` }}
+      />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup
