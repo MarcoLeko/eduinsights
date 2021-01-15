@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
-import EarthNight from "../../assets/earth-night.jpg";
-import EarthDay from "../../assets/earth-day.jpg";
-import EarthTopology from "../../assets/earth-topology.png";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { getColor, getColorRange } from "../shared/getColor";
 import "./map-overlay-3D.scss";
@@ -17,7 +14,7 @@ export function MapOverlay3D({
   geoJsonFromSelectedStatistic,
   statisticsList,
 }) {
-  const { theme, dispatch } = useUiContext();
+  const { dispatch } = useUiContext();
   const materialUiTheme = useTheme();
   const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
   const height = matches
@@ -76,8 +73,6 @@ export function MapOverlay3D({
         height={height}
         ref={globeRef}
         width={getGlobeWidth()}
-        globeImageUrl={theme === "dark" ? EarthNight : EarthDay}
-        bumpImageUrl={EarthTopology}
         polygonStrokeColor={() => "#111"}
         polygonSideColor={() => "#111"}
         polygonCapColor={(layer) =>
