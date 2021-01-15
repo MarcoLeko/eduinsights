@@ -4,7 +4,7 @@ import { Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import { AppDescription } from "../SEO/app-description";
 import "./introduction.scss";
-import { ReactComponent as MonitoringLogo } from "../../assets/global-education-monitoring-report-vector-logo.svg";
+import MonitoringLogo from "../../assets/UIS-logo.svg";
 
 const content = {
   goal:
@@ -50,7 +50,11 @@ function Introduction() {
         {content.bottomLine}
       </Typography>
       <AppDescription description={getTextContent(content)} />
-      <MonitoringLogo className="graphic" />
+      <img
+        src={MonitoringLogo}
+        className="graphic"
+        alt="Data provided by UNESCO"
+      />
     </Box>
   );
 }
