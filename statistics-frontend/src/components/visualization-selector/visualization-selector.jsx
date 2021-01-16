@@ -3,7 +3,7 @@ import { Button, Grid, Paper } from "@material-ui/core";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
 import Typography from "@material-ui/core/Typography";
-import "./visualization.scss";
+import "./visualization-selector.scss";
 
 const visualizations = [
   {
@@ -18,7 +18,7 @@ const visualizations = [
   },
 ];
 
-export function Visualization({ addNextQueryParam }) {
+export function VisualizationSelector({ addNextQueryParam }) {
   return (
     <Grid container justify="center" spacing={2} wrap="nowrap">
       {visualizations.map((visualization) => (

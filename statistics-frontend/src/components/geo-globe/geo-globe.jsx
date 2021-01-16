@@ -1,21 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import "../geo-map/geo-map.scss";
+import "./geo-globe.scss";
 import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
-import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { useD3Utils } from "../../hooks/use-d3-utils";
 
 const {
   extent,
   geoPath,
-  interpolateBlues,
   scaleLinear,
-  scaleSequential,
+  interpolateMagma,
   select,
   geoOrthographic,
+  zoom,
+  geoGraticule,
 } = d3;
 
 function GeoGlobe({
@@ -26,54 +28,29 @@ function GeoGlobe({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
+  const { getVisualizationHeight } = useD3Utils();
   const dimensions = useResizeObserver(wrapperRef);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-
+  const [selectedCountry] = useState(null);
   const isDarkTheme = theme === "dark";
-  const muiTheme = useTheme();
-  const verySmallViewport = useMediaQuery(muiTheme.breakpoints.between(0, 361));
-  const smallViewport = useMediaQuery(muiTheme.breakpoints.between(362, "xs"));
-  const midSmallViewport = useMediaQuery(
-    muiTheme.breakpoints.between("xs", 1000)
-  );
-  const mediumViewport = useMediaQuery(
-    muiTheme.breakpoints.between(1001, "md")
-  );
-
-  const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
-
-  const getHeight = () => {
-    if (verySmallViewport) {
-      return 250;
-    }
-    if (smallViewport) {
-      return 350;
-    }
-    if (midSmallViewport) {
-      return 500;
-    }
-    if (mediumViewport) {
-      return 600;
-    }
-    if (largeViewport) {
-      return 640;
-    }
-
-    return 640;
-  };
 
   useEffect(() => {
-    const svg = select(svgRef.current);
-    let rotation;
-    let coordinates;
     if (geoJsonFromSelectedStatistic.features.length) {
       dispatch(setVisualizationLoaded(true));
     }
 
+    let lastX = 0;
+    let lastY = 0;
+    const svg = select(svgRef.current);
+    const scale = 300,
+      origin = {
+        x: 55,
+        y: -40,
+      };
     const { width, height } =
-      dimensions || wrapperRef.current.getBoundingClientRect();
+      dimensions || wrapperRef.current?.getBoundingClientRect();
+    const λ = scaleLinear().domain([0, width]).range([-180, 180]);
+    const φ = scaleLinear().domain([0, height]).range([90, -90]);
 
-    const colorScale = scaleSequential(interpolateBlues);
     const unitScale = scaleLinear()
       .domain(
         extent(
@@ -82,82 +59,55 @@ function GeoGlobe({
           )
         )
       )
-      .range([0, 1]);
-
-    function reDraw() {
-      svg.selectAll("path").attr("d", path);
-    }
-
-    function mouseMove(event) {
-      if (coordinates) {
-        // limit vertical rotation between 55 & -55
-        const newCoordinates = [event.pageX, event.pageY],
-          newRotation = [
-            rotation[0] + (newCoordinates[0] - coordinates[0]) / 6,
-            rotation[1] + (coordinates[1] - newCoordinates[1]) / 6,
-          ];
-        if (newRotation[1] > 55) {
-          newRotation[1] = 55;
-        }
-        if (newRotation[1] < -55) {
-          newRotation[1] = -55;
-        }
-        projection.rotate(newRotation);
-        reDraw();
-      }
-    }
-
-    function mouseUp(e) {
-      if (coordinates) {
-        mouseMove(e);
-        coordinates = null;
-      }
-    }
-
-    function mouseDown(event) {
-      coordinates = [event.pageX, event.pageY];
-      rotation = projection.rotate();
-      event.preventDefault();
-    }
-
-    const highlight = function (e, feature) {
-      setSelectedCountry(selectedCountry === feature ? null : feature);
-      select(this).transition().style("opacity", 1);
-    };
-
-    const resetHighlight = function () {
-      setSelectedCountry(null);
-      select(this).transition().style("opacity", 0.75);
-    };
+      .range(isDarkTheme ? [0, 1] : [1, 0]);
 
     const projection = geoOrthographic()
       .fitSize([width, height], geoJsonFromSelectedStatistic)
-      .precision(0.1)
-      .clipAngle(90);
+      .rotate([0, 0, 0]);
 
-    const path = geoPath().projection(projection).pointRadius(2);
+    const path = geoPath().projection(projection);
+    const graticule = geoGraticule();
+
+    svg.call(zoom().on("zoom", zoomed));
 
     svg
-      .selectAll(".country")
-      .data(geoJsonFromSelectedStatistic.features)
-      .join("path")
-      .style("opacity", 0.75)
-      .style("stroke-width", 0.5)
-      .style("stroke", isDarkTheme ? "#303030" : "#fff")
-      .attr("d", path)
-      .on("mousemove", mouseMove)
-      .on("mouseup", mouseUp)
-      .on("mousedown", mouseDown)
-      // .on("mouseover", highlight)
-      // .on("mouseout", resetHighlight)
-      .attr("class", "country")
+      .append("path")
+      .datum(graticule)
+      .attr("class", "graticule")
+      .attr("d", path);
+
+    svg
+      .selectAll("path")
+      .data(geoJsonFromSelectedStatistic)
       .transition()
       .attr("fill", (feature) =>
         feature.properties.value === null
           ? "#ccc"
-          : colorScale(unitScale(feature.properties.value))
+          : interpolateMagma(unitScale(feature.properties.value))
       )
       .attr("d", (feature) => path(feature));
+
+    function updatePaths(svg, graticule, geoPath) {
+      svg.selectAll("path.graticule").datum(graticule).attr("d", geoPath);
+    }
+
+    function zoomed(event) {
+      const transform = event.transform;
+      const r = {
+        x: λ(transform.x),
+        y: φ(transform.y),
+      };
+      if (event.sourceEvent.wheelDelta) {
+        projection.scale(scale * transform.k);
+        transform.x = lastX;
+        transform.y = lastY;
+      } else {
+        projection.rotate([origin.x + r.x, origin.y + r.y]);
+        lastX = transform.x;
+        lastY = transform.y;
+      }
+      updatePaths(svg, graticule, path);
+    }
   }, [
     selectedCountry,
     dimensions,
@@ -178,7 +128,7 @@ function GeoGlobe({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg className="svg-map" ref={svgRef} height={getHeight()} />
+      <svg className="svg-map" ref={svgRef} height={getVisualizationHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <StatisticsMarkup
           data={{

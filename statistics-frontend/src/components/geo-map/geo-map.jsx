@@ -6,8 +6,9 @@ import { VisualizationLoadingProgress } from "../shared/visualization-loading-pr
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
-import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
+import { useD3Utils } from "../../hooks/use-d3-utils";
 
 const {
   extent,
@@ -26,52 +27,20 @@ function GeoMap({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
+  const { getVisualizationHeight } = useD3Utils();
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
-  const muiTheme = useTheme();
-
-  const midSmallViewport = useMediaQuery(
-    muiTheme.breakpoints.between("xs", 1000)
-  );
-
-  const mediumViewport = useMediaQuery(
-    muiTheme.breakpoints.between(1001, "md")
-  );
-
-  const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
-
-  const getDesktopHeight = () => {
-    // Viewport is probably rotated e.g. Mobile
-    if (window.innerHeight > window.innerWidth) {
-      return "100%";
-    }
-
-    if (midSmallViewport) {
-      return "550px";
-    }
-    if (mediumViewport) {
-      return "600px";
-    }
-    if (largeViewport) {
-      return "640px";
-    }
-
-    return "100%";
-  };
-
   const isDarkTheme = theme === "dark";
 
   useEffect(() => {
-    const svg = select(svgRef.current);
-
     if (geoJsonFromSelectedStatistic.features.length) {
       dispatch(setVisualizationLoaded(true));
     }
 
+    const svg = select(svgRef.current);
     const { width, height } =
       dimensions || wrapperRef.current?.getBoundingClientRect();
-
     const unitScale = scaleLinear()
       .domain(
         extent(
@@ -87,7 +56,7 @@ function GeoMap({
       geoJsonFromSelectedStatistic
     );
 
-    const pathGenerator = geoPath().projection(projection);
+    const path = geoPath().projection(projection);
 
     const highlight = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
@@ -122,7 +91,7 @@ function GeoMap({
           ? "#ccc"
           : interpolateMagma(unitScale(feature.properties.value))
       )
-      .attr("d", (feature) => pathGenerator(feature))
+      .attr("d", (feature) => path(feature))
       .attr("transform", "scale(1, 1.2)");
   }, [
     selectedCountry,
@@ -147,7 +116,7 @@ function GeoMap({
       <svg
         className="svg-map"
         ref={svgRef}
-        style={{ height: `${getDesktopHeight()}` }}
+        style={{ height: `${getVisualizationHeight()}` }}
       />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>

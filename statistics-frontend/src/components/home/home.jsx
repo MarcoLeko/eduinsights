@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
-import { Visualization } from "../visualization/visualization";
+import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
@@ -90,7 +90,7 @@ function Home() {
           </div>
         );
       case 1:
-        return <Visualization addNextQueryParam={addNextQueryParam} />;
+        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
         return (
