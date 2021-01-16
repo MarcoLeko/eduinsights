@@ -18,8 +18,6 @@ class MapStatisticsMetaData {
   evaluationType: string;
   @Prop()
   amountOfCountries: number;
-  @Prop()
-  evaluation: Array<{ key: string; value: Array<number> }>;
 }
 
 @Schema()

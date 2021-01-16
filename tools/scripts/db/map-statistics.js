@@ -7,13 +7,6 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 98] },
-      { key: "secondRange", value: [97, 90] },
-      { key: "thirdRange", value: [89, 85] },
-      { key: "fourthRange", value: [84, 70] },
-      { key: "fifthRange", value: [69, 0] },
-    ],
   },
   {
     description:
@@ -24,13 +17,6 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 80] },
-      { key: "secondRange", value: [79, 50] },
-      { key: "thirdRange", value: [49, 25] },
-      { key: "fourthRange", value: [25, 10] },
-      { key: "fifthRange", value: [10, 0] },
-    ],
   },
   {
     description: "Percentage of female repeaters primary education",
@@ -40,13 +26,6 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [0, 9] },
-      { key: "secondRange", value: [10, 19] },
-      { key: "thirdRange", value: [20, 29] },
-      { key: "fourthRange", value: [30, 49] },
-      { key: "fifthRange", value: [50, 100] },
-    ],
   },
   {
     description: "Percentage of qualified teachers secondary education",
@@ -56,13 +35,6 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 95] },
-      { key: "secondRange", value: [94, 80] },
-      { key: "thirdRange", value: [79, 69] },
-      { key: "fourthRange", value: [68, 50] },
-      { key: "fifthRange", value: [49, 0] },
-    ],
   },
   {
     description: "Graduation ratio of primary education",
@@ -72,12 +44,5 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
-    evaluation: [
-      { key: "firstRange", value: [100, 95] },
-      { key: "secondRange", value: [94, 80] },
-      { key: "thirdRange", value: [79, 69] },
-      { key: "fourthRange", value: [68, 50] },
-      { key: "fifthRange", value: [49, 0] },
-    ],
   },
 ];

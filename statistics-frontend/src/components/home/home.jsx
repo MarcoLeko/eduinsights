@@ -8,14 +8,14 @@ import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
-import { Visualization } from "../visualization/visualization";
+import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import GeoChart from "../geo-map/geo-map";
 import { useStatisticData } from "../../hooks/use-statistic-data";
-import { MapOverlay3D } from "../map-overlay-3D/map-overlay-3D";
 import { Ads } from "../ads/ads";
+import GeoGlobe from "../geo-globe/geo-globe";
 
 function Home() {
   const classes = useHeaderStyles();
@@ -73,7 +73,7 @@ function Home() {
             ref={targetContainerRef}
           >
             {queryParams.visualization === "globe" ? (
-              <MapOverlay3D
+              <GeoGlobe
                 showLoadingScreen={activeStep === 2}
                 geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
                 statisticsList={statisticsList}
@@ -90,7 +90,7 @@ function Home() {
           </div>
         );
       case 1:
-        return <Visualization addNextQueryParam={addNextQueryParam} />;
+        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
         return (
