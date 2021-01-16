@@ -77,8 +77,9 @@ function GeoGlobe({
       .attr("d", path);
 
     svg
-      .selectAll("path")
-      .data(geoJsonFromSelectedStatistic)
+      .selectAll(".country")
+      .data(geoJsonFromSelectedStatistic.features)
+      .join("path")
       .transition()
       .attr("fill", (feature) =>
         feature.properties.value === null
