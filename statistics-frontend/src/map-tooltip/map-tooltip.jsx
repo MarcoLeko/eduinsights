@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Paper, Typography } from "@material-ui/core";
 import "./map-tooltip.scss";
 
+// TODO: In order to save performance make position fixed use also in geo globe
 function ToolTip({ selectedCountry, tooltipPos }) {
   return (
     Boolean(selectedCountry && tooltipPos.pageX) && (

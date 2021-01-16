@@ -26,7 +26,6 @@ export function useStatisticData() {
     endYear: null,
     type: null,
     evaluationType: null,
-    evaluation: [],
     features: [],
   });
 
@@ -39,7 +38,6 @@ export function useStatisticData() {
           endYear,
           key,
           evaluationType,
-          evaluation,
         } = topoJson;
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 
@@ -50,7 +48,6 @@ export function useStatisticData() {
           startYear,
           endYear,
           evaluationType,
-          evaluation,
         });
       })
       .catch((e) => {

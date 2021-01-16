@@ -120,7 +120,6 @@ const log = console.log;
         startYear: statistic.startYear,
         endYear: statistic.endYear,
         evaluationType: statistic.evaluationType,
-        evaluation: statistic.evaluation,
         type: countriesGeoJsonCompressed.type,
         arcs: countriesGeoJsonCompressed.arcs,
         amountOfCountries: resultArrayWithCountryMatches.filter(

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "./geo-globe.scss";
 import useResizeObserver from "../../hooks/useResizeObserver";
@@ -15,8 +15,8 @@ const {
   scaleLinear,
   interpolateMagma,
   select,
+  drag,
   geoOrthographic,
-  zoom,
   geoGraticule,
 } = d3;
 
@@ -30,7 +30,6 @@ function GeoGlobe({
   const { dispatch, theme } = useUiContext();
   const { getVisualizationHeight } = useD3Utils();
   const dimensions = useResizeObserver(wrapperRef);
-  const [selectedCountry] = useState(null);
   const isDarkTheme = theme === "dark";
 
   useEffect(() => {
@@ -38,14 +37,7 @@ function GeoGlobe({
       dispatch(setVisualizationLoaded(true));
     }
 
-    let lastX = 0;
-    let lastY = 0;
     const svg = select(svgRef.current);
-    const scale = 300,
-      origin = {
-        x: 55,
-        y: -40,
-      };
     const { width, height } =
       dimensions || wrapperRef.current?.getBoundingClientRect();
     const λ = scaleLinear().domain([0, width]).range([-180, 180]);
@@ -68,19 +60,16 @@ function GeoGlobe({
     const path = geoPath().projection(projection);
     const graticule = geoGraticule();
 
-    svg.call(zoom().on("zoom", zoomed));
+    svg.append("path").datum(graticule).attr("d", path);
 
     svg
-      .append("path")
-      .datum(graticule)
-      .attr("class", "graticule")
-      .attr("d", path);
-
-    svg
-      .selectAll(".country")
+      .selectAll("path")
       .data(geoJsonFromSelectedStatistic.features)
       .join("path")
-      .transition()
+      .style("opacity", 0.8)
+      .style("stroke-width", 0.5)
+      .style("stroke", isDarkTheme ? "#303030" : "#fff")
+      .attr("class", "country")
       .attr("fill", (feature) =>
         feature.properties.value === null
           ? "#ccc"
@@ -88,34 +77,22 @@ function GeoGlobe({
       )
       .attr("d", (feature) => path(feature));
 
-    function updatePaths(svg, graticule, geoPath) {
-      svg.selectAll("path.graticule").datum(graticule).attr("d", geoPath);
-    }
+    const dragged = drag()
+      .subject(function () {
+        const r = projection.rotate();
+        return {
+          x: λ.invert(r[0]),
+          y: φ.invert(r[1]),
+        };
+      })
+      .on("drag", function (event) {
+        projection.rotate([λ(event.x), φ(event.y)]);
+        svg.selectAll(".country").attr("d", path);
+        svg.datum(graticule).attr("d", path);
+      });
 
-    function zoomed(event) {
-      const transform = event.transform;
-      const r = {
-        x: λ(transform.x),
-        y: φ(transform.y),
-      };
-      if (event.sourceEvent.wheelDelta) {
-        projection.scale(scale * transform.k);
-        transform.x = lastX;
-        transform.y = lastY;
-      } else {
-        projection.rotate([origin.x + r.x, origin.y + r.y]);
-        lastX = transform.x;
-        lastY = transform.y;
-      }
-      updatePaths(svg, graticule, path);
-    }
-  }, [
-    selectedCountry,
-    dimensions,
-    geoJsonFromSelectedStatistic,
-    dispatch,
-    isDarkTheme,
-  ]);
+    svg.call(dragged);
+  }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">

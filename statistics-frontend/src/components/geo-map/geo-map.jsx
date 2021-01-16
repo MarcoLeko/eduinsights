@@ -58,7 +58,7 @@ function GeoMap({
 
     const path = geoPath().projection(projection);
 
-    const highlight = function (e, feature) {
+    const setSelectedCountryHandler = function (e, feature) {
       setSelectedCountry(selectedCountry === feature ? null : feature);
     };
 
@@ -70,7 +70,7 @@ function GeoMap({
       });
     };
 
-    const resetHighlight = function () {
+    const resetSelectedCountry = function () {
       setSelectedCountry(null);
     };
 
@@ -81,9 +81,9 @@ function GeoMap({
       .style("opacity", 0.8)
       .style("stroke-width", 0.5)
       .style("stroke", isDarkTheme ? "#303030" : "#fff")
-      .on("mouseover", highlight)
+      .on("mouseover", setSelectedCountryHandler)
       .on("mousemove", mouseMove)
-      .on("mouseout", resetHighlight)
+      .on("mouseout", resetSelectedCountry)
       .attr("class", "country")
       .transition()
       .attr("fill", (feature) =>
