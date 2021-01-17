@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
-import { ScrollButtonHelper } from "./scroll-button-helper";
 import { useHeaderStyles } from "../header/header-styles";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -128,10 +127,6 @@ function Home() {
       />
       {getStatisticStepChildren()}
       <Introduction />
-      <ScrollButtonHelper
-        show={(activeStep === 2 || activeStep === 3) && !sidebarOpen}
-        targetContainerRef={targetContainerRef.current}
-      />
     </Container>
   );
 }
