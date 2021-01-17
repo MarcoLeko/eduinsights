@@ -46,15 +46,6 @@ module.exports = mapStatistics = [
     evaluationType: "percentage",
   },
   {
-    description: "Drop out rate of primary education",
-    key: "DROP_OUT_RATE_OF_PRIMARY_EDUCATION_2018_2018",
-    url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/DR.PT.L1._T._T._T.G6.INST_T..._T.._T......W00.W00..?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
-    startYear: 2018,
-    endYear: 2018,
-    evaluationType: "percentage",
-  },
-  {
     description: "Completion rate of primary education",
     key: "COMPLETION_RATE_OF_PRIMARY_EDUCATION_2018_2018",
     url:
