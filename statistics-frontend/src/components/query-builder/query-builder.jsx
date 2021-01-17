@@ -31,7 +31,9 @@ export function QueryBuilder() {
         [classes.contentShift]: sidebarOpen,
       })}
     >
-      <Typography variant="h4">Beta</Typography>
+      <Typography variant="h4" color="textSecondary" className="headline">
+        Beta
+      </Typography>
     </Container>
   );
 }
