@@ -8,6 +8,7 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography } from "@material-ui/core";
 import { useD3Utils } from "../../hooks/use-d3-utils";
+import { MapToolTip } from "../../map-tooltip/map-tooltip";
 
 const {
   extent,
@@ -28,7 +29,13 @@ function GeoGlobe({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
-  const { getVisualizationHeight } = useD3Utils();
+  const {
+    getVisualizationHeight,
+    setSelectedCountryHandler,
+    resetSelectedCountryHandler,
+    toolTipPos,
+    selectedCountry,
+  } = useD3Utils(wrapperRef);
   const dimensions = useResizeObserver(wrapperRef);
   const isDarkTheme = theme === "dark";
 
@@ -69,6 +76,8 @@ function GeoGlobe({
       .style("opacity", 0.8)
       .style("stroke-width", 0.5)
       .style("stroke", isDarkTheme ? "#303030" : "#fff")
+      .on("mouseover", setSelectedCountryHandler)
+      .on("mouseout", resetSelectedCountryHandler)
       .attr("class", "country")
       .attr("fill", (feature) =>
         feature.properties.value === null
@@ -92,6 +101,7 @@ function GeoGlobe({
       });
 
     svg.call(dragged);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
 
   return (
@@ -108,12 +118,18 @@ function GeoGlobe({
       )}
       <svg className="svg-map" ref={svgRef} height={getVisualizationHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
-        <StatisticsMarkup
-          data={{
-            ...geoJsonFromSelectedStatistic,
-            statisticsList: statisticsList,
-          }}
-        />
+        <>
+          <StatisticsMarkup
+            data={{
+              ...geoJsonFromSelectedStatistic,
+              statisticsList: statisticsList,
+            }}
+          />
+          <MapToolTip
+            selectedCountry={selectedCountry}
+            tooltipPos={toolTipPos}
+          />
+        </>
       )}
     </div>
   );

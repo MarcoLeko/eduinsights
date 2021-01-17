@@ -40,7 +40,6 @@ export function Ads() {
           subheader={"Why we are showing ads?"}
         />
         <CardMedia
-          className="card-media"
           children={
             <Adsense
               client="ca-pub-4995540870576035"

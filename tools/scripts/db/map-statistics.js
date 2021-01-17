@@ -28,10 +28,10 @@ module.exports = mapStatistics = [
     evaluationType: "percentage",
   },
   {
-    description: "Percentage of qualified teachers secondary education",
-    key: "PERCENTAGE_OF_QUALIFIED_TEACHERS_SECONDARY_EDUCATION_2018_2018",
+    description: "Percentage of qualified teachers primary education",
+    key: "PERCENTAGE_OF_QUALIFIED_TEACHERS_PRIMARY_EDUCATION_2018_2018",
     url:
-      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/FRP.PT.L1..F.................?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/QUTP.PT.L1._T._T.._T...............?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
@@ -44,5 +44,42 @@ module.exports = mapStatistics = [
     startYear: 2018,
     endYear: 2018,
     evaluationType: "percentage",
+  },
+  {
+    description: "Drop out rate of primary education",
+    key: "DROP_OUT_RATE_OF_PRIMARY_EDUCATION_2018_2018",
+    url:
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/DR.PT.L1._T._T._T.G6.INST_T..._T.._T......W00.W00..?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+    startYear: 2018,
+    endYear: 2018,
+    evaluationType: "percentage",
+  },
+  {
+    description: "Completion rate of primary education",
+    key: "COMPLETION_RATE_OF_PRIMARY_EDUCATION_2018_2018",
+    url:
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/CR.PT.L2.._T..GLAST..._T._T...........?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+    startYear: 2018,
+    endYear: 2018,
+    evaluationType: "percentage",
+  },
+  {
+    description: "Expenditure on education as Percentage of GDP",
+    key: "EXPENDITURE_ON_EDUCATION_AS_PERCENTAGE_OF_GDP_2018_2018",
+    url:
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP._T._T._T._T.GOV._T...?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+    startYear: 2018,
+    endYear: 2018,
+    evaluationType: "percentage",
+  },
+
+  {
+    description: "Number of qualified teachers secondary education",
+    key: "NUMBER_OF_QUALIFIED_TEACHERS_SECONDARY_EDUCATION_2018_2018",
+    url:
+      "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/QTEACH.PER.L2_3._T._T.._T.._T.._T...........?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en&subscription-key=",
+    startYear: 2018,
+    endYear: 2018,
+    evaluationType: "absolute",
   },
 ];

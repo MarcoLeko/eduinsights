@@ -20,6 +20,7 @@ const log = console.log;
 
 (async function () {
   try {
+    const enhancedCountriesMetaData = [];
     ensureDirectory(createMapStatisticsTempPath(""));
 
     const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
@@ -103,9 +104,27 @@ const log = console.log;
       );
 
       for await (const country of resultArrayWithCountryMatches) {
-        const [{ latlng, capital }] = await fetchEnhancedCountryInformation(
-          country.properties.id
+        let enhancedCountryData = enhancedCountriesMetaData.find(
+          (enhancedCountry) => {
+            return (
+              enhancedCountry &&
+              enhancedCountry.alpha2Code &&
+              country.properties.id.toLowerCase() ===
+                enhancedCountry.alpha2Code.toLowerCase()
+            );
+          }
         );
+
+        if (!enhancedCountryData) {
+          [enhancedCountryData] = await fetchEnhancedCountryInformation(
+            country.properties.id
+          );
+
+          enhancedCountriesMetaData.push(enhancedCountryData);
+        }
+
+        const { latlng, capital } = enhancedCountryData;
+
         country.properties = {
           ...country.properties,
           latitude: latlng[0],

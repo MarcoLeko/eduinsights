@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "./geo-map.scss";
 import useResizeObserver from "../../hooks/useResizeObserver";
@@ -27,10 +27,14 @@ function GeoMap({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
-  const { getVisualizationHeight } = useD3Utils();
+  const {
+    getVisualizationHeight,
+    setSelectedCountryHandler,
+    resetSelectedCountryHandler,
+    toolTipPos,
+    selectedCountry,
+  } = useD3Utils(wrapperRef);
   const dimensions = useResizeObserver(wrapperRef);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
   const isDarkTheme = theme === "dark";
 
   useEffect(() => {
@@ -58,22 +62,6 @@ function GeoMap({
 
     const path = geoPath().projection(projection);
 
-    const setSelectedCountryHandler = function (e, feature) {
-      setSelectedCountry(selectedCountry === feature ? null : feature);
-    };
-
-    const mouseMove = function (e) {
-      const rect = wrapperRef.current?.getBoundingClientRect();
-      setToolTipPos({
-        pageX: e.clientX - rect.left,
-        pageY: e.clientY - rect.top,
-      });
-    };
-
-    const resetSelectedCountry = function () {
-      setSelectedCountry(null);
-    };
-
     svg
       .selectAll(".country")
       .data(geoJsonFromSelectedStatistic.features)
@@ -82,10 +70,8 @@ function GeoMap({
       .style("stroke-width", 0.5)
       .style("stroke", isDarkTheme ? "#303030" : "#fff")
       .on("mouseover", setSelectedCountryHandler)
-      .on("mousemove", mouseMove)
-      .on("mouseout", resetSelectedCountry)
+      .on("mouseout", resetSelectedCountryHandler)
       .attr("class", "country")
-      .transition()
       .attr("fill", (feature) =>
         feature.properties.value === null
           ? "#ccc"
@@ -93,13 +79,8 @@ function GeoMap({
       )
       .attr("d", (feature) => path(feature))
       .attr("transform", "scale(1, 1.2)");
-  }, [
-    selectedCountry,
-    dimensions,
-    geoJsonFromSelectedStatistic,
-    dispatch,
-    isDarkTheme,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">

@@ -1,7 +1,10 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
+import { useCallback, useState } from "react";
 
-export const useD3Utils = () => {
+export const useD3Utils = (wrapperRef) => {
   const muiTheme = useTheme();
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
 
   const midSmallViewport = useMediaQuery(
     muiTheme.breakpoints.between("sm", 1000)
@@ -12,6 +15,22 @@ export const useD3Utils = () => {
   );
 
   const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
+
+  const setSelectedCountryHandler = useCallback(
+    (e, feature) => {
+      setSelectedCountry(selectedCountry === feature ? null : feature);
+      const rect = wrapperRef.current?.getBoundingClientRect();
+      setToolTipPos({
+        pageX: e.clientX - rect.left,
+        pageY: e.clientY - rect.top,
+      });
+    },
+    [selectedCountry, wrapperRef]
+  );
+
+  const resetSelectedCountryHandler = useCallback(() => {
+    setSelectedCountry(null);
+  }, []);
 
   function getVisualizationHeight() {
     // Viewport is rotated e.g. Mobile/tablet
@@ -34,5 +53,9 @@ export const useD3Utils = () => {
 
   return {
     getVisualizationHeight,
+    setSelectedCountryHandler,
+    resetSelectedCountryHandler,
+    toolTipPos,
+    selectedCountry,
   };
 };
