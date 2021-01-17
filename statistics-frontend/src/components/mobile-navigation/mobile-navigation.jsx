@@ -8,10 +8,13 @@ import "./mobile-navgation.scss";
 import { navItems } from "../shared/navItems";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useHistory } from "react-router-dom";
+import clsx from "clsx";
+import { useHeaderStyles } from "../shared/header-styles";
 
 export function MobileNavigation() {
   const history = useHistory();
-  const { activeTab } = useUiContext();
+  const classes = useHeaderStyles();
+  const { activeTab, sidebarOpen } = useUiContext();
 
   const [index, onChange] = useState(activeTab);
 
@@ -23,7 +26,9 @@ export function MobileNavigation() {
   return (
     <Hidden smUp>
       <BottomNavigation
-        className="bottom-nav"
+        className={clsx("bottom-nav", classes.appBar, {
+          [classes.appBarShift]: sidebarOpen,
+        })}
         value={index}
         onChange={(e, val) => navigate(val)}
         showLabels
