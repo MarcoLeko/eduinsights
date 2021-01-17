@@ -6,7 +6,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { setTheme } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { navItems } from "../header/navItems";
+import { navItemsSideBar } from "./navItems";
 
 const useStyles = makeStyles(() => ({
   linkItem: {
@@ -30,7 +30,7 @@ const themeOptions = [
   { label: "Light", value: "light" },
 ];
 
-const navItem = navItems.find((item) => item.name === "Design");
+const navItem = navItemsSideBar.find((item) => item.name === "Design");
 
 export function ThemeSelector() {
   const classes = useStyles();

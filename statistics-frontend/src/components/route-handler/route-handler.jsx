@@ -10,6 +10,8 @@ import { Header } from "../header/header";
 import "../../styles.scss";
 import { Footer } from "../footer/footer";
 import { getMaterialUiTheme } from "../../material-ui-theme";
+import { QueryBuilder } from "../query-builder/query-builder";
+import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
 
 function RouteHandler() {
   const { theme } = useUiContext();
@@ -23,8 +25,11 @@ function RouteHandler() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/legal" component={Legal} />
+            <Route path="/query-builder" component={QueryBuilder} />
+            <Route component={Home} />
           </Switch>
           <Footer />
+          <MobileNavigation />
         </Router>
       </CssBaseline>
     </ThemeProvider>

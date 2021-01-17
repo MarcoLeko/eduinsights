@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
-import { useHeaderStyles } from "../header/header-styles";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
@@ -15,6 +14,7 @@ import GeoChart from "../geo-map/geo-map";
 import { useStatisticData } from "../../hooks/use-statistic-data";
 import { Ads } from "../ads/ads";
 import GeoGlobe from "../geo-globe/geo-globe";
+import { useHeaderStyles } from "../shared/header-styles";
 
 function Home() {
   const classes = useHeaderStyles();

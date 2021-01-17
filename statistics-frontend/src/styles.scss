@@ -1,12 +1,16 @@
 $color-default: rgba(0, 0, 0, 0.87) !important;
 $font-format: Montserrat, sans-serif;
+$app-primary: rgba(62,175,255,1);
 $app-background: linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%);
 $breakpoint-xs : 600px;
 $background-paper-default: #fafafa;
+$navigation-background: #f5f5f5;
 
 @media (prefers-color-scheme: dark) {
   $background-paper-default: #303030;
   $color-default: #fff !important;
+  $app-primary: rgb(75,225,255);
+  $navigation-background: #212121;
 }
 
 html, body, #root {

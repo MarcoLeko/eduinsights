@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import clsx from "clsx";
-import { useHeaderStyles } from "./header-styles";
 import ToolbarMenu from "./toolbar-menu";
-import SideBar from "./side-bar";
+import SideBar from "../side-bar/side-bar";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setSidebarOpen } from "../../context/ui-actions";
 import { Hidden, useMediaQuery, useTheme } from "@material-ui/core";
-import TabBar from "./tab-bar";
+import TabBar from "../tab-bar/tab-bar";
+import { useHeaderStyles } from "../shared/header-styles";
 
 export function Header() {
   const classes = useHeaderStyles();
