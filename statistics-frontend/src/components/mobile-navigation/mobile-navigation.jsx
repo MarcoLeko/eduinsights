@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -18,6 +18,7 @@ const useStyles = (theming) =>
       backgroundColor: theming === "dark" ? "#212121" : "#f5f5f5",
     },
   }));
+
 export function MobileNavigation() {
   const { theme } = useUiContext();
   const history = useHistory();
@@ -25,8 +26,11 @@ export function MobileNavigation() {
 
   const classesHeader = useHeaderStyles(theme);
   const { activeTab, sidebarOpen } = useUiContext();
-
   const [index, onChange] = useState(activeTab);
+
+  useEffect(() => {
+    onChange(activeTab);
+  }, [activeTab]);
 
   function navigate(val) {
     onChange(val);

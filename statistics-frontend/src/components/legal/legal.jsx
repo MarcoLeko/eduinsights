@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Link } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setActiveTab } from "../../context/ui-actions";
-import { useUiContext } from "../../hooks/use-ui-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,12 +11,6 @@ const useStyles = makeStyles((theme) => ({
 
 export function Legal() {
   const classes = useStyles();
-  const { dispatch } = useUiContext();
-
-  useEffect(() => {
-    dispatch(setActiveTab(1));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Container maxWidth="md" classes={{ root: classes.root }}>
