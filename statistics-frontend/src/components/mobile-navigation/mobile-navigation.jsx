@@ -30,6 +30,7 @@ export function MobileNavigation() {
       >
         {navItems.map((item, i) => (
           <BottomNavigationAction
+            key={item.name}
             label={item.name}
             icon={i === index ? item.iconActive : item.icon}
           />
