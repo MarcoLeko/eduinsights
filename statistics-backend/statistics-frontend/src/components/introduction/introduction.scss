@@ -1,0 +1,28 @@
+@import "../../styles";
+
+.caption-root {
+  color: $color-default;
+}
+
+.box {
+  margin: 16px auto;
+  padding: 8px;
+  text-align: justify;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.graphic {
+  width: 200px;
+  margin: 16px auto 0;
+}
+
+.bottom-line {
+  display: flex;
+  justify-content: center;
+  background: none !important;
+  align-items: center;
+  box-shadow: none !important;
+  padding: 16px 0;
+}

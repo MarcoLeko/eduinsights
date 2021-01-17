@@ -1,0 +1,27 @@
+.leaflet-container a.leaflet-popup-close-button {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: transparent;
+  color: transparent;
+  box-shadow: none
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+}
+
+.leaflet-popup {
+  margin-bottom: 0;
+  max-width: 350px;
+  max-height: 350px;
+  opacity: 1;
+}
+
+.leaflet-popup-content p {
+  margin: 0;
+}
+

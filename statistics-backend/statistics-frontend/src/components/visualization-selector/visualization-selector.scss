@@ -1,0 +1,19 @@
+@import "../../styles";
+.paper-root {
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.svg-icon {
+  width: 30% !important;
+  height: auto !important;
+}
+
+.visualization-button {
+  background: $app-background;
+}

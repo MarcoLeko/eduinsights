@@ -1,34 +1,47 @@
-# compiled output
-/dist
-/node_modules
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# dependencies
+statistics-frontend/node_modules
+statistics-backend/node_modules
+tools/node_modules
 
-# OS
-.DS_Store
+# testing
+statistics-frontend/coverage
+statistics-backend/coverage
 
-# Tests
-/coverage
-/.nyc_output
+# production
+statistics-backend/build
+statistics-frontend/build
 
-# IDEs and editors
+# ide
 /.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+/.vscode
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# environmental properties
+statistics-frontend/.env
+.env
+
+# packaging
+npm-debug.log*
+
+# db related files
+tools/scripts/db/temp
+tools/scripts/db/output
+
+# environment zip bundle
+tools/scripts/aws/*.zip
+
+# elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# eslint cache
+.eslintcache
