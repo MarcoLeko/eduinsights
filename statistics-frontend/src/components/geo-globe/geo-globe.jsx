@@ -126,6 +126,7 @@ function GeoGlobe({
             }}
           />
           <MapToolTip
+            evaluationType={geoJsonFromSelectedStatistic.evaluationType}
             selectedCountry={selectedCountry}
             tooltipPos={toolTipPos}
           />

@@ -108,6 +108,7 @@ function GeoMap({
             }}
           />
           <MapToolTip
+            evaluationType={geoJsonFromSelectedStatistic.evaluationType}
             selectedCountry={selectedCountry}
             tooltipPos={toolTipPos}
           />

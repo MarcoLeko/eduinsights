@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Paper, Typography } from "@material-ui/core";
 import "./map-tooltip.scss";
 
-function ToolTip({ selectedCountry, tooltipPos }) {
+function ToolTip({ selectedCountry, tooltipPos, evaluationType }) {
   return (
     Boolean(selectedCountry && tooltipPos.pageX) && (
       <Paper
@@ -19,8 +19,8 @@ function ToolTip({ selectedCountry, tooltipPos }) {
           {selectedCountry.properties.value === null
             ? "No values found"
             : "Value: " +
-              selectedCountry.properties.value +
-              (selectedCountry.evaluationType === "percentage" ? "%" : "")}
+              Number(selectedCountry.properties.value).toFixed(2) +
+              (evaluationType === "percentage" ? "%" : "")}
         </Typography>
       </Paper>
     )
