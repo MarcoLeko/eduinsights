@@ -26,8 +26,8 @@ export function MobileNavigation() {
   return (
     <Hidden smUp>
       <BottomNavigation
-        className={clsx("bottom-nav", classes.appBar, {
-          [classes.appBarShift]: sidebarOpen,
+        className={clsx("bottom-nav", classes.navigation, {
+          [classes.navigationShift]: sidebarOpen,
         })}
         value={index}
         onChange={(e, val) => navigate(val)}

@@ -33,8 +33,8 @@ export function Header() {
       <AppBar
         position="sticky"
         color="default"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: sidebarOpen,
+        className={clsx(classes.navigation, {
+          [classes.navigationShift]: sidebarOpen,
         })}
       >
         <ToolbarMenu toggle={dispatchSidebarState} isOpen={sidebarOpen} />
