@@ -109,7 +109,6 @@ async function cleanupConnections(changeStream, mongoClient) {
         );
     }
 
-    // cleanup after 5secs
     setTimeout(async () => {
       await cleanupConnections(changeStream, mongoClient);
     }, 25000);
