@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AdSense from "react-adsense";
 import "./ads.scss";
 
+// TODO: Add as soon as app is allowed to use ads
 export function Ads() {
   const [open, setOpen] = useState(false);
 
