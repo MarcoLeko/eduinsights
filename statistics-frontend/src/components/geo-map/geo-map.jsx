@@ -36,7 +36,6 @@ function GeoMap({
   } = useD3Utils(wrapperRef);
   const dimensions = useResizeObserver(wrapperRef);
   const isDarkTheme = theme === "dark";
-
   useEffect(() => {
     if (geoJsonFromSelectedStatistic.features.length) {
       dispatch(setVisualizationLoaded(true));
@@ -94,11 +93,7 @@ function GeoMap({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg
-        className="svg-map"
-        ref={svgRef}
-        style={{ height: `${getVisualizationHeight()}` }}
-      />
+      <svg className="svg-map" ref={svgRef} height={getVisualizationHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup

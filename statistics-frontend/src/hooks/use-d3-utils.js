@@ -14,7 +14,7 @@ export const useD3Utils = (wrapperRef) => {
     muiTheme.breakpoints.between(1001, "md")
   );
 
-  const largeViewport = useMediaQuery(muiTheme.breakpoints.between("md", "lg"));
+  const largeViewport = useMediaQuery(muiTheme.breakpoints.up("md"));
 
   const setSelectedCountryHandler = useCallback(
     (e, feature) => {
@@ -35,20 +35,22 @@ export const useD3Utils = (wrapperRef) => {
   function getVisualizationHeight() {
     // Viewport is rotated e.g. Mobile/tablet
     if (window.orientation === 90 || window.orientation === -90) {
-      return "100%";
+      return "60vw";
     }
 
     if (midSmallViewport) {
-      return "550px";
+      return "50vh";
     }
+
     if (mediumViewport) {
       return "600px";
     }
+
     if (largeViewport) {
       return "640px";
     }
 
-    return "100%";
+    return "50vh";
   }
 
   return {
