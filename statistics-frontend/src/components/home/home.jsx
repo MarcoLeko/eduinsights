@@ -13,7 +13,7 @@ import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import GeoChart from "../geo-map/geo-map";
 import { useStatisticData } from "../../hooks/use-statistic-data";
-import { Ads } from "../ads/ads";
+// import { Ads } from "../ads/ads";
 import GeoGlobe from "../geo-globe/geo-globe";
 
 function Home() {
@@ -117,7 +117,7 @@ function Home() {
       })}
     >
       <AppMarkup />
-      <Ads />
+      {/*<Ads />*/}
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}
