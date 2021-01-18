@@ -6,7 +6,7 @@ Current visualization modes are:
 
 |Map|Globe|
 |----|---------|
-|![map visualization](./statistics-frontend/src/assets/map.gif)|![globe visualization](./statistics-frontend/src/assets/globe.gif)|
+|![map visualization](./statistics-frontend/src/assets/map.png)|![globe visualization](./statistics-frontend/src/assets/globe.png)|
 
 ## Tech stack
 
