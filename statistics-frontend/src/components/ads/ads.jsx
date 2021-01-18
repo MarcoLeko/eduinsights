@@ -12,7 +12,7 @@ import {
 import Button from "@material-ui/core/Button";
 import { InfoOutlined } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
-import { Adsense } from "@ctrl/react-adsense";
+import AdSense from "react-adsense";
 import "./ads.scss";
 
 export function Ads() {
@@ -41,12 +41,11 @@ export function Ads() {
         />
         <CardMedia
           children={
-            <Adsense
+            <AdSense.Google
               client="ca-pub-4995540870576035"
-              slot="7259870550"
-              className="adsense"
-              layout="in-article"
-              format="fluid"
+              slot="7806394673"
+              format="auto"
+              responsive="true"
             />
           }
         />
