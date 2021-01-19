@@ -61,7 +61,8 @@ function GeoGlobe({
       .range(isDarkTheme ? [0, 1] : [1, 0]);
 
     const projection = geoOrthographic()
-      .fitSize([width, height], geoJsonFromSelectedStatistic)
+      .fitSize([width * 0.85, height * 0.85], geoJsonFromSelectedStatistic)
+      .translate([width / 2, (height * 0.9) / 2])
       .rotate([0, 0, 0]);
 
     const path = geoPath().projection(projection);
@@ -116,7 +117,7 @@ function GeoGlobe({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg className="svg-map" ref={svgRef} height={getVisualizationHeight()} />
+      <svg ref={svgRef} height={getVisualizationHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup
