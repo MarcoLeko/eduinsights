@@ -10,14 +10,14 @@ const content = {
   goal:
     '„Education is a human right for all throughout life and that access must be matched by quality."',
   explanation: [
-    "Education provides the basis for Knowledge as a good. Hence its getting more important to ensure equal standards and overcome financial and cultural boundaries. ",
-    "There are huge inequalities between nations, That's why member states of the United Nations Sustainable Development Summit formally adopted the ",
-    "2030 Agenda for Sustainable Development. ",
-    "The agenda contains 17 goals including a new global education goal (SDG 4). SDG 4 is to ensure inclusive and equitable quality education and promote lifelong learning opportunities for all’ and has seven targets and three means of implementation. - source: ",
+    "Education provides the basis for knowledge as a resource. Hence it's getting more important to ensure equal standards and overcome financial and cultural boundaries. ",
+    "There are huge inequalities between nations, that's why member states of the United Nations Sustainable Development Summit formally adopted the ",
+    "2030 Agenda for Sustainable Development. This framework helps to guide governments and partners on how to turn commitments into action. ",
+    "The agenda contains 17 goals including a new global education goal (SDG 4). SDG 4 is designed to ensure inclusive and equitable quality education and promote lifelong learning opportunities for all.  - source: ",
     "UNESCO. ",
   ],
   bottomLine:
-    "Eduinsights is build to highlight those educational inequalities in 2D or 3D representations of the world.",
+    "Eduinsights is build to highlight educational inequalities of the world. You can select an observation provided by the UNESCO api. Then proceed by choosing the visualization mode: 2D or 3D Representation. And finally you can observe the results on the visualization. We are in close contact with UIS to provide the latest observations in order to better raise awareness for this topic.",
 };
 
 function getTextContent(obj) {
