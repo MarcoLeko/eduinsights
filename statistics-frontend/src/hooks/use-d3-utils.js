@@ -4,14 +4,18 @@ import { useCallback, useState } from "react";
 export const useD3Utils = (wrapperRef) => {
   const muiTheme = useTheme();
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [toolTipPos, setToolTipPos] = useState({ pageX: null, pageY: null });
+  const [toolTipPos, setToolTipPos] = useState(null);
 
-  const midSmallViewport = useMediaQuery(
-    muiTheme.breakpoints.between("sm", 1000)
+  const xSmallViewport = useMediaQuery(
+      muiTheme.breakpoints.between(0, 361)
+  );
+
+  const smallViewport = useMediaQuery(
+      muiTheme.breakpoints.between(361, 600)
   );
 
   const mediumViewport = useMediaQuery(
-    muiTheme.breakpoints.between(1001, "md")
+    muiTheme.breakpoints.between(601, "md")
   );
 
   const largeViewport = useMediaQuery(muiTheme.breakpoints.up("md"));
@@ -20,10 +24,9 @@ export const useD3Utils = (wrapperRef) => {
     (e, feature) => {
       setSelectedCountry(selectedCountry === feature ? null : feature);
       const rect = wrapperRef.current?.getBoundingClientRect();
-      setToolTipPos({
-        pageX: e.clientX - rect.left,
-        pageY: e.clientY - rect.top,
-      });
+      const pageX = e.clientX - rect.left;
+      const pageY = e.clientY - rect.top;
+      setToolTipPos({ pageX, pageY });
     },
     [selectedCountry, wrapperRef]
   );
@@ -38,19 +41,23 @@ export const useD3Utils = (wrapperRef) => {
       return "60vw";
     }
 
-    if (midSmallViewport) {
-      return "50vh";
+    if (xSmallViewport) {
+      return "240px";
+    }
+
+    if (smallViewport) {
+      return "320px";
     }
 
     if (mediumViewport) {
-      return "600px";
+      return "580px";
     }
 
     if (largeViewport) {
       return "640px";
     }
 
-    return "50vh";
+    return "60vw";
   }
 
   return {

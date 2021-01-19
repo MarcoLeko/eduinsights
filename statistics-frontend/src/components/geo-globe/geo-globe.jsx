@@ -116,7 +116,7 @@ function GeoGlobe({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg className="svg-map" ref={svgRef} height={getVisualizationHeight()} />
+      <svg ref={svgRef} height={getVisualizationHeight()} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup

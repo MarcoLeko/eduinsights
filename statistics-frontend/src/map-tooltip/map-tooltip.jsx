@@ -4,7 +4,7 @@ import "./map-tooltip.scss";
 
 function ToolTip({ selectedCountry, tooltipPos }) {
   return (
-    Boolean(selectedCountry && tooltipPos.pageX) && (
+    Boolean(selectedCountry && tooltipPos) && (
       <Paper
         className="tooltip"
         style={{

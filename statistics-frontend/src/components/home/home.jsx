@@ -37,14 +37,7 @@ function Home() {
     removeLastQueryParam,
     resetQueryParams,
   } = useQueryParamsListener();
-
   const [activeStep, setActiveStep] = useState(getStep(queryParams));
-
-  useEffect(() => {
-    dispatch(setActiveTab(0));
-    setActiveStep(getStep(queryParams));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams, visualizationLoaded]);
 
   function getStep(params) {
     if (params.statistic && params.visualization && visualizationLoaded) {
@@ -66,38 +59,38 @@ function Home() {
       case 3:
       case 2:
         return (
-          <div
-            id="visualization-container"
-            className="visualization-container"
-            ref={targetContainerRef}
-          >
-            {queryParams.visualization === "globe" ? (
-              <GeoGlobe
-                showLoadingScreen={activeStep === 2}
-                geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-                statisticsList={statisticsList}
-              />
-            ) : (
-              <>
-                <GeoChart
-                  showLoadingScreen={activeStep === 2}
-                  geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-                  statisticsList={statisticsList}
-                />
-              </>
-            )}
-          </div>
+            <div
+                id="visualization-container"
+                className="visualization-container"
+                ref={targetContainerRef}
+            >
+              {queryParams.visualization === "globe" ? (
+                  <GeoGlobe
+                      showLoadingScreen={activeStep === 2}
+                      geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+                      statisticsList={statisticsList}
+                  />
+              ) : (
+                  <>
+                    <GeoChart
+                        showLoadingScreen={activeStep === 2}
+                        geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+                        statisticsList={statisticsList}
+                    />
+                  </>
+              )}
+            </div>
         );
       case 1:
         return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
         return (
-          <StatisticSelector
-            onStatisticClick={addNextQueryParam}
-            statisticsList={statisticsList}
-            setSelectedStatistic={setSelectedStatistic}
-          />
+            <StatisticSelector
+                onStatisticClick={addNextQueryParam}
+                statisticsList={statisticsList}
+                setSelectedStatistic={setSelectedStatistic}
+            />
         );
     }
   }
@@ -107,6 +100,11 @@ function Home() {
       dispatchSidebarState(false);
     }
   }
+  useEffect(() => {
+    dispatch(setActiveTab(0));
+    setActiveStep(getStep(queryParams));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams, visualizationLoaded]);
 
   return (
     <Container
