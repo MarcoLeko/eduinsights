@@ -3,9 +3,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import configuration from '../config/configuration';
-import { DatabaseModule } from './database.module';
-import { MapStatisticsModule } from './map-statistics/map-statistics.module';
-import { QueryBuilderModule } from './query-builder/query-builder.module';
+import { MapStatisticsModule } from './domain/map-statistics.module';
+import { QueryBuilderModule } from './domain/query-builder.module';
+import { DatabaseModule } from './infrastructure/database.module';
 
 @Module({
   imports: [

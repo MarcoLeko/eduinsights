@@ -6,7 +6,7 @@ import {
   MapStatisticsDocument,
   MapStatisticsList,
   MapStatisticsListDocument,
-} from './map-statistics.schema';
+} from '../infrastructure/map-statistics.schema';
 
 @Injectable()
 export class MapStatisticsService {

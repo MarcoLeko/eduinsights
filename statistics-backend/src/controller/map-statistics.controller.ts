@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { MapStatisticsService } from './map-statistics.service';
+import { MapStatisticsDto } from './map-statistics.dto';
+import { MapStatisticsService } from '../application/map-statistics.service';
 import {
   MapStatisticsDocument,
   MapStatisticsListDocument,
-} from './map-statistics.schema';
-import { MapStatisticsDto } from './map-statistics.dto';
+} from '../infrastructure/map-statistics.schema';
 
 @Controller('api/v1/map-statistics')
 export class MapStatisticsController {

@@ -1,7 +1,7 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { QueryBuilderService } from './query-builder.service';
-import { QueryBuilderController } from './query-builder.controller';
 import { ConfigService } from '@nestjs/config';
+import { QueryBuilderController } from '../controller/query-builder.controller';
+import { QueryBuilderService } from '../application/query-builder.service';
 
 @Module({
   imports: [HttpModule],
