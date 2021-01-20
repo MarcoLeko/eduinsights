@@ -5,24 +5,21 @@ import { StatisticSelector } from "../statistic-selector/statistic-selector";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
-import { useQueryParamsListener } from "../../hooks/use-query-params-listener";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import GeoChart from "../geo-map/geo-map";
-import { useStatisticData } from "../../hooks/use-statistic-data";
-// import { Ads } from "../ads/ads";
+import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
 import GeoGlobe from "../geo-globe/geo-globe";
-import { useHeaderStyles } from "../shared/header-styles";
+import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/use-query-params-listener-for-prepared-statistics";
 
 function Home() {
-  const classes = useHeaderStyles();
   const {
     statisticsList,
     geoJsonFromSelectedStatistic,
     setSelectedStatistic,
-  } = useStatisticData();
+  } = usePreparedStatisticData();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const targetContainerRef = useRef(null);
   const dispatchSidebarState = useCallback(
@@ -36,7 +33,7 @@ function Home() {
     addNextQueryParam,
     removeLastQueryParam,
     resetQueryParams,
-  } = useQueryParamsListener();
+  } = useQueryParamsListenerForPreparedStatistics();
 
   const [activeStep, setActiveStep] = useState(getStep(queryParams));
 
@@ -112,12 +109,9 @@ function Home() {
     <Container
       disableGutters
       onClick={closeSidebar}
-      className={clsx(classes.content, {
-        [classes.contentShift]: sidebarOpen,
-      })}
+      className={clsx("content", sidebarOpen && "content-shift")}
     >
       <AppMarkup />
-      {/*<Ads />*/}
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}

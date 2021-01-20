@@ -10,6 +10,16 @@ export async function getMapStatisticsById(body) {
   return handleResponse(response);
 }
 
+export async function getUISCategories() {
+  const response = await fetch("api/v1/query", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return handleResponse(response);
+}
+
 export async function getMapStatisticsList() {
   const response = await fetch("api/v1/map-statistics/list");
 

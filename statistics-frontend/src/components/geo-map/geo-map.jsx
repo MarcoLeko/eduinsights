@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "./geo-map.scss";
-import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -9,6 +8,7 @@ import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography } from "@material-ui/core";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
 import { useD3Utils } from "../../hooks/use-d3-utils";
+import useResizeObserver from "../../hooks/use-resize-observer";
 
 const {
   extent,

@@ -1,7 +1,10 @@
-.container {
-  min-height: 100vh;
+@import "../home/home";
+
+.text-box {
+  padding: 8px;
+  text-align: justify;
 }
 
-.headline {
-  padding: 16px !important;
+.select {
+  margin: 16px 8px !important;
 }

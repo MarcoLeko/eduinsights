@@ -17,7 +17,7 @@ const content = {
     "UNESCO. ",
   ],
   bottomLine:
-    "Eduinsights is build to highlight educational inequalities of the world. You can select an observation provided by the UNESCO api. Then proceed by choosing the visualization mode: 2D or 3D Representation. And finally you can observe the results on the visualization. We are in close contact with UIS to provide the latest observations in order to better raise awareness for this topic.",
+    "Eduinsights is build to highlight educational inequalities of the world. You can select an observation provided by the UIS api. Then proceed by choosing the visualization mode: 2D or 3D Representation. And finally you can observe the results on the visualization. We are in close contact with UIS to provide the latest observations in order to better raise awareness for this topic.",
 };
 
 function getTextContent(obj) {
