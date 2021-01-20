@@ -42,11 +42,11 @@ export const useD3Utils = (wrapperRef) => {
     }
 
     if (xSmallViewport) {
-      return "240px";
+      return "300px";
     }
 
     if (smallViewport) {
-      return "320px";
+      return "380px";
     }
 
     if (mediumViewport) {

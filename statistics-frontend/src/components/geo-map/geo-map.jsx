@@ -56,8 +56,7 @@ function GeoMap({
 
     const projection = geoEquirectangular().fitSize(
       [width, height],
-      geoJsonFromSelectedStatistic
-    );
+      geoJsonFromSelectedStatistic);
 
     const path = geoPath().projection(projection);
 
@@ -79,7 +78,7 @@ function GeoMap({
       .attr("d", (feature) => path(feature))
       .attr("transform", "scale(1, 1.2)");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
+  }, [dimensions, geoJsonFromSelectedStatistic, isDarkTheme]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">

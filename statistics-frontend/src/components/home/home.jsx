@@ -41,7 +41,7 @@ function Home() {
     dispatch(setActiveTab(0));
     setActiveStep(getStep(queryParams));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [queryParams, visualizationLoaded]);
 
   function getStep(params) {
     if (params.statistic && params.visualization && visualizationLoaded) {
