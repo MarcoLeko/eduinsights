@@ -11,6 +11,16 @@ export class QueryBuilderService {
     private configService: ConfigService,
   ) {}
 
+  async getUISCodeList(): Promise<any> {
+    const url =
+      'https://api.uis.unesco.org/sdmx/codelist/UNESCO/all/latest/?format=sdmx-json&detail=full&references=none&prettyPrint=true&locale=en' +
+      '&subscription-key=' +
+      this.configService.get('unescoApiKey');
+
+    const response = await this.uisClient(url);
+    return response.data;
+  }
+
   async getUISDataflow(): Promise<DataflowCategories[]> {
     const url =
       DataflowCategories.DATAFLOW_URL +
@@ -21,9 +31,9 @@ export class QueryBuilderService {
     return this.createDataflowCategories(response);
   }
 
-  async getUISDataStructureForCategory(category = 'EDU_NON_FINANCE') {
+  async getUISDataStructureForCategory() {
     const url =
-      DataStructureByCategoryDomain.getDataStructureByCategoryIdUrl(category) +
+      DataStructureByCategoryDomain.getDataStructureByCategoryIdUrl() +
       '&subscription-key=' +
       this.configService.get('unescoApiKey');
 
@@ -42,11 +52,13 @@ export class QueryBuilderService {
 
     return json['mes:Structure']['mes:Structures']['str:Dataflows'][
       'str:Dataflow'
-    ].map((item) => {
-      const id = item['_attributes'].id;
-      const description = item['com:Name']['_text'];
+    ]
+      .filter((item) => item['_attributes'].id === 'EDU_NON_FINANCE')
+      .map((item) => {
+        const id = item['_attributes'].id;
+        const description = item['com:Name']['_text'];
 
-      return DataflowCategories.create({ id, description });
-    });
+        return DataflowCategories.create({ id, description });
+      });
   }
 }
