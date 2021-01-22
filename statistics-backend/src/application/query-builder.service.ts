@@ -1,8 +1,9 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import * as convert from 'xml-js';
 import { ConfigService } from '@nestjs/config';
-import { DataflowCategories } from '../domain/dataflow-categories.domain';
-import { DataStructureByCategoryDomain } from '../domain/data-structure-by-category.domain';
+import { CategoryFilter } from '../domain/category-filter';
+import { DataStructureForFilteredCategory } from '../domain/data-structure-for-filtered-category';
+import { CategoryFilterValue } from '../domain/category-filter-value';
 
 @Injectable()
 export class QueryBuilderService {
@@ -11,41 +12,71 @@ export class QueryBuilderService {
     private configService: ConfigService,
   ) {}
 
-  async getUISCodeList(): Promise<any> {
-    const url =
-      'https://api.uis.unesco.org/sdmx/codelist/UNESCO/all/latest/?format=sdmx-json&detail=full&references=none&prettyPrint=true&locale=en' +
+  async getCategoryFilterValues(filterCategoryValue: string): Promise<any> {
+    const codeListUrl =
+      CategoryFilterValue.getCategoryFilterUrl(filterCategoryValue) +
       '&subscription-key=' +
       this.configService.get('unescoApiKey');
 
-    const response = await this.uisClient(url);
-    return response.data;
+    const response = await this.uisClient(codeListUrl);
+
+    return response.data.Codelist.map((code) =>
+      CategoryFilterValue.create({
+        id: code.id,
+        name: code.names[0].value,
+        items: code.items.map((item) => ({
+          id: item.id,
+          name: item.names[0].value,
+        })),
+      }),
+    );
   }
 
-  async getUISDataflow(): Promise<DataflowCategories[]> {
+  async getCategoryFilter(): Promise<CategoryFilter[]> {
     const url =
-      DataflowCategories.DATAFLOW_URL +
+      CategoryFilter.DATAFLOW_URL +
       '&subscription-key=' +
       this.configService.get('unescoApiKey');
 
     const response = await this.uisClient(url);
-    return this.createDataflowCategories(response);
+    return this.createCategoryFilter(response);
   }
 
-  async getUISDataStructureForCategory() {
+  async getDataStructureForFilteredCategory() {
     const url =
-      DataStructureByCategoryDomain.getDataStructureByCategoryIdUrl() +
+      DataStructureForFilteredCategory.getDataStructureByCategoryIdUrl(
+        CategoryFilter.SUPPORTED_CATEGORY_ID,
+      ) +
       '&subscription-key=' +
       this.configService.get('unescoApiKey');
 
     const response = await this.uisClient(url);
-    return response.data;
+    const categoryFilterList = response.data.DataStructure[0].dimensionList.dimensions.map(
+      (dimension) => {
+        const filterCategoryString =
+          dimension.representation.representation || '';
+        const filterCategoryId = filterCategoryString.substring(
+          filterCategoryString.lastIndexOf('CL_'),
+          filterCategoryString.lastIndexOf('('),
+        );
+
+        return filterCategoryId;
+      },
+    );
+
+    const filterCategoryValuesPromises = categoryFilterList
+      .filter(Boolean)
+      .map((categoryFilter) => this.getCategoryFilterValues(categoryFilter));
+
+    console.log(filterCategoryValuesPromises);
+    return Promise.all(filterCategoryValuesPromises);
   }
 
   private async uisClient(url): Promise<any> {
     return this.httpService.get(url).toPromise();
   }
 
-  private createDataflowCategories(response): DataflowCategories[] {
+  private createCategoryFilter(response): CategoryFilter[] {
     const json = JSON.parse(
       convert.xml2json(response.data, { compact: true, spaces: 4 }),
     );
@@ -53,12 +84,15 @@ export class QueryBuilderService {
     return json['mes:Structure']['mes:Structures']['str:Dataflows'][
       'str:Dataflow'
     ]
-      .filter((item) => item['_attributes'].id === 'EDU_NON_FINANCE')
+      .filter(
+        (item) =>
+          item['_attributes'].id === CategoryFilter.SUPPORTED_CATEGORY_ID,
+      )
       .map((item) => {
         const id = item['_attributes'].id;
-        const description = item['com:Name']['_text'];
+        const name = item['com:Name']['_text'];
 
-        return DataflowCategories.create({ id, description });
+        return CategoryFilter.create({ id, name });
       });
   }
 }

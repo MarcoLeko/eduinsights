@@ -1,18 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { QueryBuilderService } from '../application/query-builder.service';
-import { DataflowCategories } from '../domain/dataflow-categories.domain';
+import { CategoryFilter } from '../domain/category-filter';
 
 @Controller('api/v1/query')
 export class QueryBuilderController {
   constructor(private readonly queryBuilderService: QueryBuilderService) {}
 
-  @Get('/')
-  async getUISCategories(): Promise<DataflowCategories[]> {
-    return this.queryBuilderService.getUISDataflow();
+  @Get('/categories')
+  async getUISCategories(): Promise<CategoryFilter[]> {
+    return this.queryBuilderService.getCategoryFilter();
   }
 
-  @Get('/data-structure/')
+  @Get('/categories/data-structure/')
   async getDataStructureByCategoryId(): Promise<any> {
-    return this.queryBuilderService.getUISDataStructureForCategory();
+    return this.queryBuilderService.getDataStructureForFilteredCategory();
   }
 }
