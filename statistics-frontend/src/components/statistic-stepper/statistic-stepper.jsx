@@ -17,7 +17,7 @@ function getStepsDescription() {
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return "Choose a statistic to visualize it. The data is provided by the UNESCO API.";
+      return "Choose a statistic to visualize it. The data is provided by the UIS API.";
     case 1:
       return "Choose a visualization mode: 2D or 3D";
     case 2:

@@ -5,6 +5,20 @@
   text-align: justify;
 }
 
+.text-field-container{
+  width: 100%;
+  display: flex;
+}
+
 .select {
   margin: 16px 8px !important;
+  min-width: 50% !important;
+
+  > .MuiFormHelperText-contained {
+    margin-left: 0;
+  }
+}
+
+.skeleton {
+  padding: 24px;
 }

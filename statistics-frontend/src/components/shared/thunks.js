@@ -11,7 +11,7 @@ export async function getMapStatisticsById(body) {
 }
 
 export async function getUISCategories() {
-  const response = await fetch("api/v1/query", {
+  const response = await fetch("api/v1/query/categories", {
     headers: {
       "Content-Type": "application/json",
     },
