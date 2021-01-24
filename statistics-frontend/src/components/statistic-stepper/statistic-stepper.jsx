@@ -5,6 +5,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import "./statistic-stepper.scss";
 import Typography from "@material-ui/core/Typography";
+import { ArrowBack } from "@material-ui/icons";
 
 function getStepsDescription() {
   return [
@@ -79,6 +80,7 @@ export default function StatisticStepper({
       )}
       <div className="step-navigation-buttons">
         <Button
+          startIcon={<ArrowBack />}
           color="secondary"
           disabled={activeStep === 0}
           onClick={() => removeLastQueryParam(activeStep)}
@@ -86,9 +88,7 @@ export default function StatisticStepper({
         >
           Back
         </Button>
-        <Button onClick={resetQueryParams} color="secondary">
-          Reset
-        </Button>
+        <Button onClick={resetQueryParams}>Reset</Button>
       </div>
     </div>
   );

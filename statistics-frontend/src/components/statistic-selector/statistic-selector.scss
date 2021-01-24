@@ -1,8 +1,15 @@
 @import "../../styles";
 
-.react-swipeable-view-container > div {
-  overflow: unset !important;
-  height: 100%;
+.react-swipeable-views {
+  height: inherit;
+}
+
+.react-swipeable-view-container {
+  align-items: center;
+  height: inherit;
+  & > div {
+    overflow: unset !important;
+  }
 }
 
 .statistic-selector {
@@ -16,7 +23,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 16px;
 }
 
 .chip-root {
@@ -33,21 +39,39 @@
 }
 
 .statistic-selector-container {
-  padding: 0px 16px;
+  padding: 0 16px;
   justify-content: center;
   margin: auto;
+  height: 280px;
 }
 
 .skeleton-container {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
   margin: auto;
+  height: 280px;
+  align-items: center;
+  flex-direction: column;
 }
 
-.skeleton-root {
+.skeleton-dots-flex {
+  display: flex;
+  justify-content: center;
+  height: inherit;
+  width: inherit;
+  margin-top: 16px;
+}
+
+.skeleton-rect {
   margin: 16px 24px;
   flex-shrink: 0;
-  height: 175px !important;
-  width: 250px;
+  justify-content: center;
+  height: 195px !important;
+  width: 380px;
+}
+
+.skeleton-dot {
+  margin: 0 2px;
+  flex-shrink: 0;
+  width: 8px !important;
+  height: 8px !important;
 }

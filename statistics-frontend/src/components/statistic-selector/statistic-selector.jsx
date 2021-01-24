@@ -134,9 +134,12 @@ export function StatisticSelector({
     </div>
   ) : (
     <div className="skeleton-container">
-      {Array.from(new Array(5).fill(1)).map((v, i) => (
-        <Skeleton key={v + i} variant="rect" className="skeleton-root" />
-      ))}
+      <Skeleton variant="rect" className="skeleton-rect" />
+      <div className="skeleton-dots-flex">
+        {Array.from(new Array(8).fill(1)).map((v, i) => (
+          <Skeleton key={v + i} variant="circle" className="skeleton-dot" />
+        ))}
+      </div>
     </div>
   );
 }

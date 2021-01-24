@@ -28,7 +28,6 @@ function GeoMap({
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
   const {
-    getVisualizationHeight,
     setSelectedCountryHandler,
     resetSelectedCountryHandler,
     toolTipPos,
@@ -54,9 +53,9 @@ function GeoMap({
       )
       .range(isDarkTheme ? [0, 1] : [1, 0]);
 
-    const projection = geoEquirectangular().fitSize(
-      [width, height],
-      geoJsonFromSelectedStatistic);
+    const projection = geoEquirectangular()
+      .fitSize([width, height], geoJsonFromSelectedStatistic)
+      .translate([width / 2, height / 2]);
 
     const path = geoPath().projection(projection);
 
@@ -92,7 +91,7 @@ function GeoMap({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg ref={svgRef} height={getVisualizationHeight()} />
+      <svg ref={svgRef} className="svg-visualization" />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup

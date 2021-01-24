@@ -3,6 +3,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - (128px + 112px));
+
+  @media (max-width: 600px) {
+    height: calc(100vh - (128px + 52px));
+  }
+}
+
+.svg-visualization {
+  height: inherit;
 }
 
 .statistic-description {

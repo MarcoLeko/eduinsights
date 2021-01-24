@@ -39,6 +39,8 @@ function Introduction() {
       <img
         src={MonitoringLogo}
         className="graphic"
+        width="200"
+        height="100"
         alt="Data provided by UNESCO"
       />
     </Box>

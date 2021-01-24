@@ -30,7 +30,6 @@ function GeoGlobe({
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
   const {
-    getVisualizationHeight,
     setSelectedCountryHandler,
     resetSelectedCountryHandler,
     toolTipPos,
@@ -40,68 +39,69 @@ function GeoGlobe({
   const isDarkTheme = theme === "dark";
 
   useEffect(() => {
+    const svg = select(svgRef.current);
+
     if (geoJsonFromSelectedStatistic.features.length) {
       dispatch(setVisualizationLoaded(true));
     }
 
-    const svg = select(svgRef.current);
-    const { width, height } =
-      dimensions || wrapperRef.current?.getBoundingClientRect();
-    const λ = scaleLinear().domain([0, width]).range([-180, 180]);
-    const φ = scaleLinear().domain([0, height]).range([90, -90]);
+    if (dimensions) {
+      const { width, height } = dimensions;
+      const λ = scaleLinear().domain([0, width]).range([-180, 180]);
+      const φ = scaleLinear().domain([0, height]).range([90, -90]);
 
-    const unitScale = scaleLinear()
-      .domain(
-        extent(
-          geoJsonFromSelectedStatistic.features.map(
-            (item) => item.properties.value
+      const unitScale = scaleLinear()
+        .domain(
+          extent(
+            geoJsonFromSelectedStatistic.features.map(
+              (item) => item.properties.value
+            )
           )
         )
-      )
-      .range(isDarkTheme ? [0, 1] : [1, 0]);
+        .range(isDarkTheme ? [0, 1] : [1, 0]);
 
-    const projection = geoOrthographic()
-      .fitSize([width * 0.85, height * 0.85], geoJsonFromSelectedStatistic)
-      .translate([width / 2, (height * 0.9) / 2])
-      .rotate([0, 0, 0]);
+      const projection = geoOrthographic()
+        .fitSize([width, height], geoJsonFromSelectedStatistic)
+        .rotate([0, 0, 0]);
 
-    const path = geoPath().projection(projection);
-    const graticule = geoGraticule();
+      const path = geoPath().projection(projection);
+      const graticule = geoGraticule();
 
-    svg.append("path").datum(graticule).attr("d", path);
+      svg.append("path").datum(graticule).attr("d", path);
 
-    svg
-      .selectAll("path")
-      .data(geoJsonFromSelectedStatistic.features)
-      .join("path")
-      .style("opacity", 0.8)
-      .style("stroke-width", 0.5)
-      .style("stroke", isDarkTheme ? "#303030" : "#fff")
-      .on("mouseover", setSelectedCountryHandler)
-      .on("mouseout", resetSelectedCountryHandler)
-      .attr("class", "country")
-      .attr("fill", (feature) =>
-        feature.properties.value === null
-          ? "#ccc"
-          : interpolateMagma(unitScale(feature.properties.value))
-      )
-      .attr("d", (feature) => path(feature));
+      svg
+        .selectAll("path")
+        .data(geoJsonFromSelectedStatistic.features)
+        .join("path")
+        .style("opacity", 0.8)
+        .style("stroke-width", 0.5)
+        .style("stroke", isDarkTheme ? "#303030" : "#fff")
+        .on("mouseover", setSelectedCountryHandler)
+        .on("mouseout", resetSelectedCountryHandler)
+        .attr("class", "country")
+        .attr("fill", (feature) =>
+          feature.properties.value === null
+            ? "#ccc"
+            : interpolateMagma(unitScale(feature.properties.value))
+        )
+        .attr("d", (feature) => path(feature));
 
-    const dragged = drag()
-      .subject(function () {
-        const r = projection.rotate();
-        return {
-          x: λ.invert(r[0]),
-          y: φ.invert(r[1]),
-        };
-      })
-      .on("drag", function (event) {
-        projection.rotate([λ(event.x), φ(event.y)]);
-        svg.selectAll(".country").attr("d", path);
-        svg.datum(graticule).attr("d", path);
-      });
+      const dragged = drag()
+        .subject(function () {
+          const r = projection.rotate();
+          return {
+            x: λ.invert(r[0]),
+            y: φ.invert(r[1]),
+          };
+        })
+        .on("drag", function (event) {
+          projection.rotate([λ(event.x), φ(event.y)]);
+          svg.selectAll(".country").attr("d", path);
+          svg.datum(graticule).attr("d", path);
+        });
 
-    svg.call(dragged);
+      svg.call(dragged);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
 
@@ -117,7 +117,7 @@ function GeoGlobe({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg ref={svgRef} height={getVisualizationHeight()} />
+      <svg ref={svgRef} className="svg-visualization" />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup
