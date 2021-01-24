@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Container, Link } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { setSidebarOpen } from "../../context/ui-actions";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,9 +13,27 @@ const useStyles = makeStyles((theme) => ({
 
 export function Legal() {
   const classes = useStyles();
+  const { sidebarOpen, dispatch } = useUiContext();
+
+  const dispatchSidebarState = useCallback(
+    function (args) {
+      dispatch(setSidebarOpen(args));
+    },
+    [dispatch]
+  );
+
+  function closeSidebar() {
+    if (sidebarOpen) {
+      dispatchSidebarState(false);
+    }
+  }
 
   return (
-    <Container maxWidth="md" classes={{ root: classes.root }}>
+    <Container
+      maxWidth="md"
+      classes={{ root: classes.root }}
+      onClick={closeSidebar}
+    >
       <Typography color="textSecondary" variant="h3" component="h1">
         Legal Disclosure
       </Typography>
