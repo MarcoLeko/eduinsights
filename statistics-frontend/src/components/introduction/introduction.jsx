@@ -21,7 +21,7 @@ function Introduction() {
         that's why member states of the United Nations Sustainable Development
         Summit formally adopted the{" "}
         <Link href="https://sdgs.un.org/2030agenda">
-          2030 Agenda for Sustainable Development.
+          2030 Agenda for Sustainable Development.{" "}
         </Link>
         This framework helps to guide governments and partners on how to turn
         commitments into action. The agenda contains 17 goals including a new
@@ -41,6 +41,7 @@ function Introduction() {
         className="graphic"
         width="200"
         height="100"
+        loading="lazy"
         alt="Data provided by UNESCO"
       />
     </Box>
