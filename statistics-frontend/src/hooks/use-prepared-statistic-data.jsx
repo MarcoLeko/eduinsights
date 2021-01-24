@@ -6,10 +6,10 @@ import {
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
-import { useQueryParamsListener } from "./use-query-params-listener";
+import { useQueryParamsListenerForPreparedStatistics } from "./use-query-params-listener-for-prepared-statistics";
 
-export function useStatisticData() {
-  const { queryParams } = useQueryParamsListener();
+export function usePreparedStatisticData() {
+  const { queryParams } = useQueryParamsListenerForPreparedStatistics();
   const [selectedStatistic, setSelectedStatistic] = useState(
     queryParams.statistic
   );

@@ -10,7 +10,7 @@ statistics-frontend/coverage
 statistics-backend/coverage
 
 # production
-statistics-backend/build
+statistics-backend/dist
 statistics-frontend/build
 
 # ide

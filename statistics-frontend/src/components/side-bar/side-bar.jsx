@@ -10,9 +10,9 @@ import { Link, makeStyles, Typography } from "@material-ui/core";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
-import { drawerWidth } from "./header-styles";
-import { navItems } from "./navItems";
 import { ThemeSelector } from "../shared/theme-selector";
+import { navItemsSideBar } from "../shared/navItems";
+import { drawerWidth } from "../shared/header-styles";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({
@@ -66,7 +66,7 @@ function SideBar({ isOpen }) {
       }}
     >
       <List>
-        {navItems.map(({ icon, name, link }, index) => (
+        {navItemsSideBar.map(({ icon, name, link }, index) => (
           <div key={index}>
             {link ? (
               <ListItem button>

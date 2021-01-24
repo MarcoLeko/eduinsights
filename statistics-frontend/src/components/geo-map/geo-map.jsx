@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "./geo-map.scss";
-import useResizeObserver from "../../hooks/useResizeObserver";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -9,6 +8,7 @@ import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography } from "@material-ui/core";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
 import { useD3Utils } from "../../hooks/use-d3-utils";
+import useResizeObserver from "../../hooks/use-resize-observer";
 
 const {
   extent,
@@ -56,8 +56,7 @@ function GeoMap({
 
     const projection = geoEquirectangular().fitSize(
       [width, height],
-      geoJsonFromSelectedStatistic
-    );
+      geoJsonFromSelectedStatistic);
 
     const path = geoPath().projection(projection);
 
@@ -79,7 +78,7 @@ function GeoMap({
       .attr("d", (feature) => path(feature))
       .attr("transform", "scale(1, 1.2)");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dimensions, geoJsonFromSelectedStatistic, dispatch, isDarkTheme]);
+  }, [dimensions, geoJsonFromSelectedStatistic, isDarkTheme]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">
@@ -103,6 +102,7 @@ function GeoMap({
             }}
           />
           <MapToolTip
+            evaluationType={geoJsonFromSelectedStatistic.evaluationType}
             selectedCountry={selectedCountry}
             tooltipPos={toolTipPos}
           />

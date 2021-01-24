@@ -14,7 +14,6 @@
     "node-sass": "^4.14.1",
     "query-string": "^6.13.7",
     "react": "^17.0.1",
-    "react-adsense": "^0.1.0",
     "react-dom": "^17.0.1",
     "react-ga": "^3.3.0",
     "react-helmet": "^6.1.0",

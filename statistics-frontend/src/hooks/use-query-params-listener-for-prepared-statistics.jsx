@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 
-export function useQueryParamsListener() {
+export function useQueryParamsListenerForPreparedStatistics() {
   const location = useLocation();
   const history = useHistory();
   const [queryParams, setQueryParams] = useState(qs.parse(location.search));
