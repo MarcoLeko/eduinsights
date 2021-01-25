@@ -6,13 +6,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Box from "@material-ui/core/Box";
-import { Link, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
 import { ThemeSelector } from "../shared/theme-selector";
 import { navItemsSideBar } from "../shared/navItems";
 import { drawerWidth } from "../shared/header-styles";
+import { useHistory } from "react-router-dom";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({
@@ -53,6 +54,15 @@ const useStyles = (params) =>
 function SideBar({ isOpen }) {
   const { theme } = useUiContext();
   const classes = useStyles(theme)();
+  const history = useHistory();
+
+  function navigate(link) {
+    if (link.indexOf("http://") === 0 || link.indexOf("https://") === 0) {
+      window.location.href = link;
+    } else {
+      history.push(link);
+    }
+  }
 
   return (
     <Drawer
@@ -69,16 +79,11 @@ function SideBar({ isOpen }) {
         {navItemsSideBar.map(({ icon, name, link }, index) => (
           <div key={index}>
             {link ? (
-              <ListItem button>
-                <Link href={link} className={classes.linkItem}>
-                  <ListItemIcon className={classes.logoPanel}>
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={name}
-                    className={classes.listItemText}
-                  />
-                </Link>
+              <ListItem button onClick={() => navigate(link)}>
+                <ListItemIcon className={classes.logoPanel}>
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={name} className={classes.listItemText} />
               </ListItem>
             ) : (
               name === "Design" && <ThemeSelector />

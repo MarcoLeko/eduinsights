@@ -35,8 +35,7 @@ export function QueryBuilder() {
 
   useEffect(() => {
     dispatch(setActiveTab(1));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoriesList]);
+  }, [categoriesList, dispatch]);
 
   return (
     <Container

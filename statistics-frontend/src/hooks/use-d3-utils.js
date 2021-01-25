@@ -24,5 +24,7 @@ export const useD3Utils = (wrapperRef) => {
     resetSelectedCountryHandler,
     toolTipPos,
     selectedCountry,
+    width: 1280,
+    height: 640,
   };
 };

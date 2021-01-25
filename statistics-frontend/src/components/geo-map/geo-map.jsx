@@ -8,7 +8,6 @@ import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography } from "@material-ui/core";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
 import { useD3Utils } from "../../hooks/use-d3-utils";
-import useResizeObserver from "../../hooks/use-resize-observer";
 
 const {
   extent,
@@ -32,17 +31,18 @@ function GeoMap({
     resetSelectedCountryHandler,
     toolTipPos,
     selectedCountry,
+    width,
+    height,
   } = useD3Utils(wrapperRef);
-  const dimensions = useResizeObserver(wrapperRef);
   const isDarkTheme = theme === "dark";
+
   useEffect(() => {
+    const svg = select(svgRef.current);
+
     if (geoJsonFromSelectedStatistic.features.length) {
       dispatch(setVisualizationLoaded(true));
     }
 
-    const svg = select(svgRef.current);
-    const { width, height } =
-      dimensions || wrapperRef.current?.getBoundingClientRect();
     const unitScale = scaleLinear()
       .domain(
         extent(
@@ -53,9 +53,10 @@ function GeoMap({
       )
       .range(isDarkTheme ? [0, 1] : [1, 0]);
 
-    const projection = geoEquirectangular()
-      .fitSize([width, height], geoJsonFromSelectedStatistic)
-      .translate([width / 2, height / 2]);
+    const projection = geoEquirectangular().fitSize(
+      [width, height],
+      geoJsonFromSelectedStatistic
+    );
 
     const path = geoPath().projection(projection);
 
@@ -77,7 +78,7 @@ function GeoMap({
       .attr("d", (feature) => path(feature))
       .attr("transform", "scale(1, 1.2)");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dimensions, geoJsonFromSelectedStatistic, isDarkTheme]);
+  }, [geoJsonFromSelectedStatistic, isDarkTheme]);
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">
@@ -91,7 +92,7 @@ function GeoMap({
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
-      <svg ref={svgRef} className="svg-visualization" />
+      <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
         <>
           <StatisticsMarkup

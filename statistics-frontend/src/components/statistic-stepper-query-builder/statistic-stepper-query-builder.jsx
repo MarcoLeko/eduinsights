@@ -4,6 +4,8 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { ArrowBack } from "@material-ui/icons";
+import "../statistic-stepper/statistic-stepper.scss";
 
 function getStepsDescription() {
   return ["Create query", "Choose a visualization", "Finalize visualization"];
@@ -22,36 +24,13 @@ function getStepContent(stepIndex) {
   }
 }
 export default function StatisticStepperQueryBuilder() {
-  // const isFirstStepFailed = (step) => {
-  //     return (
-  //         queryParams.statistic &&
-  //         !statisticsList.some(({ key }) => key === queryParams.statistic) &&
-  //         step === 0
-  //     );
-  // };
-  // const isSecondStepFailed = (step) => {
-  //     return (
-  //         queryParams.visualization &&
-  //         !["map", "globe"].includes(queryParams.visualization) &&
-  //         step === 1
-  //     );
-  // };
-
   return (
     <div className="stepper-container">
       <Stepper alternativeLabel activeStep={0} className="stepper">
-        {getStepsDescription().map((label, i) => {
-          const labelProps = {};
-          const stepProps = {};
-          // if (isFirstStepFailed(i)) {
-          //     labelProps.error = true;
-          // }
-          // if (isSecondStepFailed(i)) {
-          //     labelProps.error = true;
-          // }
+        {getStepsDescription().map((label) => {
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
             </Step>
           );
         })}
@@ -69,18 +48,12 @@ export default function StatisticStepperQueryBuilder() {
       <div className="step-navigation-buttons">
         <Button
           color="secondary"
-          // disabled={activeStep === 0}
-          // onClick={() => removeLastQueryParam(activeStep)}
           className="back-button"
+          startIcon={<ArrowBack />}
         >
           Back
         </Button>
-        <Button
-          // onClick={resetQueryParams}
-          color="secondary"
-        >
-          Reset
-        </Button>
+        <Button color="secondary">Reset</Button>
       </div>
     </div>
   );

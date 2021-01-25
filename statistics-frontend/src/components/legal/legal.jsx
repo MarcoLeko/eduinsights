@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Container, Link } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSidebarOpen } from "../../context/ui-actions";
+import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
 export function Legal() {
   const classes = useStyles();
   const { sidebarOpen, dispatch } = useUiContext();
+
+  useEffect(() => {
+    dispatch(setActiveTab(null));
+  }, [dispatch]);
 
   const dispatchSidebarState = useCallback(
     function (args) {

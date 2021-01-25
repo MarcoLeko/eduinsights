@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import { useHeaderStyles } from "../shared/header-styles";
 import { makeStyles } from "@material-ui/core/styles";
+import { setActiveTab } from "../../context/ui-actions";
 
 const useStyles = (theming) =>
   makeStyles(() => ({
@@ -25,15 +26,13 @@ export function MobileNavigation() {
   const classes = useStyles(theme)();
 
   const classesHeader = useHeaderStyles(theme);
-  const { activeTab, sidebarOpen } = useUiContext();
-  const [index, onChange] = useState(activeTab);
+  const { activeTab, sidebarOpen, dispatch } = useUiContext();
 
   useEffect(() => {
-    onChange(activeTab);
-  }, [activeTab]);
+    dispatch(setActiveTab(null));
+  }, [dispatch]);
 
   function navigate(val) {
-    onChange(val);
     history.push(navItems[val].link);
   }
 
@@ -43,7 +42,7 @@ export function MobileNavigation() {
         className={clsx("bottom-nav", classesHeader.navigation, classes.root, {
           [classesHeader.navigationShift]: sidebarOpen,
         })}
-        value={index}
+        value={activeTab}
         onChange={(e, val) => navigate(val)}
         showLabels
       >
@@ -51,7 +50,7 @@ export function MobileNavigation() {
           <BottomNavigationAction
             key={item.name}
             label={item.name}
-            icon={i === index ? item.iconActive : item.icon}
+            icon={i === activeTab ? item.iconActive : item.icon}
           />
         ))}
       </BottomNavigation>
