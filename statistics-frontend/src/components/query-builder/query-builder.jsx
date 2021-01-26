@@ -11,9 +11,9 @@ import { Skeleton } from "@material-ui/lab";
 export function QueryBuilder() {
   const { sidebarOpen, dispatch } = useUiContext();
   const {
-    categoriesList,
-    selectedCategory,
-    setSelectedCategory,
+    filterStructure,
+    selectedFilterStructure,
+    setSelectedFilterStructure,
   } = useQueryBuilder();
 
   const dispatchSidebarState = useCallback(
@@ -30,12 +30,12 @@ export function QueryBuilder() {
   }
 
   function handleChange(event) {
-    setSelectedCategory(event.target.value);
+    setSelectedFilterStructure(event.target.value);
   }
 
   useEffect(() => {
     dispatch(setActiveTab(1));
-  }, [categoriesList, dispatch]);
+  }, [filterStructure, dispatch]);
 
   return (
     <Container
@@ -56,22 +56,23 @@ export function QueryBuilder() {
       </div>
       <StatisticStepperQueryBuilder />
       <div className="text-field-container">
-        {categoriesList.length ? (
-          <TextField
-            select
-            className="select"
-            label="Category"
-            value={selectedCategory}
-            onChange={handleChange}
-            helperText="Please select your category"
-            variant="outlined"
-          >
-            {categoriesList.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
+        {filterStructure.length ? (
+          filterStructure.map((filter, i) => (
+            <TextField
+              select
+              className="select"
+              label={filter.name}
+              value={selectedFilterStructure[i]}
+              onChange={handleChange}
+              variant="outlined"
+            >
+              {filter.items.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          ))
         ) : (
           <Skeleton className="select skeleton" />
         )}

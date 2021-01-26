@@ -1,15 +1,16 @@
-import { CategoryFilter } from './category-filter';
 import { CategoryFilterValue } from './category-filter-value';
 
 export class DataStructureForFilteredCategory {
-  constructor(private categoryFilterValues: Array<CategoryFilterValue>) {}
+  // Currently only dynamic queries from EDU_NON_FINANCE category are supported
+  public static SUPPORTED_CATEGORY_ID = 'EDU_NON_FINANCE';
+  constructor(private categoryFilterValues: CategoryFilterValue) {}
 
-  public static getDataStructureByCategoryIdUrl(id: string) {
-    return `https://api.uis.unesco.org/sdmx/datastructure/UNESCO/${id}/latest/?format=sdmx-json&detail=full&references=none&locale=en`;
+  public static getDataStructureByCategoryIdUrl() {
+    return `https://api.uis.unesco.org/sdmx/datastructure/UNESCO/${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID}/latest/?format=sdmx-json&detail=full&references=none&locale=en`;
   }
 
   public static create(
-    categoryFilterValues: Array<CategoryFilterValue>,
+    categoryFilterValues: CategoryFilterValue,
   ): DataStructureForFilteredCategory {
     return new DataStructureForFilteredCategory(categoryFilterValues);
   }

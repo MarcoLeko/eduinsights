@@ -10,8 +10,8 @@ export async function getMapStatisticsById(body) {
   return handleResponse(response);
 }
 
-export async function getUISCategories() {
-  const response = await fetch("api/v1/query/categories", {
+export async function getDataStructureForQuery() {
+  const response = await fetch("api/v1/query/categories/data-structure/", {
     headers: {
       "Content-Type": "application/json",
     },
