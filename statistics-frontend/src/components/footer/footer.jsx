@@ -11,7 +11,6 @@ import {
   SocialLink,
   SocialProvider,
 } from "@mui-treasury/components/socialLink";
-
 import { useMoonSocialLinkStyles } from "@mui-treasury/styles/socialLink/moon";
 import { usePlainNavigationMenuStyles } from "@mui-treasury/styles/navigationMenu/plain";
 import Copyright from "../shared/copyright";

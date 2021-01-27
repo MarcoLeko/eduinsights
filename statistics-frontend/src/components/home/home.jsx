@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "@material-ui/core";
 import Introduction from "../introduction/introduction";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
@@ -9,10 +9,9 @@ import { VisualizationSelector } from "../visualization-selector/visualization-s
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
-import GeoChart from "../geo-map/geo-map";
 import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
-import GeoGlobe from "../geo-globe/geo-globe";
 import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/use-query-params-listener-for-prepared-statistics";
+import { GeoVisualization } from "../geo-visualization/geo-visualization";
 
 function Home() {
   const {
@@ -21,7 +20,6 @@ function Home() {
     setSelectedStatistic,
   } = usePreparedStatisticData();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
-  const targetContainerRef = useRef(null);
   const dispatchSidebarState = useCallback(
     function (args) {
       dispatch(setSidebarOpen(args));
@@ -59,31 +57,18 @@ function Home() {
   }
 
   function getStatisticStepChildren() {
+    const showGlobe = queryParams.visualization === "globe";
+
     switch (activeStep) {
       case 3:
       case 2:
         return (
-          <div
-            id="visualization-container"
-            className="visualization-container"
-            ref={targetContainerRef}
-          >
-            {queryParams.visualization === "globe" ? (
-              <GeoGlobe
-                showLoadingScreen={activeStep === 2}
-                geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-                statisticsList={statisticsList}
-              />
-            ) : (
-              <>
-                <GeoChart
-                  showLoadingScreen={activeStep === 2}
-                  geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-                  statisticsList={statisticsList}
-                />
-              </>
-            )}
-          </div>
+          <GeoVisualization
+            showLoadingScreen={activeStep === 2}
+            geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
+            statisticsList={statisticsList}
+            showGlobe={showGlobe}
+          />
         );
       case 1:
         return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
