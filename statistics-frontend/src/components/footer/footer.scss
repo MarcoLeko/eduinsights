@@ -1,0 +1,32 @@
+@import "../../styles";
+
+.social-link {
+  transition: 0.3s ease-out;
+  align-items: center;
+  border-radius: 40px;
+  display: inline-flex;
+  padding: 12px;
+  font-size: 24px;
+  border: 1px solid $color-default;
+
+  ~ :not(:first-of-type) {
+    margin-left: 0.25em;
+  }
+}
+
+.social-link:hover {
+  transform: translateY(-4px);
+}
+
+.footer-link {
+  justify-content: center;
+
+  &:first-of-type {
+    margin-right: 1em;
+  }
+}
+
+.social-link-icon {
+  height: 1em;
+  width: 1em;
+}

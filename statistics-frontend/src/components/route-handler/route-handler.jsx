@@ -8,12 +8,11 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import { CssBaseline } from "@material-ui/core";
 import { Header } from "../header/header";
 import "../../styles.scss";
-// import { Footer } from "../footer/footer";
+import { Footer } from "../footer/footer";
 import { getMaterialUiTheme } from "../../material-ui-theme";
 import { QueryBuilder } from "../query-builder/query-builder";
 import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
 
-// TODO: fix footer
 function RouteHandler() {
   const { theme } = useUiContext();
 
@@ -29,7 +28,7 @@ function RouteHandler() {
             <Route path="/query-builder" component={QueryBuilder} />
             <Route component={Home} />
           </Switch>
-          {/*<Footer />*/}
+          <Footer />
           <MobileNavigation />
         </Router>
       </CssBaseline>
