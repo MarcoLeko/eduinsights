@@ -20,11 +20,13 @@ export async function getDataStructureForQuery() {
   return handleResponse(response);
 }
 
-export async function getStatisticForQuery() {
+export async function getStatisticForQuery(body) {
   const response = await fetch("api/v1/query/categories/statistic", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(body),
   });
 
   return handleResponse(response);

@@ -22,7 +22,13 @@ export function VisualizationSelector({
   addNextQueryParam = () => null,
   useQueryParams = true,
   setActiveStep = () => null,
+  setShowGlobe = () => null,
 }) {
+  function handleClickForQuerySelector(key) {
+    setActiveStep(2);
+    setShowGlobe(key === "globe");
+  }
+
   return (
     <Grid container justify="center" spacing={2} wrap="nowrap">
       {visualizations.map((visualization) => (
@@ -36,7 +42,7 @@ export function VisualizationSelector({
               onClick={() =>
                 useQueryParams
                   ? addNextQueryParam({ visualization: visualization.key })
-                  : setActiveStep(2)
+                  : handleClickForQuerySelector(visualization.key)
               }
               size={"small"}
               variant="contained"

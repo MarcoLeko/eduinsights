@@ -54,6 +54,7 @@ export default function StatisticStepperQueryBuilder({
           color="secondary"
           className="button"
           startIcon={<ArrowBack />}
+          disabled={activeStep === 0}
           onClick={() => setActiveStep(activeStep - 1)}
         >
           Back
@@ -70,7 +71,7 @@ export default function StatisticStepperQueryBuilder({
           className="button"
           onClick={() => setActiveStep(1)}
           endIcon={<ArrowForward />}
-          disabled={!isFilterValid}
+          disabled={!isFilterValid || activeStep !== 0}
         >
           Next
         </Button>

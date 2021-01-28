@@ -12,14 +12,13 @@ export class CountriesJson {
       countries: {
         type: { type: String },
         geometries: { type: Array },
+        bbox: { type: Array },
       },
     }),
   )
   objects: Record<string, any>;
   @Prop()
   arcs: [];
-  @Prop()
-  bbox: [];
   @Prop()
   type: 'Topology';
 }

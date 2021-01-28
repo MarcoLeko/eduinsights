@@ -1,15 +1,42 @@
 import { useCallback, useEffect, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
-import { getDataStructureForQuery, validateSelectedFilter } from "../services";
+import {
+  getDataStructureForQuery,
+  getStatisticForQuery,
+  validateSelectedFilter,
+} from "../services";
+import * as topojson from "topojson-client";
 
 export function useQueryBuilder() {
   const [filterStructure, setFilterStructure] = useState([]);
   const [selectedFilterStructure, setSelectedFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
+  const [showGlobe, setShowGlobe] = useState(false);
+  const [geoJsonStatistic, setGeoJsonStatistic] = useState({
+    description: null,
+    key: null,
+    type: null,
+    features: [],
+  });
   const [activeStep, setActiveStep] = useState(0);
 
   const { dispatch } = useAlertContext();
+
+  const fetchGeoJsonStatisticFromFilter = useCallback(() => {
+    getStatisticForQuery(selectedFilterStructure)
+      .then((topoJson) => {
+        const { key } = topoJson;
+        const topoJson2GeoJson = topojson.feature(topoJson, "countries");
+
+        setGeoJsonStatistic({
+          ...topoJson2GeoJson,
+          key,
+        });
+      })
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchQueryBuilderFilterStructure = useCallback(() => {
     getDataStructureForQuery()
@@ -22,12 +49,13 @@ export function useQueryBuilder() {
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedFilterStructure]);
 
   const getFilterValidation = useCallback(() => {
-    validateSelectedFilter(selectedFilterStructure).then((response) =>
-      setIsFilterValid(response.clientFilterValid)
-    );
+    validateSelectedFilter(selectedFilterStructure)
+      .then((response) => setIsFilterValid(response.clientFilterValid))
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilterStructure]);
 
   useEffect(() => {
@@ -39,8 +67,11 @@ export function useQueryBuilder() {
       getFilterValidation();
     }
 
+    if (isFilterValid && activeStep > 0) {
+      fetchGeoJsonStatisticFromFilter();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFilterStructure]);
+  }, [selectedFilterStructure, activeStep]);
 
   return {
     filterStructure,
@@ -49,5 +80,8 @@ export function useQueryBuilder() {
     isFilterValid,
     activeStep,
     setActiveStep,
+    showGlobe,
+    setShowGlobe,
+    geoJsonStatistic,
   };
 }

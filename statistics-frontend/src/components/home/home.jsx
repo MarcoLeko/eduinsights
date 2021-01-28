@@ -66,7 +66,6 @@ function Home() {
           <GeoVisualization
             showLoadingScreen={activeStep === 2}
             geoJsonFromSelectedStatistic={geoJsonFromSelectedStatistic}
-            statisticsList={statisticsList}
             showGlobe={showGlobe}
           />
         );

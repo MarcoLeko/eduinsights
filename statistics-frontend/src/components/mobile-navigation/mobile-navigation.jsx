@@ -45,6 +45,7 @@ export function MobileNavigation() {
           <BottomNavigationAction
             key={item.name}
             label={item.name}
+            className="bottom-nav-item"
             icon={i === activeTab ? item.iconActive : item.icon}
           />
         ))}

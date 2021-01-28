@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { StatisticsListMarkup } from "../SEO/statistics-list-markup";
 import { PublicSharp } from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
 
@@ -41,7 +40,6 @@ export function StatisticSelector({
 
   return Boolean(statisticsList.length) ? (
     <div className="statistic-selector-container">
-      <StatisticsListMarkup statisticsList={statisticsList} />
       <SwipeableViews
         index={index}
         className="react-swipeable-views"

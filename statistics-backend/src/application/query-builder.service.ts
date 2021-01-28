@@ -121,9 +121,9 @@ export class QueryBuilderService {
         type: geoJson.type,
         arcs: geoJson.arcs,
         key: geoJson.key,
-        bbox: geoJson.bbox,
         objects: {
           countries: {
+            bbox: geoJson.objects.countries.bbox,
             type: geoJson.objects.countries.type,
             geometries: resultArrayWithCountryMatches,
           },

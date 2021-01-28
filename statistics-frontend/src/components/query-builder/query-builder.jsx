@@ -8,9 +8,10 @@ import StatisticStepperQueryBuilder from "../statistic-stepper-query-builder/sta
 import { useQueryBuilder } from "../../hooks/use-query-builder";
 import { FilterSelector } from "../filter-selector/filter-selector";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
+import { GeoVisualization } from "../geo-visualization/geo-visualization";
 
 export function QueryBuilder() {
-  const { sidebarOpen, dispatch } = useUiContext();
+  const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
 
   const {
     filterStructure,
@@ -19,6 +20,9 @@ export function QueryBuilder() {
     isFilterValid,
     activeStep,
     setActiveStep,
+    geoJsonStatistic,
+    setShowGlobe,
+    showGlobe,
   } = useQueryBuilder();
 
   const dispatchSidebarState = useCallback(
@@ -28,26 +32,37 @@ export function QueryBuilder() {
     [dispatch]
   );
 
+  useEffect(() => {
+    dispatch(setActiveTab(1));
+    if (activeStep === 2 && visualizationLoaded) {
+      setActiveStep(3);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterStructure, visualizationLoaded, activeStep]);
+
   function closeSidebar() {
     if (sidebarOpen) {
       dispatchSidebarState(false);
     }
   }
 
-  useEffect(() => {
-    dispatch(setActiveTab(1));
-  }, [filterStructure, dispatch]);
-
   function getActiveStepNode() {
     switch (activeStep) {
       case 3:
       case 2:
-        return <div />;
+        return (
+          <GeoVisualization
+            showLoadingScreen={activeStep === 2}
+            geoJsonFromSelectedStatistic={geoJsonStatistic}
+            showGlobe={showGlobe}
+          />
+        );
       case 1:
         return (
           <VisualizationSelector
             setActiveStep={setActiveStep}
             useQueryParams={false}
+            setShowGlobe={setShowGlobe}
           />
         );
       case 0:
@@ -70,7 +85,7 @@ export function QueryBuilder() {
     >
       <div className="text-box">
         <Typography variant="h4" color="textSecondary">
-          Build your own queries (Beta)
+          Build your own queries (Alpha)
         </Typography>
         <Typography variant="body1" color="textSecondary">
           This feature heavily relies on the UIS API. Since UIS is during a

@@ -4,7 +4,6 @@ import "./geo-visualization.scss";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { StatisticsMarkup } from "../SEO/statistics-markup";
 import { Typography } from "@material-ui/core";
 import { useD3Utils } from "../../hooks/use-d3-utils";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
@@ -119,7 +118,6 @@ function createMapVisualization(
 function GeoVisualization({
   showLoadingScreen,
   geoJsonFromSelectedStatistic,
-  statisticsList,
   showGlobe,
 }) {
   const svgRef = useRef();
@@ -179,19 +177,11 @@ function GeoVisualization({
       )}
       <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} />
       {Boolean(geoJsonFromSelectedStatistic.features.length) && (
-        <>
-          <StatisticsMarkup
-            data={{
-              ...geoJsonFromSelectedStatistic,
-              statisticsList: statisticsList,
-            }}
-          />
-          <MapToolTip
-            evaluationType={geoJsonFromSelectedStatistic.evaluationType}
-            selectedCountry={selectedCountry}
-            tooltipPos={toolTipPos}
-          />
-        </>
+        <MapToolTip
+          evaluationType={geoJsonFromSelectedStatistic.evaluationType}
+          selectedCountry={selectedCountry}
+          tooltipPos={toolTipPos}
+        />
       )}
     </div>
   );
