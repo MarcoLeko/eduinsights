@@ -5,22 +5,8 @@
   text-align: justify;
 }
 
-.text-field-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 .select {
   margin: 16px 8px !important;
   min-width: 45% !important;
-
-  > .MuiFormHelperText-contained {
-    margin-left: 0;
-  }
 }
 
-.skeleton {
-  padding: 32px;
-}

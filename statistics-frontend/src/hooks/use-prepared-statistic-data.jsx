@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  getMapStatisticsById,
-  getMapStatisticsList,
-} from "../components/shared/thunks";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
 import { useQueryParamsListenerForPreparedStatistics } from "./use-query-params-listener-for-prepared-statistics";
+import { getMapStatisticsById, getMapStatisticsList } from "../services";
 
 export function usePreparedStatisticData() {
   const { queryParams } = useQueryParamsListenerForPreparedStatistics();

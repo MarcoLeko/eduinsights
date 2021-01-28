@@ -1,12 +1,12 @@
 import clsx from "clsx";
-import { Container, MenuItem, TextField, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
 import StatisticStepperQueryBuilder from "../statistic-stepper-query-builder/statistic-stepper-query-builder";
 import { useQueryBuilder } from "../../hooks/use-query-builder";
-import { Skeleton } from "@material-ui/lab";
+import { FilterSelector } from "../filter-selector/filter-selector";
 
 export function QueryBuilder() {
   const { sidebarOpen, dispatch } = useUiContext();
@@ -14,6 +14,7 @@ export function QueryBuilder() {
     filterStructure,
     selectedFilterStructure,
     setSelectedFilterStructure,
+    isFilterValid,
   } = useQueryBuilder();
 
   const dispatchSidebarState = useCallback(
@@ -27,16 +28,6 @@ export function QueryBuilder() {
     if (sidebarOpen) {
       dispatchSidebarState(false);
     }
-  }
-
-  function handleChange(event, filterId) {
-    setSelectedFilterStructure(
-      selectedFilterStructure.map((filterElm) =>
-        filterElm.hasOwnProperty(filterId)
-          ? { [filterId]: event.target.value }
-          : filterElm
-      )
-    );
   }
 
   useEffect(() => {
@@ -60,31 +51,12 @@ export function QueryBuilder() {
           observation between 2017 and 2018 is already multi-dimensional.
         </Typography>
       </div>
-      <StatisticStepperQueryBuilder />
-      <div className="text-field-container">
-        {filterStructure.length
-          ? filterStructure.map((filter, i) => (
-              <TextField
-                select
-                key={filter.id + i}
-                className="select"
-                InputLabelProps={{ shrink: true }}
-                label={filter.name}
-                value={selectedFilterStructure[i][filter.id]}
-                onChange={(e) => handleChange(e, filter.id)}
-                variant="outlined"
-              >
-                {filter.items.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            ))
-          : Array.from(Array(22).keys()).map((i) => (
-              <Skeleton className="select skeleton" key={i} />
-            ))}
-      </div>
+      <StatisticStepperQueryBuilder isFilterValid={isFilterValid} />
+      <FilterSelector
+        selectedFilterStructure={selectedFilterStructure}
+        setSelectedFilterStructure={setSelectedFilterStructure}
+        filterStructure={filterStructure}
+      />
     </Container>
   );
 }

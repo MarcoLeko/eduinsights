@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { getDataStructureForQuery } from "../components/shared/thunks";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
+import { getDataStructureForQuery, validateSelectedFilter } from "../services";
 
 export function useQueryBuilder() {
   const [filterStructure, setFilterStructure] = useState([]);
   const [selectedFilterStructure, setSelectedFilterStructure] = useState([]);
+  const [isFilterValid, setIsFilterValid] = useState(false);
   const { dispatch } = useAlertContext();
 
   const fetchQueryBuilderFilterStructure = useCallback(() => {
@@ -21,16 +22,28 @@ export function useQueryBuilder() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getFilterValidation = useCallback(() => {
+    validateSelectedFilter(selectedFilterStructure).then((response) =>
+      setIsFilterValid(response.clientFilterValid)
+    );
+  }, [selectedFilterStructure]);
+
   useEffect(() => {
-    if (!filterStructure.length) {
+    if (!filterStructure.length && !selectedFilterStructure.length) {
       fetchQueryBuilderFilterStructure();
     }
+
+    if (selectedFilterStructure.length) {
+      getFilterValidation();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedFilterStructure]);
 
   return {
     filterStructure,
     selectedFilterStructure,
     setSelectedFilterStructure,
+    isFilterValid,
   };
 }

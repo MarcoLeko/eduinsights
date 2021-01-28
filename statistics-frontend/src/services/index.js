@@ -11,11 +11,26 @@ export async function getMapStatisticsById(body) {
 }
 
 export async function getDataStructureForQuery() {
-  const response = await fetch("api/v1/query/categories/data-structure/", {
+  const response = await fetch("api/v1/query/categories/data-structure", {
     headers: {
       "Content-Type": "application/json",
     },
   });
+
+  return handleResponse(response);
+}
+
+export async function validateSelectedFilter(body) {
+  const response = await fetch(
+    "api/v1/query/categories/data-structure/validate",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   return handleResponse(response);
 }
