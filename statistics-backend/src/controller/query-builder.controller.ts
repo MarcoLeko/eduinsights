@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { QueryBuilderService } from '../application/query-builder.service';
+import { ClientQueryFilterDto } from './client-query-filter.dto';
 
 @Controller('api/v1/query')
 export class QueryBuilderController {
@@ -11,10 +12,9 @@ export class QueryBuilderController {
   }
 
   @Post('/categories/data-structure/validate')
-  async validateClientFilter(@Body() clientBody: any): Promise<any> {
-    console.log(clientBody);
-
-    return { clientFilterValid: false };
-    // return this.queryBuilderService.getDataStructureForFilteredCategory();
+  async validateClientFilter(
+    @Body() clientBody: ClientQueryFilterDto,
+  ): Promise<any> {
+    return this.queryBuilderService.getStatisticsFromClientFilter(clientBody);
   }
 }

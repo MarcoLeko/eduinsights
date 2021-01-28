@@ -1,3 +1,3 @@
-export class MapStatisticsDto {
+export type MapStatisticsDto = {
   key: string;
-}
+};
