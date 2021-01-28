@@ -7,7 +7,8 @@
   display: inline-flex;
   padding: 12px;
   font-size: 24px;
-  border: 1px solid $color-default;
+  border: 1px solid $app-primary;
+  opacity: 0.9;
 
   ~ :not(:first-of-type) {
     margin-left: 0.25em;
@@ -15,6 +16,7 @@
 }
 
 .social-link:hover {
+  background: $app-background;
   transform: translateY(-4px);
 }
 

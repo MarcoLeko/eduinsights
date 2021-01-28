@@ -4,7 +4,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { ArrowBack } from "@material-ui/icons";
+import { ArrowBack, ArrowForward } from "@material-ui/icons";
 import "../statistic-stepper/statistic-stepper.scss";
 
 function getStepsDescription() {
@@ -46,14 +46,15 @@ export default function StatisticStepperQueryBuilder() {
         </Typography>
       )}
       <div className="step-navigation-buttons">
-        <Button
-          color="secondary"
-          className="back-button"
-          startIcon={<ArrowBack />}
-        >
+        <Button color="secondary" className="button" startIcon={<ArrowBack />}>
           Back
         </Button>
-        <Button color="secondary">Reset</Button>
+        <Button color="secondary" className="button">
+          Reset
+        </Button>
+        <Button color="secondary" className="button" endIcon={<ArrowForward />}>
+          Next
+        </Button>
       </div>
     </div>
   );

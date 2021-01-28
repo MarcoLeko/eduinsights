@@ -16,7 +16,7 @@ export function Legal() {
   const { sidebarOpen, dispatch } = useUiContext();
 
   useEffect(() => {
-    dispatch(setActiveTab(null));
+    dispatch(setActiveTab(-1));
   }, [dispatch]);
 
   const dispatchSidebarState = useCallback(

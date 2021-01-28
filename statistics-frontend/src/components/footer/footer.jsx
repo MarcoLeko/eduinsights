@@ -16,11 +16,11 @@ export const Footer = React.memo(function () {
     <Box bgcolor={"default"} width={"100%"}>
       <Container>
         <Box pt={8} pb={{ md: 2 }}>
-          <Grid wrap container justify={"space-between"} alignItems={"center"}>
+          <Grid container justify={"space-between"} alignItems={"center"}>
             <Typography variant={"h6"} color={"textSecondary"}>
               {appName}
             </Typography>
-            <Grid grow maxWidth={500} mx={"auto"}>
+            <Grid mx={"auto"}>
               <Box textAlign={"center"} mt={{ xs: 2, md: 0 }} my={2}>
                 <Link
                   className="social-link"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -11,7 +11,6 @@ import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import { useHeaderStyles } from "../shared/header-styles";
 import { makeStyles } from "@material-ui/core/styles";
-import { setActiveTab } from "../../context/ui-actions";
 
 const useStyles = (theming) =>
   makeStyles(() => ({
@@ -26,11 +25,7 @@ export function MobileNavigation() {
   const classes = useStyles(theme)();
 
   const classesHeader = useHeaderStyles(theme);
-  const { activeTab, sidebarOpen, dispatch } = useUiContext();
-
-  useEffect(() => {
-    dispatch(setActiveTab(null));
-  }, [dispatch]);
+  const { activeTab, sidebarOpen } = useUiContext();
 
   function navigate(val) {
     history.push(navItems[val].link);

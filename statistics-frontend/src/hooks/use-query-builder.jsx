@@ -10,8 +10,12 @@ export function useQueryBuilder() {
 
   const fetchQueryBuilderFilterStructure = useCallback(() => {
     getDataStructureForQuery()
-      .then((filterStructure) => {
-        setFilterStructure(filterStructure.flat(1));
+      .then((response) => {
+        const flattenedResponse = response.flat(1);
+        setSelectedFilterStructure(
+          flattenedResponse.map((filter) => ({ [filter.id]: "" }))
+        );
+        setFilterStructure(flattenedResponse);
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps

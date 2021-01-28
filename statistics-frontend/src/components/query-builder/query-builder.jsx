@@ -29,8 +29,14 @@ export function QueryBuilder() {
     }
   }
 
-  function handleChange(event) {
-    setSelectedFilterStructure(event.target.value);
+  function handleChange(event, filterId) {
+    setSelectedFilterStructure(
+      selectedFilterStructure.map((filterElm) =>
+        filterElm.hasOwnProperty(filterId)
+          ? { [filterId]: event.target.value }
+          : filterElm
+      )
+    );
   }
 
   useEffect(() => {
@@ -56,26 +62,28 @@ export function QueryBuilder() {
       </div>
       <StatisticStepperQueryBuilder />
       <div className="text-field-container">
-        {filterStructure.length ? (
-          filterStructure.map((filter, i) => (
-            <TextField
-              select
-              className="select"
-              label={filter.name}
-              value={selectedFilterStructure[i]}
-              onChange={handleChange}
-              variant="outlined"
-            >
-              {filter.items.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          ))
-        ) : (
-          <Skeleton className="select skeleton" />
-        )}
+        {filterStructure.length
+          ? filterStructure.map((filter, i) => (
+              <TextField
+                select
+                key={filter.id + i}
+                className="select"
+                InputLabelProps={{ shrink: true }}
+                label={filter.name}
+                value={selectedFilterStructure[i][filter.id]}
+                onChange={(e) => handleChange(e, filter.id)}
+                variant="outlined"
+              >
+                {filter.items.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ))
+          : Array.from(Array(22).keys()).map((i) => (
+              <Skeleton className="select skeleton" key={i} />
+            ))}
       </div>
     </Container>
   );
