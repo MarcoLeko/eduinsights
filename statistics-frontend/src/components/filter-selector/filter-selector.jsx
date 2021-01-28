@@ -32,11 +32,13 @@ export function FilterSelector({
               onChange={(e) => handleChange(e, filter.id)}
               variant="outlined"
             >
-              {filter.items.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
+              {filter.items
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
             </TextField>
           ))
         : Array.from(Array(22).keys()).map((i) => (

@@ -18,7 +18,11 @@ const visualizations = [
   },
 ];
 
-export function VisualizationSelector({ addNextQueryParam }) {
+export function VisualizationSelector({
+  addNextQueryParam = () => null,
+  useQueryParams = true,
+  setActiveStep = () => null,
+}) {
   return (
     <Grid container justify="center" spacing={2} wrap="nowrap">
       {visualizations.map((visualization) => (
@@ -30,7 +34,9 @@ export function VisualizationSelector({ addNextQueryParam }) {
             </Typography>
             <Button
               onClick={() =>
-                addNextQueryParam({ visualization: visualization.key })
+                useQueryParams
+                  ? addNextQueryParam({ visualization: visualization.key })
+                  : setActiveStep(2)
               }
               size={"small"}
               variant="contained"

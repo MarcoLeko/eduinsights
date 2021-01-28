@@ -23,10 +23,14 @@ function getStepContent(stepIndex) {
       return "";
   }
 }
-export default function StatisticStepperQueryBuilder({ isFilterValid }) {
+export default function StatisticStepperQueryBuilder({
+  isFilterValid,
+  activeStep,
+  setActiveStep,
+}) {
   return (
     <div className="stepper-container">
-      <Stepper alternativeLabel activeStep={0} className="stepper">
+      <Stepper alternativeLabel activeStep={activeStep} className="stepper">
         {getStepsDescription().map((label) => {
           return (
             <Step key={label}>
@@ -46,15 +50,25 @@ export default function StatisticStepperQueryBuilder({ isFilterValid }) {
         </Typography>
       )}
       <div className="step-navigation-buttons">
-        <Button color="secondary" className="button" startIcon={<ArrowBack />}>
+        <Button
+          color="secondary"
+          className="button"
+          startIcon={<ArrowBack />}
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
           Back
         </Button>
-        <Button color="secondary" className="button">
+        <Button
+          color="secondary"
+          className="button"
+          onClick={() => setActiveStep(0)}
+        >
           Reset
         </Button>
         <Button
           color="secondary"
           className="button"
+          onClick={() => setActiveStep(1)}
           endIcon={<ArrowForward />}
           disabled={!isFilterValid}
         >

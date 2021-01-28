@@ -56,7 +56,7 @@ function Home() {
     return 0;
   }
 
-  function getStatisticStepChildren() {
+  function getActiveStepNode() {
     const showGlobe = queryParams.visualization === "globe";
 
     switch (activeStep) {
@@ -104,7 +104,7 @@ function Home() {
         resetQueryParams={resetQueryParams}
         statisticsList={statisticsList}
       />
-      {getStatisticStepChildren()}
+      {getActiveStepNode()}
       <Introduction />
     </Container>
   );

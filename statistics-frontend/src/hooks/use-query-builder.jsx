@@ -7,6 +7,8 @@ export function useQueryBuilder() {
   const [filterStructure, setFilterStructure] = useState([]);
   const [selectedFilterStructure, setSelectedFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+
   const { dispatch } = useAlertContext();
 
   const fetchQueryBuilderFilterStructure = useCallback(() => {
@@ -45,5 +47,7 @@ export function useQueryBuilder() {
     selectedFilterStructure,
     setSelectedFilterStructure,
     isFilterValid,
+    activeStep,
+    setActiveStep,
   };
 }
