@@ -7,8 +7,8 @@ const {
   writeToFileSync,
   fetchUnescoHierarchicalCodeList,
   ensureDirectory,
-  matchUnescoRegionsWithGeoJsonPolygon,
-  matchUnescoCountriesWithGeoJsonPolygon,
+  matchUnescoRegionsWithGeoJson,
+  matchUnescoCountriesWithGeoJson,
   createMapStatisticsOutputPath,
   createMapStatisticsTempPath,
   fetchEnhancedCountryInformation,
@@ -72,7 +72,7 @@ const log = console.log;
         );
       }
 
-      matchUnescoCountriesWithGeoJsonPolygon(
+      matchUnescoCountriesWithGeoJson(
         countriesGeoJsonCompressed,
         availableCountriesStatistics,
         unescoStatisticsJson,
@@ -94,7 +94,7 @@ const log = console.log;
         )}`
       );
 
-      await matchUnescoRegionsWithGeoJsonPolygon(
+      matchUnescoRegionsWithGeoJson(
         unescoHierarchicalCodeListJson,
         availableCountriesStatistics,
         unescoStatisticsJson,

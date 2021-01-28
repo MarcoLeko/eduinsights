@@ -17,4 +17,11 @@ export class QueryBuilderController {
   ): Promise<any> {
     return this.queryBuilderService.getStatisticsFromClientFilter(clientBody);
   }
+
+  @Post('/categories/statistic')
+  async getStatisticFromQuery(
+    @Body() clientBody: ClientQueryFilterDto,
+  ): Promise<any> {
+    return this.queryBuilderService.getAggregatedStatisticGeoData(clientBody);
+  }
 }

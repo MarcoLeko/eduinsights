@@ -20,6 +20,16 @@ export async function getDataStructureForQuery() {
   return handleResponse(response);
 }
 
+export async function getStatisticForQuery() {
+  const response = await fetch("api/v1/query/categories/statistic", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return handleResponse(response);
+}
+
 export async function validateSelectedFilter(body) {
   const response = await fetch(
     "api/v1/query/categories/data-structure/validate",

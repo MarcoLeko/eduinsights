@@ -3,13 +3,15 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import configuration from '../config/configuration';
-import { MapStatisticsModule } from './domain/map-statistics.module';
-import { QueryBuilderModule } from './domain/query-builder.module';
-import { DatabaseModule } from './infrastructure/database.module';
+import { CountriesDatabaseModule } from './modules/countries-database.module';
+import { MapStatisticsModule } from './modules/map-statistics.module';
+import { QueryBuilderModule } from './modules/query-builder.module';
+import { StatisticsDatabaseModule } from './modules/statistics-database.module';
 
 @Module({
   imports: [
-    DatabaseModule,
+    CountriesDatabaseModule,
+    StatisticsDatabaseModule,
     MapStatisticsModule,
     QueryBuilderModule,
     ConfigModule.forRoot({

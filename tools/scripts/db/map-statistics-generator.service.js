@@ -65,7 +65,7 @@ module.exports = {
   ) {
     return path.join(__dirname, "temp", filename);
   },
-  matchUnescoCountriesWithGeoJsonPolygon: function matchUnescoCountriesWithGeoJsonPolygon(
+  matchUnescoCountriesWithGeoJson: function matchUnescoCountriesWithGeoJson(
     countriesGeoJson,
     availableCountriesStatistics,
     unescoStatisticsJson,
@@ -141,7 +141,7 @@ module.exports = {
       );
     }
   },
-  matchUnescoRegionsWithGeoJsonPolygon: function matchUnescoRegionsWithGeoJsonPolygon(
+  matchUnescoRegionsWithGeoJson: function matchUnescoRegionsWithGeoJson(
     unescoHierarchicalCodeListJson,
     availableCountriesStatistics,
     unescoStatisticsJson,

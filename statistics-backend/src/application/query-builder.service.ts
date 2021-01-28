@@ -4,15 +4,22 @@ import { DataStructureForFilteredCategory } from '../domain/data-structure-for-f
 import { CategoryFilterValue } from '../domain/category-filter-value';
 import { Statistic } from '../domain/statistic';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  CountriesJson,
+  CountriesJsonDocument,
+} from '../infrastructure/countries-json.schema';
 
 @Injectable()
 export class QueryBuilderService {
   private readonly logger = new Logger(QueryBuilderService.name);
-  private statisticInstance = new Statistic();
 
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
+    @InjectModel(CountriesJson.name)
+    private readonly countriesJsonModel: Model<CountriesJsonDocument>,
   ) {}
 
   async getCategoryFilterValues(filterCategoryValue: string): Promise<any> {
@@ -32,25 +39,6 @@ export class QueryBuilderService {
         })),
       }),
     );
-  }
-
-  async getStatisticsFromClientFilter(filter: ClientQueryFilterDto) {
-    const url = Statistic.getStatisticData(
-      Statistic.createUrlFromFilter(filter),
-    );
-
-    try {
-      const response = await this.uisClient(url);
-      this.statisticInstance.setStatistic(response.data);
-      return {
-        clientFilterValid: this.validateDimensionsFromStatistic(
-          this.statisticInstance.getStatistic(),
-        ),
-      };
-    } catch (e) {
-      this.logger.error(e.message);
-      return { clientFilterValid: false };
-    }
   }
 
   async getDataStructureForFilteredCategory() {
@@ -77,6 +65,76 @@ export class QueryBuilderService {
     return Promise.all(filterCategoryValuesPromises);
   }
 
+  async getStatisticsFromClientFilter(filter: ClientQueryFilterDto) {
+    const url = Statistic.getStatisticData(
+      Statistic.createUrlFromFilter(filter),
+    );
+
+    try {
+      const response = await this.uisClient(url);
+      return {
+        clientFilterValid: this.validateDimensionsFromStatistic(response.data),
+      };
+    } catch (e) {
+      this.logger.error(e.message);
+      return { clientFilterValid: false };
+    }
+  }
+
+  async getAggregatedStatisticGeoData(
+    filter: ClientQueryFilterDto,
+  ): Promise<CountriesJson | []> {
+    const url = Statistic.getStatisticData(
+      Statistic.createUrlFromFilter(filter),
+    );
+
+    try {
+      const unescoRegions = new Map();
+      const resultArrayWithCountryMatches = [];
+      const geoJson = await this.countriesJsonModel
+        .findOne({ key: 'geoJson' })
+        .exec();
+      const response = await this.uisClient(url);
+      const codeList = await this.uisClient(
+        'https://api.uis.unesco.org/sdmx/codelist/UNESCO/all/latest?locale=en&format=sdmx-json',
+      );
+      const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
+        response.data,
+      );
+      Statistic.matchUnescoCountriesWithGeoJson(
+        geoJson,
+        availableCountriesStatistics,
+        response.data,
+        resultArrayWithCountryMatches,
+        unescoRegions,
+      );
+
+      Statistic.matchUnescoRegionsWithGeoJson(
+        codeList,
+        availableCountriesStatistics,
+        response.data,
+        geoJson,
+        resultArrayWithCountryMatches,
+        unescoRegions,
+      );
+      return {
+        type: geoJson.type,
+        arcs: geoJson.arcs,
+        key: geoJson.key,
+        bbox: geoJson.bbox,
+        objects: {
+          countries: {
+            type: geoJson.objects.countries.type,
+            geometries: resultArrayWithCountryMatches,
+          },
+        },
+      };
+    } catch (e) {
+      this.logger.error(e.message);
+      return [];
+    }
+  }
+
   private async uisClient(url): Promise<any> {
     const urlWithSubscriptionKey =
       url + '&subscription-key=' + this.configService.get('unescoApiKey');
@@ -85,8 +143,8 @@ export class QueryBuilderService {
   }
 
   private validateDimensionsFromStatistic(statistics) {
-    const availableCountriesStatistics = statistics.structure.dimensions.series.find(
-      (data) => data.id === 'REF_AREA',
+    const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
+      statistics,
     );
 
     if (

@@ -50,6 +50,7 @@ async function cleanupConnection(mongoClient) {
     );
 
     const document = JSON.parse(fs.readFileSync(selectedPath, "utf8"));
+    document.key = "geoJson";
 
     await geoDataCollection
       .updateOne({ key: document.key }, { $set: document }, { upsert: true })
