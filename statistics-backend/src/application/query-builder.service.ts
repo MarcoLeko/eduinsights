@@ -8,6 +8,7 @@ import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 @Injectable()
 export class QueryBuilderService {
   private readonly logger = new Logger(QueryBuilderService.name);
+  private statisticInstance = new Statistic();
 
   constructor(
     private httpService: HttpService,
@@ -40,8 +41,11 @@ export class QueryBuilderService {
 
     try {
       const response = await this.uisClient(url);
+      this.statisticInstance.setStatistic(response.data);
       return {
-        clientFilterValid: this.validateDimensionsFromStatistic(response.data),
+        clientFilterValid: this.validateDimensionsFromStatistic(
+          this.statisticInstance.getStatistic(),
+        ),
       };
     } catch (e) {
       this.logger.error(e.message);

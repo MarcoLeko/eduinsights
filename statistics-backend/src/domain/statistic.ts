@@ -5,6 +5,11 @@ export class Statistic {
   private static URL_STATISTIC_PREFIX = `https://api.uis.unesco.org/sdmx/data/UNESCO,${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID},3.0/`;
   private static URL_STATISTIC_SUFFIX =
     '?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en';
+  private statistic: Array<unknown>;
+
+  public getStatistic(): Array<unknown> {
+    return this.statistic;
+  }
 
   public static getStatisticData(filter: string) {
     return (
@@ -14,8 +19,12 @@ export class Statistic {
 
   public static createUrlFromFilter(filter: ClientQueryFilterDto) {
     return filter.reduce((prev, curr) => {
-      prev += Object.values(curr)[0] ? Object.values(curr)[0] : '.';
+      prev += Object.values(curr)[0] ? `${Object.values(curr)[0]}.` : '.';
       return prev;
     }, '');
+  }
+
+  public setStatistic(statistic: Array<unknown>) {
+    this.statistic = statistic;
   }
 }
