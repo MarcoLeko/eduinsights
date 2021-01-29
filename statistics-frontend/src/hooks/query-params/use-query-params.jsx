@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 
-export function useQueryParamsListenerForPreparedStatistics() {
+export function useQueryParams() {
   const location = useLocation();
   const history = useHistory();
   const [queryParams, setQueryParams] = useState(qs.parse(location.search));
@@ -25,29 +25,11 @@ export function useQueryParamsListenerForPreparedStatistics() {
     });
   };
 
-  const removeLastQueryParam = (activeStep) => {
-    history.push({
-      search: qs.stringify(
-        {
-          statistic: activeStep === 1 ? undefined : queryParams.statistic,
-          visualization:
-            activeStep === 2 || activeStep === 3
-              ? undefined
-              : queryParams.visualization,
-        },
-        {
-          skipNull: true,
-        }
-      ),
-    });
-  };
-
   const resetQueryParams = () => {
     history.push({ search: qs.stringify({}) });
   };
 
   return {
-    removeLastQueryParam,
     addNextQueryParam,
     resetQueryParams,
     queryParams,

@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
-import { useQueryParamsListenerForPreparedStatistics } from "./use-query-params-listener-for-prepared-statistics";
 import { getMapStatisticsById, getMapStatisticsList } from "../services";
+import { useQueryParamsListenerForPreparedStatistics } from "./query-params/use-query-params-listener-for-prepared-statistics";
 
 export function usePreparedStatisticData() {
   const { queryParams } = useQueryParamsListenerForPreparedStatistics();

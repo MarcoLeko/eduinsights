@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import "./geo-visualization.scss";
 import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { Typography } from "@material-ui/core";
-import { useD3Utils } from "../../hooks/use-d3-utils";
 import { MapToolTip } from "../../map-tooltip/map-tooltip";
 
 const {
@@ -115,6 +114,9 @@ function createMapVisualization(
     .attr("transform", "scale(1, 1.2)");
 }
 
+const width = 1280;
+const height = 640;
+
 function GeoVisualization({
   showLoadingScreen,
   geoJsonFromSelectedStatistic,
@@ -123,15 +125,25 @@ function GeoVisualization({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
-  const {
-    setSelectedCountryHandler,
-    resetSelectedCountryHandler,
-    toolTipPos,
-    selectedCountry,
-    width,
-    height,
-  } = useD3Utils(wrapperRef);
   const isDarkTheme = theme === "dark";
+
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [toolTipPos, setToolTipPos] = useState(null);
+
+  const setSelectedCountryHandler = useCallback(
+    (e, feature) => {
+      setSelectedCountry(selectedCountry === feature ? null : feature);
+      const rect = wrapperRef.current?.getBoundingClientRect();
+      const pageX = e.clientX - rect.left;
+      const pageY = e.clientY - rect.top;
+      setToolTipPos({ pageX, pageY });
+    },
+    [selectedCountry, wrapperRef]
+  );
+
+  const resetSelectedCountryHandler = useCallback(() => {
+    setSelectedCountry(null);
+  }, []);
 
   useEffect(() => {
     const svg = select(svgRef.current);

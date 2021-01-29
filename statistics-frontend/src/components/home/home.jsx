@@ -10,8 +10,8 @@ import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
-import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/use-query-params-listener-for-prepared-statistics";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
+import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/query-params/use-query-params-listener-for-prepared-statistics";
 
 function Home() {
   const {
