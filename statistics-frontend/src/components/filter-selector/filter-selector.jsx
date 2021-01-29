@@ -28,7 +28,7 @@ export function FilterSelector({
               className="select"
               InputLabelProps={{ shrink: true }}
               label={filter.name}
-              value={selectedFilterStructure[i][filter.id]}
+              value={selectedFilterStructure[filter.id]}
               onChange={(e) => handleChange(e, filter.id)}
               variant="outlined"
             >

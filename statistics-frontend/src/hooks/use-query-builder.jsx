@@ -7,10 +7,18 @@ import {
   validateSelectedFilter,
 } from "../services";
 import * as topojson from "topojson-client";
+import { useQueryParamsListenerForQueryBuilder } from "./query-params/use-query-params-listener-for-query-builder";
 
 export function useQueryBuilder() {
+  const { dispatch } = useAlertContext();
+  const {
+    getQueryParamsObjForQueryBuilder,
+  } = useQueryParamsListenerForQueryBuilder();
+  const [selectedFilterStructure, setSelectedFilterStructure] = useState(
+    getQueryParamsObjForQueryBuilder()
+  );
+
   const [filterStructure, setFilterStructure] = useState([]);
-  const [selectedFilterStructure, setSelectedFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
   const [showGlobe, setShowGlobe] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState({
@@ -20,8 +28,6 @@ export function useQueryBuilder() {
     features: [],
   });
   const [activeStep, setActiveStep] = useState(0);
-
-  const { dispatch } = useAlertContext();
 
   const fetchGeoJsonStatisticFromFilter = useCallback(() => {
     getStatisticForQuery(selectedFilterStructure)
@@ -43,13 +49,25 @@ export function useQueryBuilder() {
       .then((response) => {
         const flattenedResponse = response.flat(1);
         setSelectedFilterStructure(
-          flattenedResponse.map((filter) => ({ [filter.id]: "" }))
+          flattenedResponse.reduce((prev, filter, i) => {
+            const filterIndex = Object.keys(selectedFilterStructure).findIndex(
+              (item) => item === flattenedResponse[i].id
+            );
+            if (filterIndex > -1) {
+              prev[filter.id] = Object.values(selectedFilterStructure)[
+                filterIndex
+              ];
+            } else {
+              prev[filter.id] = "";
+            }
+            return prev;
+          }, {})
         );
         setFilterStructure(flattenedResponse);
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFilterStructure]);
+  }, [filterStructure]);
 
   const getFilterValidation = useCallback(() => {
     validateSelectedFilter(selectedFilterStructure)
@@ -59,7 +77,7 @@ export function useQueryBuilder() {
   }, [selectedFilterStructure]);
 
   useEffect(() => {
-    if (!filterStructure.length && !selectedFilterStructure.length) {
+    if (!filterStructure.length) {
       fetchQueryBuilderFilterStructure();
     }
 

@@ -23,10 +23,20 @@ export function useQueryParamsListenerForQueryBuilder() {
     });
   };
 
+  const getQueryParamsObjForQueryBuilder = () => {
+    return Object.keys(queryParams)
+      .filter((key) => key !== "visualization")
+      .reduce((prev, curr) => {
+        prev[curr] = queryParams[curr];
+        return prev;
+      }, {});
+  };
+
   return {
     removeLastQueryParam,
     addNextQueryParam,
     resetQueryParams,
     queryParams,
+    getQueryParamsObjForQueryBuilder,
   };
 }
