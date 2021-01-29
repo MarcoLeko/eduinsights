@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Container, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
@@ -9,21 +9,41 @@ import { useQueryBuilder } from "../../hooks/use-query-builder";
 import { FilterSelector } from "../filter-selector/filter-selector";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
+import { useQueryParamsListenerForQueryBuilder } from "../../hooks/query-params/use-query-params-listener-for-query-builder";
 
 export function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
 
   const {
     filterStructure,
-    selectedFilterStructure,
-    setSelectedFilterStructure,
     isFilterValid,
-    activeStep,
-    setActiveStep,
     geoJsonStatistic,
     setShowGlobe,
     showGlobe,
   } = useQueryBuilder();
+  const {
+    queryParams,
+    addNextQueryParam,
+    resetQueryParams,
+  } = useQueryParamsListenerForQueryBuilder();
+
+  const [activeStep, setActiveStep] = useState(getStep());
+
+  function getStep() {
+    if (isFilterValid && queryParams.visualization && visualizationLoaded) {
+      return 3;
+    }
+
+    if (isFilterValid && queryParams.visualization) {
+      return 2;
+    }
+
+    if (isFilterValid) {
+      return 1;
+    }
+
+    return 0;
+  }
 
   const dispatchSidebarState = useCallback(
     function (args) {
@@ -34,11 +54,9 @@ export function QueryBuilder() {
 
   useEffect(() => {
     dispatch(setActiveTab(1));
-    if (activeStep === 2 && visualizationLoaded) {
-      setActiveStep(3);
-    }
+    setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterStructure, visualizationLoaded, activeStep]);
+  }, [visualizationLoaded]);
 
   function closeSidebar() {
     if (sidebarOpen) {
@@ -69,9 +87,9 @@ export function QueryBuilder() {
       default:
         return (
           <FilterSelector
-            selectedFilterStructure={selectedFilterStructure}
-            setSelectedFilterStructure={setSelectedFilterStructure}
+            queryParams={queryParams}
             filterStructure={filterStructure}
+            addNextQueryParam={addNextQueryParam}
           />
         );
     }
@@ -98,6 +116,7 @@ export function QueryBuilder() {
         isFilterValid={isFilterValid}
         activeStep={activeStep}
         setActiveStep={setActiveStep}
+        resetQueryParams={resetQueryParams}
       />
       {getActiveStepNode()}
     </Container>

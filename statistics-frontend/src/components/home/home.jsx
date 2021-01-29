@@ -33,23 +33,27 @@ function Home() {
     resetQueryParams,
   } = useQueryParamsListenerForPreparedStatistics();
 
-  const [activeStep, setActiveStep] = useState(getStep(queryParams));
+  const [activeStep, setActiveStep] = useState(getStep());
 
   useEffect(() => {
     dispatch(setActiveTab(0));
-    setActiveStep(getStep(queryParams));
+    setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, visualizationLoaded]);
 
-  function getStep(params) {
-    if (params.statistic && params.visualization && visualizationLoaded) {
+  function getStep() {
+    if (
+      queryParams.statistic &&
+      queryParams.visualization &&
+      visualizationLoaded
+    ) {
       return 3;
     }
-    if (params.statistic && params.visualization) {
+    if (queryParams.statistic && queryParams.visualization) {
       return 2;
     }
 
-    if (params.statistic && !params.visualization) {
+    if (queryParams.statistic && !queryParams.visualization) {
       return 1;
     }
 

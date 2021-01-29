@@ -27,6 +27,7 @@ export default function StatisticStepperQueryBuilder({
   isFilterValid,
   activeStep,
   setActiveStep,
+  resetQueryParams,
 }) {
   return (
     <div className="stepper-container">
@@ -62,7 +63,10 @@ export default function StatisticStepperQueryBuilder({
         <Button
           color="secondary"
           className="button"
-          onClick={() => setActiveStep(0)}
+          onClick={() => {
+            setActiveStep(0);
+            resetQueryParams();
+          }}
         >
           Reset
         </Button>

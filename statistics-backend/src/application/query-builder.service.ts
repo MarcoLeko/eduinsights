@@ -58,9 +58,11 @@ export class QueryBuilderService {
       },
     );
 
-    const filterCategoryValuesPromises = categoryFilterList
+    const filterCategoryValuesPromises = [...new Set(categoryFilterList)]
       .filter(Boolean)
-      .map((categoryFilter) => this.getCategoryFilterValues(categoryFilter));
+      .map((categoryFilter: string) =>
+        this.getCategoryFilterValues(categoryFilter),
+      );
 
     return Promise.all(filterCategoryValuesPromises);
   }

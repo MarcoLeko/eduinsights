@@ -5,17 +5,11 @@ import React from "react";
 
 export function FilterSelector({
   filterStructure,
-  selectedFilterStructure,
-  setSelectedFilterStructure,
+  queryParams,
+  addNextQueryParam,
 }) {
   function handleChange(event, filterId) {
-    setSelectedFilterStructure(
-      selectedFilterStructure.map((filterElm) =>
-        filterElm.hasOwnProperty(filterId)
-          ? { [filterId]: event.target.value }
-          : filterElm
-      )
-    );
+    addNextQueryParam({ [filterId]: event.target.value });
   }
 
   return (
@@ -28,7 +22,7 @@ export function FilterSelector({
               className="select"
               InputLabelProps={{ shrink: true }}
               label={filter.name}
-              value={selectedFilterStructure[filter.id]}
+              value={queryParams[filter.id] || ""}
               onChange={(e) => handleChange(e, filter.id)}
               variant="outlined"
             >
@@ -41,7 +35,7 @@ export function FilterSelector({
                 ))}
             </TextField>
           ))
-        : Array.from(Array(22).keys()).map((i) => (
+        : Array.from(Array(21).keys()).map((i) => (
             <Skeleton className="select skeleton" key={i} p={3} />
           ))}
     </Grid>
