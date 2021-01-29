@@ -78,7 +78,7 @@ export class QueryBuilderService {
         clientFilterValid: this.validateDimensionsFromStatistic(response.data),
       };
     } catch (e) {
-      this.logger.error(e.message);
+      this.logger.error(e);
       return { clientFilterValid: false };
     }
   }

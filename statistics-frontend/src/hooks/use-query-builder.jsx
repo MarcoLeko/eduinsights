@@ -36,7 +36,6 @@ export function useQueryBuilder() {
 
   const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
-  const [showGlobe, setShowGlobe] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState({
     key: null,
     type: null,
@@ -56,7 +55,7 @@ export function useQueryBuilder() {
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [getQueryParamsObjForQueryBuilder()]);
 
   const fetchFilterStructure = useCallback(() => {
     getDataStructureForQuery()
@@ -76,11 +75,11 @@ export function useQueryBuilder() {
   }, [filterStructure]);
 
   const validateFilter = useCallback(() => {
-    validateSelectedFilter(queryParams)
+    validateSelectedFilter(getQueryParamsObjForQueryBuilder())
       .then((response) => setIsFilterValid(response.clientFilterValid))
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [getQueryParamsObjForQueryBuilder()]);
 
   useEffect(() => {
     fetchFilterStructure();
@@ -101,8 +100,6 @@ export function useQueryBuilder() {
   return {
     filterStructure,
     isFilterValid,
-    showGlobe,
-    setShowGlobe,
     geoJsonStatistic,
   };
 }

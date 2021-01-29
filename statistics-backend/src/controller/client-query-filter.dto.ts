@@ -1,1 +1,1 @@
-export type ClientQueryFilterDto = Array<{ [key: string]: string }>;
+export type ClientQueryFilterDto = { [key: string]: string };

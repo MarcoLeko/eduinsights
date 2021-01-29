@@ -18,8 +18,6 @@ export function QueryBuilder() {
     filterStructure,
     isFilterValid,
     geoJsonStatistic,
-    setShowGlobe,
-    showGlobe,
   } = useQueryBuilder();
   const {
     queryParams,
@@ -65,6 +63,8 @@ export function QueryBuilder() {
   }
 
   function getActiveStepNode() {
+    const showGlobe = queryParams.visualization === "globe";
+
     switch (activeStep) {
       case 3:
       case 2:
@@ -76,13 +76,7 @@ export function QueryBuilder() {
           />
         );
       case 1:
-        return (
-          <VisualizationSelector
-            setActiveStep={setActiveStep}
-            useQueryParams={false}
-            setShowGlobe={setShowGlobe}
-          />
-        );
+        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
         return (

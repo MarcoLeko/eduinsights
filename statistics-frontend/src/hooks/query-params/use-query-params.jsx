@@ -5,10 +5,14 @@ import qs from "query-string";
 export function useQueryParams() {
   const location = useLocation();
   const history = useHistory();
-  const [queryParams, setQueryParams] = useState(qs.parse(location.search));
+  const [queryParams, setQueryParams] = useState(
+    qs.parse(location.search, {
+      sort: false,
+    })
+  );
 
   useEffect(() => {
-    setQueryParams(qs.parse(location.search));
+    setQueryParams(qs.parse(location.search, { sort: false }));
   }, [location.search]);
 
   const addNextQueryParam = (newQueryParam) => {
@@ -20,6 +24,7 @@ export function useQueryParams() {
         },
         {
           skipNull: true,
+          sort: false,
         }
       ),
     });

@@ -13,10 +13,12 @@ export class Statistic {
   }
 
   public static createUrlFromFilter(filter: ClientQueryFilterDto) {
-    return filter.reduce((prev, curr) => {
-      prev += Object.values(curr)[0] ? `${Object.values(curr)[0]}.` : '.';
-      return prev;
-    }, '');
+    return Object.keys(filter)
+      .reduce((prev, curr) => {
+        prev += filter[curr] ? `${filter[curr]}.` : '.';
+        return prev;
+      }, '')
+      .concat('.');
   }
 
   public static matchUnescoCountriesWithGeoJson(
