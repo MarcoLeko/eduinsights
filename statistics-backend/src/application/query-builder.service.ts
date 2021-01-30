@@ -1,7 +1,6 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataStructureForFilteredCategory } from '../domain/data-structure-for-filtered-category';
-import { CategoryFilterValue } from '../domain/category-filter-value';
 import { Statistic } from '../domain/statistic';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -22,49 +21,13 @@ export class QueryBuilderService {
     private readonly countriesJsonModel: Model<CountriesJsonDocument>,
   ) {}
 
-  async getCategoryFilterValues(filterCategoryValue: string): Promise<any> {
-    const codeListUrl = CategoryFilterValue.getCategoryFilterUrl(
-      filterCategoryValue,
+  async getDataStructureForFilteredCategory(clientFilter: Array<string>) {
+    const url = DataStructureForFilteredCategory.getDataStructureByCategoryIdUrl(
+      clientFilter,
     );
-
-    const response = await this.uisClient(codeListUrl);
-
-    return response.data.Codelist.map((code) =>
-      CategoryFilterValue.create({
-        id: code.id,
-        name: code.names[0].value,
-        items: code.items.map((item) => ({
-          id: item.id,
-          name: item.names[0].value,
-        })),
-      }),
-    );
-  }
-
-  async getDataStructureForFilteredCategory() {
-    const url = DataStructureForFilteredCategory.getDataStructureByCategoryIdUrl();
 
     const response = await this.uisClient(url);
-    const categoryFilterList = response.data.DataStructure[0].dimensionList.dimensions.map(
-      (dimension) => {
-        const filterCategoryString =
-          dimension.representation.representation || '';
-        const filterCategoryId = filterCategoryString.substring(
-          filterCategoryString.lastIndexOf('CL_'),
-          filterCategoryString.lastIndexOf('('),
-        );
-
-        return filterCategoryId;
-      },
-    );
-
-    const filterCategoryValuesPromises = [...new Set(categoryFilterList)]
-      .filter(Boolean)
-      .map((categoryFilter: string) =>
-        this.getCategoryFilterValues(categoryFilter),
-      );
-
-    return Promise.all(filterCategoryValuesPromises);
+    return response.data;
   }
 
   async getStatisticsFromClientFilter(filter: ClientQueryFilterDto) {
@@ -119,9 +82,14 @@ export class QueryBuilderService {
         resultArrayWithCountryMatches,
         unescoRegions,
       );
+
+      const description = response.data.structure.dimensions.series.find(
+        (item) => item.id === 'STAT_UNIT',
+      ).values[0].name;
+
       return {
         key: geoJson.key,
-        description: response.data.structure.name,
+        description,
         unit: Statistic.getUnit(response.data),
         type: geoJson.type,
         arcs: geoJson.arcs,

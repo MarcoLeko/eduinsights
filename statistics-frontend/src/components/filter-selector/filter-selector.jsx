@@ -26,7 +26,7 @@ export function FilterSelector({
               onChange={(e) => handleChange(e, filter.id)}
               variant="outlined"
             >
-              {filter.items
+              {filter.values
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((option) => (
                   <MenuItem key={option.id} value={option.id}>

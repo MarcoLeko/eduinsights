@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Container, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
@@ -11,7 +11,7 @@ import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
-export function QueryBuilder() {
+export const QueryBuilder = memo(function () {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const [clientFilterReady, setClientFilterReady] = useState(false);
   const { filterStructure, isFilterValid, geoJsonStatistic } = useQueryFilter();
@@ -120,4 +120,4 @@ export function QueryBuilder() {
       {getActiveStepNode()}
     </Container>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { QueryBuilderService } from '../application/query-builder.service';
 import { ClientQueryFilterDto } from './client-query-filter.dto';
 
@@ -6,9 +6,13 @@ import { ClientQueryFilterDto } from './client-query-filter.dto';
 export class QueryBuilderController {
   constructor(private readonly queryBuilderService: QueryBuilderService) {}
 
-  @Get('/categories/data-structure/')
-  async getDataStructureByCategoryId(): Promise<Array<unknown>> {
-    return this.queryBuilderService.getDataStructureForFilteredCategory();
+  @Post('/categories/data-structure/')
+  async getDataStructureByCategoryId(
+    @Body() clientBody: Array<string>,
+  ): Promise<Array<unknown>> {
+    return this.queryBuilderService.getDataStructureForFilteredCategory(
+      clientBody,
+    );
   }
 
   @Post('/categories/data-structure/validate')
