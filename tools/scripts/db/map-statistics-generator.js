@@ -37,7 +37,7 @@ const log = console.log;
 
     const countriesGeoJsonCompressed = topojsonSimplify.simplify(
       preSimplyfiedTopojson,
-      0.01
+      0.25
     );
 
     writeToFileSync(

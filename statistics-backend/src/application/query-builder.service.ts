@@ -137,8 +137,8 @@ export class QueryBuilderService {
         },
       };
     } catch (e) {
-      this.logger.error(e.message);
-      return e;
+      this.logger.error(e.message, e.config?.url);
+      return;
     }
   }
 

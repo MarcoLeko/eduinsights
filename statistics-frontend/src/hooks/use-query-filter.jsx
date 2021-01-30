@@ -105,7 +105,7 @@ export function useQueryFilter() {
       fetchGeoJsonStatisticFromFilter();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [queryParams, isFilterValid]);
 
   return {
     filterStructure,
