@@ -7,11 +7,10 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
-import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
-import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/query-params/use-query-params-listener-for-prepared-statistics";
+import { useQueryParams } from "../../hooks/use-query-params";
 
 function Home() {
   const {
@@ -31,7 +30,7 @@ function Home() {
     addNextQueryParam,
     removeLastQueryParam,
     resetQueryParams,
-  } = useQueryParamsListenerForPreparedStatistics();
+  } = useQueryParams();
 
   const [activeStep, setActiveStep] = useState(getStep());
 
@@ -99,7 +98,6 @@ function Home() {
       onClick={closeSidebar}
       className={clsx("content", sidebarOpen && "content-shift")}
     >
-      <AppMarkup />
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}

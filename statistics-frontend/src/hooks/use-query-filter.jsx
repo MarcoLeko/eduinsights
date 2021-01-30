@@ -7,7 +7,7 @@ import {
   validateSelectedFilter,
 } from "../services";
 import * as topojson from "topojson-client";
-import { useQueryParamsListenerForQueryBuilder } from "./query-params/use-query-params-listener-for-query-builder";
+import { useQueryParams } from "./use-query-params";
 
 function mapFilterStructureToCurrentClientFilter(
   filterStructure,
@@ -26,13 +26,18 @@ function mapFilterStructureToCurrentClientFilter(
   }, {});
 }
 
-export function useQueryBuilder() {
+const getQueryParamsObjForQueryBuilder = (params) => {
+  return Object.keys(params)
+    .filter((key) => key !== "visualization")
+    .reduce((prev, curr) => {
+      prev[curr] = params[curr];
+      return prev;
+    }, {});
+};
+
+export function useQueryFilter() {
   const { dispatch } = useAlertContext();
-  const {
-    addNextQueryParam,
-    queryParams,
-    getQueryParamsObjForQueryBuilder,
-  } = useQueryParamsListenerForQueryBuilder();
+  const { addNextQueryParam, queryParams } = useQueryParams();
 
   const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
@@ -55,7 +60,7 @@ export function useQueryBuilder() {
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getQueryParamsObjForQueryBuilder()]);
+  }, [getQueryParamsObjForQueryBuilder(queryParams)]);
 
   const fetchFilterStructure = useCallback(() => {
     getDataStructureForQuery()
@@ -64,7 +69,7 @@ export function useQueryBuilder() {
         addNextQueryParam(
           mapFilterStructureToCurrentClientFilter(
             flattenedResponse,
-            getQueryParamsObjForQueryBuilder()
+            getQueryParamsObjForQueryBuilder(queryParams)
           )
         );
         return flattenedResponse;
@@ -75,11 +80,11 @@ export function useQueryBuilder() {
   }, [filterStructure]);
 
   const validateFilter = useCallback(() => {
-    validateSelectedFilter(getQueryParamsObjForQueryBuilder())
+    validateSelectedFilter(getQueryParamsObjForQueryBuilder(queryParams))
       .then((response) => setIsFilterValid(response.clientFilterValid))
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getQueryParamsObjForQueryBuilder()]);
+  }, [getQueryParamsObjForQueryBuilder(queryParams)]);
 
   useEffect(() => {
     fetchFilterStructure();

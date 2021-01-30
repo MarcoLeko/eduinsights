@@ -34,9 +34,21 @@ export function useQueryParams() {
     history.push({ search: qs.stringify({}) });
   };
 
+  const removeLastQueryParam = () => {
+    const lastParamKey = Object.keys(queryParams).pop();
+    const newQueryParams = { ...queryParams, [lastParamKey]: undefined };
+    history.push({
+      search: qs.stringify(newQueryParams, {
+        skipNull: true,
+        sort: false,
+      }),
+    });
+  };
+
   return {
     addNextQueryParam,
     resetQueryParams,
     queryParams,
+    removeLastQueryParam,
   };
 }

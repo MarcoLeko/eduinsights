@@ -1,11 +1,6 @@
-export async function getMapStatisticsById(body) {
-  const response = await fetch("api/v1/map-statistics", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+export async function getMapStatisticsById(id) {
+  console.log(`api/v1/map-statistics/${id}`);
+  const response = await fetch(`api/v1/map-statistics/${id}`);
 
   return handleResponse(response);
 }
