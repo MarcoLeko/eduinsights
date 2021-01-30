@@ -1,8 +1,8 @@
-import React, { memo } from "react";
+import React from "react";
 import { Paper, Typography } from "@material-ui/core";
-import "./map-tooltip.scss";
+import "./geo-tooltip.scss";
 
-function ToolTip({ selectedCountry, tooltipPos, evaluationType }) {
+function GeoToolTip({ selectedCountry, tooltipPos, unit }) {
   return (
     Boolean(selectedCountry && tooltipPos) && (
       <Paper
@@ -19,12 +19,12 @@ function ToolTip({ selectedCountry, tooltipPos, evaluationType }) {
           {selectedCountry.properties.value === null
             ? "No values found"
             : "Value: " +
-              Number(selectedCountry.properties.value).toFixed(2) +
-              (evaluationType === "percentage" ? "%" : "")}
+              selectedCountry.properties.value +
+              (unit === "Percentage" ? "%" : "")}
         </Typography>
       </Paper>
     )
   );
 }
 
-export const MapToolTip = memo(ToolTip);
+export { GeoToolTip };

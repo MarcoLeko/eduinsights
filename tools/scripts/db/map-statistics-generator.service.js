@@ -26,15 +26,7 @@ module.exports = {
       fs.mkdirSync(path);
     }
   },
-  fetchEnhancedCountryInformation: async function fetchEnhancedCountryInformation(
-    countryCode
-  ) {
-    const responseExtendedCountryInformation = await fetch(
-      "https://restcountries.eu/rest/v2/alpha?codes=" + countryCode
-    );
-    return responseExtendedCountryInformation.json();
-  },
-  fetchUnescoCodeList: async function fetchUnescoCodeList() {
+  fetchUnescoCodeList: async function () {
     const responseCodeList = await fetch(
       "https://api.uis.unesco.org/sdmx/codelist/all/all/latest?locale=en&format=sdmx-json&subscription-key=" +
         UNESCOSubscriptionKey
@@ -42,30 +34,26 @@ module.exports = {
     return responseCodeList.json();
   },
 
-  fetchGeoCountriesPolygons: async function fetchGeoCountriesPolygons() {
+  fetchGeoCountriesPolygons: async function () {
     const responseCountriesGeoJSON = await fetch(
       "https://datahub.io/core/geo-countries/r/countries.geojson"
     );
     return responseCountriesGeoJSON.json();
   },
 
-  fetchUnescoStatisticWithUrl: async function fetchUnescoStatisticWithUrl(url) {
+  fetchUnescoStatisticWithUrl: async function (url) {
     const responseUnescoStatistics = await fetch(url + UNESCOSubscriptionKey);
 
     return responseUnescoStatistics.json();
   },
 
-  createMapStatisticsOutputPath: function createMapStatisticsOutputPath(
-    filename = ""
-  ) {
+  createMapStatisticsOutputPath: function (filename = "") {
     return path.join(__dirname, "output", filename);
   },
-  createMapStatisticsTempPath: function createMapStatisticsTempPath(
-    filename = ""
-  ) {
+  createMapStatisticsTempPath: function (filename = "") {
     return path.join(__dirname, "temp", filename);
   },
-  matchUnescoCountriesWithGeoJson: function matchUnescoCountriesWithGeoJson(
+  matchUnescoCountriesWithGeoJson: function (
     countriesGeoJson,
     availableCountriesStatistics,
     unescoStatisticsJson,
@@ -141,7 +129,13 @@ module.exports = {
       );
     }
   },
-  matchUnescoRegionsWithGeoJson: function matchUnescoRegionsWithGeoJson(
+  getUnit: function (statistic) {
+    const unit = statistic.structure.dimensions.series.find(
+      (item) => item.id === "UNIT_MEASURE"
+    );
+    return unit.values[0].name;
+  },
+  matchUnescoRegionsWithGeoJson: function (
     unescoHierarchicalCodeListJson,
     availableCountriesStatistics,
     unescoStatisticsJson,

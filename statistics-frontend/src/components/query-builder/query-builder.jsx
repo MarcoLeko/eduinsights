@@ -56,7 +56,7 @@ export function QueryBuilder() {
     dispatch(setActiveTab(1));
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visualizationLoaded, isFilterValid, clientFilterReady]);
+  }, [visualizationLoaded, isFilterValid, clientFilterReady, geoJsonStatistic]);
 
   function closeSidebar() {
     if (sidebarOpen) {
@@ -99,7 +99,7 @@ export function QueryBuilder() {
     >
       <div className="text-box">
         <Typography variant="h4" color="textSecondary">
-          Build your own queries (Alpha)
+          Build your own queries
         </Typography>
         <Typography variant="body1" color="textSecondary">
           This feature heavily relies on the UIS API. Since UIS is during a
@@ -115,6 +115,7 @@ export function QueryBuilder() {
         resetQueryParams={resetQueryParams}
         removeLastQueryParam={removeLastQueryParam}
         isStepperForQueryBuilder={true}
+        amountOfCountries={geoJsonStatistic.amountOfCountries}
       />
       {getActiveStepNode()}
     </Container>

@@ -78,14 +78,14 @@ export class QueryBuilderService {
         clientFilterValid: this.validateDimensionsFromStatistic(response.data),
       };
     } catch (e) {
-      this.logger.error(e);
+      this.logger.error(e.message);
       return { clientFilterValid: false };
     }
   }
 
   async getAggregatedStatisticGeoData(
     filter: ClientQueryFilterDto,
-  ): Promise<CountriesJson | []> {
+  ): Promise<any> {
     const url = Statistic.getStatisticData(
       Statistic.createUrlFromFilter(filter),
     );
@@ -120,12 +120,17 @@ export class QueryBuilderService {
         unescoRegions,
       );
       return {
+        key: geoJson.key,
+        description: response.data.structure.name,
+        unit: Statistic.getUnit(response.data),
         type: geoJson.type,
         arcs: geoJson.arcs,
-        key: geoJson.key,
+        amountOfCountries: resultArrayWithCountryMatches.filter(
+          (item) => item.properties.value !== null,
+        ).length,
         objects: {
           countries: {
-            bbox: geoJson.objects.countries.bbox,
+            bbox: geoJson.bbox,
             type: geoJson.objects.countries.type,
             geometries: resultArrayWithCountryMatches,
           },
@@ -133,7 +138,7 @@ export class QueryBuilderService {
       };
     } catch (e) {
       this.logger.error(e.message);
-      return [];
+      return e;
     }
   }
 

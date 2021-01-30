@@ -22,30 +22,24 @@ export function usePreparedStatisticData() {
     startYear: null,
     endYear: null,
     type: null,
-    evaluationType: null,
-    features: [],
+    unit: null,
+    features: null,
   });
 
   const fetchMapStatisticsById = useCallback(() => {
     getMapStatisticsById(selectedStatistic)
       .then((topoJson) => {
-        const {
-          description,
-          startYear,
-          endYear,
-          key,
-          evaluationType,
-        } = topoJson;
+        const { description, startYear, endYear, key, unit } = topoJson;
 
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 
         setGeoJsonFromSelectedStatistic({
-          ...topoJson2GeoJson,
           key,
           description,
           startYear,
           endYear,
-          evaluationType,
+          unit,
+          ...topoJson2GeoJson,
         });
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));

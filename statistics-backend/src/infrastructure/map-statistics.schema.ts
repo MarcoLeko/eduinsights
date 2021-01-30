@@ -15,7 +15,7 @@ class MapStatisticsMetaData {
   @Prop()
   endYear: number;
   @Prop()
-  evaluationType: string;
+  unit: string;
   @Prop()
   amountOfCountries: number;
 }

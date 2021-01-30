@@ -15,7 +15,7 @@ export const navItems = [
     iconActive: <HomeIcon />,
   },
   {
-    name: "Query builder (Alpha)",
+    name: "Query builder (Beta)",
     link: "/query-builder",
     icon: <BuildOutlinedIcon />,
     iconActive: <BuildIcon />,

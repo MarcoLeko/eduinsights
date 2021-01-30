@@ -11,7 +11,7 @@ const {
   matchUnescoCountriesWithGeoJson,
   createMapStatisticsOutputPath,
   createMapStatisticsTempPath,
-  fetchEnhancedCountryInformation,
+  getUnit,
 } = require("./map-statistics-generator.service");
 const mapStatistics = require("./map-statistics");
 const topojson = require("topojson-server");
@@ -20,7 +20,6 @@ const log = console.log;
 
 (async function () {
   try {
-    const enhancedCountriesMetaData = [];
     ensureDirectory(createMapStatisticsTempPath(""));
 
     const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
@@ -103,42 +102,12 @@ const log = console.log;
         unescoRegions
       );
 
-      for await (const country of resultArrayWithCountryMatches) {
-        let enhancedCountryData = enhancedCountriesMetaData.find(
-          (enhancedCountry) => {
-            return (
-              enhancedCountry &&
-              enhancedCountry.alpha2Code &&
-              country.properties.id.toLowerCase() ===
-                enhancedCountry.alpha2Code.toLowerCase()
-            );
-          }
-        );
-
-        if (!enhancedCountryData) {
-          [enhancedCountryData] = await fetchEnhancedCountryInformation(
-            country.properties.id
-          );
-
-          enhancedCountriesMetaData.push(enhancedCountryData);
-        }
-
-        const { latlng, capital } = enhancedCountryData;
-
-        country.properties = {
-          ...country.properties,
-          latitude: latlng[0],
-          longitude: latlng[1],
-          capital,
-        };
-      }
-
       const output = {
         key: statistic.key,
         description: statistic.description,
         startYear: statistic.startYear,
         endYear: statistic.endYear,
-        evaluationType: statistic.evaluationType,
+        unit: getUnit(unescoStatisticsJson),
         type: countriesGeoJsonCompressed.type,
         arcs: countriesGeoJsonCompressed.arcs,
         amountOfCountries: resultArrayWithCountryMatches.filter(

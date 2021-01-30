@@ -51,6 +51,7 @@ export default function StatisticStepper({
   isStepperForQueryBuilder = false,
   setClientFilterReady = () => null,
   isFilterValid = false,
+  amountOfCountries = 0,
 }) {
   const stepDescription = isStepperForQueryBuilder
     ? getStepsDescriptionForQueryBuilder()
@@ -102,6 +103,16 @@ export default function StatisticStepper({
           </Button>
         )}
       </div>
+      {isStepperForQueryBuilder && (
+        <Typography
+          variant="subtitle1"
+          color="textSecondary"
+          align={"center"}
+          className="edu-header-h6"
+        >
+          {`Amount of effected countries: ${amountOfCountries}`}
+        </Typography>
+      )}
     </div>
   );
 }

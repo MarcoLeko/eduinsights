@@ -1,13 +1,8 @@
+@import "../../styles";
+
 .svg-wrapper {
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-}
-
-.statistic-description {
-  text-align: center;
-  padding: 8px 0;
-  font-size: 1.1875rem;
-  font-weight: 300 !important;
 }

@@ -43,19 +43,24 @@ export function useQueryFilter() {
   const [isFilterValid, setIsFilterValid] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState({
     key: null,
+    description: null,
     type: null,
-    features: [],
+    unit: null,
+    features: null,
+    amountOfCountries: 0,
   });
 
   const fetchGeoJsonStatisticFromFilter = useCallback(() => {
-    getStatisticForQuery(queryParams)
+    getStatisticForQuery(getQueryParamsObjForQueryBuilder(queryParams))
       .then((topoJson) => {
-        const { key } = topoJson;
+        const { key, description, unit, amountOfCountries } = topoJson;
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
-
         setGeoJsonStatistic({
-          ...topoJson2GeoJson,
           key,
+          unit,
+          description,
+          amountOfCountries,
+          ...topoJson2GeoJson,
         });
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));

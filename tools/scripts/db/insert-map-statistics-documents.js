@@ -77,7 +77,7 @@ async function cleanupConnections(changeStream, mongoClient) {
           startYear: 1,
           amountOfCountries: 1,
           endYear: 1,
-          evaluationType: 1,
+          unit: 1,
         })
         .toArray();
 

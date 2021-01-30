@@ -150,4 +150,11 @@ export class Statistic {
       '0'
     ][0];
   }
+
+  public static getUnit(statistic): string {
+    const unit = statistic.structure.dimensions.series.find(
+      (item) => item.id === 'UNIT_MEASURE',
+    );
+    return unit.values[0].name;
+  }
 }

@@ -5,7 +5,7 @@ import { VisualizationLoadingProgress } from "../shared/visualization-loading-pr
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { Typography } from "@material-ui/core";
-import { MapToolTip } from "../../map-tooltip/map-tooltip";
+import { GeoToolTip } from "../geo-tooltip/geo-tooltip";
 
 const {
   extent,
@@ -148,7 +148,7 @@ function GeoVisualization({
   useEffect(() => {
     const svg = select(svgRef.current);
 
-    if (geoJsonFromSelectedStatistic.features.length) {
+    if (geoJsonFromSelectedStatistic.features) {
       dispatch(setVisualizationLoaded(true));
 
       showGlobe
@@ -181,16 +181,17 @@ function GeoVisualization({
       {geoJsonFromSelectedStatistic.description && (
         <Typography
           variant="subtitle1"
-          className="statistic-description"
+          align={"center"}
+          className="edu-header-h6"
           color="textSecondary"
         >
           {geoJsonFromSelectedStatistic.description}
         </Typography>
       )}
       <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} />
-      {Boolean(geoJsonFromSelectedStatistic.features.length) && (
-        <MapToolTip
-          evaluationType={geoJsonFromSelectedStatistic.evaluationType}
+      {Boolean(geoJsonFromSelectedStatistic.features) && (
+        <GeoToolTip
+          unit={geoJsonFromSelectedStatistic.unit}
           selectedCountry={selectedCountry}
           tooltipPos={toolTipPos}
         />
