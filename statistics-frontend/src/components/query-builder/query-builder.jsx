@@ -1,29 +1,49 @@
 import clsx from "clsx";
 import { Container, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
-import StatisticStepperQueryBuilder from "../statistic-stepper-query-builder/statistic-stepper-query-builder";
-import { useQueryBuilder } from "../../hooks/use-query-builder";
+import { useQueryFilter } from "../../hooks/use-query-filter";
 import { FilterSelector } from "../filter-selector/filter-selector";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
+import { useQueryParams } from "../../hooks/use-query-params";
+import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
 export function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
-
+  const [clientFilterReady, setClientFilterReady] = useState(false);
+  const { filterStructure, isFilterValid, geoJsonStatistic } = useQueryFilter();
   const {
-    filterStructure,
-    selectedFilterStructure,
-    setSelectedFilterStructure,
-    isFilterValid,
-    activeStep,
-    setActiveStep,
-    geoJsonStatistic,
-    setShowGlobe,
-    showGlobe,
-  } = useQueryBuilder();
+    queryParams,
+    addNextQueryParam,
+    resetQueryParams,
+    removeLastQueryParam,
+  } = useQueryParams();
+
+  const [activeStep, setActiveStep] = useState(getStep());
+
+  function getStep() {
+    if (
+      isFilterValid &&
+      setClientFilterReady &&
+      queryParams.visualization &&
+      visualizationLoaded
+    ) {
+      return 3;
+    }
+
+    if (setClientFilterReady && isFilterValid && queryParams.visualization) {
+      return 2;
+    }
+
+    if (isFilterValid && clientFilterReady) {
+      return 1;
+    }
+
+    return 0;
+  }
 
   const dispatchSidebarState = useCallback(
     function (args) {
@@ -34,11 +54,9 @@ export function QueryBuilder() {
 
   useEffect(() => {
     dispatch(setActiveTab(1));
-    if (activeStep === 2 && visualizationLoaded) {
-      setActiveStep(3);
-    }
+    setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterStructure, visualizationLoaded, activeStep]);
+  }, [visualizationLoaded, isFilterValid, clientFilterReady]);
 
   function closeSidebar() {
     if (sidebarOpen) {
@@ -47,6 +65,8 @@ export function QueryBuilder() {
   }
 
   function getActiveStepNode() {
+    const showGlobe = queryParams.visualization === "globe";
+
     switch (activeStep) {
       case 3:
       case 2:
@@ -58,20 +78,14 @@ export function QueryBuilder() {
           />
         );
       case 1:
-        return (
-          <VisualizationSelector
-            setActiveStep={setActiveStep}
-            useQueryParams={false}
-            setShowGlobe={setShowGlobe}
-          />
-        );
+        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
       case 0:
       default:
         return (
           <FilterSelector
-            selectedFilterStructure={selectedFilterStructure}
-            setSelectedFilterStructure={setSelectedFilterStructure}
+            queryParams={queryParams}
             filterStructure={filterStructure}
+            addNextQueryParam={addNextQueryParam}
           />
         );
     }
@@ -94,10 +108,13 @@ export function QueryBuilder() {
           observation between 2017 and 2018 is already multi-dimensional.
         </Typography>
       </div>
-      <StatisticStepperQueryBuilder
+      <StatisticStepper
         isFilterValid={isFilterValid}
         activeStep={activeStep}
-        setActiveStep={setActiveStep}
+        setClientFilterReady={setClientFilterReady}
+        resetQueryParams={resetQueryParams}
+        removeLastQueryParam={removeLastQueryParam}
+        isStepperForQueryBuilder={true}
       />
       {getActiveStepNode()}
     </Container>

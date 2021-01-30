@@ -18,17 +18,7 @@ const visualizations = [
   },
 ];
 
-export function VisualizationSelector({
-  addNextQueryParam = () => null,
-  useQueryParams = true,
-  setActiveStep = () => null,
-  setShowGlobe = () => null,
-}) {
-  function handleClickForQuerySelector(key) {
-    setActiveStep(2);
-    setShowGlobe(key === "globe");
-  }
-
+export function VisualizationSelector({ addNextQueryParam }) {
   return (
     <Grid container justify="center" spacing={2} wrap="nowrap">
       {visualizations.map((visualization) => (
@@ -40,9 +30,7 @@ export function VisualizationSelector({
             </Typography>
             <Button
               onClick={() =>
-                useQueryParams
-                  ? addNextQueryParam({ visualization: visualization.key })
-                  : handleClickForQuerySelector(visualization.key)
+                addNextQueryParam({ visualization: visualization.key })
               }
               size={"small"}
               variant="contained"

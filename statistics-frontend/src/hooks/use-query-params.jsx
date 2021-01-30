@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 
-export function useQueryParamsListenerForPreparedStatistics() {
+export function useQueryParams() {
   const location = useLocation();
   const history = useHistory();
-  const [queryParams, setQueryParams] = useState(qs.parse(location.search));
+  const [queryParams, setQueryParams] = useState(
+    qs.parse(location.search, {
+      sort: false,
+    })
+  );
 
   useEffect(() => {
-    setQueryParams(qs.parse(location.search));
+    setQueryParams(qs.parse(location.search, { sort: false }));
   }, [location.search]);
 
   const addNextQueryParam = (newQueryParam) => {
@@ -20,23 +24,7 @@ export function useQueryParamsListenerForPreparedStatistics() {
         },
         {
           skipNull: true,
-        }
-      ),
-    });
-  };
-
-  const removeLastQueryParam = (activeStep) => {
-    history.push({
-      search: qs.stringify(
-        {
-          statistic: activeStep === 1 ? undefined : queryParams.statistic,
-          visualization:
-            activeStep === 2 || activeStep === 3
-              ? undefined
-              : queryParams.visualization,
-        },
-        {
-          skipNull: true,
+          sort: false,
         }
       ),
     });
@@ -46,10 +34,21 @@ export function useQueryParamsListenerForPreparedStatistics() {
     history.push({ search: qs.stringify({}) });
   };
 
+  const removeLastQueryParam = () => {
+    const lastParamKey = Object.keys(queryParams).pop();
+    const newQueryParams = { ...queryParams, [lastParamKey]: undefined };
+    history.push({
+      search: qs.stringify(newQueryParams, {
+        skipNull: true,
+        sort: false,
+      }),
+    });
+  };
+
   return {
-    removeLastQueryParam,
     addNextQueryParam,
     resetQueryParams,
     queryParams,
+    removeLastQueryParam,
   };
 }

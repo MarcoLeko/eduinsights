@@ -58,9 +58,11 @@ export class QueryBuilderService {
       },
     );
 
-    const filterCategoryValuesPromises = categoryFilterList
+    const filterCategoryValuesPromises = [...new Set(categoryFilterList)]
       .filter(Boolean)
-      .map((categoryFilter) => this.getCategoryFilterValues(categoryFilter));
+      .map((categoryFilter: string) =>
+        this.getCategoryFilterValues(categoryFilter),
+      );
 
     return Promise.all(filterCategoryValuesPromises);
   }
@@ -76,7 +78,7 @@ export class QueryBuilderService {
         clientFilterValid: this.validateDimensionsFromStatistic(response.data),
       };
     } catch (e) {
-      this.logger.error(e.message);
+      this.logger.error(e);
       return { clientFilterValid: false };
     }
   }

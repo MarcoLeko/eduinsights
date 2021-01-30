@@ -7,11 +7,10 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
-import { AppMarkup } from "../SEO/app-markup";
 import "./home.scss";
 import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
-import { useQueryParamsListenerForPreparedStatistics } from "../../hooks/use-query-params-listener-for-prepared-statistics";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
+import { useQueryParams } from "../../hooks/use-query-params";
 
 function Home() {
   const {
@@ -31,25 +30,29 @@ function Home() {
     addNextQueryParam,
     removeLastQueryParam,
     resetQueryParams,
-  } = useQueryParamsListenerForPreparedStatistics();
+  } = useQueryParams();
 
-  const [activeStep, setActiveStep] = useState(getStep(queryParams));
+  const [activeStep, setActiveStep] = useState(getStep());
 
   useEffect(() => {
     dispatch(setActiveTab(0));
-    setActiveStep(getStep(queryParams));
+    setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, visualizationLoaded]);
 
-  function getStep(params) {
-    if (params.statistic && params.visualization && visualizationLoaded) {
+  function getStep() {
+    if (
+      queryParams.statistic &&
+      queryParams.visualization &&
+      visualizationLoaded
+    ) {
       return 3;
     }
-    if (params.statistic && params.visualization) {
+    if (queryParams.statistic && queryParams.visualization) {
       return 2;
     }
 
-    if (params.statistic && !params.visualization) {
+    if (queryParams.statistic && !queryParams.visualization) {
       return 1;
     }
 
@@ -95,7 +98,6 @@ function Home() {
       onClick={closeSidebar}
       className={clsx("content", sidebarOpen && "content-shift")}
     >
-      <AppMarkup />
       <StatisticStepper
         activeStep={activeStep}
         removeLastQueryParam={removeLastQueryParam}

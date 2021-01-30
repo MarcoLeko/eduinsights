@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
-import { useQueryParamsListenerForPreparedStatistics } from "./use-query-params-listener-for-prepared-statistics";
 import { getMapStatisticsById, getMapStatisticsList } from "../services";
+import { useQueryParams } from "./use-query-params";
 
 export function usePreparedStatisticData() {
-  const { queryParams } = useQueryParamsListenerForPreparedStatistics();
+  const { queryParams } = useQueryParams();
   const [selectedStatistic, setSelectedStatistic] = useState(
     queryParams.statistic
   );
@@ -27,7 +27,7 @@ export function usePreparedStatisticData() {
   });
 
   const fetchMapStatisticsById = useCallback(() => {
-    getMapStatisticsById({ key: selectedStatistic })
+    getMapStatisticsById(selectedStatistic)
       .then((topoJson) => {
         const {
           description,
@@ -36,6 +36,7 @@ export function usePreparedStatisticData() {
           key,
           evaluationType,
         } = topoJson;
+
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 
         setGeoJsonFromSelectedStatistic({
@@ -47,9 +48,7 @@ export function usePreparedStatisticData() {
           evaluationType,
         });
       })
-      .catch((e) => {
-        dispatch(receiveMessageInterceptor(e));
-      });
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatistic]);
 
