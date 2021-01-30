@@ -1,5 +1,4 @@
 export async function getMapStatisticsById(id) {
-  console.log(`api/v1/map-statistics/${id}`);
   const response = await fetch(`api/v1/map-statistics/${id}`);
 
   return handleResponse(response);
