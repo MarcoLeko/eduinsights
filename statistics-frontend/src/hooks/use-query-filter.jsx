@@ -9,6 +9,9 @@ import {
 import * as topojson from "topojson-client";
 import { useQueryParams } from "./use-query-params";
 
+// TODO: check dynamic fetching dataStructure: https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/all?format=sdmx-json&startPeriod=2017&endPeriod=2018&dimensionAtObservation=AllDimensions&detail=structureOnly&includeAllAnnotations=true&subscription-key=469a068f55fc4ae1ae8285aa0825ca03
+// TODO: make validation only on every queryParam change that includes key from filter
+// TODO: fill queryParams automatically when they get deleted from the client
 function mapFilterStructureToCurrentClientFilter(
   filterStructure,
   clientFilter

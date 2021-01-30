@@ -27,14 +27,14 @@ export function QueryBuilder() {
   function getStep() {
     if (
       isFilterValid &&
-      setClientFilterReady &&
+      clientFilterReady &&
       queryParams.visualization &&
       visualizationLoaded
     ) {
       return 3;
     }
 
-    if (setClientFilterReady && isFilterValid && queryParams.visualization) {
+    if (clientFilterReady && isFilterValid && queryParams.visualization) {
       return 2;
     }
 

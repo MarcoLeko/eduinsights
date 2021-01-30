@@ -75,7 +75,7 @@ export class QueryBuilderService {
     try {
       const response = await this.uisClient(url);
       return {
-        clientFilterValid: this.validateDimensionsFromStatistic(response.data),
+        clientFilterValid: this.validateFilter(response.data),
       };
     } catch (e) {
       this.logger.error(e.message);
@@ -97,8 +97,8 @@ export class QueryBuilderService {
         .findOne({ key: 'geoJson' })
         .exec();
       const response = await this.uisClient(url);
-      const codeList = await this.uisClient(
-        'https://api.uis.unesco.org/sdmx/codelist/UNESCO/all/latest?locale=en&format=sdmx-json',
+      const hierarchicalcodeList = await this.uisClient(
+        'https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/latest?locale=en&format=sdmx-json',
       );
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,
@@ -112,7 +112,7 @@ export class QueryBuilderService {
       );
 
       Statistic.matchUnescoRegionsWithGeoJson(
-        codeList,
+        hierarchicalcodeList.data,
         availableCountriesStatistics,
         response.data,
         geoJson,
@@ -149,7 +149,7 @@ export class QueryBuilderService {
     return this.httpService.get(urlWithSubscriptionKey).toPromise();
   }
 
-  private validateDimensionsFromStatistic(statistics) {
+  private validateFilter(statistics) {
     const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
       statistics,
     );
@@ -159,10 +159,10 @@ export class QueryBuilderService {
       Object.keys(statistics.dataSets[0].series).length
     ) {
       this.logger.warn(
-        'There are more Observations than REF_AREA countries - multi dimension observations are currently not supported',
+        'There are more Observations than REF_AREA countries - multi dimension observations are not supported',
       );
 
-      return false;
+      return Boolean(availableCountriesStatistics.values.length);
     }
 
     return true;

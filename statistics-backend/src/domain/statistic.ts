@@ -57,7 +57,7 @@ export class Statistic {
         );
 
         if (geoJsonCountryCodeAlpha2 === statisticsCountry.id) {
-          observationValue = Statistic.getUnescoStatisticsEntityByIndex(
+          observationValue = Statistic.getValueFromStatisticIndex(
             index,
             unescoStatisticsJson,
           );
@@ -115,7 +115,7 @@ export class Statistic {
                   continue;
                 }
 
-                const value = Statistic.getUnescoStatisticsEntityByIndex(
+                const value = Statistic.getValueFromStatisticIndex(
                   indexOfRegionInUnescoStatistic,
                   unescoStatisticsJson,
                 );
@@ -145,10 +145,15 @@ export class Statistic {
     );
   }
 
-  private static getUnescoStatisticsEntityByIndex(i, json) {
-    return (<any>Object.values(json.dataSets[0].series)[i]).observations[
-      '0'
-    ][0];
+  private static getValueFromStatisticIndex(i, json) {
+    const index = Object.keys(json.dataSets[0].series).findIndex((key) =>
+      key.includes(i),
+    );
+    return index > -1
+      ? (<any>Object.values(json.dataSets[0].series)[index]).observations[
+          '0'
+        ][0]
+      : null;
   }
 
   public static getUnit(statistic): string {
