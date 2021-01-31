@@ -31,7 +31,7 @@ export function useQueryFilter() {
   const {
     addNextQueryParam,
     queryParams,
-    getValuesFromParam,
+    getParamValuesForQueryBuilder,
     getQueryParamsWithoutVisualization,
   } = useQueryParams();
 
@@ -64,7 +64,7 @@ export function useQueryFilter() {
   }, [queryParams]);
 
   const fetchFilterStructure = useCallback(() => {
-    getDataStructureForQuery(getValuesFromParam())
+    getDataStructureForQuery(getParamValuesForQueryBuilder())
       .then((response) => {
         const filterStructure = response.structure.dimensions.observation;
         addNextQueryParam(
@@ -105,7 +105,9 @@ export function useQueryFilter() {
         mapFilterStructureToCurrentClientFilter(filterStructure, queryParams)
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
+
   useEffect(() => {
     fetchFilterStructure();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -21,7 +21,9 @@ export function FilterSelector({
               key={filter.id + i}
               className="select"
               InputLabelProps={{ shrink: true }}
+              InputProps={{ className: "box-shadow" }}
               label={filter.name}
+              color="primary"
               value={queryParams[filter.id] || ""}
               onChange={(e) => handleChange(e, filter.id)}
               variant="outlined"

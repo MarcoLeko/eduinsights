@@ -45,14 +45,19 @@ export function useQueryParams() {
     });
   };
 
-  const getValuesFromParam = () => {
+  const getParamValuesForQueryBuilder = () => {
     return Object.values(
       getQueryParamsWithoutVisualization(
         qs.parse(location.search, {
           sort: false,
         })
       )
-    ).map((val) => (!val ? "." : `${val}.`));
+    ).map((val) => {
+      if (Date.parse(val)) {
+        return val;
+      }
+      return !val ? "." : `${val}.`;
+    });
   };
 
   const getQueryParamsWithoutVisualization = (params) => {
@@ -69,7 +74,7 @@ export function useQueryParams() {
     resetQueryParams,
     queryParams,
     removeLastQueryParam,
-    getValuesFromParam,
+    getParamValuesForQueryBuilder,
     getQueryParamsWithoutVisualization,
   };
 }

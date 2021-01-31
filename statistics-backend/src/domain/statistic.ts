@@ -1,6 +1,7 @@
 import { DataStructureForFilteredCategory } from './data-structure-for-filtered-category';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 import * as countries from 'i18n-iso-countries';
+
 export class Statistic {
   private static URL_STATISTIC_PREFIX = `https://api.uis.unesco.org/sdmx/data/UNESCO,${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID},3.0/`;
   private static URL_STATISTIC_SUFFIX =
@@ -13,12 +14,10 @@ export class Statistic {
   }
 
   public static createUrlFromFilter(filter: ClientQueryFilterDto) {
-    return Object.keys(filter)
-      .reduce((prev, curr) => {
-        prev += filter[curr] ? `${filter[curr]}.` : '.';
-        return prev;
-      }, '')
-      .concat('.');
+    return Object.keys(filter).reduce((prev, curr) => {
+      prev += filter[curr] ? `${filter[curr]}.` : '.';
+      return prev;
+    }, '');
   }
 
   public static matchUnescoCountriesWithGeoJson(
@@ -145,6 +144,13 @@ export class Statistic {
     );
   }
 
+  public static getUnit(statistic): string {
+    const unit = statistic.structure.dimensions.series.find(
+      (item) => item.id === 'UNIT_MEASURE',
+    );
+    return unit.values[0].name;
+  }
+
   private static getValueFromStatisticIndex(i, json) {
     const index = Object.keys(json.dataSets[0].series).findIndex((key) =>
       key.includes(i),
@@ -154,12 +160,5 @@ export class Statistic {
           '0'
         ][0]
       : null;
-  }
-
-  public static getUnit(statistic): string {
-    const unit = statistic.structure.dimensions.series.find(
-      (item) => item.id === 'UNIT_MEASURE',
-    );
-    return unit.values[0].name;
   }
 }
