@@ -95,7 +95,16 @@ export default function StatisticStepper({
         >
           Back
         </Button>
-        <Button onClick={resetQueryParams}>Reset</Button>
+        <Button
+          onClick={() => {
+            resetQueryParams();
+            if (setClientFilterReady) {
+              setClientFilterReady(false);
+            }
+          }}
+        >
+          Reset
+        </Button>
         {isStepperForQueryBuilder && (
           <Button
             color="secondary"
