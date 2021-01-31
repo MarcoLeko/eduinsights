@@ -31,9 +31,7 @@ export class QueryBuilderService {
   }
 
   async getStatisticsFromClientFilter(filter: ClientQueryFilterDto) {
-    const url = Statistic.getStatisticData(
-      Statistic.createUrlFromFilter(filter),
-    );
+    const url = Statistic.getStatisticDataUrl(filter);
 
     try {
       const response = await this.uisClient(url);
@@ -49,9 +47,7 @@ export class QueryBuilderService {
   async getAggregatedStatisticGeoData(
     filter: ClientQueryFilterDto,
   ): Promise<any> {
-    const url = Statistic.getStatisticData(
-      Statistic.createUrlFromFilter(filter),
-    );
+    const url = Statistic.getStatisticDataUrl(filter);
 
     try {
       const unescoRegions = new Map();

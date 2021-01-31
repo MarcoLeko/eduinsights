@@ -4,20 +4,27 @@ import * as countries from 'i18n-iso-countries';
 
 export class Statistic {
   private static URL_STATISTIC_PREFIX = `https://api.uis.unesco.org/sdmx/data/UNESCO,${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID},3.0/`;
-  private static URL_STATISTIC_SUFFIX =
-    '?startPeriod=2018&endPeriod=2018&format=sdmx-json&locale=en';
+  private static URL_STATISTIC_SUFFIX = '&format=sdmx-json&locale=en';
 
-  public static getStatisticData(filter: string) {
-    return (
-      Statistic.URL_STATISTIC_PREFIX + filter + Statistic.URL_STATISTIC_SUFFIX
-    );
-  }
-
-  public static createUrlFromFilter(filter: ClientQueryFilterDto) {
-    return Object.keys(filter).reduce((prev, curr) => {
-      prev += filter[curr] ? `${filter[curr]}.` : '.';
+  public static getStatisticDataUrl(filter: ClientQueryFilterDto) {
+    const filterArgs = Object.keys(filter).reduce((prev, curr) => {
+      if (Date.parse(filter[curr])) {
+        prev += '.';
+      } else {
+        prev += filter[curr] ? `${filter[curr]}.` : '.';
+      }
       return prev;
     }, '');
+
+    const url =
+      Statistic.URL_STATISTIC_PREFIX +
+      filterArgs +
+      (Date.parse(filter['TIME_PERIOD'])
+        ? `?startPeriod=${filter['TIME_PERIOD']}&endPeriod=${filter['TIME_PERIOD']}`
+        : '?startPeriod=2018&endPeriod=2018') +
+      Statistic.URL_STATISTIC_SUFFIX;
+
+    return url;
   }
 
   public static matchUnescoCountriesWithGeoJson(
