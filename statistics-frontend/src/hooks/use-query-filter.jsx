@@ -3,24 +3,37 @@ import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
   getDataStructureForQuery,
-  getStatisticForQuery,
+  getStatisticWithQuery,
   validateSelectedFilter,
 } from "../services";
-import * as topojson from "topojson-client";
 import { useQueryParams } from "./use-query-params";
+import * as topojson from "topojson-client";
 
-function mapFilterStructureToCurrentClientFilter(
-  filterStructure,
-  clientFilter
-) {
-  return filterStructure.reduce((prev, filter, i) => {
-    const filterIndex = Object.keys(clientFilter).findIndex(
-      (item) => item === filterStructure[i].id
-    );
-    if (filterIndex > -1) {
-      prev[filter.id] = Object.values(clientFilter)[filterIndex];
+function createFilterPayloadForDataStructure(structure, params) {
+  const payload = structure.map((item) => {
+    if (Object.keys(params).some((key) => key === item.id)) {
+      return `${params[item.id]}.`;
+    }
+
+    return ".";
+  });
+
+  if (payload.length < 22) {
+    return [
+      ...payload,
+      ...new Array(21 - payload.length).fill(".", payload.length, 22),
+    ];
+  }
+
+  return payload;
+}
+
+function createFilterPayloadForGeoJsonData(structure, params) {
+  return structure.reduce((prev, curr) => {
+    if (Object.keys(params).some((key) => key === curr.id)) {
+      prev[curr.id] = params[curr.id];
     } else {
-      prev[filter.id] = "";
+      prev[curr.id] = "";
     }
     return prev;
   }, {});
@@ -28,12 +41,7 @@ function mapFilterStructureToCurrentClientFilter(
 
 export function useQueryFilter() {
   const { dispatch } = useAlertContext();
-  const {
-    addNextQueryParam,
-    queryParams,
-    getParamValuesForQueryBuilder,
-    getQueryParamsWithoutVisualization,
-  } = useQueryParams();
+  const { queryParams } = useQueryParams();
 
   const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
@@ -47,8 +55,9 @@ export function useQueryFilter() {
   });
 
   const fetchGeoJsonStatisticFromFilter = useCallback(() => {
-    console.log("new geoJson is been fetched!");
-    getStatisticForQuery(getQueryParamsWithoutVisualization(queryParams))
+    getStatisticWithQuery(
+      createFilterPayloadForGeoJsonData(filterStructure, queryParams)
+    )
       .then((topoJson) => {
         const { key, description, unit, amountOfCountries } = topoJson;
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
@@ -64,27 +73,25 @@ export function useQueryFilter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
 
-  const fetchFilterStructure = useCallback(() => {
-    getDataStructureForQuery(getParamValuesForQueryBuilder())
+  const fetchInitialData = useCallback(() => {
+    getDataStructureForQuery(
+      createFilterPayloadForDataStructure(filterStructure, queryParams)
+    )
       .then((response) => {
         const filterStructure = response.structure.dimensions.observation;
-        addNextQueryParam(
-          mapFilterStructureToCurrentClientFilter(filterStructure, queryParams)
-        );
         setFilterStructure(filterStructure);
+        return filterStructure;
       })
+      .then((filterStructure) => syncFilter(filterStructure))
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [queryParams, filterStructure]);
 
   const syncFilter = useCallback(
-    () => {
-      Promise.resolve(fetchFilterStructure())
-        .then(() =>
-          validateSelectedFilter(
-            getQueryParamsWithoutVisualization(queryParams)
-          )
-        )
+    (structure) => {
+      validateSelectedFilter(
+        createFilterPayloadForGeoJsonData(structure, queryParams)
+      )
         .then((response) => {
           setIsFilterValid(response.clientFilterValid);
           return response.clientFilterValid;
@@ -107,23 +114,8 @@ export function useQueryFilter() {
     [queryParams]
   );
 
-  const syncFilterParams = useCallback(() => {
-    if (filterStructure) {
-      addNextQueryParam(
-        mapFilterStructureToCurrentClientFilter(filterStructure, queryParams)
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
-
   useEffect(() => {
-    fetchFilterStructure();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    syncFilter();
-    syncFilterParams();
+    fetchInitialData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
 

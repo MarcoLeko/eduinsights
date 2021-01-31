@@ -22,7 +22,7 @@ export async function getDataStructureForQuery(body) {
   return handleResponse(response);
 }
 
-export async function getStatisticForQuery(body) {
+export async function getStatisticWithQuery(body) {
   const response = await fetch("api/v1/query/categories/statistic", {
     method: "POST",
     headers: {

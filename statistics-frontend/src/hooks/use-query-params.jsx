@@ -60,21 +60,11 @@ export function useQueryParams() {
     });
   };
 
-  const getQueryParamsWithoutVisualization = (params) => {
-    return Object.keys(params)
-      .filter((key) => key !== "visualization")
-      .reduce((prev, curr) => {
-        prev[curr] = params[curr];
-        return prev;
-      }, {});
-  };
-
   return {
     addNextQueryParam,
     resetQueryParams,
     queryParams,
     removeLastQueryParam,
     getParamValuesForQueryBuilder,
-    getQueryParamsWithoutVisualization,
   };
 }
