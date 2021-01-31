@@ -15,8 +15,8 @@ export function FilterSelector({
   return (
     <Grid container wrap={"wrap"} justify={"center"}>
       {filterStructure.length
-        ? filterStructure.map((filter, i) => (
-            <Paper className="select" elevation={2} key={filter.id}>
+        ? filterStructure.map((filter) => (
+            <Paper className="select" elevation={1} key={filter.id}>
               <TextField
                 select
                 InputLabelProps={{ shrink: true }}
