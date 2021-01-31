@@ -47,6 +47,7 @@ export function useQueryFilter() {
   });
 
   const fetchGeoJsonStatisticFromFilter = useCallback(() => {
+    console.log("new geoJson is been fetched!");
     getStatisticForQuery(getQueryParamsWithoutVisualization(queryParams))
       .then((topoJson) => {
         const { key, description, unit, amountOfCountries } = topoJson;
@@ -91,7 +92,14 @@ export function useQueryFilter() {
         .then((isClientFilterValid) =>
           isClientFilterValid
             ? fetchGeoJsonStatisticFromFilter()
-            : Promise.resolve()
+            : setGeoJsonStatistic({
+                key: null,
+                description: null,
+                type: null,
+                unit: null,
+                features: null,
+                amountOfCountries: 0,
+              })
         )
         .catch((e) => dispatch(receiveMessageInterceptor(e)));
     },
