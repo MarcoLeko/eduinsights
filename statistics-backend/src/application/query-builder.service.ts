@@ -102,7 +102,7 @@ export class QueryBuilderService {
       };
     } catch (e) {
       this.logger.error(e.message, e.config?.url);
-      return;
+      return null;
     }
   }
 

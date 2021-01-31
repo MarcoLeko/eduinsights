@@ -21,7 +21,7 @@ export class Statistic {
       filterArgs +
       (Date.parse(filter['TIME_PERIOD'])
         ? `?startPeriod=${filter['TIME_PERIOD']}&endPeriod=${filter['TIME_PERIOD']}`
-        : '?startPeriod=2015&endPeriod=2018') +
+        : '?startPeriod=2018&endPeriod=2018') +
       Statistic.URL_STATISTIC_SUFFIX;
 
     return url;

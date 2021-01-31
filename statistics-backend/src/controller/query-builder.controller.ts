@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, NotFoundException, Post } from '@nestjs/common';
 import { QueryBuilderService } from '../application/query-builder.service';
 import { ClientQueryFilterDto } from './client-query-filter.dto';
 
@@ -26,6 +26,14 @@ export class QueryBuilderController {
   async getStatisticFromQuery(
     @Body() clientBody: ClientQueryFilterDto,
   ): Promise<any> {
-    return this.queryBuilderService.getAggregatedStatisticGeoData(clientBody);
+    const geoData = await this.queryBuilderService.getAggregatedStatisticGeoData(
+      clientBody,
+    );
+
+    if (!geoData) {
+      throw new NotFoundException('Geo data could not be fetched not found');
+    }
+
+    return geoData;
   }
 }
