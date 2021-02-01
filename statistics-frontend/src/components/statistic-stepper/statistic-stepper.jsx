@@ -58,7 +58,7 @@ export default function StatisticStepper({
     : getStepsDescriptionForPreparedStatistics();
 
   return (
-    <div className="stepper-container">
+    <>
       <Stepper alternativeLabel activeStep={activeStep} className="stepper">
         {stepDescription.map((label) => {
           return (
@@ -113,6 +113,6 @@ export default function StatisticStepper({
           {`Amount of effected countries: ${amountOfCountries}`}
         </Typography>
       )}
-    </div>
+    </>
   );
 }
