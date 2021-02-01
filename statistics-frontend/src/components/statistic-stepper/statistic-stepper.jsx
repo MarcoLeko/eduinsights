@@ -49,7 +49,7 @@ export default function StatisticStepper({
   resetQueryParams,
   removeLastQueryParam,
   isStepperForQueryBuilder = false,
-  setClientFilterReady,
+  addNextQueryParam,
   isFilterValid = false,
   amountOfCountries = 0,
 }) {
@@ -85,31 +85,17 @@ export default function StatisticStepper({
           startIcon={<ArrowBack />}
           color="secondary"
           disabled={activeStep === 0}
-          onClick={() => {
-            removeLastQueryParam();
-            if (setClientFilterReady) {
-              setClientFilterReady(false);
-            }
-          }}
+          onClick={removeLastQueryParam}
           className="back-button"
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            resetQueryParams();
-            if (setClientFilterReady) {
-              setClientFilterReady(false);
-            }
-          }}
-        >
-          Reset
-        </Button>
+        <Button onClick={resetQueryParams}>Reset</Button>
         {isStepperForQueryBuilder && (
           <Button
             color="secondary"
             className="button"
-            onClick={() => setClientFilterReady(true)}
+            onClick={() => addNextQueryParam({ ready: true })}
             endIcon={<ArrowForward />}
             disabled={!isFilterValid || activeStep !== 0}
           >

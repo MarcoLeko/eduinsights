@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Container, Typography } from "@material-ui/core";
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
@@ -11,9 +11,8 @@ import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
-export const QueryBuilder = memo(function () {
+export function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
-  const [clientFilterReady, setClientFilterReady] = useState(false);
   const { filterStructure, isFilterValid, geoJsonStatistic } = useQueryFilter();
   const {
     queryParams,
@@ -27,18 +26,18 @@ export const QueryBuilder = memo(function () {
   function getStep() {
     if (
       isFilterValid &&
-      clientFilterReady &&
+      queryParams.ready &&
       queryParams.visualization &&
       visualizationLoaded
     ) {
       return 3;
     }
 
-    if (clientFilterReady && isFilterValid && queryParams.visualization) {
+    if (queryParams.ready && isFilterValid && queryParams.visualization) {
       return 2;
     }
 
-    if (isFilterValid && clientFilterReady) {
+    if (isFilterValid && queryParams.ready) {
       return 1;
     }
 
@@ -56,7 +55,7 @@ export const QueryBuilder = memo(function () {
     dispatch(setActiveTab(1));
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visualizationLoaded, isFilterValid, clientFilterReady, geoJsonStatistic]);
+  }, [visualizationLoaded, isFilterValid, geoJsonStatistic]);
 
   function closeSidebar() {
     if (sidebarOpen) {
@@ -111,8 +110,8 @@ export const QueryBuilder = memo(function () {
       <StatisticStepper
         isFilterValid={isFilterValid}
         activeStep={activeStep}
-        setClientFilterReady={setClientFilterReady}
         resetQueryParams={resetQueryParams}
+        addNextQueryParam={addNextQueryParam}
         removeLastQueryParam={removeLastQueryParam}
         isStepperForQueryBuilder={true}
         amountOfCountries={geoJsonStatistic.amountOfCountries}
@@ -120,4 +119,4 @@ export const QueryBuilder = memo(function () {
       {getActiveStepNode()}
     </Container>
   );
-});
+}
