@@ -19,7 +19,7 @@ export class QueryBuilderController {
   async validateClientFilter(
     @Body() clientBody: ClientQueryFilterDto,
   ): Promise<any> {
-    return this.queryBuilderService.getStatisticsFromClientFilter(clientBody);
+    return this.queryBuilderService.validateFilter(clientBody);
   }
 
   @Post('/categories/statistic')

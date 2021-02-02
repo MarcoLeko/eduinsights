@@ -8,6 +8,7 @@ import {
 } from "../services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
+import { useUiContext } from "./use-ui-context";
 
 function createFilterPayloadForDataStructure(structure, params) {
   const payload = structure.map((item) => {
@@ -73,7 +74,7 @@ export function useQueryFilter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
 
-  const fetchInitialData = useCallback(() => {
+  const fetchFilterStructure = useCallback(() => {
     getDataStructureForQuery(
       createFilterPayloadForDataStructure(filterStructure, queryParams)
     )
@@ -115,7 +116,7 @@ export function useQueryFilter() {
   );
 
   useEffect(() => {
-    fetchInitialData();
+    fetchFilterStructure();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
 

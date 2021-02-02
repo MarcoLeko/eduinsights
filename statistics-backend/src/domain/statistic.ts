@@ -163,9 +163,7 @@ export class Statistic {
       key.includes(i),
     );
     return index > -1
-      ? (<any>Object.values(json.dataSets[0].series)[index]).observations[
-          '0'
-        ][0]
+      ? (<any>Object.values(json.dataSets[0].series)[index]).observations[0][0]
       : null;
   }
 }
