@@ -8,7 +8,6 @@ import {
 } from "../services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
-import { useUiContext } from "./use-ui-context";
 
 function createFilterPayloadForDataStructure(structure, params) {
   const payload = structure.map((item) => {
