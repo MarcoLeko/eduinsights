@@ -16,24 +16,23 @@ const {
   drag,
   geoOrthographic,
   geoGraticule,
+  scaleSequential,
   geoEquirectangular,
+  axisBottom,
 } = d3;
 
-function createGlobeVisualization(
+function createGlobe(
   svg,
   width,
   height,
   geoJson,
   isDarkTheme,
   setSelectedCountryHandler,
-  resetSelectedCountryHandler
+  resetSelectedCountryHandler,
+  unitScale
 ) {
   const λ = scaleLinear().domain([0, width]).range([-180, 180]);
   const φ = scaleLinear().domain([0, height]).range([90, -90]);
-
-  const unitScale = scaleLinear()
-    .domain(extent(geoJson.features.map((item) => item.properties.value)))
-    .range(isDarkTheme ? [0, 1] : [1, 0]);
 
   const projection = geoOrthographic()
     .fitSize([width, height], geoJson)
@@ -78,19 +77,16 @@ function createGlobeVisualization(
   svg.call(dragged);
 }
 
-function createMapVisualization(
+function createMap(
   svg,
   width,
   height,
   geoJson,
   isDarkTheme,
   setSelectedCountryHandler,
-  resetSelectedCountryHandler
+  resetSelectedCountryHandler,
+  unitScale
 ) {
-  const unitScale = scaleLinear()
-    .domain(extent(geoJson.features.map((item) => item.properties.value)))
-    .range(isDarkTheme ? [0, 1] : [1, 0]);
-
   const projection = geoEquirectangular().fitSize([width, height], geoJson);
 
   const path = geoPath().projection(projection);
@@ -148,28 +144,79 @@ function GeoVisualization({
   useEffect(() => {
     const svg = select(svgRef.current);
 
+    function createLegend(unitScale) {
+      const legendWidth = width * 0.5;
+      const legendHeight = 30;
+      const colorScale = scaleSequential(interpolateMagma);
+      const numCells = 100;
+      const cellWidth = legendWidth / numCells;
+      const axisScale = unitScale.range([0, legendWidth]);
+      const legendScale = scaleLinear()
+        .domain(
+          extent(
+            geoJsonFromSelectedStatistic.features.map(
+              (item) => item.properties.value
+            )
+          )
+        )
+        .range(isDarkTheme ? [0, 1] : [1, 0]);
+      const legend = svg
+        .append("svg")
+        .attr("id", "legend")
+        .style("color", "inherit")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .attr("x", width * 0.5 - 16)
+        .attr("y", height - 20);
+
+      for (let i = 0; i < numCells - 1; i++) {
+        legend
+          .append("rect")
+          .attr("x", i * cellWidth + 7.5)
+          .attr("width", cellWidth)
+          .attr("height", 10)
+          .attr("fill", colorScale(legendScale(i + cellWidth)));
+      }
+
+      const axis = axisBottom(axisScale).tickSize(0);
+      legend.append("g").attr("transform", `translate(7.5,10)`).call(axis);
+    }
+
     if (geoJsonFromSelectedStatistic.features) {
       dispatch(setVisualizationLoaded(true));
 
-      showGlobe
-        ? createGlobeVisualization(
-            svg,
-            width,
-            height,
-            geoJsonFromSelectedStatistic,
-            isDarkTheme,
-            setSelectedCountryHandler,
-            resetSelectedCountryHandler
+      const unitScale = scaleLinear()
+        .domain(
+          extent(
+            geoJsonFromSelectedStatistic.features.map(
+              (item) => item.properties.value
+            )
           )
-        : createMapVisualization(
+        )
+        .range(isDarkTheme ? [0, 1] : [1, 0]);
+
+      showGlobe
+        ? createGlobe(
             svg,
             width,
             height,
             geoJsonFromSelectedStatistic,
             isDarkTheme,
             setSelectedCountryHandler,
-            resetSelectedCountryHandler
+            resetSelectedCountryHandler,
+            unitScale
+          )
+        : createMap(
+            svg,
+            width,
+            height,
+            geoJsonFromSelectedStatistic,
+            isDarkTheme,
+            setSelectedCountryHandler,
+            resetSelectedCountryHandler,
+            unitScale
           );
+      createLegend(unitScale);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

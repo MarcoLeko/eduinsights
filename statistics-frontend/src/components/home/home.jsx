@@ -100,10 +100,8 @@ function Home() {
     >
       <StatisticStepper
         activeStep={activeStep}
-        removeLastQueryParam={removeLastQueryParam}
-        queryParams={queryParams}
-        resetQueryParams={resetQueryParams}
-        statisticsList={statisticsList}
+        onClickBack={removeLastQueryParam}
+        onClickReset={resetQueryParams}
       />
       {getActiveStepNode()}
       <Introduction />

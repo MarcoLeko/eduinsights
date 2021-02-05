@@ -50,28 +50,23 @@ export function QueryBuilder() {
     return 0;
   }
 
-  const dispatchSidebarState = useCallback(
-    function (args) {
-      dispatch(setSidebarOpen(args));
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    fetchFilterStructure();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    dispatch(setActiveTab(1));
-    setActiveStep(getStep());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visualizationLoaded, isFilterValid, queryParams]);
-
   function closeSidebar() {
     if (sidebarOpen) {
       dispatchSidebarState(false);
     }
+  }
+
+  function onClickReset() {
+    resetQueryParams();
+    resetQueryBuilderData();
+  }
+
+  function onClickNext() {
+    addNextQueryParam({ ready: true });
+  }
+
+  function onClickBack() {
+    removeLastQueryParam();
   }
 
   function getActiveStepNode() {
@@ -97,10 +92,29 @@ export function QueryBuilder() {
             fetchFilterStructure={fetchFilterStructure}
             filterStructure={filterStructure}
             addNextQueryParam={addNextQueryParam}
+            amountOfCountries={geoJsonStatistic.amountOfCountries}
           />
         );
     }
   }
+
+  const dispatchSidebarState = useCallback(
+    function (args) {
+      dispatch(setSidebarOpen(args));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    fetchFilterStructure();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    dispatch(setActiveTab(1));
+    setActiveStep(getStep());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visualizationLoaded, isFilterValid, queryParams]);
 
   return (
     <Container
@@ -120,14 +134,12 @@ export function QueryBuilder() {
         </Typography>
       </div>
       <StatisticStepper
-        isFilterValid={isFilterValid}
+        canClickOnNext={!isFilterValid || activeStep !== 0}
         activeStep={activeStep}
-        resetQueryParams={resetQueryParams}
-        addNextQueryParam={addNextQueryParam}
-        resetQueryBuilderData={resetQueryBuilderData}
-        removeLastQueryParam={removeLastQueryParam}
+        onClickBack={onClickBack}
+        onClickReset={onClickReset}
+        onClickNext={onClickNext}
         isStepperForQueryBuilder={true}
-        amountOfCountries={geoJsonStatistic.amountOfCountries}
       />
       {getActiveStepNode()}
     </Container>

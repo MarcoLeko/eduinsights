@@ -8,11 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
 
 function getStepsDescriptionForPreparedStatistics() {
-  return [
-    "Select statistic",
-    "Choose a visualization",
-    "Finalize visualization",
-  ];
+  return ["Statistic", "Visualization", "Computation"];
 }
 
 function getStepContentForPreparedStatistics(stepIndex) {
@@ -20,7 +16,7 @@ function getStepContentForPreparedStatistics(stepIndex) {
     case 0:
       return "Choose a statistic to visualize it. The data is provided by the UIS API.";
     case 1:
-      return "Choose a visualization mode: 2D or 3D";
+      return "Choose a visualization mode";
     case 2:
       return "Wait for data to be processed...";
     default:
@@ -29,7 +25,7 @@ function getStepContentForPreparedStatistics(stepIndex) {
 }
 
 function getStepsDescriptionForQueryBuilder() {
-  return ["Create query", "Choose a visualization", "Finalize visualization"];
+  return ["Query", "Visualization", "Computation"];
 }
 
 function getStepContentForQueryBuilder(stepIndex) {
@@ -37,7 +33,7 @@ function getStepContentForQueryBuilder(stepIndex) {
     case 0:
       return "Set the filters to observe your individual statistic. The data is provided by the UIS API.";
     case 1:
-      return "Choose a visualization mode: 2D or 3D";
+      return "Choose a visualization mode";
     case 2:
       return "Wait for data to be processed...";
     default:
@@ -46,13 +42,11 @@ function getStepContentForQueryBuilder(stepIndex) {
 }
 export default function StatisticStepper({
   activeStep,
-  resetQueryParams,
-  removeLastQueryParam,
+  onClickBack,
+  onClickReset,
+  onClickNext = () => null,
   isStepperForQueryBuilder = false,
-  addNextQueryParam,
-  resetQueryBuilderData,
-  isFilterValid = false,
-  amountOfCountries = 0,
+  canClickOnNext,
 }) {
   const stepDescription = isStepperForQueryBuilder
     ? getStepsDescriptionForQueryBuilder()
@@ -86,43 +80,24 @@ export default function StatisticStepper({
           startIcon={<ArrowBack />}
           color="secondary"
           disabled={activeStep === 0}
-          onClick={removeLastQueryParam}
+          onClick={onClickBack}
           className="back-button"
         >
           Back
         </Button>
-        <Button
-          onClick={() => {
-            resetQueryParams();
-            if (isStepperForQueryBuilder) {
-              resetQueryBuilderData();
-            }
-          }}
-        >
-          Reset
-        </Button>
+        <Button onClick={onClickReset}>Reset</Button>
         {isStepperForQueryBuilder && (
           <Button
             color="secondary"
             className="button"
-            onClick={() => addNextQueryParam({ ready: true })}
+            onClick={onClickNext}
             endIcon={<ArrowForward />}
-            disabled={!isFilterValid || activeStep !== 0}
+            disabled={canClickOnNext}
           >
             Next
           </Button>
         )}
       </div>
-      {isStepperForQueryBuilder && (
-        <Typography
-          variant="subtitle1"
-          color="textSecondary"
-          align={"center"}
-          className="edu-header-h6"
-        >
-          {`Amount of effected countries: ${amountOfCountries}`}
-        </Typography>
-      )}
     </>
   );
 }
