@@ -5,7 +5,7 @@ import { useAlertContext } from "./use-alert-context";
 import { getMapStatisticsById, getMapStatisticsList } from "../services";
 import { useQueryParams } from "./use-query-params";
 
-export function usePreparedStatisticData() {
+export function usePreparedStatisticDataUtils() {
   const { queryParams } = useQueryParams();
   const [selectedStatistic, setSelectedStatistic] = useState(
     queryParams.statistic

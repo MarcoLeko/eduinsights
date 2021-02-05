@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import "./geo-visualization.scss";
-import { VisualizationLoadingProgress } from "../shared/visualization-loading-progress";
 import { setVisualizationLoaded } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { Typography } from "@material-ui/core";
 import { GeoToolTip } from "../geo-tooltip/geo-tooltip";
+import { VisualizationLoadingProgress } from "../loading-progress/visualization-loading-progress";
 
 const {
   extent,

@@ -1,21 +1,33 @@
 import { Grid, MenuItem, Paper, TextField } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import "./filter-selector.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export function FilterSelector({
   filterStructure,
   queryParams,
   addNextQueryParam,
+  fetchFilterStructure,
 }) {
+  const [isSelectionTriggered, setIsSelectionTriggered] = useState(false);
+
+  useEffect(() => {
+    if (isSelectionTriggered && queryParams) {
+      fetchFilterStructure();
+      setIsSelectionTriggered(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams]);
+
   function handleChange(event, filterId) {
+    setIsSelectionTriggered(true);
     addNextQueryParam({ [filterId]: event.target.value });
   }
 
   return (
     <Grid container wrap={"wrap"} justify={"center"}>
-      {filterStructure.length
-        ? filterStructure.map((filter) => (
+      {filterStructure.dimensions.observation.length
+        ? filterStructure.dimensions.observation.map((filter) => (
             <Paper className="select" elevation={1} key={filter.id}>
               <TextField
                 select

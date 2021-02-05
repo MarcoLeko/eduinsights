@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
@@ -8,9 +8,10 @@ import {
 } from "../services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
+import { defaultQueryBuilderDataStructure } from "../components/shared/query-builder-data-structure";
 
 function createFilterPayloadForDataStructure(structure, params) {
-  const payload = structure.map((item) => {
+  const payload = structure.dimensions.observation.map((item) => {
     if (Object.keys(params).some((key) => key === item.id)) {
       return `${params[item.id]}.`;
     }
@@ -29,7 +30,7 @@ function createFilterPayloadForDataStructure(structure, params) {
 }
 
 function createFilterPayloadForGeoJsonData(structure, params) {
-  return structure.reduce((prev, curr) => {
+  return structure.dimensions.observation.reduce((prev, curr) => {
     if (Object.keys(params).some((key) => key === curr.id)) {
       prev[curr.id] = params[curr.id];
     } else {
@@ -39,11 +40,13 @@ function createFilterPayloadForGeoJsonData(structure, params) {
   }, {});
 }
 
-export function useQueryFilter() {
+export function useQueryBuilderUtils() {
   const { dispatch } = useAlertContext();
   const { queryParams } = useQueryParams();
 
-  const [filterStructure, setFilterStructure] = useState([]);
+  const [filterStructure, setFilterStructure] = useState(
+    defaultQueryBuilderDataStructure
+  );
   const [isFilterValid, setIsFilterValid] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState({
     key: null,
@@ -71,14 +74,14 @@ export function useQueryFilter() {
       })
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
+  }, [queryParams, filterStructure]);
 
   const fetchFilterStructure = useCallback(() => {
     getDataStructureForQuery(
       createFilterPayloadForDataStructure(filterStructure, queryParams)
     )
       .then((response) => {
-        const filterStructure = response.structure.dimensions.observation;
+        const filterStructure = response.structure;
         setFilterStructure(filterStructure);
         return filterStructure;
       })
@@ -86,6 +89,19 @@ export function useQueryFilter() {
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, filterStructure]);
+
+  const resetQueryBuilderData = () => {
+    setGeoJsonStatistic({
+      key: null,
+      description: null,
+      type: null,
+      unit: null,
+      features: null,
+      amountOfCountries: 0,
+    });
+    setFilterStructure(defaultQueryBuilderDataStructure);
+    setIsFilterValid(false);
+  };
 
   const syncFilter = useCallback(
     (structure) => {
@@ -114,14 +130,11 @@ export function useQueryFilter() {
     [queryParams]
   );
 
-  useEffect(() => {
-    fetchFilterStructure();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams]);
-
   return {
     filterStructure,
     isFilterValid,
     geoJsonStatistic,
+    resetQueryBuilderData,
+    fetchFilterStructure,
   };
 }

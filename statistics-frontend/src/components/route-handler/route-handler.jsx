@@ -1,7 +1,6 @@
 import Home from "../home/home";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import AppNotifier from "../shared/app-notifier";
 import { Legal } from "../legal/legal";
 import { responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -12,6 +11,7 @@ import { Footer } from "../footer/footer";
 import { getMaterialUiTheme } from "../../material-ui-theme";
 import { QueryBuilder } from "../query-builder/query-builder";
 import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
+import AppNotifier from "../app-notifier/app-notifier";
 
 function RouteHandler() {
   const { theme } = useUiContext();

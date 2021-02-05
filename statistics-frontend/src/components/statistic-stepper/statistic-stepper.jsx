@@ -50,6 +50,7 @@ export default function StatisticStepper({
   removeLastQueryParam,
   isStepperForQueryBuilder = false,
   addNextQueryParam,
+  resetQueryBuilderData,
   isFilterValid = false,
   amountOfCountries = 0,
 }) {
@@ -90,7 +91,16 @@ export default function StatisticStepper({
         >
           Back
         </Button>
-        <Button onClick={resetQueryParams}>Reset</Button>
+        <Button
+          onClick={() => {
+            resetQueryParams();
+            if (isStepperForQueryBuilder) {
+              resetQueryBuilderData();
+            }
+          }}
+        >
+          Reset
+        </Button>
         {isStepperForQueryBuilder && (
           <Button
             color="secondary"

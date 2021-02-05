@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./query-builder.scss";
-import { useQueryFilter } from "../../hooks/use-query-filter";
+import { useQueryBuilderUtils } from "../../hooks/use-query-builder-utils";
 import { FilterSelector } from "../filter-selector/filter-selector";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
@@ -13,7 +13,13 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
 export function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
-  const { filterStructure, isFilterValid, geoJsonStatistic } = useQueryFilter();
+  const {
+    filterStructure,
+    isFilterValid,
+    geoJsonStatistic,
+    resetQueryBuilderData,
+    fetchFilterStructure,
+  } = useQueryBuilderUtils();
   const {
     queryParams,
     addNextQueryParam,
@@ -52,10 +58,15 @@ export function QueryBuilder() {
   );
 
   useEffect(() => {
+    fetchFilterStructure();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     dispatch(setActiveTab(1));
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visualizationLoaded, isFilterValid, geoJsonStatistic]);
+  }, [visualizationLoaded, isFilterValid, queryParams]);
 
   function closeSidebar() {
     if (sidebarOpen) {
@@ -83,6 +94,7 @@ export function QueryBuilder() {
         return (
           <FilterSelector
             queryParams={queryParams}
+            fetchFilterStructure={fetchFilterStructure}
             filterStructure={filterStructure}
             addNextQueryParam={addNextQueryParam}
           />
@@ -112,6 +124,7 @@ export function QueryBuilder() {
         activeStep={activeStep}
         resetQueryParams={resetQueryParams}
         addNextQueryParam={addNextQueryParam}
+        resetQueryBuilderData={resetQueryBuilderData}
         removeLastQueryParam={removeLastQueryParam}
         isStepperForQueryBuilder={true}
         amountOfCountries={geoJsonStatistic.amountOfCountries}

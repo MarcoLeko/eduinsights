@@ -8,7 +8,7 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
 import "./home.scss";
-import { usePreparedStatisticData } from "../../hooks/use-prepared-statistic-data";
+import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statistic-data-utils";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 
@@ -17,7 +17,7 @@ function Home() {
     statisticsList,
     geoJsonFromSelectedStatistic,
     setSelectedStatistic,
-  } = usePreparedStatisticData();
+  } = usePreparedStatisticDataUtils();
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const dispatchSidebarState = useCallback(
     function (args) {
