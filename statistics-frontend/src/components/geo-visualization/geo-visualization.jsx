@@ -110,6 +110,49 @@ function createMap(
     .attr("transform", "scale(1, 1.2)");
 }
 
+function createLegend(
+  svg,
+  unitScale,
+  isDarkTheme,
+  geoJsonFromSelectedStatistic
+) {
+  const legendWidth = width * 0.5;
+  const legendHeight = 40;
+  const colorScale = scaleSequential(interpolateMagma);
+  const numCells = 100;
+  const cellWidth = legendWidth / numCells;
+  const axisScale = unitScale.range([0, legendWidth]);
+  const legendScale = scaleLinear()
+    .domain(
+      extent(
+        geoJsonFromSelectedStatistic.features.map(
+          (item) => Number(item.properties.value) || 0
+        )
+      )
+    )
+    .range(isDarkTheme ? [0, 1] : [1, 0]);
+  const legend = svg
+    .append("svg")
+    .attr("id", "legend")
+    .style("color", isDarkTheme ? "#fff" : "#303030")
+    .attr("width", legendWidth)
+    .attr("height", legendHeight)
+    .attr("x", width * 0.5 - 32)
+    .attr("y", height - 40);
+
+  for (let i = 0; i < numCells - 1; i++) {
+    legend
+      .append("rect")
+      .attr("x", i * cellWidth + 12.5)
+      .attr("width", cellWidth)
+      .attr("height", legendHeight - 20)
+      .attr("fill", colorScale(legendScale(i + cellWidth)));
+  }
+
+  const axis = axisBottom(axisScale).tickSize(4).tickPadding(4);
+  legend.append("g").attr("transform", `translate(12.5,20)`).call(axis);
+}
+
 const width = 1280;
 const height = 640;
 
@@ -143,44 +186,6 @@ function GeoVisualization({
 
   useEffect(() => {
     const svg = select(svgRef.current);
-
-    function createLegend(unitScale) {
-      const legendWidth = width * 0.5;
-      const legendHeight = 40;
-      const colorScale = scaleSequential(interpolateMagma);
-      const numCells = 100;
-      const cellWidth = legendWidth / numCells;
-      const axisScale = unitScale.range([0, legendWidth]);
-      const legendScale = scaleLinear()
-        .domain(
-          extent(
-            geoJsonFromSelectedStatistic.features.map(
-              (item) => item.properties.value
-            )
-          )
-        )
-        .range(isDarkTheme ? [0, 1] : [1, 0]);
-      const legend = svg
-        .append("svg")
-        .attr("id", "legend")
-        .style("color", isDarkTheme ? "#fff" : "#303030")
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .attr("x", width * 0.5 - 32)
-        .attr("y", height - 40);
-
-      for (let i = 0; i < numCells - 1; i++) {
-        legend
-          .append("rect")
-          .attr("x", i * cellWidth + 12.5)
-          .attr("width", cellWidth)
-          .attr("height", legendHeight - 20)
-          .attr("fill", colorScale(legendScale(i + cellWidth)));
-      }
-
-      const axis = axisBottom(axisScale).tickSize(4).tickPadding(4);
-      legend.append("g").attr("transform", `translate(12.5,20)`).call(axis);
-    }
 
     if (geoJsonFromSelectedStatistic.features) {
       dispatch(setVisualizationLoaded(true));
@@ -216,7 +221,11 @@ function GeoVisualization({
             resetSelectedCountryHandler,
             unitScale
           );
-      createLegend(unitScale);
+
+      // Currently only percentage legend is supported
+      if (geoJsonFromSelectedStatistic.unit === "Percentage") {
+        createLegend(svg, unitScale, isDarkTheme, geoJsonFromSelectedStatistic);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
