@@ -146,7 +146,7 @@ function GeoVisualization({
 
     function createLegend(unitScale) {
       const legendWidth = width * 0.5;
-      const legendHeight = 30;
+      const legendHeight = 40;
       const colorScale = scaleSequential(interpolateMagma);
       const numCells = 100;
       const cellWidth = legendWidth / numCells;
@@ -163,23 +163,23 @@ function GeoVisualization({
       const legend = svg
         .append("svg")
         .attr("id", "legend")
-        .style("color", "inherit")
+        .style("color", isDarkTheme ? "#fff" : "#303030")
         .attr("width", legendWidth)
         .attr("height", legendHeight)
-        .attr("x", width * 0.5 - 16)
-        .attr("y", height - 20);
+        .attr("x", width * 0.5 - 32)
+        .attr("y", height - 40);
 
       for (let i = 0; i < numCells - 1; i++) {
         legend
           .append("rect")
-          .attr("x", i * cellWidth + 7.5)
+          .attr("x", i * cellWidth + 12.5)
           .attr("width", cellWidth)
-          .attr("height", 10)
+          .attr("height", legendHeight - 20)
           .attr("fill", colorScale(legendScale(i + cellWidth)));
       }
 
-      const axis = axisBottom(axisScale).tickSize(0);
-      legend.append("g").attr("transform", `translate(7.5,10)`).call(axis);
+      const axis = axisBottom(axisScale).tickSize(4).tickPadding(4);
+      legend.append("g").attr("transform", `translate(12.5,20)`).call(axis);
     }
 
     if (geoJsonFromSelectedStatistic.features) {
