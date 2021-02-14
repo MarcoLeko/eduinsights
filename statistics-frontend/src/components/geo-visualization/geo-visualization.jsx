@@ -39,16 +39,25 @@ function createGlobe(
     .rotate([0, 0, 0]);
 
   const path = geoPath().projection(projection);
-  const graticule = geoGraticule();
+  const graticule = geoGraticule().step([5, 5]);
 
-  svg.append("path").datum(graticule).attr("d", path);
+  svg
+    .append("path")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", path)
+    .attr("fill", "none")
+    .style("stroke-width", 0.5)
+    .style("stroke", isDarkTheme ? "#fff" : "#8a8a8a")
+    .style("opacity", 0.75);
 
   svg
     .selectAll("path")
     .data(geoJson.features)
-    .join("path")
-    .style("opacity", 0.8)
-    .style("stroke-width", 0.5)
+    .enter()
+    .append("path")
+    .attr("d", path)
+    .style("stroke-width", 1)
     .style("stroke", isDarkTheme ? "#303030" : "#fff")
     .on("mouseover", setSelectedCountryHandler)
     .on("mouseout", resetSelectedCountryHandler)
@@ -71,7 +80,7 @@ function createGlobe(
     .on("drag", function (event) {
       projection.rotate([λ(event.x), φ(event.y)]);
       svg.selectAll(".country").attr("d", path);
-      svg.datum(graticule).attr("d", path);
+      svg.selectAll("path.graticule").datum(graticule).attr("d", path);
     });
 
   svg.call(dragged);
@@ -95,8 +104,7 @@ function createMap(
     .selectAll(".country")
     .data(geoJson.features)
     .join("path")
-    .style("opacity", 0.8)
-    .style("stroke-width", 0.5)
+    .style("stroke-width", 1)
     .style("stroke", isDarkTheme ? "#303030" : "#fff")
     .on("mouseover", setSelectedCountryHandler)
     .on("mouseout", resetSelectedCountryHandler)
