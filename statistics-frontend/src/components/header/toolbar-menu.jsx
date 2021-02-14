@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 52,
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     padding: "0 4px",
   },
   logoPanel: {
     alignItems: "center",
-    flex: 1,
     display: "flex",
     textDecoration: "none",
   },
@@ -34,8 +34,10 @@ const useStyles = makeStyles((theme) => ({
     width: 2,
   },
   header: { fontWeight: 300 },
+  headerBottomLine: { fontWeight: 300, fontStyle: "italic" },
   actionButtons: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     "& > *": {
       margin: theme.spacing(0, 1),
@@ -62,6 +64,15 @@ function ToolbarMenu({ isOpen, toggle }) {
           {projectName}
         </Typography>
       </Link>
+      <Hidden smDown>
+        <Typography
+          variant={"h6"}
+          color="secondary"
+          classes={{ root: classes.headerBottomLine }}
+        >
+          "Raise awareness for global equity"
+        </Typography>
+      </Hidden>
       <div className={classes.actionButtons}>
         <Hidden xsDown>
           <List>

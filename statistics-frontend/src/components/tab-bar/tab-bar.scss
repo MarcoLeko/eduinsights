@@ -14,3 +14,11 @@
   color: $app-primary;
 }
 }
+
+.indicator {
+  width: 8px !important;
+  height: 8px !important;
+  bottom: 4px !important;
+  border-radius: 50% !important;
+  transform: translateX(calc(25vw - 8px));
+}

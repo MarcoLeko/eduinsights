@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -10,10 +10,7 @@ function TabBar() {
   const history = useHistory();
   const { activeTab } = useUiContext();
 
-  const [index, onChange] = useState(activeTab);
-
   function navigate(val) {
-    onChange(val);
     history.push(navItems[val].link);
   }
 
@@ -22,7 +19,10 @@ function TabBar() {
       variant={"fullWidth"}
       centered
       className="tabs"
-      value={index}
+      value={activeTab}
+      TabIndicatorProps={{
+        className: "indicator",
+      }}
       indicatorColor="primary"
       onChange={(e, val) => navigate(val)}
     >

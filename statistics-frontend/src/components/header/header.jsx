@@ -5,15 +5,25 @@ import ToolbarMenu from "./toolbar-menu";
 import SideBar from "../side-bar/side-bar";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { setSidebarOpen } from "../../context/ui-actions";
-import { Hidden, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Hidden,
+  useMediaQuery,
+  useScrollTrigger,
+  useTheme,
+} from "@material-ui/core";
 import TabBar from "../tab-bar/tab-bar";
 import { useHeaderStyles } from "../shared/header-styles";
+import "./header.scss";
 
 export function Header() {
   const classes = useHeaderStyles();
   const materialUiTheme = useTheme();
 
-  const matches = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
+  const isSmallViewport = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
   const { sidebarOpen, dispatch } = useUiContext();
   const dispatchSidebarState = useCallback(
     function (args) {
@@ -23,19 +33,23 @@ export function Header() {
   );
 
   useEffect(() => {
-    if (sidebarOpen && !matches) {
+    if (sidebarOpen && !isSmallViewport) {
       dispatchSidebarState(false);
     }
-  }, [sidebarOpen, matches, dispatchSidebarState]);
+  }, [sidebarOpen, isSmallViewport, dispatchSidebarState]);
 
   return (
     <>
       <AppBar
         position="sticky"
         color="default"
-        className={clsx(classes.navigation, {
-          [classes.navigationShift]: sidebarOpen,
-        })}
+        className={clsx(
+          classes.navigation,
+          !trigger && !isSmallViewport && "header-not-scrolled",
+          {
+            [classes.navigationShift]: sidebarOpen,
+          }
+        )}
       >
         <ToolbarMenu toggle={dispatchSidebarState} isOpen={sidebarOpen} />
         <Hidden xsDown>

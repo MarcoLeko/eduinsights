@@ -45,26 +45,10 @@ export function useQueryParams() {
     });
   };
 
-  const getParamValuesForQueryBuilder = () => {
-    return Object.values(
-      getQueryParamsWithoutVisualization(
-        qs.parse(location.search, {
-          sort: false,
-        })
-      )
-    ).map((val) => {
-      if (Date.parse(val)) {
-        return val;
-      }
-      return !val ? "." : `${val}.`;
-    });
-  };
-
   return {
     addNextQueryParam,
     resetQueryParams,
     queryParams,
     removeLastQueryParam,
-    getParamValuesForQueryBuilder,
   };
 }

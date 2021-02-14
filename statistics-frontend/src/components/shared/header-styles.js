@@ -4,10 +4,13 @@ const drawerWidth = 240;
 
 const useHeaderStyles = makeStyles((theme) => ({
   navigation: {
-    transition: theme.transitions.create(["transform", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+    transition: theme.transitions.create(
+      ["transform", "margin", "box-shadow", "background-color"],
+      {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }
+    ),
     marginLeft: 0,
   },
   navigationShift: {
