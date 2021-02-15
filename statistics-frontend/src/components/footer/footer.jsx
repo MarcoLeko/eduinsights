@@ -11,7 +11,7 @@ import { Grid, Link } from "@material-ui/core";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import "./footer.scss";
 
-export const Footer = React.memo(function () {
+export function Footer() {
   return (
     <Box bgcolor={"default"} width={"100%"}>
       <Container>
@@ -70,4 +70,4 @@ export const Footer = React.memo(function () {
       </Container>
     </Box>
   );
-});
+}
