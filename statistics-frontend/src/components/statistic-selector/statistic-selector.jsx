@@ -21,10 +21,10 @@ export function StatisticSelector({
       items={statisticsList.map((statistic) => (
         <Card className="statistic-selector">
           <CardContent>
-            <Typography variant="h6" component="h2">
+            <Typography variant="body1" color={"secondary"}>
               {statistic.description}
             </Typography>
-            <Typography>
+            <Typography variant="body2" color={"secondary"}>
               Year: {statistic.startYear}/{statistic.endYear}
             </Typography>
             <Chip
