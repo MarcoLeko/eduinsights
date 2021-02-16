@@ -1,11 +1,12 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
 import {
-  THEME,
-  SIDEBAR,
   ACTIVE_TAB,
+  RECENT_QUERIES,
+  SIDEBAR,
+  THEME,
   VISUALIZATION_LOADED,
 } from "./ui-action-types";
-import { setTheme } from "./ui-actions";
+import { getLocalStorageItem, setTheme } from "./ui-actions";
 
 const initialState = {
   theme: window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -14,6 +15,7 @@ const initialState = {
   sidebarOpen: false,
   activeTab: 0,
   visualizationLoaded: false,
+  recentQueries: getLocalStorageItem(),
 };
 
 function uiReducer(state = initialState, action) {
@@ -40,6 +42,12 @@ function uiReducer(state = initialState, action) {
       return {
         ...state,
         visualizationLoaded: action.visualizationLoaded,
+      };
+    }
+    case RECENT_QUERIES: {
+      return {
+        ...state,
+        recentQueries: action.recentQueries,
       };
     }
     default:

@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import "./geo-visualization.scss";
-import { setVisualizationLoaded } from "../../context/ui-actions";
+import {
+  setRecentQueries,
+  setVisualizationLoaded,
+} from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { Typography } from "@material-ui/core";
 import { GeoToolTip } from "../geo-tooltip/geo-tooltip";
@@ -13,7 +16,6 @@ import {
   height,
   width,
 } from "./geo-visualization-utils";
-import { useLocalStorageQueryHistory } from "../../hooks/use-local-storage-query-history";
 
 const { extent, scaleLinear, select } = d3;
 
@@ -25,7 +27,6 @@ function GeoVisualization({
   const svgRef = useRef();
   const wrapperRef = useRef();
   const { dispatch, theme } = useUiContext();
-  const { setValue } = useLocalStorageQueryHistory();
   const isDarkTheme = theme === "dark";
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -101,12 +102,14 @@ function GeoVisualization({
       amountOfCountries,
     } = geoJsonFromSelectedStatistic;
     if (features) {
-      setValue({
-        description,
-        unit,
-        amountOfCountries,
-        uri: window.location.pathname + window.location.search,
-      });
+      dispatch(
+        setRecentQueries({
+          description,
+          unit,
+          amountOfCountries,
+          uri: window.location.pathname + window.location.search,
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geoJsonFromSelectedStatistic]);

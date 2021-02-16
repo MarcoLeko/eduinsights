@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocalStorageQueryHistory } from "../../hooks/use-local-storage-query-history";
 import HistoryIcon from "@material-ui/icons/History";
 import {
   Box,
@@ -14,9 +13,10 @@ import {
 } from "@material-ui/core";
 import "./recent-queries-container.scss";
 import "../statistic-selector/statistic-selector.scss";
+import { useUiContext } from "../../hooks/use-ui-context";
 
 function RecentQueriesContainer() {
-  const { recentQueries } = useLocalStorageQueryHistory();
+  const { recentQueries } = useUiContext();
 
   return (
     <Container disableGutters>
@@ -40,7 +40,7 @@ function RecentQueriesContainer() {
       >
         {recentQueries.length ? (
           recentQueries.map((item) => (
-            <Card key={`${item.params}`} className="recent-query-card">
+            <Card key={`${item.uri}`} className="recent-query-card">
               <CardHeader
                 title={item.description}
                 titleTypographyProps={{ variant: "body1" }}
