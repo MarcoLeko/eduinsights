@@ -42,6 +42,11 @@ export const setRecentQueries = (value) => {
         recentQueries: [...recentQueries, value],
       };
     }
+
+    return {
+      type: RECENT_QUERIES,
+      recentQueries,
+    };
   } catch (error) {
     console.error(error);
   }
