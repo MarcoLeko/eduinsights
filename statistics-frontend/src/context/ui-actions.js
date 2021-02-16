@@ -26,8 +26,12 @@ export function getLocalStorageItem() {
 }
 
 export const setRecentQueries = (value) => {
+  const recentQueries = getLocalStorageItem();
+  const fallbackRecentQuery = {
+    type: RECENT_QUERIES,
+    recentQueries,
+  };
   try {
-    const recentQueries = getLocalStorageItem();
     if (recentQueries.length >= 5) {
       recentQueries.shift();
     }
@@ -43,11 +47,9 @@ export const setRecentQueries = (value) => {
       };
     }
 
-    return {
-      type: RECENT_QUERIES,
-      recentQueries,
-    };
+    return fallbackRecentQuery;
   } catch (error) {
     console.error(error);
+    return fallbackRecentQuery;
   }
 };
