@@ -12,6 +12,7 @@ import { getMaterialUiTheme } from "../../material-ui-theme";
 import { QueryBuilder } from "../query-builder/query-builder";
 import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
 import AppNotifier from "../app-notifier/app-notifier";
+import { RecentQueriesContainer } from "../recent-queries-container/recent-queries-container";
 
 function RouteHandler() {
   const { theme } = useUiContext();
@@ -22,6 +23,7 @@ function RouteHandler() {
         <Router>
           <AppNotifier />
           <Header />
+          <RecentQueriesContainer />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/legal" component={Legal} />

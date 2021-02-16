@@ -1,3 +1,24 @@
-.container {
-  height: 150px;
+.recent-queries-container {
+  min-height: 150px;
+  overflow-x: auto;
+}
+.mt-2 {
+  margin-top: 16px;
+}
+
+.mb-1 {
+  margin-bottom: 8px;
+}
+
+.recent-query-card {
+  width: 250px;
+  height: 225px;
+  flex-shrink: 0;
+  margin: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &:not(:last-of-type) {
+    margin-right: 8px;
+  }
 }

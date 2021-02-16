@@ -26,7 +26,7 @@ export function SwipeableCards({ items }) {
   }
 
   return Boolean(items.length) ? (
-    <div className="container">
+    <div className="swipeable-cards-container">
       <SwipeableViews
         index={index}
         className="react-swipeable-views"

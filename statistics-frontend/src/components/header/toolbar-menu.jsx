@@ -61,7 +61,7 @@ function ToolbarMenu({ isOpen, toggle }) {
 
   return (
     <>
-      <Hidden smDown>
+      <Hidden xsDown>
         <Box px={2} py={1} className={classes.boxBg}>
           <Grid container justify={"space-between"} alignItems={"center"}>
             <Grid item>
@@ -108,7 +108,12 @@ function ToolbarMenu({ isOpen, toggle }) {
         </Box>
       </Hidden>
       <Toolbar className={classes.root}>
-        <Link to="/" className={classes.logoPanel}>
+        <Link
+          href={"/"}
+          underline={"none"}
+          color={"secondary"}
+          className={classes.logoPanel}
+        >
           <Logo className={classes.logo} />
           <Typography
             variant={"h4"}
