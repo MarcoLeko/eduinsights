@@ -3,22 +3,18 @@ import Fingerprint from "@material-ui/icons/Fingerprint";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import HomeIcon from "@material-ui/icons/Home";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
-import BuildIcon from "@material-ui/icons/Build";
 
 export const navItems = [
   {
     name: "Home",
     link: "/",
     icon: <HomeOutlinedIcon />,
-    iconActive: <HomeIcon />,
   },
   {
-    name: "Query builder (Beta)",
+    name: "Query builder",
     link: "/query-builder",
     icon: <BuildOutlinedIcon />,
-    iconActive: <BuildIcon />,
   },
 ];
 

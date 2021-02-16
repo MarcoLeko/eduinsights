@@ -10,15 +10,23 @@
 .tab {
   min-height: 53px;
   min-width: 0;
+  > span {
+  flex-direction: row;
+     > div {
+    margin-right: 8px;
+  }
+  }
   ~ :hover {
   color: $app-primary;
 }
 }
 
 .indicator {
-  width: 8px !important;
-  height: 8px !important;
-  bottom: 4px !important;
-  border-radius: 50% !important;
-  transform: translateX(calc(25vw - 8px));
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.chip {
+  height: 20px !important;
+  font-size: 0.5rem !important;
 }

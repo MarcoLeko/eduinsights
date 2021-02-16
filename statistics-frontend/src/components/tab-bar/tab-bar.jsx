@@ -5,6 +5,7 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import { useHistory } from "react-router-dom";
 import { navItems } from "../shared/navItems";
 import "./tab-bar.scss";
+import { Chip } from "@material-ui/core";
 
 function TabBar() {
   const history = useHistory();
@@ -31,7 +32,19 @@ function TabBar() {
           key={name}
           selected={i === activeTab}
           className="tab"
-          label={name}
+          label={
+            <>
+              <div>{name}</div>
+              {name === "Query builder" ? (
+                <Chip
+                  color={"primary"}
+                  label="Beta"
+                  size="small"
+                  className="chip"
+                />
+              ) : null}
+            </>
+          }
           disableRipple
         />
       ))}

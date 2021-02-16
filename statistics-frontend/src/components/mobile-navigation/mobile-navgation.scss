@@ -11,4 +11,11 @@
 
 .bottom-nav-item {
   max-width: unset !important;
+  display: flex;
+  > .MuiBottomNavigationAction-wrapper {
+    flex-direction: row;
+     > svg {
+      margin-right: 8px;
+     }
+  }
 }
