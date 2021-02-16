@@ -2,6 +2,7 @@ import React from "react";
 import { useLocalStorageQueryHistory } from "../../hooks/use-local-storage-query-history";
 import HistoryIcon from "@material-ui/icons/History";
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -19,11 +20,16 @@ function RecentQueriesContainer() {
 
   return (
     <Container disableGutters>
-      <HistoryIcon
-        fontSize={"large"}
-        color={"secondary"}
-        className="mb-1 mt-2"
-      />
+      <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
+        <Typography variant="h5" color="secondary">
+          History
+        </Typography>
+        <HistoryIcon
+          fontSize={"large"}
+          color={"secondary"}
+          className="recent-queries-header-icon"
+        />
+      </Box>
       <Grid
         container
         alignItems={"center"}
@@ -45,7 +51,7 @@ function RecentQueriesContainer() {
                     Effected countries: {item.amountOfCountries}
                   </Typography>
                   <Typography variant={"body2"}>
-                    Mode: {item.params.split("&visualization=")[1]}
+                    Visualization: {item.uri.split("&visualization=")[1]}
                   </Typography>
                   <Typography variant={"body2"}>Unit: {item.unit}</Typography>
                 </Grid>
@@ -56,7 +62,7 @@ function RecentQueriesContainer() {
                   size="small"
                   color="secondary"
                   className="card-button"
-                  onClick={() => window.location.assign(item.params)}
+                  onClick={() => window.location.assign(item.uri)}
                 >
                   Select
                 </Button>

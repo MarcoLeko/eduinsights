@@ -24,7 +24,7 @@ function useLocalStorageQueryHistory() {
   const setValue = (value) => {
     try {
       const recentQueries = getLocalStorageItem();
-      if (recentQueries.length >= 6) {
+      if (recentQueries.length >= 5) {
         recentQueries.shift();
       }
 

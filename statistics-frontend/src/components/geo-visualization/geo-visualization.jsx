@@ -105,7 +105,7 @@ function GeoVisualization({
         description,
         unit,
         amountOfCountries,
-        params: window.location.search,
+        uri: window.location.pathname + window.location.search,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
