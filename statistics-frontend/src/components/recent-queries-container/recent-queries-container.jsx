@@ -17,7 +17,6 @@ import "../statistic-selector/statistic-selector.scss";
 function RecentQueriesContainer() {
   const { recentQueries } = useLocalStorageQueryHistory();
 
-  console.log(recentQueries);
   return (
     <Container disableGutters>
       <HistoryIcon
