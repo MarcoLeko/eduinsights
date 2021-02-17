@@ -10,12 +10,6 @@
 .tab {
   min-height: 53px;
   min-width: 0;
-  > span {
-  flex-direction: row;
-     > div {
-    margin-right: 8px;
-  }
-  }
   ~ :hover {
   color: $app-primary;
 }

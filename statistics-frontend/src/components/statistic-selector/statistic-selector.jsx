@@ -25,7 +25,10 @@ export function StatisticSelector({
               {statistic.description}
             </Typography>
             <Typography variant="body2" color={"secondary"}>
-              Year: {statistic.startYear}/{statistic.endYear}
+              Year: {statistic.startYear} / {statistic.endYear}
+            </Typography>{" "}
+            <Typography variant="body2" color={"secondary"}>
+              Unit: {statistic.unit}
             </Typography>
             <Chip
               color="secondary"

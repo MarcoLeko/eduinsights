@@ -44,8 +44,9 @@ function RecentQueriesContainer() {
               <CardHeader
                 title={item.description}
                 titleTypographyProps={{ variant: "body1" }}
+                className={"recent-query-card-spacing"}
               />
-              <CardContent>
+              <CardContent className={"recent-query-card-spacing"}>
                 <Grid container justify={"space-between"} direction={"column"}>
                   <Typography variant={"body2"}>
                     Effected countries: {item.amountOfCountries}

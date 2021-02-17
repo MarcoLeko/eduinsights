@@ -31,12 +31,15 @@ export const setRecentQueries = (value) => {
     type: RECENT_QUERIES,
     recentQueries,
   };
+  const isNewQueryInRecentQueries = recentQueries.some(
+    (query) => query.uri === value.uri
+  );
   try {
-    if (recentQueries.length >= 5) {
-      recentQueries.shift();
-    }
+    if (!isNewQueryInRecentQueries) {
+      if (recentQueries.length >= 5) {
+        recentQueries.shift();
+      }
 
-    if (!recentQueries.some((query) => query.uri === value.uri)) {
       window.localStorage.setItem(
         "queries",
         JSON.stringify([...recentQueries, value])
