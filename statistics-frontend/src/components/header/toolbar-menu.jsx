@@ -1,12 +1,10 @@
 import * as React from "react";
-import { Grid, Hidden, List, Toolbar } from "@material-ui/core";
-import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { Grid, Hidden, Link, List, Toolbar } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "@material-ui/core";
 import { name as projectName } from "../../../package.json";
 import { ThemeSelector } from "../shared/theme-selector";
 import Box from "@material-ui/core/Box";
@@ -15,9 +13,6 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
 const useStyles = makeStyles((theme) => ({
-  boxBg: {
-    backgroundColor: theme.palette.background.paper,
-  },
   socialLinkItemContainer: { display: "flex" },
   socialLinkItemGithub: { height: "18px" },
   socialLinkItemInstagram: { height: "20px" },
@@ -30,17 +25,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     padding: "0 4px",
   },
-  logoPanel: {
-    alignItems: "center",
-    display: "flex",
-    textDecoration: "none",
-  },
-  logo: {
-    height: 40,
-    width: 40,
-    marginRight: theme.spacing(1),
-  },
-  header: { fontWeight: 300 },
+  header: { fontWeight: 300, paddingLeft: theme.spacing(2) },
   headerBottomLine: { fontWeight: 300, fontStyle: "italic" },
   actionButtons: {
     display: "flex",
@@ -62,7 +47,7 @@ function ToolbarMenu({ isOpen, toggle }) {
   return (
     <>
       <Hidden xsDown>
-        <Box px={2} py={1} className={classes.boxBg}>
+        <Box px={2} py={1}>
           <Grid container justify={"space-between"} alignItems={"center"}>
             <Grid item>
               <Grid container alignItems={"center"}>
@@ -108,13 +93,7 @@ function ToolbarMenu({ isOpen, toggle }) {
         </Box>
       </Hidden>
       <Toolbar className={classes.root}>
-        <Link
-          href={"/"}
-          underline={"none"}
-          color={"secondary"}
-          className={classes.logoPanel}
-        >
-          <Logo className={classes.logo} />
+        <Link href={"/"} underline={"none"} color={"secondary"}>
           <Typography
             variant={"h4"}
             color="secondary"
