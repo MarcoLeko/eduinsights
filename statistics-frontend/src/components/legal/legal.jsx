@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Legal() {
+export default function Legal() {
   const classes = useStyles();
   const { sidebarOpen, dispatch } = useUiContext();
 

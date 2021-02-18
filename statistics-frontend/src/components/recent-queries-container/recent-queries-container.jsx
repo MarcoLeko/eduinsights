@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import HistoryIcon from "@material-ui/icons/History";
 import {
   Box,
@@ -14,12 +14,31 @@ import {
 import "./recent-queries-container.scss";
 import "../statistic-selector/statistic-selector.scss";
 import { useUiContext } from "../../hooks/use-ui-context";
+import clsx from "clsx";
+import { setSidebarOpen } from "../../context/ui-actions";
 
 function RecentQueriesContainer() {
-  const { recentQueries } = useUiContext();
+  const { sidebarOpen, dispatch, recentQueries } = useUiContext();
+
+  const dispatchSidebarState = useCallback(
+    function (args) {
+      dispatch(setSidebarOpen(args));
+    },
+    [dispatch]
+  );
+
+  function closeSidebar() {
+    if (sidebarOpen) {
+      dispatchSidebarState(false);
+    }
+  }
 
   return (
-    <Container disableGutters>
+    <Container
+      disableGutters
+      onClick={closeSidebar}
+      className={clsx("content", sidebarOpen && "content-shift")}
+    >
       <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
         <Typography variant="h5" color="secondary">
           History

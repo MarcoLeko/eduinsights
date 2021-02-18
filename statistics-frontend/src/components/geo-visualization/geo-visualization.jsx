@@ -8,7 +8,6 @@ import {
 import { useUiContext } from "../../hooks/use-ui-context";
 import { Typography } from "@material-ui/core";
 import { GeoToolTip } from "../geo-tooltip/geo-tooltip";
-import { VisualizationLoadingProgress } from "../loading-progress/visualization-loading-progress";
 import {
   createGlobe,
   createLegend,
@@ -16,6 +15,7 @@ import {
   height,
   width,
 } from "./geo-visualization-utils";
+import { Loader } from "../loader/loader";
 
 const { extent, scaleLinear, select } = d3;
 
@@ -116,7 +116,7 @@ function GeoVisualization({
 
   return (
     <div className="svg-wrapper" ref={wrapperRef} id="svg-container">
-      <VisualizationLoadingProgress show={showLoadingScreen} />
+      <Loader show={showLoadingScreen} />
       {geoJsonFromSelectedStatistic.description && (
         <Typography
           variant="subtitle1"

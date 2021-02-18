@@ -12,7 +12,7 @@ import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statisti
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 
-function Home() {
+export default function Home() {
   const {
     statisticsList,
     geoJsonFromSelectedStatistic,
@@ -108,5 +108,3 @@ function Home() {
     </Container>
   );
 }
-
-export default Home;

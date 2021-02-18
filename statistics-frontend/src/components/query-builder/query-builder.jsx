@@ -11,7 +11,7 @@ import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 
-export function QueryBuilder() {
+export default function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
   const {
     filterStructure,
