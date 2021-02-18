@@ -44,7 +44,7 @@ function RecentQueriesContainer() {
           History
         </Typography>
         <HistoryIcon
-          fontSize={"large"}
+          fontSize={"small"}
           color={"secondary"}
           className="recent-queries-header-icon"
         />
