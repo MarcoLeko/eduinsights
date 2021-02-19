@@ -1,6 +1,10 @@
-@import "../query-builder/query-builder";
+.filter-select {
+  margin: 16px 8px !important;
+  width: 45% !important;
+  max-width: 45% !important;
+}
 
-.skeleton {
-  padding: 32px;
+.skeleton-input {
+  padding: 24px;
 }
 

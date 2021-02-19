@@ -8,16 +8,16 @@ import {
 } from "../services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
-import { defaultQueryBuilderDataStructure } from "../components/shared/query-builder-data-structure";
 
 function createFilterPayloadForDataStructure(structure, params) {
-  const payload = structure.dimensions.observation.map((item) => {
-    if (Object.keys(params).some((key) => key === item.id)) {
-      return `${params[item.id]}.`;
-    }
+  const payload =
+    structure.dimensions?.observation?.map((item) => {
+      if (Object.keys(params).some((key) => key === item.id)) {
+        return `${params[item.id]}.`;
+      }
 
-    return ".";
-  });
+      return ".";
+    }) || [];
 
   if (payload.length < 22) {
     return [
@@ -44,9 +44,7 @@ export function useQueryBuilderUtils() {
   const { dispatch } = useAlertContext();
   const { queryParams } = useQueryParams();
 
-  const [filterStructure, setFilterStructure] = useState(
-    defaultQueryBuilderDataStructure
-  );
+  const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState({
     key: null,
@@ -90,18 +88,18 @@ export function useQueryBuilderUtils() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, filterStructure]);
 
-  const resetQueryBuilderData = () => {
-    setGeoJsonStatistic({
-      key: null,
-      description: null,
-      type: null,
-      unit: null,
-      features: null,
-      amountOfCountries: 0,
-    });
-    setFilterStructure(defaultQueryBuilderDataStructure);
-    setIsFilterValid(false);
-  };
+  const resetQueryBuilderData = useCallback(() => {
+    fetchFilterStructure().then(() =>
+      setGeoJsonStatistic({
+        key: null,
+        description: null,
+        type: null,
+        unit: null,
+        features: null,
+        amountOfCountries: 0,
+      }).then(() => setIsFilterValid(false))
+    );
+  }, [fetchFilterStructure]);
 
   const syncFilter = useCallback(
     (structure) => {
