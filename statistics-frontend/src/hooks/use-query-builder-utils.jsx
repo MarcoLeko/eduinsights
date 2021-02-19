@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
@@ -40,39 +40,24 @@ function createFilterPayloadForGeoJsonData(structure, params) {
   }, {});
 }
 
+const initialGeoJsonStatistic = {
+  key: null,
+  description: null,
+  type: null,
+  unit: null,
+  features: null,
+  amountOfCountries: 0,
+};
+
 export function useQueryBuilderUtils() {
   const { dispatch } = useAlertContext();
   const { queryParams } = useQueryParams();
 
   const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
-  const [geoJsonStatistic, setGeoJsonStatistic] = useState({
-    key: null,
-    description: null,
-    type: null,
-    unit: null,
-    features: null,
-    amountOfCountries: 0,
-  });
-
-  const fetchGeoJsonStatisticFromFilter = useCallback(() => {
-    getStatisticWithQuery(
-      createFilterPayloadForGeoJsonData(filterStructure, queryParams)
-    )
-      .then((topoJson) => {
-        const { key, description, unit, amountOfCountries } = topoJson;
-        const topoJson2GeoJson = topojson.feature(topoJson, "countries");
-        setGeoJsonStatistic({
-          key,
-          unit,
-          description,
-          amountOfCountries,
-          ...topoJson2GeoJson,
-        });
-      })
-      .catch((e) => dispatch(receiveMessageInterceptor(e)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams, filterStructure]);
+  const [geoJsonStatistic, setGeoJsonStatistic] = useState(
+    initialGeoJsonStatistic
+  );
 
   const fetchFilterStructure = useCallback(() => {
     getDataStructureForQuery(
@@ -88,28 +73,10 @@ export function useQueryBuilderUtils() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, filterStructure]);
 
-  const resetQueryBuilderData = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure(filterStructure, queryParams)
-    ).then((response) => {
-      const filterStructure = response.structure;
-      setFilterStructure(filterStructure);
-      setGeoJsonStatistic({
-        key: null,
-        description: null,
-        type: null,
-        unit: null,
-        features: null,
-        amountOfCountries: 0,
-      });
-      setIsFilterValid(false);
-    });
-  }, [fetchFilterStructure]);
-
   const syncFilter = useCallback(
-    (structure) => {
+    (filterStructure) => {
       validateSelectedFilter(
-        createFilterPayloadForGeoJsonData(structure, queryParams)
+        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
       )
         .then((response) => {
           setIsFilterValid(response.clientFilterValid);
@@ -117,21 +84,47 @@ export function useQueryBuilderUtils() {
         })
         .then((isClientFilterValid) =>
           isClientFilterValid
-            ? fetchGeoJsonStatisticFromFilter()
-            : setGeoJsonStatistic({
-                key: null,
-                description: null,
-                type: null,
-                unit: null,
-                features: null,
-                amountOfCountries: 0,
-              })
+            ? fetchGeoJsonStatisticFromFilter(filterStructure)
+            : setGeoJsonStatistic(initialGeoJsonStatistic)
         )
         .catch((e) => dispatch(receiveMessageInterceptor(e)));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [queryParams]
   );
+
+  const fetchGeoJsonStatisticFromFilter = useCallback(
+    (filterStructure) => {
+      getStatisticWithQuery(
+        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
+      )
+        .then((topoJson) => {
+          const { key, description, unit, amountOfCountries } = topoJson;
+          const topoJson2GeoJson = topojson.feature(topoJson, "countries");
+          setGeoJsonStatistic({
+            key,
+            unit,
+            description,
+            amountOfCountries,
+            ...topoJson2GeoJson,
+          });
+        })
+        .catch((e) => dispatch(receiveMessageInterceptor(e)));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [queryParams, filterStructure]
+  );
+
+  const resetQueryBuilderData = useCallback(() => {
+    getDataStructureForQuery(
+      createFilterPayloadForDataStructure([], queryParams)
+    ).then((response) => {
+      const filterStructure = response.structure;
+      setFilterStructure(filterStructure);
+      setGeoJsonStatistic(initialGeoJsonStatistic);
+      setIsFilterValid(false);
+    });
+  }, [fetchFilterStructure]);
 
   return {
     filterStructure,
