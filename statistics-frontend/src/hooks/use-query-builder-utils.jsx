@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
@@ -89,7 +89,11 @@ export function useQueryBuilderUtils() {
   }, [queryParams, filterStructure]);
 
   const resetQueryBuilderData = useCallback(() => {
-    fetchFilterStructure().then(() =>
+    getDataStructureForQuery(
+      createFilterPayloadForDataStructure(filterStructure, queryParams)
+    ).then((response) => {
+      const filterStructure = response.structure;
+      setFilterStructure(filterStructure);
       setGeoJsonStatistic({
         key: null,
         description: null,
@@ -97,8 +101,9 @@ export function useQueryBuilderUtils() {
         unit: null,
         features: null,
         amountOfCountries: 0,
-      }).then(() => setIsFilterValid(false))
-    );
+      });
+      setIsFilterValid(false);
+    });
   }, [fetchFilterStructure]);
 
   const syncFilter = useCallback(

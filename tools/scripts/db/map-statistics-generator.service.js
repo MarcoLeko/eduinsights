@@ -1,13 +1,18 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
 const path = require("path");
-const countries = require("i18n-iso-countries");
 const chalk = require("chalk");
 const UNESCOSubscriptionKey = process.env.UNESCO_DEVELOPER_API_KEY;
 const log = console.log;
 
 function getUnescoStatisticsEntityByIndex(i, json) {
   return Object.values(json.dataSets[0].series)[i].observations["0"][0];
+}
+
+function ensureDirectory(path) {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path);
+  }
 }
 
 module.exports = {
@@ -21,11 +26,6 @@ module.exports = {
     );
     return responseHierarchicalCodeList.json();
   },
-  ensureDirectory: function ensureDirectory(path) {
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
-    }
-  },
   fetchUnescoCodeList: async function () {
     const responseCodeList = await fetch(
       "https://api.uis.unesco.org/sdmx/codelist/all/all/latest?locale=en&format=sdmx-json&subscription-key=" +
@@ -35,10 +35,10 @@ module.exports = {
   },
 
   fetchGeoCountriesPolygons: async function () {
-    const responseCountriesGeoJSON = await fetch(
+    const responseCountriesGeoJson = await fetch(
       "https://datahub.io/core/geo-countries/r/countries.geojson"
     );
-    return responseCountriesGeoJSON.json();
+    return responseCountriesGeoJson.json();
   },
 
   fetchUnescoStatisticWithUrl: async function (url) {
@@ -47,11 +47,15 @@ module.exports = {
     return responseUnescoStatistics.json();
   },
 
-  createMapStatisticsOutputPath: function (filename = "") {
-    return path.join(__dirname, "output", filename);
+  appendFileToOutputDirPath: function (filename = "") {
+    const pathToAppend = path.join(__dirname, "output", filename);
+    ensureDirectory(pathToAppend);
+    return pathToAppend;
   },
-  createMapStatisticsTempPath: function (filename = "") {
-    return path.join(__dirname, "temp", filename);
+  appendFileToTempDirPath: function (filename = "") {
+    const pathToAppend = path.join(__dirname, "temp", filename);
+    ensureDirectory(pathToAppend);
+    return pathToAppend;
   },
   matchUnescoCountriesWithGeoJson: function (
     countriesGeoJson,
@@ -63,32 +67,12 @@ module.exports = {
     for (const geoJsonCountry of countriesGeoJson.objects.countries
       .geometries) {
       let observationValue;
-      const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
-        geoJsonCountry.properties.ISO_A3
-      );
 
-      if (!geoJsonCountryCodeAlpha2) {
-        continue;
-      }
-
-      const geoJsonObject = {
-        type: geoJsonCountry.type,
-        arcs: geoJsonCountry.arcs,
-        properties: {
-          name: geoJsonCountry.properties.ADMIN,
-          id: geoJsonCountryCodeAlpha2,
-          value: null,
-        },
-      };
       for (const [
         index,
         statisticsCountry,
       ] of availableCountriesStatistics.values.entries()) {
-        const statisticsCountryCodeAlpha3 = countries.alpha2ToAlpha3(
-          statisticsCountry.id
-        );
-
-        if (geoJsonCountryCodeAlpha2 === statisticsCountry.id) {
+        if (geoJsonCountry.properties.code === statisticsCountry.id) {
           observationValue = getUnescoStatisticsEntityByIndex(
             index,
             unescoStatisticsJson
@@ -102,10 +86,9 @@ module.exports = {
         } else {
           if (
             !unescoRegions.has(statisticsCountry.id) &&
-            !countriesGeoJson.objects.countries.geometries.includes(
-              statisticsCountryCodeAlpha3
-            ) &&
-            !statisticsCountryCodeAlpha3
+            !countriesGeoJson.objects.countries.geometries.some(
+              (country) => country.properties.code === statisticsCountry.id
+            )
           ) {
             unescoRegions.set(statisticsCountry.id, []);
             log(
@@ -116,17 +99,16 @@ module.exports = {
           }
         }
       }
-      resultArrayWithCountryMatches.push(
-        observationValue
-          ? {
-              ...geoJsonObject,
-              properties: {
-                ...geoJsonObject.properties,
-                value: Math.round(Number(observationValue)),
-              },
-            }
-          : geoJsonObject
-      );
+
+      resultArrayWithCountryMatches.push({
+        type: geoJsonCountry.type,
+        arcs: geoJsonCountry.arcs,
+        properties: {
+          name: geoJsonCountry.properties.name,
+          id: geoJsonCountry.properties.code,
+          value: observationValue ? Number(observationValue).toFixed(2) : null,
+        },
+      });
     }
   },
   getUnit: function (statistic) {
@@ -178,7 +160,7 @@ module.exports = {
 
                 resultArrayWithCountryMatches[
                   geoJsonCountryIndex
-                ].properties.value = value;
+                ].properties.value = value ? Number(value).toFixed(2) : null;
 
                 log(
                   `Found matching geoJson polygon for country: ${chalk.blue(

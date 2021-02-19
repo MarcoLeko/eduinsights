@@ -10,19 +10,19 @@ async function cleanupConnections(changeStream, mongoClient) {
 }
 
 (async function () {
-  const username = process.env.DB_USERNAME,
-    password = process.env.DB_PASSWORD,
-    log = console.log,
-    uri = `mongodb+srv://${username}:${password}@eduinsights.vj2pu.mongodb.net?retryWrites=true/`,
-    mongoClient = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+  const username = process.env.DB_USERNAME;
+  const password = process.env.DB_PASSWORD;
+  const log = console.log;
+  const uri = `mongodb+srv://${username}:${password}@eduinsights.vj2pu.mongodb.net?retryWrites=true/`;
+  const mongoClient = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-  const database = "statistics",
-    collectionToBeInserted = "mapStatistics",
-    changeStreamCollection = `${collectionToBeInserted}List`,
-    selectedPath = path.join(__dirname, "output");
+  const database = "statistics";
+  const collectionToBeInserted = "mapStatistics";
+  const changeStreamCollection = `${collectionToBeInserted}List`;
+  const selectedPath = path.join(__dirname, "output");
 
   let connectionManager, changeStream;
 

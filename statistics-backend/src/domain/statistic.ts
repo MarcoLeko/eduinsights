@@ -1,6 +1,5 @@
 import { DataStructureForFilteredCategory } from './data-structure-for-filtered-category';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
-import * as countries from 'i18n-iso-countries';
 
 export class Statistic {
   private static URL_STATISTIC_PREFIX = `https://api.uis.unesco.org/sdmx/data/UNESCO,${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID},3.0/`;
@@ -37,32 +36,12 @@ export class Statistic {
     for (const geoJsonCountry of countriesGeoJson.objects.countries
       .geometries) {
       let observationValue;
-      const geoJsonCountryCodeAlpha2 = countries.alpha3ToAlpha2(
-        geoJsonCountry.properties.ISO_A3,
-      );
 
-      if (!geoJsonCountryCodeAlpha2) {
-        continue;
-      }
-
-      const geoJsonObject = {
-        type: geoJsonCountry.type,
-        arcs: geoJsonCountry.arcs,
-        properties: {
-          name: geoJsonCountry.properties.ADMIN,
-          id: geoJsonCountryCodeAlpha2,
-          value: null,
-        },
-      };
       for (const [
         index,
         statisticsCountry,
       ] of availableCountriesStatistics.values.entries()) {
-        const statisticsCountryCodeAlpha3 = countries.alpha2ToAlpha3(
-          statisticsCountry.id,
-        );
-
-        if (geoJsonCountryCodeAlpha2 === statisticsCountry.id) {
+        if (geoJsonCountry.properties.code === statisticsCountry.id) {
           observationValue = Statistic.getValueFromStatisticIndex(
             index,
             unescoStatisticsJson,
@@ -70,26 +49,23 @@ export class Statistic {
         } else {
           if (
             !unescoRegions.has(statisticsCountry.id) &&
-            !countriesGeoJson.objects.countries.geometries.includes(
-              statisticsCountryCodeAlpha3,
-            ) &&
-            !statisticsCountryCodeAlpha3
+            !countriesGeoJson.objects.countries.geometries.some(
+              (country) => country.properties.code === statisticsCountry.id,
+            )
           ) {
             unescoRegions.set(statisticsCountry.id, []);
           }
         }
       }
-      resultArrayWithCountryMatches.push(
-        observationValue
-          ? {
-              ...geoJsonObject,
-              properties: {
-                ...geoJsonObject.properties,
-                value: Math.round(Number(observationValue)),
-              },
-            }
-          : geoJsonObject,
-      );
+      resultArrayWithCountryMatches.push({
+        type: geoJsonCountry.type,
+        arcs: geoJsonCountry.arcs,
+        properties: {
+          name: geoJsonCountry.properties.name,
+          id: geoJsonCountry.properties.code,
+          value: observationValue ? Number(observationValue).toFixed(2) : null,
+        },
+      });
     }
   }
 
@@ -136,7 +112,7 @@ export class Statistic {
 
                 resultArrayWithCountryMatches[
                   geoJsonCountryIndex
-                ].properties.value = value;
+                ].properties.value = value ? Number(value).toFixed(2) : null;
               }
             }
           }

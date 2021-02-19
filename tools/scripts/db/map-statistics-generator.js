@@ -2,48 +2,44 @@
 
 const chalk = require("chalk");
 const {
-  fetchGeoCountriesPolygons,
   fetchUnescoStatisticWithUrl,
   writeToFileSync,
   fetchUnescoHierarchicalCodeList,
-  ensureDirectory,
   matchUnescoRegionsWithGeoJson,
   matchUnescoCountriesWithGeoJson,
-  createMapStatisticsOutputPath,
-  createMapStatisticsTempPath,
+  appendFileToOutputDirPath,
+  appendFileToTempDirPath,
   getUnit,
 } = require("./map-statistics-generator.service");
 const mapStatistics = require("./map-statistics");
-const topojson = require("topojson-server");
-const topojsonSimplify = require("topojson-simplify");
-const log = console.log;
+const MongoClient = require("mongodb").MongoClient;
 
 (async function () {
-  try {
-    ensureDirectory(createMapStatisticsTempPath(""));
+  const username = process.env.DB_USERNAME;
+  const password = process.env.DB_PASSWORD;
+  const log = console.log;
+  const uri = `mongodb+srv://${username}:${password}@eduinsights.vj2pu.mongodb.net?retryWrites=true/`;
+  const mongoClient = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
+  const database = "countries";
+  const collectionToBeInserted = "geoData";
+
+  try {
     const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
     writeToFileSync(
       unescoHierarchicalCodeListJson,
-      createMapStatisticsTempPath("unesco-hierarchical-code-list.json")
+      appendFileToTempDirPath("unesco-hierarchical-code-list.json")
     );
 
-    const countriesGeoJsonResponse = await fetchGeoCountriesPolygons();
-    const preSimplyfiedTopojson = topojsonSimplify.presimplify(
-      topojson.topology({
-        countries: countriesGeoJsonResponse,
-      })
-    );
+    const connectionManager = await mongoClient.connect();
 
-    const countriesGeoJsonCompressed = topojsonSimplify.simplify(
-      preSimplyfiedTopojson,
-      0.25
-    );
-
-    writeToFileSync(
-      countriesGeoJsonCompressed,
-      createMapStatisticsTempPath("countries.json")
-    );
+    const countriesGeoJson = await connectionManager
+      .db(database)
+      .collection(collectionToBeInserted)
+      .findOne({});
 
     for (const [index, statistic] of mapStatistics.entries()) {
       const unescoRegions = new Map(),
@@ -55,7 +51,7 @@ const log = console.log;
 
       writeToFileSync(
         unescoStatisticsJson,
-        createMapStatisticsTempPath(`${statistic.key}.json`)
+        appendFileToTempDirPath(`${statistic.key}.json`)
       );
 
       const availableCountriesStatistics = unescoStatisticsJson.structure.dimensions.series.find(
@@ -72,7 +68,7 @@ const log = console.log;
       }
 
       matchUnescoCountriesWithGeoJson(
-        countriesGeoJsonCompressed,
+        countriesGeoJson,
         availableCountriesStatistics,
         unescoStatisticsJson,
         resultArrayWithCountryMatches,
@@ -97,7 +93,7 @@ const log = console.log;
         unescoHierarchicalCodeListJson,
         availableCountriesStatistics,
         unescoStatisticsJson,
-        countriesGeoJsonCompressed,
+        countriesGeoJson,
         resultArrayWithCountryMatches,
         unescoRegions
       );
@@ -108,36 +104,36 @@ const log = console.log;
         startYear: statistic.startYear,
         endYear: statistic.endYear,
         unit: getUnit(unescoStatisticsJson),
-        type: countriesGeoJsonCompressed.type,
-        arcs: countriesGeoJsonCompressed.arcs,
+        type: countriesGeoJson.type,
+        arcs: countriesGeoJson.arcs,
         amountOfCountries: resultArrayWithCountryMatches.filter(
           (item) => item.properties.value !== null
         ).length,
         objects: {
           countries: {
-            bbox: countriesGeoJsonCompressed.bbox,
-            type: countriesGeoJsonCompressed.objects.countries.type,
+            bbox: countriesGeoJson.bbox,
+            type: countriesGeoJson.objects.countries.type,
             geometries: resultArrayWithCountryMatches,
           },
         },
       };
 
-      ensureDirectory(createMapStatisticsOutputPath(""));
       writeToFileSync(
         output,
-        createMapStatisticsOutputPath(`${statistic.key}.json`)
+        appendFileToOutputDirPath(`${statistic.key}.json`)
       );
 
       log(
         chalk.bold(
           `Output file generated at: ${chalk.green.underline(
-            createMapStatisticsOutputPath(`${statistic.key}.json`)
+            appendFileToOutputDirPath(`${statistic.key}.json`)
           )} with: ${chalk.green.underline(
             resultArrayWithCountryMatches.length
           )} countries`
         )
       );
     }
+    await mongoClient.close();
   } catch (e) {
     log(chalk.bold.red("Oooops! An error occured " + e));
     process.exit(1);
