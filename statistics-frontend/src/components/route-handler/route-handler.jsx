@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -18,6 +18,7 @@ const Legal = lazy(() => import("../legal/legal"));
 
 function RouteHandler() {
   const { theme } = useUiContext();
+  const [isOnLegalRoute] = useState(window.location.pathname.includes("legal"));
 
   return (
     <ThemeProvider theme={responsiveFontSizes(getMaterialUiTheme(theme))}>
@@ -26,7 +27,7 @@ function RouteHandler() {
           <Suspense fallback={<Loader show />}>
             <AppNotifier />
             <Header />
-            <RecentQueriesContainer />
+            <RecentQueriesContainer show={!isOnLegalRoute} />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/legal" component={Legal} />

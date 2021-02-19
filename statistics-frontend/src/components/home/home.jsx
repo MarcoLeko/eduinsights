@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "@material-ui/core";
-import Introduction from "../introduction/introduction";
+import HomeDescription from "../home-description/home-description";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
 import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
@@ -104,7 +104,7 @@ export default function Home() {
         onClickReset={resetQueryParams}
       />
       {getActiveStepNode()}
-      <Introduction />
+      <HomeDescription />
     </Container>
   );
 }

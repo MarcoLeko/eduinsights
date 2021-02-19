@@ -85,6 +85,7 @@ export function SwipeableCards({ items }) {
         steps={items.length}
         position="static"
         activeStep={index}
+        className="card-dot"
       />
     </div>
   ) : (

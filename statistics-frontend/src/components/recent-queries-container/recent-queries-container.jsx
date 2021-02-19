@@ -17,7 +17,7 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import clsx from "clsx";
 import { setSidebarOpen } from "../../context/ui-actions";
 
-function RecentQueriesContainer() {
+function RecentQueriesContainer({ show }) {
   const { sidebarOpen, dispatch, recentQueries } = useUiContext();
 
   const dispatchSidebarState = useCallback(
@@ -34,73 +34,79 @@ function RecentQueriesContainer() {
   }
 
   return (
-    <Container
-      disableGutters
-      onClick={closeSidebar}
-      className={clsx("content", sidebarOpen && "content-shift")}
-    >
-      <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
-        <Typography variant="h5" color="secondary">
-          History
-        </Typography>
-        <HistoryIcon
-          fontSize={"small"}
-          color={"secondary"}
-          className="recent-queries-header-icon"
-        />
-      </Box>
-      <Grid
-        container
-        alignItems={"center"}
-        direction={"row"}
-        wrap={"nowrap"}
-        justify={recentQueries.length ? "flex-start" : "center"}
-        className="recent-queries-container"
+    show && (
+      <Container
+        disableGutters
+        onClick={closeSidebar}
+        className={clsx("content", sidebarOpen && "content-shift")}
       >
-        {recentQueries.length ? (
-          recentQueries.map((item) => (
-            <Card key={`${item.uri}`} className="recent-query-card">
-              <CardHeader
-                title={item.description}
-                titleTypographyProps={{ variant: "body1" }}
-                className={"recent-query-card-spacing"}
-              />
-              <CardContent className={"recent-query-card-spacing"}>
-                <Grid container justify={"space-between"} direction={"column"}>
-                  <Typography variant={"body2"}>
-                    Effected countries: {item.amountOfCountries}
-                  </Typography>
-                  <Typography variant={"body2"}>
-                    Visualization: {item.uri.split("&visualization=")[1]}
-                  </Typography>
-                  <Typography variant={"body2"}>Unit: {item.unit}</Typography>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="contained"
-                  size="small"
-                  color="secondary"
-                  className="card-button"
-                  onClick={() => window.location.assign(item.uri)}
-                >
-                  Select
-                </Button>
-              </CardActions>
-            </Card>
-          ))
-        ) : (
-          <Typography
-            variant={"subtitle2"}
-            color={"secondary"}
-            align={"center"}
-            mt={2}
-          >
-            No recent queries available
+        <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
+          <Typography variant="h5" color="secondary">
+            History
           </Typography>
-        )}
-      </Grid>
-    </Container>
+          <HistoryIcon
+            fontSize={"small"}
+            color={"secondary"}
+            className="recent-queries-header-icon"
+          />
+        </Box>
+        <Grid
+          container
+          alignItems={"center"}
+          direction={"row"}
+          wrap={"nowrap"}
+          justify={recentQueries.length ? "flex-start" : "center"}
+          className="recent-queries-container"
+        >
+          {recentQueries.length ? (
+            recentQueries.map((item) => (
+              <Card key={`${item.uri}`} className="recent-query-card">
+                <CardHeader
+                  title={item.description}
+                  titleTypographyProps={{ variant: "body1" }}
+                  className={"recent-query-card-spacing"}
+                />
+                <CardContent className={"recent-query-card-spacing"}>
+                  <Grid
+                    container
+                    justify={"space-between"}
+                    direction={"column"}
+                  >
+                    <Typography variant={"body2"}>
+                      Effected countries: {item.amountOfCountries}
+                    </Typography>
+                    <Typography variant={"body2"}>
+                      Visualization: {item.uri.split("&visualization=")[1]}
+                    </Typography>
+                    <Typography variant={"body2"}>Unit: {item.unit}</Typography>
+                  </Grid>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="secondary"
+                    className="card-button"
+                    onClick={() => window.location.assign(item.uri)}
+                  >
+                    Select
+                  </Button>
+                </CardActions>
+              </Card>
+            ))
+          ) : (
+            <Typography
+              variant={"subtitle2"}
+              color={"secondary"}
+              align={"center"}
+              mt={2}
+            >
+              No recent queries available
+            </Typography>
+          )}
+        </Grid>
+      </Container>
+    )
   );
 }
 

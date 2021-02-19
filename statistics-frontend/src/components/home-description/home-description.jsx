@@ -2,10 +2,10 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import { Paper, Typography } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
-import "./introduction.scss";
+import "./home-description.scss";
 import MonitoringLogo from "../../assets/UIS-logo.svg";
 
-function Introduction() {
+function HomeDescription() {
   return (
     <Box component={"section"} className="box">
       <Paper className="bottom-line">
@@ -48,4 +48,4 @@ function Introduction() {
   );
 }
 
-export default Introduction;
+export default HomeDescription;
