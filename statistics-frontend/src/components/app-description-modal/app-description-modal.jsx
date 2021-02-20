@@ -47,7 +47,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export function AppDescriptionModal() {
+export default function AppDescriptionModal() {
   const [item, setValue] = useCookie(cookieKey);
   const [open, setOpen] = useState(!item);
   const [step, setStep] = useState(2);

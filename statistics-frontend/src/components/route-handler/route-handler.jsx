@@ -11,11 +11,15 @@ import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
 import AppNotifier from "../app-notifier/app-notifier";
 import { RecentQueriesContainer } from "../recent-queries-container/recent-queries-container";
 import { Loader } from "../loader/loader";
-import { AppDescriptionModal } from "../app-description-modal/app-description-modal";
 
+/** Lazy load components which are assigned to a route in order to split the total bundle size.
+ * In addition the app description modal can also be lazy loaded by react  **/
 const Home = lazy(() => import("../home/home"));
 const QueryBuilder = lazy(() => import("../query-builder/query-builder"));
 const Legal = lazy(() => import("../legal/legal"));
+const AppDescriptionModal = lazy(() =>
+  import("../app-description-modal/app-description-modal")
+);
 
 function RouteHandler() {
   const { theme } = useUiContext();
