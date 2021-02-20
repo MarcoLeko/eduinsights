@@ -11,6 +11,7 @@ import { MobileNavigation } from "../mobile-navigation/mobile-navigation";
 import AppNotifier from "../app-notifier/app-notifier";
 import { RecentQueriesContainer } from "../recent-queries-container/recent-queries-container";
 import { Loader } from "../loader/loader";
+import { AppDescriptionModal } from "../app-description-modal/app-description-modal";
 
 const Home = lazy(() => import("../home/home"));
 const QueryBuilder = lazy(() => import("../query-builder/query-builder"));
@@ -28,6 +29,7 @@ function RouteHandler() {
             <AppNotifier />
             <Header />
             <RecentQueriesContainer show={!isOnLegalRoute} />
+            <AppDescriptionModal />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/legal" component={Legal} />

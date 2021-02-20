@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import "./recent-queries-container.scss";
-import "../statistic-selector/statistic-selector.scss";
 import { useUiContext } from "../../hooks/use-ui-context";
 import clsx from "clsx";
 import { setSidebarOpen } from "../../context/ui-actions";
@@ -86,7 +85,7 @@ function RecentQueriesContainer({ show }) {
                     variant="contained"
                     size="small"
                     color="secondary"
-                    className="card-button"
+                    className="primary-button float-left"
                     onClick={() => window.location.assign(item.uri)}
                   >
                     Select

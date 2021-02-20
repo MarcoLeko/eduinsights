@@ -27,3 +27,11 @@ html, body, #root {
   font-size: 1.1875rem;
   font-weight: 300 !important;
 }
+
+.primary-button {
+  background: $app-background;
+}
+
+.float-left {
+  margin-left: auto !important;
+}

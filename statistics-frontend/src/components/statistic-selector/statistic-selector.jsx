@@ -43,7 +43,7 @@ export function StatisticSelector({
               variant="contained"
               size="small"
               color="secondary"
-              className="card-button"
+              className="primary-button float-left"
               onClick={() => onClick(statistic)}
             >
               Select
