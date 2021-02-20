@@ -3,13 +3,10 @@
 const chalk = require("chalk");
 const MongoClient = require("mongodb").MongoClient;
 const {
-  fetchGeoCountriesPolygons,
   writeToFileSync,
   appendFileToTempDirPath,
+  fetchUnescoHierarchicalCodeList,
 } = require("./map-statistics-generator.service");
-const topojson = require("topojson-server");
-const topojsonSimplify = require("topojson-simplify");
-const countries = require("i18n-iso-countries");
 
 async function cleanupConnection(mongoClient) {
   await mongoClient.close();
@@ -26,45 +23,14 @@ async function cleanupConnection(mongoClient) {
   });
 
   const database = "countries";
-  const collectionToBeInserted = "geoData";
+  const collectionToBeInserted = "unescoHierarchicalCodeList";
 
   let connectionManager;
 
-  const countriesGeoJsonResponse = await fetchGeoCountriesPolygons();
-  const featuresWithISO2CountryCodes = countriesGeoJsonResponse.features.map(
-    (item) => {
-      return {
-        type: item.type,
-        geometry: item.geometry,
-        properties: {
-          name: item.properties.ADMIN,
-          code:
-            countries.alpha3ToAlpha2(item.properties.ISO_A3) ||
-            item.properties.ISO_A3,
-        },
-      };
-    }
-  );
-
-  const countriesGeoJsonWithISO2CountryCodes = {
-    ...countriesGeoJsonResponse,
-    features: featuresWithISO2CountryCodes,
-  };
-
-  const preSimplyfiedTopojson = topojsonSimplify.presimplify(
-    topojson.topology({
-      countries: countriesGeoJsonWithISO2CountryCodes,
-    })
-  );
-
-  const countriesGeoJsonCompressed = topojsonSimplify.simplify(
-    preSimplyfiedTopojson,
-    0.25
-  );
-
+  const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
   writeToFileSync(
-    countriesGeoJsonCompressed,
-    appendFileToTempDirPath("countries.json")
+    unescoHierarchicalCodeListJson,
+    appendFileToTempDirPath("unesco-hierarchical-code-list.json")
   );
 
   log(
@@ -82,19 +48,22 @@ async function cleanupConnection(mongoClient) {
 
     connectionManager = await mongoClient.connect();
 
-    const geoDataCollection = connectionManager
+    const codeListCollection = connectionManager
       .db(database)
       .collection(collectionToBeInserted);
 
     // ensure indexes for collections
-    await geoDataCollection.createIndex(
+    await codeListCollection.createIndex(
       { key: "text" },
       { unique: true, collation: { locale: "simple" } }
     );
 
-    const document = { ...countriesGeoJsonCompressed, key: "geoJson" };
+    const document = {
+      ...unescoHierarchicalCodeListJson,
+      key: "unescoHierarchicalCodeList",
+    };
 
-    await geoDataCollection
+    await codeListCollection
       .updateOne({ key: document.key }, { $set: document }, { upsert: true })
       .then(() => log(`Successfully transferred document`))
       .catch((e) =>

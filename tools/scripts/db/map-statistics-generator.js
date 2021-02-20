@@ -4,7 +4,6 @@ const chalk = require("chalk");
 const {
   fetchUnescoStatisticWithUrl,
   writeToFileSync,
-  fetchUnescoHierarchicalCodeList,
   matchUnescoRegionsWithGeoJson,
   matchUnescoCountriesWithGeoJson,
   appendFileToOutputDirPath,
@@ -24,21 +23,21 @@ const MongoClient = require("mongodb").MongoClient;
     useUnifiedTopology: true,
   });
 
-  const database = "countries";
-  const collectionToBeInserted = "geoData";
+  const countriesDB = "countries";
+  const geoDataCollection = "geoData";
+  const unescoHierarchicalCodeListCollection = "unescoHierarchicalCodeList";
 
   try {
-    const unescoHierarchicalCodeListJson = await fetchUnescoHierarchicalCodeList();
-    writeToFileSync(
-      unescoHierarchicalCodeListJson,
-      appendFileToTempDirPath("unesco-hierarchical-code-list.json")
-    );
-
     const connectionManager = await mongoClient.connect();
 
     const countriesGeoJson = await connectionManager
-      .db(database)
-      .collection(collectionToBeInserted)
+      .db(countriesDB)
+      .collection(geoDataCollection)
+      .findOne({});
+
+    const unescoHierarchicalCodeListJson = await connectionManager
+      .db(countriesDB)
+      .collection(unescoHierarchicalCodeListCollection)
       .findOne({});
 
     for (const [index, statistic] of mapStatistics.entries()) {

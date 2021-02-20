@@ -1,11 +1,12 @@
 {
   "name": "eduinsights-tools",
   "version": "1.0.0",
-  "description": "Contains useful scripts",
-  "main": "index.js",
+  "description": "Contains useful scripts for statistics generation",
   "scripts": {
     "insert:mapStatistics": "node -r dotenv/config ./scripts/db/insert-map-statistics-documents.js dotenv_config_path=../.env",
     "generate:geoData": "node -r dotenv/config ./scripts/db/generate-geo-data.js dotenv_config_path=../.env",
+    "generate:hierarchicalCodeList": "node -r dotenv/config ./scripts/db/generate-unesco-hierarchical-codelist.js dotenv_config_path=../.env",
+    "pregenerate:statistics" : "npm run generate:geoData && npm run generate:hierarchicalCodeList",
     "generate:statistics": "node -r dotenv/config ./scripts/db/map-statistics-generator.js dotenv_config_path=../.env",
     "clean:up": "node ./scripts/db/clean-up-files.js",
     "pack:bundle": "node ./scripts/aws/pack-bundle.js",

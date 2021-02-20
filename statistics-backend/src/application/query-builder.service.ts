@@ -9,6 +9,10 @@ import {
   CountriesJson,
   CountriesJsonDocument,
 } from '../infrastructure/countries-json.schema';
+import {
+  UnescoHierarchicalCodeListDocument,
+  UnescoHierarchicalCodeListJson,
+} from '../infrastructure/unesco-hierarchical-code-list.schema';
 
 @Injectable()
 export class QueryBuilderService {
@@ -19,6 +23,8 @@ export class QueryBuilderService {
     private configService: ConfigService,
     @InjectModel(CountriesJson.name)
     private readonly countriesJsonModel: Model<CountriesJsonDocument>,
+    @InjectModel(UnescoHierarchicalCodeListJson.name)
+    private readonly unescoHierarchicalCodeListModel: Model<UnescoHierarchicalCodeListDocument>,
   ) {}
 
   async getDataStructureForFilteredCategory(clientFilter: Array<string>) {
@@ -55,10 +61,11 @@ export class QueryBuilderService {
       const geoJson = await this.countriesJsonModel
         .findOne({ key: 'geoJson' })
         .exec();
+
+      const hierarchicalCodeList = await this.unescoHierarchicalCodeListModel
+        .findOne({ key: 'unescoHierarchicalCodeList' })
+        .exec();
       const response = await this.uisClient(url);
-      const hierarchicalcodeList = await this.uisClient(
-        'https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/latest?locale=en&format=sdmx-json',
-      );
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,
       );
@@ -71,7 +78,7 @@ export class QueryBuilderService {
       );
 
       Statistic.matchUnescoRegionsWithGeoJson(
-        hierarchicalcodeList.data,
+        hierarchicalCodeList,
         availableCountriesStatistics,
         response.data,
         geoJson,

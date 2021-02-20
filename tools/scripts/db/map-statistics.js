@@ -1,3 +1,6 @@
+"use strict";
+
+let mapStatistics;
 module.exports = mapStatistics = [
   {
     description: "Net enrolment rate for primary education",

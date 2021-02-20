@@ -1,3 +1,5 @@
+"use strict";
+
 const fs = require("fs");
 const fetch = require("node-fetch");
 const path = require("path");
@@ -21,7 +23,7 @@ module.exports = {
   },
   fetchUnescoHierarchicalCodeList: async function fetchUnescoHierarchicalCodeList() {
     const responseHierarchicalCodeList = await fetch(
-      "https://api.uis.unesco.org/sdmx/hierarchicalcodelist/all/latest?locale=en&format=sdmx-json&subscription-key=" +
+      "https://api.uis.unesco.org/sdmx/hierarchicalcodelist/UNESCO/latest?locale=en&format=sdmx-json&subscription-key=" +
         UNESCOSubscriptionKey
     );
     return responseHierarchicalCodeList.json();

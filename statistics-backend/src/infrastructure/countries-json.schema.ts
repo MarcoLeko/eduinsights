@@ -1,5 +1,9 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import {
+  CountriesGeoDataObjects,
+  CountriesGeoDataObjectsGeometries,
+} from '../domain/countries-geo-data';
 
 export type CountriesJsonDocument = CountriesJson & Document;
 
@@ -15,13 +19,13 @@ export class CountriesJson {
       },
     }),
   )
-  objects: Record<string, any>;
+  objects: CountriesGeoDataObjects;
   @Prop()
-  arcs: [];
+  arcs: Array<Array<number>>;
   @Prop()
   amountOfCountries: number;
   @Prop()
-  bbox: [];
+  bbox: Array<number>;
   @Prop()
   type: 'Topology';
 }

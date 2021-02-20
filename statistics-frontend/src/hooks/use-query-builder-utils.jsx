@@ -59,40 +59,6 @@ export function useQueryBuilderUtils() {
     initialGeoJsonStatistic
   );
 
-  const fetchFilterStructure = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure(filterStructure, queryParams)
-    )
-      .then((response) => {
-        const filterStructure = response.structure;
-        setFilterStructure(filterStructure);
-        return filterStructure;
-      })
-      .then((filterStructure) => syncFilter(filterStructure))
-      .catch((e) => dispatch(receiveMessageInterceptor(e)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams, filterStructure]);
-
-  const syncFilter = useCallback(
-    (filterStructure) => {
-      validateSelectedFilter(
-        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
-      )
-        .then((response) => {
-          setIsFilterValid(response.clientFilterValid);
-          return response.clientFilterValid;
-        })
-        .then((isClientFilterValid) =>
-          isClientFilterValid
-            ? fetchGeoJsonStatisticFromFilter(filterStructure)
-            : setGeoJsonStatistic(initialGeoJsonStatistic)
-        )
-        .catch((e) => dispatch(receiveMessageInterceptor(e)));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [queryParams]
-  );
-
   const fetchGeoJsonStatisticFromFilter = useCallback(
     (filterStructure) => {
       getStatisticWithQuery(
@@ -110,10 +76,41 @@ export function useQueryBuilderUtils() {
           });
         })
         .catch((e) => dispatch(receiveMessageInterceptor(e)));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [queryParams, filterStructure]
+    [queryParams, dispatch]
   );
+
+  const syncFilter = useCallback(
+    (filterStructure) => {
+      validateSelectedFilter(
+        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
+      )
+        .then((response) => {
+          setIsFilterValid(response.clientFilterValid);
+          return response.clientFilterValid;
+        })
+        .then((isClientFilterValid) =>
+          isClientFilterValid
+            ? fetchGeoJsonStatisticFromFilter(filterStructure)
+            : setGeoJsonStatistic(initialGeoJsonStatistic)
+        )
+        .catch((e) => dispatch(receiveMessageInterceptor(e)));
+    },
+    [queryParams, dispatch, fetchGeoJsonStatisticFromFilter]
+  );
+
+  const fetchFilterStructure = useCallback(() => {
+    getDataStructureForQuery(
+      createFilterPayloadForDataStructure(filterStructure, queryParams)
+    )
+      .then((response) => {
+        const filterStructure = response.structure;
+        setFilterStructure(filterStructure);
+        return filterStructure;
+      })
+      .then((filterStructure) => syncFilter(filterStructure))
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
+  }, [queryParams, filterStructure, dispatch, syncFilter]);
 
   const resetQueryBuilderData = useCallback(() => {
     getDataStructureForQuery(
@@ -124,7 +121,7 @@ export function useQueryBuilderUtils() {
       setGeoJsonStatistic(initialGeoJsonStatistic);
       setIsFilterValid(false);
     });
-  }, [fetchFilterStructure]);
+  }, [queryParams]);
 
   return {
     filterStructure,
