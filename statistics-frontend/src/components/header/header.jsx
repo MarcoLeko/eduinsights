@@ -12,11 +12,9 @@ import {
   useTheme,
 } from "@material-ui/core";
 import TabBar from "../tab-bar/tab-bar";
-import { useHeaderStyles } from "../shared/header-styles";
 import "./header.scss";
 
 export function Header() {
-  const classes = useHeaderStyles();
   const materialUiTheme = useTheme();
 
   const isSmallViewport = useMediaQuery(materialUiTheme.breakpoints.down("xs"));
@@ -44,11 +42,8 @@ export function Header() {
         position="sticky"
         color="default"
         className={clsx(
-          classes.navigation,
-          !trigger && !isSmallViewport && "header-not-scrolled",
-          {
-            [classes.navigationShift]: sidebarOpen,
-          }
+          sidebarOpen ? "navigation-shift" : "navigation",
+          !trigger && !isSmallViewport && "header-not-scrolled"
         )}
       >
         <ToolbarMenu toggle={dispatchSidebarState} isOpen={sidebarOpen} />

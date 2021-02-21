@@ -12,17 +12,16 @@ import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
 import { ThemeSelector } from "../shared/theme-selector";
 import { navItemsSideBar } from "../shared/navItems";
-import { drawerWidth } from "../shared/header-styles";
 import { useHistory } from "react-router-dom";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({
     drawer: {
-      width: drawerWidth,
+      width: 240,
       flexShrink: 0,
     },
     drawerPaper: {
-      width: drawerWidth,
+      width: 240,
       backgroundColor: params === "dark" ? grey[900] : grey[100],
       boxShadow:
         "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",

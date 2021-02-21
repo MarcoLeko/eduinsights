@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import * as topojson from "topojson-client";
 import { useAlertContext } from "./use-alert-context";
-import { getMapStatisticsById, getMapStatisticsList } from "../services";
+import { getMapStatisticsById, getMapStatisticsList } from "../helper/services";
 import { useQueryParams } from "./use-query-params";
 
 export function usePreparedStatisticDataUtils() {

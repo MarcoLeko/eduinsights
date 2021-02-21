@@ -85,13 +85,13 @@ export function SwipeableCards({ items }) {
         steps={items.length}
         position="static"
         activeStep={index}
-        className="card-dot"
+        className="mt-2"
       />
     </div>
   ) : (
     <div className="skeleton-container">
       <Skeleton variant="rect" className="skeleton-rect" />
-      <div className="skeleton-dots-flex">
+      <div className="skeleton-dots-flex mt-2">
         {Array.from(new Array(8).fill(1)).map((v, i) => (
           <Skeleton key={v + i} variant="circle" className="skeleton-dot" />
         ))}

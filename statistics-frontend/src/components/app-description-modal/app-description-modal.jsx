@@ -7,14 +7,15 @@ import {
   DialogContentText,
   DialogTitle,
   Slide,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import "./app-description-modal.scss";
 import StatisticImage from "../../assets/map-transparent-bg.png";
+import { cookieKey } from "../../helper/cookie-key";
 
-const cookieKey = "cookieLawAccepted";
 const dialogTitles = ["How it works", "Select a visualization", "Enjoy!"];
 
 const CookieContent = () => (
@@ -23,8 +24,19 @@ const CookieContent = () => (
       Hover over the states and compare the observations. In addition, you can
       access the statistic via url or the recent queries panel.
     </DialogContentText>
-    <img src={StatisticImage} className="dialog-image" />
-    <DialogContentText id="dialog-description" align={"justify"}>
+    <img
+      src={StatisticImage}
+      className="dialog-image"
+      alt="Statistic of net enrolment of primary education"
+    />
+    <DialogContentText
+      id="dialog-description"
+      align={"justify"}
+      component="div"
+    >
+      <Typography variant="h6" color="textPrimary" className="mt-1">
+        Cookie management
+      </Typography>
       To enable you the best surfing experience, we are using cookies. By
       proceeding you agree on our cookie policy{" "}
       <span role="img" aria-labelledby="cookie">

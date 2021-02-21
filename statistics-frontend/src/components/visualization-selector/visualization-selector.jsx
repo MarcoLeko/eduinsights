@@ -9,12 +9,14 @@ import { SwipeableCards } from "../swipeable-cards/swipeable-cards";
 const visualizations = [
   {
     label: "2D Display",
-    icon: <MapTwoToneIcon className="svg-icon" />,
+    icon: <MapTwoToneIcon className="visualization-selector-container-icon" />,
     key: "map",
   },
   {
     label: "3D Display",
-    icon: <PublicTwoToneIcon className="svg-icon" />,
+    icon: (
+      <PublicTwoToneIcon className="visualization-selector-container-icon" />
+    ),
     key: "globe",
   },
 ];
@@ -37,7 +39,7 @@ export function VisualizationSelector({ addNextQueryParam }) {
             }
             size={"small"}
             variant="contained"
-            className="visualization-button"
+            className="primary-button"
           >
             Select
           </Button>

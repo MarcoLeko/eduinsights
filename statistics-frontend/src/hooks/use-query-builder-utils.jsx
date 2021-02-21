@@ -5,7 +5,7 @@ import {
   getDataStructureForQuery,
   getStatisticWithQuery,
   validateSelectedFilter,
-} from "../services";
+} from "../helper/services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
 
