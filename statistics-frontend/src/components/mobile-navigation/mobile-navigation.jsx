@@ -4,13 +4,13 @@ import {
   BottomNavigationAction,
   Hidden,
 } from "@material-ui/core";
-import { navItems } from "../shared/navItems";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import "./mobile-navgation.scss";
 import { grey } from "@material-ui/core/colors";
+import { navigationItems } from "../shared/navigation-items";
 
 const useStyles = (theming) =>
   makeStyles(() => ({
@@ -30,7 +30,7 @@ export function MobileNavigation() {
   const { activeTab, sidebarOpen } = useUiContext();
 
   function navigate(val) {
-    history.push(navItems[val].link);
+    history.push(navigationItems[val].link);
   }
 
   return (
@@ -45,7 +45,7 @@ export function MobileNavigation() {
         onChange={(e, val) => navigate(val)}
         showLabels
       >
-        {navItems.map((item) => (
+        {navigationItems.map((item) => (
           <BottomNavigationAction
             key={item.name}
             label={item.name}

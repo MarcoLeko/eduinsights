@@ -11,8 +11,8 @@ import Copyright from "../shared/copyright";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { grey } from "@material-ui/core/colors";
 import { ThemeSelector } from "../shared/theme-selector";
-import { navItemsSideBar } from "../shared/navItems";
 import { useHistory } from "react-router-dom";
+import { navItemsSideBar } from "../shared/navigation-items";
 
 const useStyles = (params) =>
   makeStyles((theme) => ({

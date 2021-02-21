@@ -16,6 +16,8 @@ import "./app-description-modal.scss";
 import StatisticImage from "../../assets/map-transparent-bg.png";
 import { cookieKey } from "../../helper/cookie-key";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
+import { visualizations } from "../shared/visualization-items";
+import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 
 const dialogTitles = ["How it works", "Select a visualization", "Enjoy!"];
 const demoStatisticsList = [
@@ -28,6 +30,9 @@ const demoStatisticsList = [
     unit: "Percentage",
   },
 ];
+
+const demoVisualizations = visualizations.filter((item) => item.key === "map");
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -85,24 +90,43 @@ export default function AppDescriptionModal() {
         Choose a statistic which you might find interesting to observe with. Pay
         attention on the effected amount of countries{" "}
         <span role="img" aria-labelledby="arrow down">
-          ⤵️
+          ⬇️
         </span>
       </DialogContentText>
       <StatisticSelector
         statisticsList={demoStatisticsList}
         onStatisticClick={handleNext}
-        setSelectedStatistic={() => null}
         showDemo
       />
     </>
   );
-  const SelectVisualizationContent = () => <></>;
+  const SelectVisualizationContent = () => (
+    <>
+      <VisualizationSelector
+        visualizations={demoVisualizations}
+        onVisualizationClick={handleNext}
+        showDemo
+      />
+      <DialogContentText
+        id="dialog-description"
+        align={"justify"}
+        component="div"
+      >
+        Select a visualization for the observation to display. For this demo
+        click on the map visualization{" "}
+        <span role="img" aria-labelledby="arrow down">
+          ⬆️
+        </span>
+      </DialogContentText>
+    </>
+  );
 
   const dialogContent = [
     SelectStatisticContent(),
     SelectVisualizationContent(),
     CookieContent(),
   ];
+
   return (
     <Dialog
       open={open}

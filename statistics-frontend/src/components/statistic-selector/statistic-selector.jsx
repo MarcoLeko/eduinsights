@@ -10,14 +10,8 @@ import clsx from "clsx";
 export function StatisticSelector({
   onStatisticClick,
   statisticsList,
-  setSelectedStatistic,
   showDemo = false,
 }) {
-  function onClick(statistic) {
-    onStatisticClick({ statistic: statistic.key });
-    setSelectedStatistic(statistic.key);
-  }
-
   return (
     <SwipeableCards
       items={statisticsList.map((statistic) => (
@@ -49,7 +43,7 @@ export function StatisticSelector({
                 "primary-button float-left",
                 showDemo && "pulse-effect-primary"
               )}
-              onClick={() => onClick(statistic)}
+              onClick={() => onStatisticClick(statistic)}
             >
               Select
             </Button>

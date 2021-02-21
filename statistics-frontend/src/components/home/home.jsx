@@ -11,6 +11,7 @@ import "./home.scss";
 import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statistic-data-utils";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
+import { visualizations } from "../shared/visualization-items";
 
 export default function Home() {
   const {
@@ -39,6 +40,21 @@ export default function Home() {
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, visualizationLoaded]);
+
+  function onStatisticClick(statistic) {
+    addNextQueryParam({ statistic: statistic.key });
+    setSelectedStatistic(statistic.key);
+  }
+
+  function closeSidebar() {
+    if (sidebarOpen) {
+      dispatchSidebarState(false);
+    }
+  }
+
+  function onVisualizationClick(visualization) {
+    addNextQueryParam({ visualization: visualization.key });
+  }
 
   function getStep() {
     if (
@@ -73,22 +89,20 @@ export default function Home() {
           />
         );
       case 1:
-        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
+        return (
+          <VisualizationSelector
+            onVisualizationClick={onVisualizationClick}
+            visualizations={visualizations}
+          />
+        );
       case 0:
       default:
         return (
           <StatisticSelector
-            onStatisticClick={addNextQueryParam}
+            onStatisticClick={onStatisticClick}
             statisticsList={statisticsList}
-            setSelectedStatistic={setSelectedStatistic}
           />
         );
-    }
-  }
-
-  function closeSidebar() {
-    if (sidebarOpen) {
-      dispatchSidebarState(false);
     }
   }
 

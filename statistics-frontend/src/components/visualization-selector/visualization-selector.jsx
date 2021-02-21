@@ -1,27 +1,15 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
-import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
 import Typography from "@material-ui/core/Typography";
 import "./visualization-selector.scss";
 import { SwipeableCards } from "../swipeable-cards/swipeable-cards";
+import clsx from "clsx";
 
-const visualizations = [
-  {
-    label: "2D Display",
-    icon: <MapTwoToneIcon className="visualization-selector-container-icon" />,
-    key: "map",
-  },
-  {
-    label: "3D Display",
-    icon: (
-      <PublicTwoToneIcon className="visualization-selector-container-icon" />
-    ),
-    key: "globe",
-  },
-];
-
-export function VisualizationSelector({ addNextQueryParam }) {
+export function VisualizationSelector({
+  onVisualizationClick,
+  visualizations,
+  showDemo = false,
+}) {
   return (
     <SwipeableCards
       items={visualizations.map((visualization) => (
@@ -34,12 +22,13 @@ export function VisualizationSelector({ addNextQueryParam }) {
           </Typography>
           {visualization.icon}
           <Button
-            onClick={() =>
-              addNextQueryParam({ visualization: visualization.key })
-            }
+            onClick={() => onVisualizationClick(visualization)}
             size={"small"}
             variant="contained"
-            className="primary-button"
+            className={clsx(
+              "primary-button",
+              showDemo && "pulse-effect-primary"
+            )}
           >
             Select
           </Button>
