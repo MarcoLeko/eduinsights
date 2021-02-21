@@ -54,7 +54,11 @@ export default function StatisticStepper({
 
   return (
     <>
-      <Stepper alternativeLabel activeStep={activeStep} className="stepper">
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        className="stepper mt-2"
+      >
         {stepDescription.map((label) => {
           return (
             <Step key={label}>

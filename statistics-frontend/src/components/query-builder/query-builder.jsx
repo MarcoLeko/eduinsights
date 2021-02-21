@@ -10,6 +10,7 @@ import { VisualizationSelector } from "../visualization-selector/visualization-s
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
+import { visualizations } from "../shared/visualization-items";
 
 export default function QueryBuilder() {
   const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
@@ -69,6 +70,10 @@ export default function QueryBuilder() {
     removeLastQueryParam();
   }
 
+  function onVisualizationClick(visualization) {
+    addNextQueryParam({ visualization: visualization.key });
+  }
+
   function getActiveStepNode() {
     const showGlobe = queryParams.visualization === "globe";
 
@@ -83,7 +88,12 @@ export default function QueryBuilder() {
           />
         );
       case 1:
-        return <VisualizationSelector addNextQueryParam={addNextQueryParam} />;
+        return (
+          <VisualizationSelector
+            onVisualizationClick={onVisualizationClick}
+            visualizations={visualizations}
+          />
+        );
       case 0:
       default:
         return (
@@ -122,7 +132,7 @@ export default function QueryBuilder() {
       onClick={closeSidebar}
       className={clsx("content", sidebarOpen && "content-shift")}
     >
-      <div className="text-box">
+      <div className="query-builder-text-box p-1">
         <Typography variant="h4" color="textSecondary">
           Build your own queries
         </Typography>

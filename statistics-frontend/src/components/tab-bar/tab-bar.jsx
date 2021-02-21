@@ -3,15 +3,15 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { useHistory } from "react-router-dom";
-import { navItems } from "../shared/navItems";
 import "./tab-bar.scss";
+import { navigationItems } from "../shared/navigation-items";
 
 function TabBar() {
   const history = useHistory();
   const { activeTab } = useUiContext();
 
   function navigate(val) {
-    history.push(navItems[val].link);
+    history.push(navigationItems[val].link);
   }
 
   return (
@@ -26,7 +26,7 @@ function TabBar() {
       indicatorColor="primary"
       onChange={(e, val) => navigate(val)}
     >
-      {navItems.map(({ name, link }, i) => (
+      {navigationItems.map(({ name, link }, i) => (
         <Tab
           key={name}
           selected={i === activeTab}

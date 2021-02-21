@@ -12,9 +12,14 @@ import AppNotifier from "../app-notifier/app-notifier";
 import { RecentQueriesContainer } from "../recent-queries-container/recent-queries-container";
 import { Loader } from "../loader/loader";
 
+/** Lazy load components which are assigned to a route in order to split the total bundle size.
+ * In addition the app description modal can also be lazy loaded by react  **/
 const Home = lazy(() => import("../home/home"));
 const QueryBuilder = lazy(() => import("../query-builder/query-builder"));
 const Legal = lazy(() => import("../legal/legal"));
+const AppDescriptionModal = lazy(() =>
+  import("../app-description-modal/app-description-modal")
+);
 
 function RouteHandler() {
   const { theme } = useUiContext();
@@ -28,6 +33,7 @@ function RouteHandler() {
             <AppNotifier />
             <Header />
             <RecentQueriesContainer show={!isOnLegalRoute} />
+            <AppDescriptionModal />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/legal" component={Legal} />

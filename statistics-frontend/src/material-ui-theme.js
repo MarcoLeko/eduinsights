@@ -38,6 +38,13 @@ const getMaterialUiTheme = (theme) => {
       },
     },
     overrides: {
+      MuiButton: {
+        contained: {
+          "&$disabled": {
+            opacity: 0.5,
+          },
+        },
+      },
       MuiMobileStepper: {
         dots: {
           margin: "auto",

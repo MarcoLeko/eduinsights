@@ -5,7 +5,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 
-export const navItems = [
+export const navigationItems = [
   {
     name: "Home",
     link: "/",

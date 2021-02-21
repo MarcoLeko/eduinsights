@@ -5,17 +5,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { PublicSharp } from "@material-ui/icons";
 import { SwipeableCards } from "../swipeable-cards/swipeable-cards";
+import clsx from "clsx";
 
 export function StatisticSelector({
   onStatisticClick,
   statisticsList,
-  setSelectedStatistic,
+  showDemo = false,
 }) {
-  function onClick(statistic) {
-    onStatisticClick({ statistic: statistic.key });
-    setSelectedStatistic(statistic.key);
-  }
-
   return (
     <SwipeableCards
       items={statisticsList.map((statistic) => (
@@ -43,8 +39,11 @@ export function StatisticSelector({
               variant="contained"
               size="small"
               color="secondary"
-              className="card-button"
-              onClick={() => onClick(statistic)}
+              className={clsx(
+                "primary-button float-left",
+                showDemo && "pulse-effect-primary"
+              )}
+              onClick={() => onStatisticClick(statistic)}
             >
               Select
             </Button>

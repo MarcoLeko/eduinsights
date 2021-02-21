@@ -48,11 +48,6 @@ export function SwipeableCards({ items }) {
             inputRange.map((i) => (currentIndex === i ? 1 : 0.75))
           );
 
-          const opacity = interpolatePositionProps(
-            inputRange,
-            inputRange.map((i) => (currentIndex === i ? 1 : 0.5))
-          );
-
           const translateX = interpolatePositionProps(
             inputRange,
             inputRange.map((i) => (100 / 2) * (i - currentIndex))
@@ -70,10 +65,9 @@ export function SwipeableCards({ items }) {
             <animated.div
               key={String(currentIndex)}
               className="slider"
-              style={Object.assign({
-                opacity,
+              style={{
                 transform: scaleAndTranslateX,
-              })}
+              }}
             >
               <Card>{item}</Card>
             </animated.div>
@@ -85,13 +79,13 @@ export function SwipeableCards({ items }) {
         steps={items.length}
         position="static"
         activeStep={index}
-        className="card-dot"
+        className="mt-2 mobile-stepper"
       />
     </div>
   ) : (
     <div className="skeleton-container">
       <Skeleton variant="rect" className="skeleton-rect" />
-      <div className="skeleton-dots-flex">
+      <div className="skeleton-dots-flex mt-2">
         {Array.from(new Array(8).fill(1)).map((v, i) => (
           <Skeleton key={v + i} variant="circle" className="skeleton-dot" />
         ))}

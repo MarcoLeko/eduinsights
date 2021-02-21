@@ -6,7 +6,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { setTheme } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { navItemsSideBar } from "./navItems";
+import { navItemsSideBar } from "./navigation-items";
 
 const useStyles = makeStyles(() => ({
   linkItem: {

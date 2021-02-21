@@ -1,16 +1,11 @@
-$color-default: rgba(0, 0, 0, 0.87);
 $font-format: Montserrat, sans-serif;
-$app-primary: rgba(62,175,255,1);
-$app-background: linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%);
-$breakpoint-xs : 600px;
-$background-paper-default: #fafafa;
-$navigation-background: #f5f5f5;
+$app-primary: rgba(62, 175, 255, 1);
+$app-background: linear-gradient(90deg, rgba(75, 225, 255, 1) 35%, rgba(62, 175, 255, 1) 100%);
+$breakpoint-xs: 600px;
+$drawer-width: 240px;
 
 @media (prefers-color-scheme: dark) {
-  $background-paper-default: #303030;
-  $color-default: #fff !important;
-  $app-primary: rgb(75,225,255);
-  $navigation-background: #212121;
+  $app-primary: rgb(75, 225, 255);
 }
 
 html, body, #root {
@@ -18,7 +13,6 @@ html, body, #root {
   height: auto;
   margin: 0;
   padding: 0;
-  color: $color-default;
   font-family: $font-format;
 }
 
@@ -26,4 +20,55 @@ html, body, #root {
   padding: 8px 0;
   font-size: 1.1875rem;
   font-weight: 300 !important;
+}
+
+.primary-button {
+  background: $app-background;
+}
+
+.float-left {
+  margin-left: auto !important;
+}
+
+.mt-1 {
+  margin-top: 8px;
+}
+
+.mt-2 {
+  margin-top: 16px;
+}
+
+.navigation {
+  margin-left: 0;
+  transition: 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, box-shadow 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+}
+
+.navigation-shift {
+  margin-left: calc(-1 * #{$drawer-width});
+  transition: margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+}
+
+.pulse-effect-primary {
+  animation: pulse-blue 2s infinite;
+}
+
+@keyframes pulse-blue {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(52, 172, 224, 0.7);
+  }
+
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 15px rgba(52, 172, 224, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(52, 172, 224, 0);
+  }
+}
+
+.p-1 {
+  padding: 8px;
 }

@@ -1,3 +1,5 @@
+@import "../../styles";
+
 .swipeable-cards-container {
   padding: 0 16px;
   justify-content: center;
@@ -42,7 +44,6 @@
   justify-content: center;
   height: inherit;
   width: inherit;
-  margin-top: 16px;
 }
 
 .skeleton-rect {
@@ -60,6 +61,6 @@
   height: 8px !important;
 }
 
-.card-dot {
-  margin-top: 16px;
+.mobile-stepper {
+  background: unset !important;
 }

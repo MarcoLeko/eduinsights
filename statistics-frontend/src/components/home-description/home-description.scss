@@ -1,11 +1,6 @@
 @import "../../styles";
 
-.caption-root {
-  color: $color-default;
-}
-
-.box {
-  padding: 8px;
+.home-box {
   text-align: justify;
   display: flex;
   flex-direction: column;

@@ -6,7 +6,7 @@ function GeoToolTip({ selectedCountry, tooltipPos, unit }) {
   return (
     Boolean(selectedCountry && tooltipPos) && (
       <Paper
-        className="tooltip"
+        className="tooltip p-1"
         style={{
           left: tooltipPos.pageX + 20,
           top: tooltipPos.pageY + 20,
