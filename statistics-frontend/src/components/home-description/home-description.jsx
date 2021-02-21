@@ -7,7 +7,7 @@ import MonitoringLogo from "../../assets/UIS-logo.svg";
 
 function HomeDescription() {
   return (
-    <Box component={"section"} className="box">
+    <Box component={"section"} className="home-box p-1">
       <Paper className="bottom-line">
         <Typography variant={"body1"} color="textSecondary">
           „Education is a human right for all throughout life and that access

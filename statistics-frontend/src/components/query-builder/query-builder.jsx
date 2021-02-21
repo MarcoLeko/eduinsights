@@ -132,7 +132,7 @@ export default function QueryBuilder() {
       onClick={closeSidebar}
       className={clsx("content", sidebarOpen && "content-shift")}
     >
-      <div className="text-box">
+      <div className="query-builder-text-box p-1">
         <Typography variant="h4" color="textSecondary">
           Build your own queries
         </Typography>

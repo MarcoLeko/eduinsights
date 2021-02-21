@@ -23,7 +23,7 @@ export function Footer() {
             <Grid mx={"auto"}>
               <Box textAlign={"center"} mt={{ xs: 2, md: 0 }} my={2}>
                 <Link
-                  className="social-link"
+                  className="social-link p-1"
                   color="secondary"
                   href={
                     "https://stackoverflow.com/users/9032085/marcole?tab=profile"
@@ -33,14 +33,14 @@ export function Footer() {
                 </Link>
                 <Link
                   color="secondary"
-                  className="social-link"
+                  className="social-link p-1"
                   href={"https://www.github.com/MarcoLeko"}
                 >
                   <GitHubIcon className="social-link-icon" />
                 </Link>
                 <Link
                   color="secondary"
-                  className="social-link"
+                  className="social-link p-1"
                   href={"https://www.instagram.com/marco.leko/"}
                 >
                   <InstagramIcon className="social-link-icon" />
