@@ -17,7 +17,7 @@ import clsx from "clsx";
 import { setSidebarOpen } from "../../context/ui-actions";
 
 function RecentQueriesContainer({ show }) {
-  const { sidebarOpen, dispatch, recentQueries } = useUiContext();
+  const { isSidebarOpen, dispatch, recentQueries } = useUiContext();
 
   const dispatchSidebarState = useCallback(
     function (args) {
@@ -27,7 +27,7 @@ function RecentQueriesContainer({ show }) {
   );
 
   function closeSidebar() {
-    if (sidebarOpen) {
+    if (isSidebarOpen) {
       dispatchSidebarState(false);
     }
   }
@@ -37,7 +37,7 @@ function RecentQueriesContainer({ show }) {
       <Container
         disableGutters
         onClick={closeSidebar}
-        className={clsx("content", sidebarOpen && "content-shift")}
+        className={clsx("content", isSidebarOpen && "content-shift")}
       >
         <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
           <Typography variant="h5" color="secondary">

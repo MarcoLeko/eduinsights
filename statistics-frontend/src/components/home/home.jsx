@@ -6,7 +6,11 @@ import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
-import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
+import {
+  setActiveTab,
+  setShowRecentQueries,
+  setSidebarOpen,
+} from "../../context/ui-actions";
 import "./home.scss";
 import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statistic-data-utils";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
@@ -19,7 +23,7 @@ export default function Home() {
     geoJsonFromSelectedStatistic,
     setSelectedStatistic,
   } = usePreparedStatisticDataUtils();
-  const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
+  const { isSidebarOpen, dispatch, isVisualizationLoaded } = useUiContext();
   const dispatchSidebarState = useCallback(
     function (args) {
       dispatch(setSidebarOpen(args));
@@ -37,9 +41,14 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(setActiveTab(0));
+    dispatch(setShowRecentQueries(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams, visualizationLoaded]);
+  }, [queryParams, isVisualizationLoaded]);
 
   function onStatisticClick(statistic) {
     addNextQueryParam({ statistic: statistic.key });
@@ -47,7 +56,7 @@ export default function Home() {
   }
 
   function closeSidebar() {
-    if (sidebarOpen) {
+    if (isSidebarOpen) {
       dispatchSidebarState(false);
     }
   }
@@ -60,7 +69,7 @@ export default function Home() {
     if (
       queryParams.statistic &&
       queryParams.visualization &&
-      visualizationLoaded
+      isVisualizationLoaded
     ) {
       return 3;
     }
@@ -110,7 +119,7 @@ export default function Home() {
     <Container
       disableGutters
       onClick={closeSidebar}
-      className={clsx("content", sidebarOpen && "content-shift")}
+      className={clsx("content", isSidebarOpen && "content-shift")}
     >
       <StatisticStepper
         activeStep={activeStep}

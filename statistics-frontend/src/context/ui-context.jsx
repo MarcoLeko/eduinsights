@@ -2,9 +2,10 @@ import React, { createContext, useEffect, useReducer, useState } from "react";
 import {
   ACTIVE_TAB,
   RECENT_QUERIES,
-  SIDEBAR,
+  IS_SIDEBAR_OPEN,
   THEME,
-  VISUALIZATION_LOADED,
+  IS_VISUALIZATION_LOADED,
+  CAN_SHOW_RECENT_QUERIES,
 } from "./ui-action-types";
 import { getLocalStorageItem, setTheme } from "./ui-actions";
 
@@ -12,18 +13,19 @@ const initialState = {
   theme: window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light",
-  sidebarOpen: false,
   activeTab: 0,
-  visualizationLoaded: false,
   recentQueries: getLocalStorageItem(),
+  isSidebarOpen: false,
+  isVisualizationLoaded: false,
+  canShowRecentQueries: true,
 };
 
 function uiReducer(state = initialState, action) {
   switch (action.type) {
-    case SIDEBAR: {
+    case IS_SIDEBAR_OPEN: {
       return {
         ...state,
-        sidebarOpen: action.sidebarOpen,
+        isSidebarOpen: action.isSidebarOpen,
       };
     }
     case THEME: {
@@ -38,16 +40,22 @@ function uiReducer(state = initialState, action) {
         activeTab: action.activeTab,
       };
     }
-    case VISUALIZATION_LOADED: {
+    case IS_VISUALIZATION_LOADED: {
       return {
         ...state,
-        visualizationLoaded: action.visualizationLoaded,
+        isVisualizationLoaded: action.isVisualizationLoaded,
       };
     }
     case RECENT_QUERIES: {
       return {
         ...state,
         recentQueries: action.recentQueries,
+      };
+    }
+    case CAN_SHOW_RECENT_QUERIES: {
+      return {
+        ...state,
+        canShowRecentQueries: action.canShowRecentQueries,
       };
     }
     default:

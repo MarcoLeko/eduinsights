@@ -22,7 +22,7 @@ export function Header() {
     disableHysteresis: true,
     threshold: 0,
   });
-  const { sidebarOpen, dispatch } = useUiContext();
+  const { isSidebarOpen, dispatch } = useUiContext();
   const dispatchSidebarState = useCallback(
     function (args) {
       dispatch(setSidebarOpen(args));
@@ -31,10 +31,10 @@ export function Header() {
   );
 
   useEffect(() => {
-    if (sidebarOpen && !isSmallViewport) {
+    if (isSidebarOpen && !isSmallViewport) {
       dispatchSidebarState(false);
     }
-  }, [sidebarOpen, isSmallViewport, dispatchSidebarState]);
+  }, [isSidebarOpen, isSmallViewport, dispatchSidebarState]);
 
   return (
     <>
@@ -42,16 +42,16 @@ export function Header() {
         position="sticky"
         color="default"
         className={clsx(
-          sidebarOpen ? "navigation-shift" : "navigation",
+          isSidebarOpen ? "navigation-shift" : "navigation",
           !trigger && !isSmallViewport && "header-not-scrolled"
         )}
       >
-        <ToolbarMenu toggle={dispatchSidebarState} isOpen={sidebarOpen} />
+        <ToolbarMenu toggle={dispatchSidebarState} isOpen={isSidebarOpen} />
         <Hidden xsDown>
           <TabBar />
         </Hidden>
       </AppBar>
-      <SideBar isOpen={sidebarOpen} />
+      <SideBar isOpen={isSidebarOpen} />
     </>
   );
 }

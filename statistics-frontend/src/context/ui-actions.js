@@ -1,17 +1,25 @@
 import {
   ACTIVE_TAB,
   RECENT_QUERIES,
-  SIDEBAR,
+  IS_SIDEBAR_OPEN,
   THEME,
-  VISUALIZATION_LOADED,
+  IS_VISUALIZATION_LOADED,
+  CAN_SHOW_RECENT_QUERIES,
 } from "./ui-action-types";
 
 export const setTheme = (theme) => ({ type: THEME, theme });
 export const setActiveTab = (activeTab) => ({ type: ACTIVE_TAB, activeTab });
-export const setSidebarOpen = (sidebarOpen) => ({ type: SIDEBAR, sidebarOpen });
-export const setVisualizationLoaded = (visualizationLoaded) => ({
-  type: VISUALIZATION_LOADED,
-  visualizationLoaded,
+export const setSidebarOpen = (isSidebarOpen) => ({
+  type: IS_SIDEBAR_OPEN,
+  isSidebarOpen,
+});
+export const setShowRecentQueries = (canShowRecentQueries) => ({
+  type: CAN_SHOW_RECENT_QUERIES,
+  canShowRecentQueries,
+});
+export const setVisualizationLoaded = (isVisualizationLoaded) => ({
+  type: IS_VISUALIZATION_LOADED,
+  isVisualizationLoaded,
 });
 
 export function getLocalStorageItem() {

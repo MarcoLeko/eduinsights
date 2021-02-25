@@ -27,7 +27,7 @@ export function MobileNavigation() {
   const history = useHistory();
   const classes = useStyles(theme)();
 
-  const { activeTab, sidebarOpen } = useUiContext();
+  const { activeTab, isSidebarOpen } = useUiContext();
 
   function navigate(val) {
     history.push(navigationItems[val].link);
@@ -39,7 +39,7 @@ export function MobileNavigation() {
         className={clsx(
           "bottom-nav",
           classes.root,
-          sidebarOpen ? "navigation-shift" : "navigation"
+          isSidebarOpen ? "navigation-shift" : "navigation"
         )}
         value={activeTab}
         onChange={(e, val) => navigate(val)}

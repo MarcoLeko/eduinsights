@@ -2,7 +2,11 @@ import clsx from "clsx";
 import { Container, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
-import { setActiveTab, setSidebarOpen } from "../../context/ui-actions";
+import {
+  setActiveTab,
+  setShowRecentQueries,
+  setSidebarOpen,
+} from "../../context/ui-actions";
 import "./query-builder.scss";
 import { useQueryBuilderUtils } from "../../hooks/use-query-builder-utils";
 import { FilterSelector } from "../filter-selector/filter-selector";
@@ -13,7 +17,7 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { visualizations } from "../shared/visualization-items";
 
 export default function QueryBuilder() {
-  const { sidebarOpen, dispatch, visualizationLoaded } = useUiContext();
+  const { isSidebarOpen, dispatch, isVisualizationLoaded } = useUiContext();
   const {
     filterStructure,
     isFilterValid,
@@ -35,7 +39,7 @@ export default function QueryBuilder() {
       isFilterValid &&
       queryParams.ready &&
       queryParams.visualization &&
-      visualizationLoaded
+      isVisualizationLoaded
     ) {
       return 3;
     }
@@ -52,7 +56,7 @@ export default function QueryBuilder() {
   }
 
   function closeSidebar() {
-    if (sidebarOpen) {
+    if (isSidebarOpen) {
       dispatchSidebarState(false);
     }
   }
@@ -117,20 +121,21 @@ export default function QueryBuilder() {
 
   useEffect(() => {
     fetchFilterStructure();
+    dispatch(setActiveTab(1));
+    dispatch(setShowRecentQueries(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    dispatch(setActiveTab(1));
     setActiveStep(getStep());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visualizationLoaded, isFilterValid, queryParams]);
+  }, [isVisualizationLoaded, isFilterValid, queryParams]);
 
   return (
     <Container
       disableGutters
       onClick={closeSidebar}
-      className={clsx("content", sidebarOpen && "content-shift")}
+      className={clsx("content", isSidebarOpen && "content-shift")}
     >
       <div className="query-builder-text-box p-1">
         <Typography variant="h4" color="textSecondary">

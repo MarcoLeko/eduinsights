@@ -71,8 +71,8 @@ export default function AppDescriptionModal() {
         <Typography variant="h6" color="textPrimary" className="mt-1">
           Cookie management
         </Typography>
-        To enable you the best surfing experience, we are using cookies. By
-        proceeding you agree on our cookie policy{" "}
+        To enable you the best surfing experience, we are using essential
+        cookies. By proceeding you agree on our cookie policy{" "}
         <span role="img" aria-labelledby="cookie">
           🍪
         </span>
@@ -148,8 +148,6 @@ export default function AppDescriptionModal() {
           onClick={handleClose}
           disabled={step < dialogTitles.length - 1}
           color="primary"
-          variant="contained"
-          className="primary-button"
         >
           {"Accept"}
         </Button>
