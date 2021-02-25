@@ -17,9 +17,8 @@ function HomeDescription() {
       <Typography variant={"body1"} color="textSecondary" gutterBottom>
         Education provides the basis for knowledge as a resource. Hence it's
         getting more important to ensure equal standards and overcome financial
-        and cultural boundaries. There are huge inequalities between nations,
-        that's why member states of the United Nations Sustainable Development
-        Summit formally adopted the{" "}
+        and cultural boundaries. That's why member states of the United Nations
+        Sustainable Development Summit formally adopted the{" "}
         <Link href="https://sdgs.un.org/2030agenda">
           2030 Agenda for Sustainable Development.{" "}
         </Link>
@@ -29,12 +28,12 @@ function HomeDescription() {
         equitable quality education and promote lifelong learning opportunities
         for all. - source:{" "}
         <Link href="https://en.unesco.org/gem-report/sdg-goal-4">UNESCO. </Link>
-        Eduinsights is build to highlight educational inequalities of the world.
-        You can select an observation provided by the UIS API. Then proceed by
-        choosing the visualization mode: 2D or 3D Representation. And finally
-        observe the results on the visualization. We are in close contact with
-        UIS to provide the latest observations in order to better raise
-        awareness for this topic.
+        Eduinsights is build to sharp awareness for educational inequities of
+        the world. You can select an observation provided by the UIS API. Then
+        proceed by choosing the visualization mode: 2D or 3D Representation. And
+        finally observe the results on the visualization. We are in close
+        contact with UIS to provide the latest observations in order to better
+        raise awareness for this topic.
       </Typography>
       <img
         src={MonitoringLogo}
