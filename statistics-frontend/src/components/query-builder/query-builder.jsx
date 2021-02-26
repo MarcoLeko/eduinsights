@@ -1,12 +1,7 @@
-import clsx from "clsx";
-import { Container, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
+import { Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useUiContext } from "../../hooks/use-ui-context";
-import {
-  setActiveTab,
-  setShowRecentQueries,
-  setSidebarOpen,
-} from "../../context/ui-actions";
+import { setActiveTab, setShowRecentQueries } from "../../context/ui-actions";
 import "./query-builder.scss";
 import { useQueryBuilderUtils } from "../../hooks/use-query-builder-utils";
 import { FilterSelector } from "../filter-selector/filter-selector";
@@ -17,7 +12,7 @@ import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { visualizations } from "../shared/visualization-items";
 
 export default function QueryBuilder() {
-  const { isSidebarOpen, dispatch, isVisualizationLoaded } = useUiContext();
+  const { dispatch, isVisualizationLoaded } = useUiContext();
   const {
     filterStructure,
     isFilterValid,
@@ -53,12 +48,6 @@ export default function QueryBuilder() {
     }
 
     return 0;
-  }
-
-  function closeSidebar() {
-    if (isSidebarOpen) {
-      dispatchSidebarState(false);
-    }
   }
 
   function onClickReset() {
@@ -112,13 +101,6 @@ export default function QueryBuilder() {
     }
   }
 
-  const dispatchSidebarState = useCallback(
-    function (args) {
-      dispatch(setSidebarOpen(args));
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
     fetchFilterStructure();
     dispatch(setActiveTab(1));
@@ -132,11 +114,7 @@ export default function QueryBuilder() {
   }, [isVisualizationLoaded, isFilterValid, queryParams]);
 
   return (
-    <Container
-      disableGutters
-      onClick={closeSidebar}
-      className={clsx("content", isSidebarOpen && "content-shift")}
-    >
+    <>
       <div className="query-builder-text-box p-1">
         <Typography variant="h4" color="textSecondary">
           Build your own queries
@@ -157,6 +135,6 @@ export default function QueryBuilder() {
         isStepperForQueryBuilder={true}
       />
       {getActiveStepNode()}
-    </Container>
+    </>
   );
 }

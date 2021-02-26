@@ -1,23 +1,12 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container, Link } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  setActiveTab,
-  setShowRecentQueries,
-  setSidebarOpen,
-} from "../../context/ui-actions";
+import { setActiveTab, setShowRecentQueries } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2, 1),
-  },
-}));
+import "./legal.scss";
 
 export default function Legal() {
-  const classes = useStyles();
-  const { isSidebarOpen, dispatch } = useUiContext();
+  const { dispatch } = useUiContext();
 
   useEffect(() => {
     dispatch(setActiveTab(-1));
@@ -25,25 +14,8 @@ export default function Legal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const dispatchSidebarState = useCallback(
-    function (args) {
-      dispatch(setSidebarOpen(args));
-    },
-    [dispatch]
-  );
-
-  function closeSidebar() {
-    if (isSidebarOpen) {
-      dispatchSidebarState(false);
-    }
-  }
-
   return (
-    <Container
-      maxWidth="md"
-      classes={{ root: classes.root }}
-      onClick={closeSidebar}
-    >
+    <Container maxWidth="md" className="footer-container">
       <Typography color="textSecondary" variant="h3" component="h1">
         Legal Disclosure
       </Typography>

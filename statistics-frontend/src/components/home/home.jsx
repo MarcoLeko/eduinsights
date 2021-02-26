@@ -1,17 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Container } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import HomeDescription from "../home-description/home-description";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
-import clsx from "clsx";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
-import {
-  setActiveTab,
-  setShowRecentQueries,
-  setSidebarOpen,
-} from "../../context/ui-actions";
-import "./home.scss";
+import { setActiveTab, setShowRecentQueries } from "../../context/ui-actions";
 import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statistic-data-utils";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
@@ -23,13 +16,8 @@ export default function Home() {
     geoJsonFromSelectedStatistic,
     setSelectedStatistic,
   } = usePreparedStatisticDataUtils();
-  const { isSidebarOpen, dispatch, isVisualizationLoaded } = useUiContext();
-  const dispatchSidebarState = useCallback(
-    function (args) {
-      dispatch(setSidebarOpen(args));
-    },
-    [dispatch]
-  );
+  const { dispatch, isVisualizationLoaded } = useUiContext();
+
   const {
     queryParams,
     addNextQueryParam,
@@ -53,12 +41,6 @@ export default function Home() {
   function onStatisticClick(statistic) {
     addNextQueryParam({ statistic: statistic.key });
     setSelectedStatistic(statistic.key);
-  }
-
-  function closeSidebar() {
-    if (isSidebarOpen) {
-      dispatchSidebarState(false);
-    }
   }
 
   function onVisualizationClick(visualization) {
@@ -116,11 +98,7 @@ export default function Home() {
   }
 
   return (
-    <Container
-      disableGutters
-      onClick={closeSidebar}
-      className={clsx("content", isSidebarOpen && "content-shift")}
-    >
+    <>
       <StatisticStepper
         activeStep={activeStep}
         onClickBack={removeLastQueryParam}
@@ -128,6 +106,6 @@ export default function Home() {
       />
       {getActiveStepNode()}
       <HomeDescription />
-    </Container>
+    </>
   );
 }

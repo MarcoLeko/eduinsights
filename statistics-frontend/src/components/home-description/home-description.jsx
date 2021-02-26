@@ -37,7 +37,7 @@ function HomeDescription() {
       </Typography>
       <img
         src={MonitoringLogo}
-        className="graphic"
+        className="unesco-logo"
         width="200"
         height="100"
         loading="lazy"

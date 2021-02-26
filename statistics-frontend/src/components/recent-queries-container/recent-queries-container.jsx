@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import HistoryIcon from "@material-ui/icons/History";
 import {
   Box,
@@ -7,38 +7,18 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Container,
   Grid,
   Typography,
 } from "@material-ui/core";
 import "./recent-queries-container.scss";
 import { useUiContext } from "../../hooks/use-ui-context";
-import clsx from "clsx";
-import { setSidebarOpen } from "../../context/ui-actions";
 
 function RecentQueriesContainer({ show }) {
-  const { isSidebarOpen, dispatch, recentQueries } = useUiContext();
-
-  const dispatchSidebarState = useCallback(
-    function (args) {
-      dispatch(setSidebarOpen(args));
-    },
-    [dispatch]
-  );
-
-  function closeSidebar() {
-    if (isSidebarOpen) {
-      dispatchSidebarState(false);
-    }
-  }
+  const { recentQueries } = useUiContext();
 
   return (
     show && (
-      <Container
-        disableGutters
-        onClick={closeSidebar}
-        className={clsx("content", isSidebarOpen && "content-shift")}
-      >
+      <>
         <Box mt={1} p={1} display={"flex"} alignItems={"center"}>
           <Typography variant="h5" color="secondary">
             History
@@ -104,7 +84,7 @@ function RecentQueriesContainer({ show }) {
             </Typography>
           )}
         </Grid>
-      </Container>
+      </>
     )
   );
 }
