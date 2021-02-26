@@ -61,6 +61,7 @@ export default function AppDescriptionModal() {
       <img
         src={StatisticImage}
         className="dialog-image"
+        loading="lazy"
         alt="Statistic of net enrolment of primary education"
       />
       <DialogContentText
