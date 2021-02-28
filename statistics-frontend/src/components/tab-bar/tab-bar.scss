@@ -9,11 +9,12 @@
 }
 
 .tab {
-  min-height: 53px;
   min-width: 0;
   ~ :hover {
   color: $app-primary;
 }
+  font-size: 1rem;
+  font-weight: 300 !important;
 }
 
 .indicator {

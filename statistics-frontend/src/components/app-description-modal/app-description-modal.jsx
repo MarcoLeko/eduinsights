@@ -39,7 +39,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AppDescriptionModal() {
   const [item, setValue] = useCookie(cookieKey);
-  const [open, setOpen] = useState(!item);
+  const [open, setOpen] = useState(
+    !item && process.env.NODE_ENV === "production"
+  );
   const [step, setStep] = useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));

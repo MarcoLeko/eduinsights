@@ -10,12 +10,7 @@ import { navItemsSideBar } from "./navigation-items";
 
 const useStyles = makeStyles(() => ({
   linkItem: {
-    width: "inherit",
-    display: "flex",
-    justifyItems: "center",
-    alignItems: "center",
-    textDecoration: "none",
-    color: "inherit",
+    height: 48,
   },
   listItemText: {
     flex: "0.5 0.5 auto",
@@ -55,11 +50,10 @@ export function ThemeSelector() {
         component="button"
         aria-controls="design-menu"
         aria-haspopup="true"
+        className={classes.linkItem}
         onClick={handleDesignMenuClick}
       >
-        <ListItemIcon className={classes.logoPanel}>
-          {navItem.icon}
-        </ListItemIcon>
+        <ListItemIcon>{navItem.icon}</ListItemIcon>
         <ListItemText primary={navItem.name} className={classes.listItemText} />
       </ListItem>
       <Menu

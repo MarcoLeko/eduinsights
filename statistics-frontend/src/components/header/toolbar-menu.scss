@@ -1,0 +1,40 @@
+@import "../../styles";
+
+.toolbar {
+  padding: 0 4px !important;
+}
+
+.header-navigation-panel {
+  height: 48px;
+  margin-left: 8px;
+
+  @media screen and (max-width: $breakpoint-xs) {
+    margin-left: 4px;
+  }
+}
+
+.header-text-navigation {
+  font-weight: 300 !important;
+}
+
+.header-icon-navigation {
+  height: 2.5em;
+  width: 2.5em;
+  margin-right: 12px;
+}
+
+.item-github {
+  height: 18px !important;
+}
+
+.item-stack-overflow {
+  height: 24px !important;
+}
+
+.item-instagram {
+  height: 20px !important;
+}
+
+.header-list {
+  padding: 0 !important;
+}

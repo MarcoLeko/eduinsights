@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Grid, Hidden, Link, List, Toolbar } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 import MoreVertical from "@material-ui/icons/MoreVert";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import { name as projectName } from "../../../package.json";
 import { ThemeSelector } from "../shared/theme-selector";
@@ -11,35 +11,9 @@ import Box from "@material-ui/core/Box";
 import { ReactComponent as StackOverflowLogo } from "../../assets/stack-overflow-logo.svg";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import InstagramIcon from "@material-ui/icons/Instagram";
-
-const useStyles = makeStyles((theme) => ({
-  socialLinkItemContainer: { display: "flex" },
-  socialLinkItemGithub: { height: "18px" },
-  socialLinkItemInstagram: { height: "20px" },
-  socialLinkItemStackOverflow: { height: "24px" },
-  marginRight: { marginRight: theme.spacing(2) },
-  root: {
-    minHeight: 52,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "0 4px",
-  },
-  header: { fontWeight: 300, paddingLeft: theme.spacing(2) },
-  headerBottomLine: { fontWeight: 300, fontStyle: "italic" },
-  actionButtons: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    "& > *": {
-      margin: theme.spacing(0, 1),
-    },
-  },
-}));
+import "./toolbar-menu.scss";
 
 function ToolbarMenu({ isOpen, toggle }) {
-  const classes = useStyles();
-
   function toggleByButtonClick() {
     toggle(!isOpen);
   }
@@ -49,34 +23,6 @@ function ToolbarMenu({ isOpen, toggle }) {
       <Hidden xsDown>
         <Box px={2} py={1}>
           <Grid container justify={"space-between"} alignItems={"center"}>
-            <Grid item>
-              <Grid container alignItems={"center"}>
-                <Link
-                  color="secondary"
-                  href={
-                    "https://stackoverflow.com/users/9032085/marcole?tab=profile"
-                  }
-                >
-                  <StackOverflowLogo
-                    className={`${classes.socialLinkItemStackOverflow} ${classes.marginRight}`}
-                  />
-                </Link>
-                <Link
-                  color="secondary"
-                  href={"https://www.github.com/MarcoLeko"}
-                >
-                  <GitHubIcon
-                    className={`${classes.socialLinkItemGithub} ${classes.marginRight}`}
-                  />
-                </Link>
-                <Link
-                  color="secondary"
-                  href={"https://www.instagram.com/marco.leko/"}
-                >
-                  <InstagramIcon className={classes.socialLinkItemInstagram} />
-                </Link>
-              </Grid>
-            </Grid>
             <Grid item>
               <Link color="secondary" className="footer-link" href={"/legal"}>
                 Legal
@@ -89,31 +35,56 @@ function ToolbarMenu({ isOpen, toggle }) {
                 Code
               </Link>
             </Grid>
+            <Grid item>
+              <Grid container alignItems={"center"}>
+                <Link
+                  color="secondary"
+                  href={
+                    "https://stackoverflow.com/users/9032085/marcole?tab=profile"
+                  }
+                >
+                  <StackOverflowLogo className="mr-2 item-stack-overflow" />
+                </Link>
+                <Link
+                  color="secondary"
+                  href={"https://www.github.com/MarcoLeko"}
+                >
+                  <GitHubIcon className="mr-2 item-github" />
+                </Link>
+                <Link
+                  color="secondary"
+                  href={"https://www.instagram.com/marco.leko/"}
+                >
+                  <InstagramIcon className="item-instagram" />
+                </Link>
+              </Grid>
+            </Grid>
           </Grid>
         </Box>
       </Hidden>
-      <Toolbar className={classes.root}>
-        <Link href={"/"} underline={"none"} color={"secondary"}>
-          <Typography
-            variant={"h4"}
-            color="secondary"
-            classes={{ root: classes.header }}
-          >
-            {projectName}
-          </Typography>
-        </Link>
-        <div className={classes.actionButtons}>
-          <Hidden xsDown>
-            <List>
-              <ThemeSelector />
-            </List>
-          </Hidden>
-          <Hidden smUp>
-            <IconButton onClick={toggleByButtonClick}>
-              {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
-            </IconButton>
-          </Hidden>
+      <Toolbar className="d-flex toolbar justify-space-between">
+        <div className="d-flex header-navigation-panel align-center">
+          <Logo className="header-icon-navigation" />
+          <Link href={"/"} underline={"none"} color={"secondary"}>
+            <Typography
+              variant={"h4"}
+              color="secondary"
+              className="header-text-navigation"
+            >
+              {projectName}
+            </Typography>
+          </Link>
         </div>
+        <Hidden xsDown>
+          <List className="header-list">
+            <ThemeSelector />
+          </List>
+        </Hidden>
+        <Hidden smUp>
+          <IconButton onClick={toggleByButtonClick}>
+            {isOpen ? <ChevronRightIcon /> : <MoreVertical />}
+          </IconButton>
+        </Hidden>
       </Toolbar>
     </>
   );

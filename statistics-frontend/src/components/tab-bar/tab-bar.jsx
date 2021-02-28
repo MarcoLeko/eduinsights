@@ -32,7 +32,6 @@ function TabBar() {
           selected={i === activeTab}
           className="tab"
           label={name}
-          disableRipple
         />
       ))}
     </Tabs>
