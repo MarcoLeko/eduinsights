@@ -1,4 +1,4 @@
-export interface UnescoHierarchicalCodeList {
+export interface HierarchicalCodeList {
   id: string;
   urn: string;
   agencyId: string;

@@ -1,11 +1,11 @@
 export async function getMapStatisticsById(id) {
-  const response = await fetch(`api/v1/map-statistics/${id}`);
+  const response = await fetch(`api/v1/prepared-statistics/${id}`);
 
   return handleResponse(response);
 }
 
 export async function getMapStatisticsList() {
-  const response = await fetch("api/v1/map-statistics/list");
+  const response = await fetch("api/v1/prepared-statistics/list");
 
   return handleResponse(response);
 }

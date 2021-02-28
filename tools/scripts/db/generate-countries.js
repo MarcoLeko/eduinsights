@@ -6,7 +6,7 @@ const {
   fetchGeoCountriesPolygons,
   writeToFileSync,
   appendFileToTempDirPath,
-} = require("./map-statistics-generator.service");
+} = require("./tools.service");
 const topojson = require("topojson-server");
 const topojsonSimplify = require("topojson-simplify");
 const countries = require("i18n-iso-countries");
@@ -25,8 +25,8 @@ async function cleanupConnection(mongoClient) {
     useUnifiedTopology: true,
   });
 
-  const database = "countries";
-  const collectionToBeInserted = "geoData";
+  const database = "geoData";
+  const collectionToBeInserted = "countries";
 
   let connectionManager;
 

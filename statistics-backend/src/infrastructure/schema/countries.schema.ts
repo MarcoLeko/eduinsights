@@ -1,14 +1,11 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import {
-  CountriesGeoDataObjects,
-  CountriesGeoDataObjectsGeometries,
-} from '../domain/countries-geo-data';
+import { CountriesGeoDataObjects } from '../../domain/countries-geo-data';
 
-export type CountriesJsonDocument = CountriesJson & Document;
+export type CountriesDocument = Countries & Document;
 
 @Schema()
-export class CountriesJson {
+export class Countries {
   @Prop()
   key: string;
   @Prop(
@@ -30,6 +27,7 @@ export class CountriesJson {
   type: 'Topology';
 }
 
-export const CountriesJsonSchema = SchemaFactory.createForClass(
-  CountriesJson,
-).set('collection', 'geoData');
+export const CountriesSchema = SchemaFactory.createForClass(Countries).set(
+  'collection',
+  'countries',
+);

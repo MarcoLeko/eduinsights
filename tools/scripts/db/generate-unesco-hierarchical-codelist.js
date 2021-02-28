@@ -6,7 +6,7 @@ const {
   writeToFileSync,
   appendFileToTempDirPath,
   fetchUnescoHierarchicalCodeList,
-} = require("./map-statistics-generator.service");
+} = require("./tools.service");
 
 async function cleanupConnection(mongoClient) {
   await mongoClient.close();
@@ -22,7 +22,7 @@ async function cleanupConnection(mongoClient) {
     useUnifiedTopology: true,
   });
 
-  const database = "countries";
+  const database = "geoData";
   const collectionToBeInserted = "unescoHierarchicalCodeList";
 
   let connectionManager;

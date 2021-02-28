@@ -3,16 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { DataStructureForFilteredCategory } from '../domain/data-structure-for-filtered-category';
 import { Statistic } from '../domain/statistic';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  CountriesJson,
-  CountriesJsonDocument,
-} from '../infrastructure/countries-json.schema';
-import {
-  UnescoHierarchicalCodeListDocument,
-  UnescoHierarchicalCodeListJson,
-} from '../infrastructure/unesco-hierarchical-code-list.schema';
+import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
+import { CountriesRepository } from '../infrastructure/countries-repository.service';
 
 @Injectable()
 export class QueryBuilderService {
@@ -21,10 +13,8 @@ export class QueryBuilderService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
-    @InjectModel(CountriesJson.name)
-    private readonly countriesJsonModel: Model<CountriesJsonDocument>,
-    @InjectModel(UnescoHierarchicalCodeListJson.name)
-    private readonly unescoHierarchicalCodeListModel: Model<UnescoHierarchicalCodeListDocument>,
+    private countriesRepository: CountriesRepository,
+    private unescoHierarchicalCodeListRepository: UnescoHierarchicalCodeListRepository,
   ) {}
 
   async getDataStructureForFilteredCategory(clientFilter: Array<string>) {
@@ -58,14 +48,10 @@ export class QueryBuilderService {
     try {
       const unescoRegions = new Map();
       const resultArrayWithCountryMatches = [];
-      const geoJson = await this.countriesJsonModel
-        .findOne({ key: 'geoJson' })
-        .exec();
-
-      const hierarchicalCodeList = await this.unescoHierarchicalCodeListModel
-        .findOne({ key: 'unescoHierarchicalCodeList' })
-        .exec();
+      const geoJson = await this.countriesRepository.getCountriesGeoJson();
+      const hierarchicalCodeList = await this.unescoHierarchicalCodeListRepository.getHierarchicalCodeList();
       const response = await this.uisClient(url);
+
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,
       );

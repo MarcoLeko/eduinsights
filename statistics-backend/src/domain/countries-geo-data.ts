@@ -3,6 +3,7 @@ export interface CountriesGeoDataObjectsGeometries {
   arcs: Array<Array<number>>;
   properties: { name: string; code: string };
 }
+
 export interface CountriesGeoDataObjects {
   countries: {
     type: string;

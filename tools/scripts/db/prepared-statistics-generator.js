@@ -9,9 +9,15 @@ const {
   appendFileToOutputDirPath,
   appendFileToTempDirPath,
   getUnit,
-} = require("./map-statistics-generator.service");
-const mapStatistics = require("./map-statistics");
+} = require("./tools.service");
+const mapStatistics = require("./prepared-statistics");
+const fs = require("fs");
 const MongoClient = require("mongodb").MongoClient;
+
+async function cleanupConnections(changeStream, mongoClient) {
+  await changeStream.close();
+  await mongoClient.close();
+}
 
 (async function () {
   const username = process.env.DB_USERNAME;
@@ -23,22 +29,75 @@ const MongoClient = require("mongodb").MongoClient;
     useUnifiedTopology: true,
   });
 
-  const countriesDB = "countries";
-  const geoDataCollection = "geoData";
-  const unescoHierarchicalCodeListCollection = "unescoHierarchicalCodeList";
+  const geoDataDB = "geoData";
+  const countriesCollectionName = "countries";
+  const unescoHierarchicalCodeListCollectionName = "unescoHierarchicalCodeList";
+
+  const preparedStatisticsDB = "preparedStatistics";
+  const examplesCollectionName = "examples";
+  const examplesCollectionListName = `${examplesCollectionName}List`;
 
   try {
     const connectionManager = await mongoClient.connect();
-
     const countriesGeoJson = await connectionManager
-      .db(countriesDB)
-      .collection(geoDataCollection)
+      .db(geoDataDB)
+      .collection(countriesCollectionName)
       .findOne({});
 
     const unescoHierarchicalCodeListJson = await connectionManager
-      .db(countriesDB)
-      .collection(unescoHierarchicalCodeListCollection)
+      .db(geoDataDB)
+      .collection(unescoHierarchicalCodeListCollectionName)
       .findOne({});
+
+    const examplesCollectionFromPreparedStatistics = connectionManager
+      .db(preparedStatisticsDB)
+      .collection(examplesCollectionName);
+
+    const examplesCollectionListFromPreparedStatistics = connectionManager
+      .db(preparedStatisticsDB)
+      .collection(examplesCollectionListName);
+
+    // ensure indexes for collections
+    await examplesCollectionFromPreparedStatistics.createIndex(
+      { key: "text" },
+      { unique: true, collation: { locale: "simple" } }
+    );
+
+    await examplesCollectionListFromPreparedStatistics.createIndex(
+      { key: "text" },
+      { unique: true }
+    );
+
+    const changeStream = examplesCollectionFromPreparedStatistics.watch();
+    log("Will listen to collection changes...");
+
+    changeStream.on("change", async () => {
+      log(
+        `${chalk.red.bold(`!!!`)} Document changes detected${chalk.red.bold(
+          `!!!`
+        )}`
+      );
+
+      const preparedStatisticsKeys = await examplesCollectionFromPreparedStatistics
+        .find({})
+        .project({
+          key: 1,
+          description: 1,
+          amountOfCountries: 1,
+          unit: 1,
+        })
+        .toArray();
+
+      await examplesCollectionListFromPreparedStatistics
+        .updateOne(
+          { key: "list" },
+          { $set: { statistics: preparedStatisticsKeys } },
+          { upsert: true }
+        )
+        .catch((e) =>
+          log(chalk.bold.red("Ooops! Something wrong happened " + e))
+        );
+    });
 
     for (const [index, statistic] of mapStatistics.entries()) {
       const unescoRegions = new Map(),
@@ -100,8 +159,6 @@ const MongoClient = require("mongodb").MongoClient;
       const output = {
         key: statistic.key,
         description: statistic.description,
-        startYear: statistic.startYear,
-        endYear: statistic.endYear,
         unit: getUnit(unescoStatisticsJson),
         type: countriesGeoJson.type,
         arcs: countriesGeoJson.arcs,
@@ -132,7 +189,29 @@ const MongoClient = require("mongodb").MongoClient;
         )
       );
     }
-    await mongoClient.close();
+
+    log("Will parse to database...");
+
+    for await (const file of fs.readdirSync(appendFileToOutputDirPath())) {
+      const filePath = appendFileToOutputDirPath(file);
+      const document = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      await examplesCollectionFromPreparedStatistics
+        .updateOne({ key: document.key }, { $set: document }, { upsert: true })
+        .then(() =>
+          log(
+            `Successfully transferred document from path: ${chalk.blue.bold(
+              filePath
+            )}`
+          )
+        )
+        .catch((e) =>
+          log(chalk.bold.red("Ooops! Something wrong happened " + e))
+        );
+    }
+
+    setTimeout(async () => {
+      await cleanupConnections(changeStream, mongoClient);
+    }, 25000);
   } catch (e) {
     log(chalk.bold.red("Oooops! An error occured " + e));
     process.exit(1);

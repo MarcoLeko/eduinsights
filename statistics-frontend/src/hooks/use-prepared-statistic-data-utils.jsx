@@ -19,8 +19,6 @@ export function usePreparedStatisticDataUtils() {
   ] = useState({
     key: null,
     description: null,
-    startYear: null,
-    endYear: null,
     type: null,
     unit: null,
     features: null,
@@ -44,8 +42,6 @@ export function usePreparedStatisticDataUtils() {
         setGeoJsonFromSelectedStatistic({
           key,
           description,
-          startYear,
-          endYear,
           unit,
           amountOfCountries,
           ...topoJson2GeoJson,

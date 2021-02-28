@@ -1,8 +1,8 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { countriesConnectionName } from '../infrastructure/connentions';
+import { geoDataConnectionName } from './connentions';
 
-export const CountriesDatabaseModule = MongooseModule.forRootAsync({
+export const GeoDataDatabaseModule = MongooseModule.forRootAsync({
   imports: [ConfigModule],
   useFactory: async (configService: ConfigService) => ({
     retryAttempts: 5,
@@ -11,8 +11,8 @@ export const CountriesDatabaseModule = MongooseModule.forRootAsync({
       'database.username',
     )}:${configService.get(
       'database.password',
-    )}@eduinsights.vj2pu.mongodb.net/${countriesConnectionName}`,
+    )}@eduinsights.vj2pu.mongodb.net/${geoDataConnectionName}`,
   }),
   inject: [ConfigService],
-  connectionName: countriesConnectionName,
+  connectionName: geoDataConnectionName,
 });
