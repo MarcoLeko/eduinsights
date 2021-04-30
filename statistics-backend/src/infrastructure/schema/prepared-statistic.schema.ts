@@ -1,8 +1,7 @@
 import { Document } from 'mongoose';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type PreparedStatisticsExampleDocument = PreparedStatisticsExample &
-  Document;
+export type PreparedStatisticDocument = PreparedStatistic & Document;
 
 @Schema()
 export class PreparedStatisticsDataWithoutGeoJson {
@@ -17,7 +16,7 @@ export class PreparedStatisticsDataWithoutGeoJson {
 }
 
 @Schema()
-export class PreparedStatisticsExample extends PreparedStatisticsDataWithoutGeoJson {
+export class PreparedStatistic extends PreparedStatisticsDataWithoutGeoJson {
   @Prop(
     raw({
       countries: {
@@ -33,6 +32,6 @@ export class PreparedStatisticsExample extends PreparedStatisticsDataWithoutGeoJ
   type: 'Topology';
 }
 
-export const PreparedStatisticsExampleSchema = SchemaFactory.createForClass(
-  PreparedStatisticsExample,
+export const PreparedStatisticSchema = SchemaFactory.createForClass(
+  PreparedStatistic,
 ).set('collection', 'examples');
