@@ -28,14 +28,7 @@ export function usePreparedStatisticDataUtils() {
   const fetchMapStatisticsById = useCallback(() => {
     getMapStatisticsById(selectedStatistic)
       .then((topoJson) => {
-        const {
-          description,
-          startYear,
-          endYear,
-          key,
-          unit,
-          amountOfCountries,
-        } = topoJson;
+        const { description, key, unit, amountOfCountries } = topoJson;
 
         const topoJson2GeoJson = topojson.feature(topoJson, "countries");
 

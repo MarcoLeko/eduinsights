@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Countries, CountriesDocument } from './schema/countries.schema';
 
 @Injectable()
-export class CountriesRepository {
+export class GeoCountriesRepository {
   constructor(
     @InjectModel(Countries.name)
     private readonly countriesModel: Model<CountriesDocument>,

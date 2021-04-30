@@ -21,19 +21,19 @@ import {
   Countries,
   CountriesSchema,
 } from '../infrastructure/schema/countries.schema';
-import { CountriesRepository } from '../infrastructure/countries-repository.service';
-import {
-  PreparedStatisticsExampleList,
-  PreparedStatisticsExampleListSchema,
-} from '../infrastructure/schema/prepared-statistics-example-list.schema';
-import {
-  PreparedStatisticsExample,
-  PreparedStatisticsExampleSchema,
-} from '../infrastructure/schema/prepared-statistics-example.schema';
 import { PreparedStatisticsController } from '../controller/prepared-statistics.controller';
 import { PreparedStatisticsService } from '../application/prepared-statistics.service';
-import { PreparedStatisticsExampleRepository } from '../infrastructure/prepared-statistics-example.repository';
-import { PreparedStatisticsExampleListRepository } from '../infrastructure/prepared-statistics-example-list.repository';
+import { UisClient } from '../infrastructure/client/uis.client';
+import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
+import {
+  PreparedStatistic,
+  PreparedStatisticSchema,
+} from '../infrastructure/schema/prepared-statistic.schema';
+import {
+  PreparedStatisticList,
+  PreparedStatisticListSchema,
+} from '../infrastructure/schema/prepared-statistic-list.schema';
+import { PreparedStatisticRepository } from '../infrastructure/prepared-statistic.repository';
 
 @Module({
   imports: [
@@ -43,12 +43,12 @@ import { PreparedStatisticsExampleListRepository } from '../infrastructure/prepa
     MongooseModule.forFeature(
       [
         {
-          name: PreparedStatisticsExample.name,
-          schema: PreparedStatisticsExampleSchema,
+          name: PreparedStatistic.name,
+          schema: PreparedStatisticSchema,
         },
         {
-          name: PreparedStatisticsExampleList.name,
-          schema: PreparedStatisticsExampleListSchema,
+          name: PreparedStatisticList.name,
+          schema: PreparedStatisticListSchema,
         },
       ],
       preparedStatisticsConnectionName,
@@ -82,10 +82,13 @@ import { PreparedStatisticsExampleListRepository } from '../infrastructure/prepa
     QueryBuilderService,
     ConfigService,
     PreparedStatisticsService,
-    CountriesRepository,
+    GeoCountriesRepository,
     UnescoHierarchicalCodeListRepository,
-    PreparedStatisticsExampleRepository,
-    PreparedStatisticsExampleListRepository,
+    {
+      provide: 'PreparedStatisticRepositoryInterface',
+      useClass: PreparedStatisticRepository,
+    },
+    UisClient,
   ],
 })
 export class AppModule {}

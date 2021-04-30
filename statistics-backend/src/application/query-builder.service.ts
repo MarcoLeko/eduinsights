@@ -4,7 +4,10 @@ import { DataStructureForFilteredCategory } from '../domain/data-structure-for-f
 import { Statistic } from '../domain/statistic';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
-import { CountriesRepository } from '../infrastructure/countries-repository.service';
+import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
+import { UisClient } from '../infrastructure/client/uis.client';
+
+// TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
 
 @Injectable()
 export class QueryBuilderService {
@@ -13,7 +16,8 @@ export class QueryBuilderService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
-    private countriesRepository: CountriesRepository,
+    private uisClient: UisClient,
+    private countriesRepository: GeoCountriesRepository,
     private unescoHierarchicalCodeListRepository: UnescoHierarchicalCodeListRepository,
   ) {}
 
@@ -22,7 +26,7 @@ export class QueryBuilderService {
       clientFilter,
     );
 
-    const response = await this.uisClient(url);
+    const response = await this.uisClient.get(url);
     return response.data;
   }
 
@@ -30,7 +34,7 @@ export class QueryBuilderService {
     const url = Statistic.getStatisticDataUrl(filter);
 
     try {
-      const response = await this.uisClient(url);
+      const response = await this.uisClient.get(url);
       return {
         clientFilterValid: this.isFilterValid(response.data),
       };
@@ -50,7 +54,7 @@ export class QueryBuilderService {
       const resultArrayWithCountryMatches = [];
       const geoJson = await this.countriesRepository.getCountriesGeoJson();
       const hierarchicalCodeList = await this.unescoHierarchicalCodeListRepository.getHierarchicalCodeList();
-      const response = await this.uisClient(url);
+      const response = await this.uisClient.get(url);
 
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,
@@ -97,20 +101,6 @@ export class QueryBuilderService {
       this.logger.error(e.message, e.config?.url);
       return null;
     }
-  }
-
-  private async uisClient(url): Promise<any> {
-    const urlWithSubscriptionKey =
-      url + '&subscription-key=' + this.configService.get('unescoApiKey');
-
-    return this.httpService
-      .get(urlWithSubscriptionKey, {
-        headers: {
-          Accept:
-            'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        },
-      })
-      .toPromise();
   }
 
   private isFilterValid(statistics) {

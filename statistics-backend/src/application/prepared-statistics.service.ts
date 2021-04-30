@@ -1,21 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { PreparedStatisticsExampleRepository } from '../infrastructure/prepared-statistics-example.repository';
-import { PreparedStatisticsExampleListRepository } from '../infrastructure/prepared-statistics-example-list.repository';
+import { Inject, Injectable } from '@nestjs/common';
+import { PreparedStatisticRepositoryInterface } from '../domain/prepared-statistic-repository.interface';
 
 @Injectable()
 export class PreparedStatisticsService {
   constructor(
-    private preparedStatisticsExampleRepository: PreparedStatisticsExampleRepository,
-    private preparedStatisticsExampleListRepository: PreparedStatisticsExampleListRepository,
+    @Inject('PreparedStatisticRepositoryInterface')
+    private preparedStatisticRepositoryInterface: PreparedStatisticRepositoryInterface,
   ) {}
 
   getPreparedStatisticsById(key: string) {
-    return this.preparedStatisticsExampleRepository.getPreparedStatisticsExampleByKey(
+    return this.preparedStatisticRepositoryInterface.getPreparedStatisticsById(
       key,
     );
   }
 
   getPreparedStatisticsList() {
-    return this.preparedStatisticsExampleListRepository.getPreparedStatisticsExamplesList();
+    return this.preparedStatisticRepositoryInterface.getPreparedStatisticsList();
   }
 }
