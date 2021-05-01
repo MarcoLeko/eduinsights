@@ -5,7 +5,7 @@ import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from '../../config/configuration';
 import { QueryBuilderController } from '../controller/query-builder.controller';
-import { QueryBuilderService } from '../application/query-builder.service';
+import { StatisticGeneratorService } from '../application/statistic-generator.service';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import {
   geoDataConnectionName,
@@ -34,6 +34,7 @@ import {
   PreparedStatisticListSchema,
 } from '../infrastructure/schema/prepared-statistic-list.schema';
 import { PreparedStatisticRepository } from '../infrastructure/prepared-statistic.repository';
+import { FilterService } from '../application/filter.service';
 
 @Module({
   imports: [
@@ -79,9 +80,10 @@ import { PreparedStatisticRepository } from '../infrastructure/prepared-statisti
   ],
   controllers: [QueryBuilderController, PreparedStatisticsController],
   providers: [
-    QueryBuilderService,
+    StatisticGeneratorService,
     ConfigService,
     PreparedStatisticsService,
+    FilterService,
     GeoCountriesRepository,
     UnescoHierarchicalCodeListRepository,
     {

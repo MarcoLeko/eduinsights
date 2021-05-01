@@ -1,18 +1,15 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
-import { UisClientInterface } from '../domain/uis-client.interface';
-import { FilterStructureUrlService } from '../domain/filter-structure-url.service';
-import { FilterStructure } from '../domain/filter-structure';
 import { Statistic } from '../domain/statistic';
+import { UisClientInterface } from '../domain/uis-client.interface';
 
 // TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
 
 @Injectable()
-export class QueryBuilderService {
-  private readonly logger = new Logger(QueryBuilderService.name);
+export class StatisticGeneratorService {
+  private readonly logger = new Logger(StatisticGeneratorService.name);
 
   constructor(
     private configService: ConfigService,
@@ -22,32 +19,9 @@ export class QueryBuilderService {
     private unescoHierarchicalCodeListRepository: UnescoHierarchicalCodeListRepository,
   ) {}
 
-  async getFilter(clientFilter: Array<string>): Promise<FilterStructure> {
-    const url = FilterStructureUrlService.mapClientFilterToQueryUrl(
-      clientFilter,
-    );
-    const response = await this.uisClientInterface.get(url);
-
-    return response.data.structure;
-  }
-
-  async validateFilter(filter: ClientQueryFilterDto) {
-    const url = Statistic.getStatisticDataUrl(filter);
-
-    try {
-      const response = await this.uisClientInterface.get(url);
-      return {
-        clientFilterValid: this.isFilterValid(response.data),
-      };
-    } catch (e) {
-      this.logger.error(e.message);
-      return { clientFilterValid: false };
-    }
-  }
-
-  async getAggregatedStatisticGeoData(
-    filter: ClientQueryFilterDto,
-  ): Promise<any> {
+  async getAggregatedStatisticGeoData(filter: {
+    [key: string]: string;
+  }): Promise<any> {
     const url = Statistic.getStatisticDataUrl(filter);
 
     try {
@@ -102,24 +76,5 @@ export class QueryBuilderService {
       this.logger.error(e.message, e.config?.url);
       return null;
     }
-  }
-
-  private isFilterValid(statistics) {
-    const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
-      statistics,
-    );
-
-    if (
-      availableCountriesStatistics.values.length !==
-      Object.keys(statistics.dataSets[0].series).length
-    ) {
-      this.logger.warn(
-        'There are more Observations than REF_AREA countries - multi dimension observations are not supported',
-      );
-
-      return Boolean(availableCountriesStatistics.values.length);
-    }
-
-    return true;
   }
 }

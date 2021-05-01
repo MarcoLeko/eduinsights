@@ -1,11 +1,9 @@
-import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
-
 export class Statistic {
   private static URL_STATISTIC_PREFIX =
     'https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/';
   private static URL_STATISTIC_SUFFIX = '&format=sdmx-json&locale=en';
 
-  public static getStatisticDataUrl(filter: ClientQueryFilterDto) {
+  public static getStatisticDataUrl(filter: { [key: string]: string }) {
     const filterArgs = Object.keys(filter).reduce((prev, curr) => {
       if (Date.parse(filter[curr])) {
         prev += '.';
