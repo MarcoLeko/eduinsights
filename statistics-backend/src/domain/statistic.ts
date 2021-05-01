@@ -1,8 +1,8 @@
-import { DataStructureForFilteredCategory } from './data-structure-for-filtered-category';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 
 export class Statistic {
-  private static URL_STATISTIC_PREFIX = `https://api.uis.unesco.org/sdmx/data/UNESCO,${DataStructureForFilteredCategory.SUPPORTED_CATEGORY_ID},3.0/`;
+  private static URL_STATISTIC_PREFIX =
+    'https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/';
   private static URL_STATISTIC_SUFFIX = '&format=sdmx-json&locale=en';
 
   public static getStatisticDataUrl(filter: ClientQueryFilterDto) {

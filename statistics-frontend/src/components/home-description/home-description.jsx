@@ -33,7 +33,7 @@ function HomeDescription() {
         proceed by choosing the visualization mode: 2D or 3D Representation. And
         finally observe the results on the visualization. We are in close
         contact with UIS to provide the latest observations in order to better
-        raise awareness for this topic.
+        raise awareness for our mission.
       </Typography>
       <img
         src={MonitoringLogo}

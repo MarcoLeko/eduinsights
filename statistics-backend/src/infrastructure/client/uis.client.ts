@@ -1,8 +1,9 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { UisClientInterface } from '../../domain/uis-client.interface';
 
 @Injectable()
-export class UisClient {
+export class UisClient implements UisClientInterface {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,

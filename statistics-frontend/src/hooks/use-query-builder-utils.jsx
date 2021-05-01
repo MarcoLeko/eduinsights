@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
-  getDataStructureForQuery,
+  getFilter,
   getStatisticWithQuery,
-  validateSelectedFilter,
+  validateClientFilter,
 } from "../helper/services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
@@ -82,7 +82,7 @@ export function useQueryBuilderUtils() {
 
   const syncFilter = useCallback(
     (filterStructure) => {
-      validateSelectedFilter(
+      validateClientFilter(
         createFilterPayloadForGeoJsonData(filterStructure, queryParams)
       )
         .then((response) => {
@@ -100,27 +100,23 @@ export function useQueryBuilderUtils() {
   );
 
   const fetchFilterStructure = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure(filterStructure, queryParams)
-    )
+    getFilter(createFilterPayloadForDataStructure(filterStructure, queryParams))
       .then((response) => {
-        const filterStructure = response.structure;
-        setFilterStructure(filterStructure);
-        return filterStructure;
+        setFilterStructure(response);
+        return response;
       })
       .then((filterStructure) => syncFilter(filterStructure))
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
   }, [queryParams, filterStructure, dispatch, syncFilter]);
 
   const resetQueryBuilderData = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure([], queryParams)
-    ).then((response) => {
-      const filterStructure = response.structure;
-      setFilterStructure(filterStructure);
-      setGeoJsonStatistic(initialGeoJsonStatistic);
-      setIsFilterValid(false);
-    });
+    getFilter(createFilterPayloadForDataStructure([], queryParams)).then(
+      (response) => {
+        setFilterStructure(response);
+        setGeoJsonStatistic(initialGeoJsonStatistic);
+        setIsFilterValid(false);
+      }
+    );
   }, [queryParams]);
 
   return {

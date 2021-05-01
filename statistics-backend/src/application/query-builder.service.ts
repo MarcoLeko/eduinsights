@@ -1,11 +1,12 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DataStructureForFilteredCategory } from '../domain/data-structure-for-filtered-category';
-import { Statistic } from '../domain/statistic';
 import { ClientQueryFilterDto } from '../controller/client-query-filter.dto';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
-import { UisClient } from '../infrastructure/client/uis.client';
+import { UisClientInterface } from '../domain/uis-client.interface';
+import { FilterStructureUrlService } from '../domain/filter-structure-url.service';
+import { FilterStructure } from '../domain/filter-structure';
+import { Statistic } from '../domain/statistic';
 
 // TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
 
@@ -14,27 +15,27 @@ export class QueryBuilderService {
   private readonly logger = new Logger(QueryBuilderService.name);
 
   constructor(
-    private httpService: HttpService,
     private configService: ConfigService,
-    private uisClient: UisClient,
+    @Inject('UisClientInterface')
+    private uisClientInterface: UisClientInterface,
     private countriesRepository: GeoCountriesRepository,
     private unescoHierarchicalCodeListRepository: UnescoHierarchicalCodeListRepository,
   ) {}
 
-  async getDataStructureForFilteredCategory(clientFilter: Array<string>) {
-    const url = DataStructureForFilteredCategory.getDataStructureByCategoryIdUrl(
+  async getFilter(clientFilter: Array<string>): Promise<FilterStructure> {
+    const url = FilterStructureUrlService.mapClientFilterToQueryUrl(
       clientFilter,
     );
+    const response = await this.uisClientInterface.get(url);
 
-    const response = await this.uisClient.get(url);
-    return response.data;
+    return response.data.structure;
   }
 
   async validateFilter(filter: ClientQueryFilterDto) {
     const url = Statistic.getStatisticDataUrl(filter);
 
     try {
-      const response = await this.uisClient.get(url);
+      const response = await this.uisClientInterface.get(url);
       return {
         clientFilterValid: this.isFilterValid(response.data),
       };
@@ -54,7 +55,7 @@ export class QueryBuilderService {
       const resultArrayWithCountryMatches = [];
       const geoJson = await this.countriesRepository.getCountriesGeoJson();
       const hierarchicalCodeList = await this.unescoHierarchicalCodeListRepository.getHierarchicalCodeList();
-      const response = await this.uisClient.get(url);
+      const response = await this.uisClientInterface.get(url);
 
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,

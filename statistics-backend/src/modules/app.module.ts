@@ -88,7 +88,10 @@ import { PreparedStatisticRepository } from '../infrastructure/prepared-statisti
       provide: 'PreparedStatisticRepositoryInterface',
       useClass: PreparedStatisticRepository,
     },
-    UisClient,
+    {
+      provide: 'UisClientInterface',
+      useClass: UisClient,
+    },
   ],
 })
 export class AppModule {}
