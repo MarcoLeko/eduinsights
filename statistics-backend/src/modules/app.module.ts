@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from '../../config/configuration';
-import { QueryBuilderController } from '../controller/query-builder.controller';
+import { FilterController } from '../controller/filter.controller';
 import { StatisticGeneratorService } from '../application/statistic-generator.service';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import {
@@ -35,6 +35,7 @@ import {
 } from '../infrastructure/schema/prepared-statistic-list.schema';
 import { PreparedStatisticRepository } from '../infrastructure/prepared-statistic.repository';
 import { FilterService } from '../application/filter.service';
+import { DynamicStatisticsController } from '../controller/dynamic-statistics.controller';
 
 @Module({
   imports: [
@@ -78,7 +79,11 @@ import { FilterService } from '../application/filter.service';
       inject: [ConfigService],
     }),
   ],
-  controllers: [QueryBuilderController, PreparedStatisticsController],
+  controllers: [
+    FilterController,
+    PreparedStatisticsController,
+    DynamicStatisticsController,
+  ],
   providers: [
     StatisticGeneratorService,
     ConfigService,

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UisClientInterface } from '../domain/uis-client.interface';
-import { FilterStructureUrlService } from '../domain/filter-structure-url.service';
+import { FilterStructureUrlMapper } from '../domain/filter-structure-url.mapper';
 import { FilterStructure } from '../domain/filter-structure';
 import { Statistic } from '../domain/statistic';
 
@@ -16,7 +16,7 @@ export class FilterService {
   ) {}
 
   async getFilter(clientFilter: Array<string>): Promise<FilterStructure> {
-    const url = FilterStructureUrlService.mapClientFilterToQueryUrl(
+    const url = FilterStructureUrlMapper.mapClientFilterToQueryUrl(
       clientFilter,
     );
     const response = await this.uisClientInterface.get(url);

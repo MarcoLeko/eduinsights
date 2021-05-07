@@ -1,4 +1,7 @@
-export class FilterStructureUrlService {
+/**
+ * Maps the client filter as array of strings e.g. ['.', 'F', .] to a UIS request url by composing those array values into a string
+ */
+export class FilterStructureUrlMapper {
   private static readonly CATEGORY_ID = 'EDU_NON_FINANCE';
 
   public static mapClientFilterToQueryUrl(clientFilter: Array<string>): string {
@@ -13,7 +16,7 @@ export class FilterStructureUrlService {
     }
 
     return `https://api.uis.unesco.org/sdmx/data/UNESCO,${
-      FilterStructureUrlService.CATEGORY_ID
+      FilterStructureUrlMapper.CATEGORY_ID
     },3.0/${clientFilter.join(
       '',
     )}?format=sdmx-json&startPeriod=${date}&endPeriod=${date}&dimensionAtObservation=AllDimensions&detail=structureOnly`;

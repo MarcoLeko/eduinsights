@@ -11,19 +11,7 @@ export async function getMapStatisticsList() {
 }
 
 export async function getFilter(body) {
-  const response = await fetch("api/v1/query/filter", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  return handleResponse(response);
-}
-
-export async function getStatisticWithQuery(body) {
-  const response = await fetch("api/v1/query/categories/statistic", {
+  const response = await fetch("api/v1/filter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,7 +23,19 @@ export async function getStatisticWithQuery(body) {
 }
 
 export async function validateClientFilter(body) {
-  const response = await fetch("api/v1/query/filter/validate", {
+  const response = await fetch("api/v1/filter/validate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse(response);
+}
+
+export async function getStatisticWithQuery(body) {
+  const response = await fetch("api/v1/dynamic-statistics", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
