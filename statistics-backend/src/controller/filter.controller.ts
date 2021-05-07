@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { FilterStructure } from '../domain/filter-structure';
 import { FilterService } from '../application/filter.service';
+import { FilterStructure } from '../domain/model/filter-structure';
 
 @Controller('api/v1/filter')
 export class FilterController {

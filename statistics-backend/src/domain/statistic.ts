@@ -1,29 +1,6 @@
+import { AggregatedStatisticWithGeoData } from './aggregated-statistic-with-geo-data';
+
 export class Statistic {
-  private static URL_STATISTIC_PREFIX =
-    'https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/';
-  private static URL_STATISTIC_SUFFIX = '&format=sdmx-json&locale=en';
-
-  public static getStatisticDataUrl(filter: { [key: string]: string }) {
-    const filterArgs = Object.keys(filter).reduce((prev, curr) => {
-      if (Date.parse(filter[curr])) {
-        prev += '.';
-      } else {
-        prev += filter[curr] ? `${filter[curr]}.` : '.';
-      }
-      return prev;
-    }, '');
-
-    const url =
-      Statistic.URL_STATISTIC_PREFIX +
-      filterArgs +
-      (Date.parse(filter['TIME_PERIOD'])
-        ? `?startPeriod=${filter['TIME_PERIOD']}&endPeriod=${filter['TIME_PERIOD']}`
-        : '?startPeriod=2018&endPeriod=2018') +
-      Statistic.URL_STATISTIC_SUFFIX;
-
-    return url;
-  }
-
   public static matchUnescoCountriesWithGeoJson(
     countriesGeoJson,
     availableCountriesStatistics,
@@ -55,15 +32,12 @@ export class Statistic {
           }
         }
       }
-      resultArrayWithCountryMatches.push({
-        type: geoJsonCountry.type,
-        arcs: geoJsonCountry.arcs,
-        properties: {
-          name: geoJsonCountry.properties.name,
-          id: geoJsonCountry.properties.code,
-          value: observationValue ? Number(observationValue).toFixed(2) : null,
-        },
-      });
+      resultArrayWithCountryMatches.push(
+        AggregatedStatisticWithGeoData.composeCountryWithStatistic(
+          geoJsonCountry,
+          observationValue,
+        ),
+      );
     }
   }
 

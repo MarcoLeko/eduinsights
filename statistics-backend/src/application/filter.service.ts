@@ -1,10 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { UisClientInterface } from '../domain/uis-client.interface';
-import { FilterStructureUrlMapper } from '../domain/filter-structure-url.mapper';
-import { FilterStructure } from '../domain/filter-structure';
-import { Statistic } from '../domain/statistic';
-
-// TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
+import { FilterStructure } from '../domain/model/filter-structure';
+import { UisClientInterface } from '../domain/interface/uis-client.interface';
+import { Filter } from '../domain/filter';
 
 @Injectable()
 export class FilterService {
@@ -16,44 +13,24 @@ export class FilterService {
   ) {}
 
   async getFilter(clientFilter: Array<string>): Promise<FilterStructure> {
-    const url = FilterStructureUrlMapper.mapClientFilterToQueryUrl(
+    const response = await this.uisClientInterface.getUISFilterByClientFilter(
       clientFilter,
     );
-    const response = await this.uisClientInterface.get(url);
 
     return response.data.structure;
   }
 
   async validateFilter(filter: { [key: string]: string }) {
-    const url = Statistic.getStatisticDataUrl(filter);
-
     try {
-      const response = await this.uisClientInterface.get(url);
+      const response = await this.uisClientInterface.getStatisticByClientFilter(
+        filter,
+      );
       return {
-        clientFilterValid: this.isFilterValid(response.data),
+        isFilterValid: Filter.validate(response.data),
       };
     } catch (e) {
       this.logger.error(e.message);
-      return { clientFilterValid: false };
+      return { isFilterValid: false };
     }
-  }
-
-  private isFilterValid(statistics) {
-    const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
-      statistics,
-    );
-
-    if (
-      availableCountriesStatistics.values.length !==
-      Object.keys(statistics.dataSets[0].series).length
-    ) {
-      this.logger.warn(
-        'There are more Observations than REF_AREA countries - multi dimension observations are not supported',
-      );
-
-      return Boolean(availableCountriesStatistics.values.length);
-    }
-
-    return true;
   }
 }

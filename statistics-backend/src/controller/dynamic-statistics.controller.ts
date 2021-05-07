@@ -7,7 +7,7 @@ export class DynamicStatisticsController {
     private readonly statisticGeneratorService: StatisticGeneratorService,
   ) {}
 
-  @Post('/categories/statistic')
+  @Post('/')
   async getStatisticFromQuery(
     @Body() clientBody: { [key: string]: string },
   ): Promise<any> {

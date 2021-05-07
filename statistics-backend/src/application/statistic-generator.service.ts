@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
 import { Statistic } from '../domain/statistic';
-import { UisClientInterface } from '../domain/uis-client.interface';
+import { UisClientInterface } from '../domain/interface/uis-client.interface';
 
 // TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
 
@@ -22,14 +22,14 @@ export class StatisticGeneratorService {
   async getAggregatedStatisticGeoData(filter: {
     [key: string]: string;
   }): Promise<any> {
-    const url = Statistic.getStatisticDataUrl(filter);
-
     try {
       const unescoRegions = new Map();
       const resultArrayWithCountryMatches = [];
       const geoJson = await this.countriesRepository.getCountriesGeoJson();
       const hierarchicalCodeList = await this.unescoHierarchicalCodeListRepository.getHierarchicalCodeList();
-      const response = await this.uisClientInterface.get(url);
+      const response = await this.uisClientInterface.getStatisticByClientFilter(
+        filter,
+      );
 
       const availableCountriesStatistics = Statistic.getAvailableCountryStatistic(
         response.data,

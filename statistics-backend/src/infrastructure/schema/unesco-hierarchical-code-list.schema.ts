@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { HierarchicalCodeList } from '../../domain/hierarchical-code-list';
+import { HierarchicalCodeList } from '../../domain/model/hierarchical-code-list';
 
 export type UnescoHierarchicalCodeListDocument = UnescoHierarchicalCodeList &
   Document;

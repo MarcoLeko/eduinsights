@@ -86,8 +86,8 @@ export function useQueryBuilderUtils() {
         createFilterPayloadForGeoJsonData(filterStructure, queryParams)
       )
         .then((response) => {
-          setIsFilterValid(response.clientFilterValid);
-          return response.clientFilterValid;
+          setIsFilterValid(response.isFilterValid);
+          return response.isFilterValid;
         })
         .then((isClientFilterValid) =>
           isClientFilterValid

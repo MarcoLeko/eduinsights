@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UisClientInterface } from '../../domain/uis-client.interface';
+import { ClientFilterUrlMapper } from '../mapper/client-filter-url.mapper';
+import { UisClientInterface } from '../../domain/interface/uis-client.interface';
 
 @Injectable()
 export class UisClient implements UisClientInterface {
@@ -9,7 +10,38 @@ export class UisClient implements UisClientInterface {
     private configService: ConfigService,
   ) {}
 
-  public async get(url: string) {
+  public async getStatisticByClientFilter(filter: { [key: string]: string }) {
+    const urlPrefix =
+      'https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/';
+    const urlSuffix = '&format=sdmx-json&locale=en';
+
+    const url = `${urlPrefix}${ClientFilterUrlMapper.mapClientFilterToStatisticUrl(
+      filter,
+    )}${
+      Date.parse(filter['TIME_PERIOD'])
+        ? `?startPeriod=${filter['TIME_PERIOD']}&endPeriod=${filter['TIME_PERIOD']}`
+        : '?startPeriod=2018&endPeriod=2018'
+    }${urlSuffix}`;
+
+    return this.get(url);
+  }
+
+  public async getUISFilterByClientFilter(filter: Array<string>) {
+    const urlPrefix =
+      'https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/';
+    const urlSuffix =
+      '&dimensionAtObservation=AllDimensions&detail=structureOnly';
+    const {
+      date,
+      clientFilter,
+    } = ClientFilterUrlMapper.mapClientFilterToQueryUrl(filter);
+
+    const url = `${urlPrefix}${clientFilter}?format=sdmx-json&startPeriod=${date}&endPeriod=${date}${urlSuffix}`;
+
+    return this.get(url);
+  }
+
+  private async get(url: string) {
     const urlWithSubscriptionKey =
       url + '&subscription-key=' + this.configService.get('unescoApiKey');
 
