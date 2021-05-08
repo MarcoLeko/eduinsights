@@ -4,8 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from '../../config/configuration';
-import { QueryBuilderController } from '../controller/query-builder.controller';
-import { QueryBuilderService } from '../application/query-builder.service';
+import { FilterController } from '../controller/filter.controller';
+import { StatisticGeneratorService } from '../application/statistic-generator.service';
 import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-hierarchical-code-list.repository';
 import {
   geoDataConnectionName,
@@ -34,6 +34,8 @@ import {
   PreparedStatisticListSchema,
 } from '../infrastructure/schema/prepared-statistic-list.schema';
 import { PreparedStatisticRepository } from '../infrastructure/prepared-statistic.repository';
+import { FilterService } from '../application/filter.service';
+import { DynamicStatisticsController } from '../controller/dynamic-statistics.controller';
 
 @Module({
   imports: [
@@ -77,18 +79,26 @@ import { PreparedStatisticRepository } from '../infrastructure/prepared-statisti
       inject: [ConfigService],
     }),
   ],
-  controllers: [QueryBuilderController, PreparedStatisticsController],
+  controllers: [
+    FilterController,
+    PreparedStatisticsController,
+    DynamicStatisticsController,
+  ],
   providers: [
-    QueryBuilderService,
+    StatisticGeneratorService,
     ConfigService,
     PreparedStatisticsService,
+    FilterService,
     GeoCountriesRepository,
     UnescoHierarchicalCodeListRepository,
     {
       provide: 'PreparedStatisticRepositoryInterface',
       useClass: PreparedStatisticRepository,
     },
-    UisClient,
+    {
+      provide: 'UisClientInterface',
+      useClass: UisClient,
+    },
   ],
 })
 export class AppModule {}

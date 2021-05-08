@@ -5,11 +5,11 @@ import {
   PreparedStatistic,
   PreparedStatisticDocument,
 } from './schema/prepared-statistic.schema';
-import { PreparedStatisticRepositoryInterface } from '../domain/prepared-statistic-repository.interface';
 import {
   PreparedStatisticList,
   PreparedStatisticListDocument,
 } from './schema/prepared-statistic-list.schema';
+import { PreparedStatisticRepositoryInterface } from '../domain/interface/prepared-statistic-repository.interface';
 
 @Injectable()
 export class PreparedStatisticRepository

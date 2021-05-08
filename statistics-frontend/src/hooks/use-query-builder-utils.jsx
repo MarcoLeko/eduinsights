@@ -2,45 +2,30 @@ import { useCallback, useState } from "react";
 import { receiveMessageInterceptor } from "../context/alert-actions";
 import { useAlertContext } from "./use-alert-context";
 import {
-  getDataStructureForQuery,
+  getFilter,
   getStatisticWithQuery,
-  validateSelectedFilter,
+  validateClientFilter,
 } from "../helper/services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
 
-function createFilterPayloadForDataStructure(structure, params) {
-  const payload =
-    structure.dimensions?.observation?.map((item) => {
-      if (Object.keys(params).some((key) => key === item.id)) {
-        return `${params[item.id]}.`;
-      }
-
-      return ".";
-    }) || [];
-
-  if (payload.length < 22) {
-    return [
-      ...payload,
-      ...new Array(21 - payload.length).fill(".", payload.length, 22),
-    ];
-  }
-
-  return payload;
+function createClientFilterFromQueryParams(filterStructure, params) {
+  return filterStructure?.dimensions?.observation.reduce(
+    (acc, item) =>
+      Object.keys(params).some((key) => key === item.id)
+        ? {
+            ...acc,
+            [item.id]: {
+              value: params[item.id],
+              position: item.keyPosition,
+            },
+          }
+        : acc,
+    {}
+  );
 }
 
-function createFilterPayloadForGeoJsonData(structure, params) {
-  return structure.dimensions.observation.reduce((prev, curr) => {
-    if (Object.keys(params).some((key) => key === curr.id)) {
-      prev[curr.id] = params[curr.id];
-    } else {
-      prev[curr.id] = "";
-    }
-    return prev;
-  }, {});
-}
-
-const initialGeoJsonStatistic = {
+const defaultGeoJsonStatistic = {
   key: null,
   description: null,
   type: null,
@@ -56,13 +41,13 @@ export function useQueryBuilderUtils() {
   const [filterStructure, setFilterStructure] = useState([]);
   const [isFilterValid, setIsFilterValid] = useState(false);
   const [geoJsonStatistic, setGeoJsonStatistic] = useState(
-    initialGeoJsonStatistic
+    defaultGeoJsonStatistic
   );
 
   const fetchGeoJsonStatisticFromFilter = useCallback(
     (filterStructure) => {
       getStatisticWithQuery(
-        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
+        createClientFilterFromQueryParams(filterStructure, queryParams)
       )
         .then((topoJson) => {
           const { key, description, unit, amountOfCountries } = topoJson;
@@ -82,17 +67,24 @@ export function useQueryBuilderUtils() {
 
   const syncFilter = useCallback(
     (filterStructure) => {
-      validateSelectedFilter(
-        createFilterPayloadForGeoJsonData(filterStructure, queryParams)
-      )
+      const clientFilter = createClientFilterFromQueryParams(
+        filterStructure,
+        queryParams
+      );
+      const isFilterActive = Boolean(Object.keys(clientFilter).length);
+      const validatePromise = isFilterActive
+        ? validateClientFilter(clientFilter)
+        : Promise.resolve({ isFilterValid: false });
+
+      validatePromise
         .then((response) => {
-          setIsFilterValid(response.clientFilterValid);
-          return response.clientFilterValid;
+          setIsFilterValid(response.isFilterValid);
+          return response.isFilterValid;
         })
         .then((isClientFilterValid) =>
           isClientFilterValid
             ? fetchGeoJsonStatisticFromFilter(filterStructure)
-            : setGeoJsonStatistic(initialGeoJsonStatistic)
+            : setGeoJsonStatistic(defaultGeoJsonStatistic)
         )
         .catch((e) => dispatch(receiveMessageInterceptor(e)));
     },
@@ -100,27 +92,23 @@ export function useQueryBuilderUtils() {
   );
 
   const fetchFilterStructure = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure(filterStructure, queryParams)
-    )
+    getFilter(createClientFilterFromQueryParams(filterStructure, queryParams))
       .then((response) => {
-        const filterStructure = response.structure;
-        setFilterStructure(filterStructure);
-        return filterStructure;
+        setFilterStructure(response);
+        return response;
       })
       .then((filterStructure) => syncFilter(filterStructure))
       .catch((e) => dispatch(receiveMessageInterceptor(e)));
   }, [queryParams, filterStructure, dispatch, syncFilter]);
 
   const resetQueryBuilderData = useCallback(() => {
-    getDataStructureForQuery(
-      createFilterPayloadForDataStructure([], queryParams)
-    ).then((response) => {
-      const filterStructure = response.structure;
-      setFilterStructure(filterStructure);
-      setGeoJsonStatistic(initialGeoJsonStatistic);
-      setIsFilterValid(false);
-    });
+    getFilter(createClientFilterFromQueryParams([], queryParams)).then(
+      (response) => {
+        setFilterStructure(response);
+        setGeoJsonStatistic(defaultGeoJsonStatistic);
+        setIsFilterValid(false);
+      }
+    );
   }, [queryParams]);
 
   return {

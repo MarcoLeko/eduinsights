@@ -1,6 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { CountriesGeoDataObjects } from '../../domain/countries-geo-data';
+import { CountriesGeoDataObject } from '../../domain/model/countries-geo-data-object';
 
 export type CountriesDocument = Countries & Document;
 
@@ -16,7 +16,7 @@ export class Countries {
       },
     }),
   )
-  objects: CountriesGeoDataObjects;
+  objects: CountriesGeoDataObject;
   @Prop()
   arcs: Array<Array<number>>;
   @Prop()
