@@ -4,8 +4,9 @@ import { UnescoHierarchicalCodeListRepository } from '../infrastructure/unesco-h
 import { GeoCountriesRepository } from '../infrastructure/geo-countries.repository';
 import { Statistic } from '../domain/statistic';
 import { UisClientInterface } from '../domain/interface/uis-client.interface';
+import { ClientFilterDto } from '../controller/dto/client-filter.dto';
 
-// TODO: Refactor this! It does not follow the DDD approach and is hard to extend on business logic requirements
+// TODO: Refactor this! It does not follow the DDD approach and is hard to extend on changing business logic requirements
 
 @Injectable()
 export class StatisticGeneratorService {
@@ -19,9 +20,7 @@ export class StatisticGeneratorService {
     private unescoHierarchicalCodeListRepository: UnescoHierarchicalCodeListRepository,
   ) {}
 
-  async getAggregatedStatisticGeoData(filter: {
-    [key: string]: string;
-  }): Promise<any> {
+  async getAggregatedStatisticGeoData(filter: ClientFilterDto): Promise<any> {
     try {
       const unescoRegions = new Map();
       const resultArrayWithCountryMatches = [];

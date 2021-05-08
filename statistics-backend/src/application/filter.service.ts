@@ -2,6 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FilterStructure } from '../domain/model/filter-structure';
 import { UisClientInterface } from '../domain/interface/uis-client.interface';
 import { Filter } from '../domain/filter';
+import { ClientFilterDto } from '../controller/dto/client-filter.dto';
 
 @Injectable()
 export class FilterService {
@@ -12,15 +13,15 @@ export class FilterService {
     private uisClientInterface: UisClientInterface,
   ) {}
 
-  async getFilter(clientFilter: Array<string>): Promise<FilterStructure> {
-    const response = await this.uisClientInterface.getUISFilterByClientFilter(
+  async getFilter(clientFilter: ClientFilterDto): Promise<FilterStructure> {
+    const response = await this.uisClientInterface.getFilterStructureByClientFilter(
       clientFilter,
     );
 
     return response.data.structure;
   }
 
-  async validateFilter(filter: { [key: string]: string }) {
+  async validateFilter(filter: ClientFilterDto) {
     try {
       const response = await this.uisClientInterface.getStatisticByClientFilter(
         filter,

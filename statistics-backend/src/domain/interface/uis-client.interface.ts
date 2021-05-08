@@ -1,5 +1,7 @@
-export interface UisClientInterface {
-  getStatisticByClientFilter(filter: { [key: string]: string });
+import { ClientFilterDto } from '../../controller/dto/client-filter.dto';
 
-  getUISFilterByClientFilter(filter: Array<string>);
+export interface UisClientInterface {
+  getStatisticByClientFilter(filter: ClientFilterDto);
+
+  getFilterStructureByClientFilter(filter: ClientFilterDto);
 }

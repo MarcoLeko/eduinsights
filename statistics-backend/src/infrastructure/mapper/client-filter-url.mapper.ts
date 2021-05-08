@@ -1,33 +1,20 @@
+import { ClientFilterDto } from '../../controller/dto/client-filter.dto';
+
 export class ClientFilterUrlMapper {
-  public static mapClientFilterToStatisticUrl(filter: {
-    [key: string]: string;
-  }) {
-    return Object.keys(filter).reduce((prev, curr) => {
-      if (Date.parse(filter[curr])) {
-        prev += '.';
-      } else {
-        prev += filter[curr] ? `${filter[curr]}.` : '.';
-      }
-      return prev;
-    }, '');
-  }
-
   public static mapClientFilterToQueryUrl(
-    clientFilter: Array<string>,
-  ): { date: number; clientFilter: string } {
-    let date = 2017;
-    const dateIndex = clientFilter.findIndex((item: string) =>
-      Date.parse(item),
-    );
+    clientFilter: ClientFilterDto,
+  ): string {
+    const date = clientFilter?.TIME_PERIOD?.value ?? 2018;
+    const filterUrl = new Array(23)
+      .fill('.', 0)
+      .map((defaultValue, index) => {
+        const clientFilterItem = Object.values(clientFilter).find(
+          (item) => item.position - 1 === index,
+        );
+        return clientFilterItem ? `${clientFilterItem.value}.` : defaultValue;
+      })
+      .join('');
 
-    if (dateIndex > -1) {
-      date = +clientFilter[dateIndex];
-      clientFilter[dateIndex] = '.';
-    }
-
-    return {
-      date,
-      clientFilter: clientFilter.join(''),
-    };
+    return `${filterUrl}?format=sdmx-json&startPeriod=${date}&endPeriod=${date}`;
   }
 }
