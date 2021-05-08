@@ -1,8 +1,8 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ClientFilterDto } from '../../controller/dto/client-filter.dto';
 import { ClientFilterUrlMapper } from '../mapper/client-filter-url.mapper';
 import { UisClientInterface } from '../../domain/interface/uis-client.interface';
-import { ClientFilterDto } from '../../controller/dto/client-filter.dto';
 
 @Injectable()
 export class UisClient implements UisClientInterface {
