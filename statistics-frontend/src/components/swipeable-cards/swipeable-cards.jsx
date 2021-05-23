@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { animated, interpolate, useSpring } from "react-spring";
 import { Card, MobileStepper } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
 import "./swipeable-cards.scss";
 
 export function SwipeableCards({ items }) {
@@ -25,7 +24,7 @@ export function SwipeableCards({ items }) {
     props.position.setValue(index);
   }
 
-  return Boolean(items.length) ? (
+  return (
     <div className="swipeable-cards-container">
       <SwipeableViews
         index={index}
@@ -81,15 +80,6 @@ export function SwipeableCards({ items }) {
         activeStep={index}
         className="mt-2 mobile-stepper"
       />
-    </div>
-  ) : (
-    <div className="skeleton-container">
-      <Skeleton variant="rect" className="skeleton-rect" />
-      <div className="skeleton-dots-flex mt-2">
-        {Array.from(new Array(8).fill(1)).map((v, i) => (
-          <Skeleton key={v + i} variant="circle" className="skeleton-dot" />
-        ))}
-      </div>
     </div>
   );
 }

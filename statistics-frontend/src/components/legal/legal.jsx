@@ -5,7 +5,7 @@ import { setActiveTab, setShowRecentQueries } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import "./legal.scss";
 
-export default function Legal() {
+export function Legal() {
   const { dispatch } = useUiContext();
 
   useEffect(() => {

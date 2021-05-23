@@ -2,7 +2,7 @@ import MapTwoToneIcon from "@material-ui/icons/MapTwoTone";
 import PublicTwoToneIcon from "@material-ui/icons/PublicTwoTone";
 import React from "react";
 
-const visualizations = [
+const visualizationModes = [
   {
     label: "2D Display",
     icon: <MapTwoToneIcon className="visualization-selector-container-icon" />,
@@ -17,4 +17,4 @@ const visualizations = [
   },
 ];
 
-export { visualizations };
+export { visualizationModes };

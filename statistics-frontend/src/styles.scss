@@ -1,10 +1,10 @@
-$font-format: Montserrat, sans-serif;
+$font-format: verdana, sans-serif;
 $app-primary: rgba(62, 175, 255, 1);
 $app-background: linear-gradient(90deg, rgba(75, 225, 255, 1) 35%, rgba(62, 175, 255, 1) 100%);
 $breakpoint-xs: 600px;
 $drawer-width: 240px;
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
   $app-primary: rgb(75, 225, 255);
 }
 
@@ -19,7 +19,7 @@ html, body, #root {
 .edu-header-h6 {
   padding: 8px 0;
   font-size: 1.1875rem;
-  font-weight: 300 !important;
+  font-weight: 300;
 }
 
 .primary-button {
@@ -66,7 +66,7 @@ html, body, #root {
 }
 
 .content-shift-panel {
-  left: -240px !important;
+  left: -240px;
 }
 
 .d-flex {
@@ -78,7 +78,7 @@ html, body, #root {
 }
 
 .float-left {
-  margin-left: auto !important;
+  margin-left: auto;
 }
 
 .mt-1 {

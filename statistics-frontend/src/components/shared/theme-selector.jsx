@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { setTheme } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { navItemsSideBar } from "./navigation-items";
+import { setThemeSchema } from "../../helper/user-theme-schema";
 
 const useStyles = makeStyles(() => ({
   linkItem: {
@@ -31,15 +32,17 @@ export function ThemeSelector() {
   const classes = useStyles();
   const { theme, dispatch } = useUiContext();
   const [menuElement, setMenuElement] = useState(null);
+
   const handleMenuItemClick = (event, value) => {
     dispatch(setTheme(value));
+    setThemeSchema(value);
   };
 
-  const handleDesignMenuClose = () => {
+  const handleThemeMenuClose = () => {
     setMenuElement(null);
   };
 
-  const handleDesignMenuClick = (event) => {
+  const handleThemeMenuClick = (event) => {
     setMenuElement(event.currentTarget);
   };
 
@@ -48,20 +51,20 @@ export function ThemeSelector() {
       <ListItem
         button
         component="button"
-        aria-controls="design-menu"
+        aria-controls="theme-menu"
         aria-haspopup="true"
         className={classes.linkItem}
-        onClick={handleDesignMenuClick}
+        onClick={handleThemeMenuClick}
       >
         <ListItemIcon>{navItem.icon}</ListItemIcon>
         <ListItemText primary={navItem.name} className={classes.listItemText} />
       </ListItem>
       <Menu
-        id="design-menu"
+        id="theme-menu"
         anchorEl={menuElement}
         keepMounted
         open={Boolean(menuElement)}
-        onClose={handleDesignMenuClose}
+        onClose={handleThemeMenuClose}
         classes={{ paper: classes.menuPaper }}
         getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}

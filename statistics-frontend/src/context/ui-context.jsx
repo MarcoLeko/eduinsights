@@ -1,18 +1,17 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
 import {
   ACTIVE_TAB,
-  RECENT_QUERIES,
-  IS_SIDEBAR_OPEN,
-  THEME,
-  IS_VISUALIZATION_LOADED,
   CAN_SHOW_RECENT_QUERIES,
+  IS_SIDEBAR_OPEN,
+  IS_VISUALIZATION_LOADED,
+  RECENT_QUERIES,
+  THEME,
 } from "./ui-action-types";
 import { getLocalStorageItem, setTheme } from "./ui-actions";
+import { detectThemeSchema } from "../helper/user-theme-schema";
 
 const initialState = {
-  theme: window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light",
+  theme: detectThemeSchema(),
   activeTab: 0,
   recentQueries: getLocalStorageItem(),
   isSidebarOpen: false,

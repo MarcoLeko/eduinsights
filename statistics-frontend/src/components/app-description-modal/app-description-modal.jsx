@@ -16,7 +16,7 @@ import "./app-description-modal.scss";
 import StatisticImage from "../../assets/map-transparent-bg.png";
 import { cookieKey } from "../../helper/cookie-key";
 import { StatisticSelector } from "../statistic-selector/statistic-selector";
-import { visualizations } from "../shared/visualization-items";
+import { visualizationModes } from "../shared/visualization-modes";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 
 const dialogTitles = ["How it works", "Select a visualization", "Enjoy!"];
@@ -31,7 +31,9 @@ const demoStatisticsList = [
   },
 ];
 
-const demoVisualizations = visualizations.filter((item) => item.key === "map");
+const demoVisualizations = visualizationModes.filter(
+  (item) => item.key === "map"
+);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

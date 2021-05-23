@@ -31,36 +31,6 @@
   flex-direction: column;
 }
 
-.skeleton-container {
-  display: flex;
-  margin: auto;
-  height: 280px;
-  align-items: center;
-  flex-direction: column;
-}
-
-.skeleton-dots-flex {
-  display: flex;
-  justify-content: center;
-  height: inherit;
-  width: inherit;
-}
-
-.skeleton-rect {
-  margin: 16px 24px;
-  flex-shrink: 0;
-  justify-content: center;
-  height: 195px !important;
-  width: 320px;
-}
-
-.skeleton-dot {
-  margin: 0 2px;
-  flex-shrink: 0;
-  width: 8px !important;
-  height: 8px !important;
-}
-
 .mobile-stepper {
-  background: unset !important;
+  background: unset;
 }

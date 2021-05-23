@@ -15,7 +15,7 @@ export function useQueryParams() {
     setQueryParams(qs.parse(location.search, { sort: false }));
   }, [location.search]);
 
-  const addNextQueryParam = (newQueryParam) => {
+  const addQueryParam = (newQueryParam) => {
     history.push({
       search: qs.stringify(
         {
@@ -46,7 +46,7 @@ export function useQueryParams() {
   };
 
   return {
-    addNextQueryParam,
+    addQueryParam,
     resetQueryParams,
     queryParams,
     removeLastQueryParam,

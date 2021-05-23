@@ -9,9 +9,9 @@ import { VisualizationSelector } from "../visualization-selector/visualization-s
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
-import { visualizations } from "../shared/visualization-items";
+import { visualizationModes } from "../shared/visualization-modes";
 
-export default function QueryBuilder() {
+export function QueryBuilder() {
   const { dispatch, isVisualizationLoaded } = useUiContext();
   const {
     filterStructure,
@@ -22,7 +22,7 @@ export default function QueryBuilder() {
   } = useQueryBuilderUtils();
   const {
     queryParams,
-    addNextQueryParam,
+    addQueryParam,
     resetQueryParams,
     removeLastQueryParam,
   } = useQueryParams();
@@ -56,7 +56,7 @@ export default function QueryBuilder() {
   }
 
   function onClickNext() {
-    addNextQueryParam({ ready: true });
+    addQueryParam({ ready: true });
   }
 
   function onClickBack() {
@@ -64,7 +64,7 @@ export default function QueryBuilder() {
   }
 
   function onVisualizationClick(visualization) {
-    addNextQueryParam({ visualization: visualization.key });
+    addQueryParam({ visualization: visualization.key });
   }
 
   function getActiveStepNode() {
@@ -84,7 +84,7 @@ export default function QueryBuilder() {
         return (
           <VisualizationSelector
             onVisualizationClick={onVisualizationClick}
-            visualizations={visualizations}
+            visualizations={visualizationModes}
           />
         );
       case 0:
@@ -94,7 +94,7 @@ export default function QueryBuilder() {
             queryParams={queryParams}
             fetchFilterStructure={fetchFilterStructure}
             filterStructure={filterStructure}
-            addNextQueryParam={addNextQueryParam}
+            addNextQueryParam={addQueryParam}
             amountOfCountries={geoJsonStatistic.amountOfCountries}
           />
         );

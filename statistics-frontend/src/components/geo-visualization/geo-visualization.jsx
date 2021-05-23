@@ -15,7 +15,7 @@ import {
   height,
   width,
 } from "./geo-visualization-utils";
-import { Loader } from "../loader/loader";
+import { Loader } from "../loaders/loader";
 
 const { extent, scaleLinear, select } = d3;
 

@@ -8,6 +8,7 @@ import {
 } from "../helper/services";
 import { useQueryParams } from "./use-query-params";
 import * as topojson from "topojson-client";
+import { defaultGeoJsonStatistic } from "../helper/default-geo-json-statistic";
 
 function createClientFilterFromQueryParams(filterStructure, params) {
   return filterStructure?.dimensions?.observation.reduce(
@@ -24,15 +25,6 @@ function createClientFilterFromQueryParams(filterStructure, params) {
     {}
   );
 }
-
-const defaultGeoJsonStatistic = {
-  key: null,
-  description: null,
-  type: null,
-  unit: null,
-  features: null,
-  amountOfCountries: 0,
-};
 
 export function useQueryBuilderUtils() {
   const { dispatch } = useAlertContext();

@@ -20,7 +20,7 @@ const getMaterialUiTheme = (theme) => {
       },
     },
     typography: {
-      fontFamily: ["Montserrat", "sans-serif"].join(","),
+      fontFamily: ["verdana", "sans-serif"].join(","),
       h5: {
         fontWeight: 600,
         fontSize: 18,

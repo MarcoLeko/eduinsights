@@ -1,53 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import HomeDescription from "../home-description/home-description";
-import { StatisticSelector } from "../statistic-selector/statistic-selector";
 import { useUiContext } from "../../hooks/use-ui-context";
 import StatisticStepper from "../statistic-stepper/statistic-stepper";
 import { VisualizationSelector } from "../visualization-selector/visualization-selector";
 import { setActiveTab, setShowRecentQueries } from "../../context/ui-actions";
-import { usePreparedStatisticDataUtils } from "../../hooks/use-prepared-statistic-data-utils";
 import { GeoVisualization } from "../geo-visualization/geo-visualization";
 import { useQueryParams } from "../../hooks/use-query-params";
-import { visualizations } from "../shared/visualization-items";
+import { visualizationModes } from "../shared/visualization-modes";
+import { StatisticSelector } from "../statistic-selector/statistic-selector";
+import { getMapStatisticsById } from "../../helper/services";
+import * as topojson from "topojson-client";
+import { receiveMessageInterceptor } from "../../context/alert-actions";
+import { defaultGeoJsonStatistic } from "../../helper/default-geo-json-statistic";
 
-export default function Home() {
-  const {
-    statisticsList,
-    geoJsonFromSelectedStatistic,
-    setSelectedStatistic,
-  } = usePreparedStatisticDataUtils();
+export function Home() {
   const { dispatch, isVisualizationLoaded } = useUiContext();
-
   const {
     queryParams,
-    addNextQueryParam,
+    addQueryParam,
     removeLastQueryParam,
     resetQueryParams,
   } = useQueryParams();
 
-  const [activeStep, setActiveStep] = useState(getStep());
-
-  useEffect(() => {
-    dispatch(setActiveTab(0));
-    dispatch(setShowRecentQueries(true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setActiveStep(getStep());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams, isVisualizationLoaded]);
-
-  function onStatisticClick(statistic) {
-    addNextQueryParam({ statistic: statistic.key });
-    setSelectedStatistic(statistic.key);
-  }
-
-  function onVisualizationClick(visualization) {
-    addNextQueryParam({ visualization: visualization.key });
-  }
-
-  function getStep() {
+  const getStep = () => {
     if (
       queryParams.statistic &&
       queryParams.visualization &&
@@ -64,9 +39,46 @@ export default function Home() {
     }
 
     return 0;
-  }
+  };
 
-  function getActiveStepNode() {
+  const [activeStep, setActiveStep] = useState(getStep());
+  const [selectedStatistic, setSelectedStatistic] = useState(
+    queryParams.statistic
+  );
+  const [
+    geoJsonFromSelectedStatistic,
+    setGeoJsonFromSelectedStatistic,
+  ] = useState(defaultGeoJsonStatistic);
+
+  const fetchMapStatisticsById = useCallback(() => {
+    getMapStatisticsById(selectedStatistic)
+      .then((topoJson) => {
+        const { description, key, unit, amountOfCountries } = topoJson;
+
+        const topoJson2GeoJson = topojson.feature(topoJson, "countries");
+
+        setGeoJsonFromSelectedStatistic({
+          key,
+          description,
+          unit,
+          amountOfCountries,
+          ...topoJson2GeoJson,
+        });
+      })
+      .catch((e) => dispatch(receiveMessageInterceptor(e)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStatistic]);
+
+  const onStatisticClick = (statistic) => {
+    addQueryParam({ statistic: statistic.key });
+    setSelectedStatistic(statistic.key);
+  };
+
+  const onVisualizationClick = (visualization) => {
+    addQueryParam({ visualization: visualization.key });
+  };
+
+  const getActiveStepNode = () => {
     const showGlobe = queryParams.visualization === "globe";
 
     switch (activeStep) {
@@ -83,19 +95,31 @@ export default function Home() {
         return (
           <VisualizationSelector
             onVisualizationClick={onVisualizationClick}
-            visualizations={visualizations}
+            visualizations={visualizationModes}
           />
         );
       case 0:
       default:
-        return (
-          <StatisticSelector
-            onStatisticClick={onStatisticClick}
-            statisticsList={statisticsList}
-          />
-        );
+        return <StatisticSelector onStatisticClick={onStatisticClick} />;
     }
-  }
+  };
+
+  useEffect(() => {
+    dispatch(setActiveTab(0));
+    dispatch(setShowRecentQueries(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setActiveStep(getStep());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams, isVisualizationLoaded]);
+
+  useEffect(() => {
+    if (selectedStatistic) {
+      fetchMapStatisticsById();
+    }
+  }, [selectedStatistic, fetchMapStatisticsById]);
 
   return (
     <>
