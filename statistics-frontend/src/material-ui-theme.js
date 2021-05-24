@@ -5,8 +5,7 @@ const muiGradientBackground =
   "linear-gradient(90deg, rgba(75,225,255,1) 35%, rgba(62,175,255,1) 100%)";
 
 const getMaterialUiTheme = (theme) => {
-  const mainPrimaryColor =
-    theme === "dark" ? "rgb(75,225,255)" : "rgba(62,175,255,1)";
+  const mainPrimaryColor = theme === "dark" ? "#4BE1FFFF" : "#3EAFFFFF";
   const mainSecondaryColor = theme === "dark" ? grey[200] : grey[600];
 
   return createMuiTheme({

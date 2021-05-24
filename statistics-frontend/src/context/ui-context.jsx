@@ -8,10 +8,10 @@ import {
   THEME,
 } from "./ui-action-types";
 import { getLocalStorageItem, setTheme } from "./ui-actions";
-import { detectThemeSchema } from "../helper/user-theme-schema";
+import { detectTheme } from "../helper/user-theme";
 
 const initialState = {
-  theme: detectThemeSchema(),
+  theme: detectTheme(),
   activeTab: 0,
   recentQueries: getLocalStorageItem(),
   isSidebarOpen: false,

@@ -1,13 +1,16 @@
 import {
   ACTIVE_TAB,
-  RECENT_QUERIES,
-  IS_SIDEBAR_OPEN,
-  THEME,
-  IS_VISUALIZATION_LOADED,
   CAN_SHOW_RECENT_QUERIES,
+  IS_SIDEBAR_OPEN,
+  IS_VISUALIZATION_LOADED,
+  RECENT_QUERIES,
+  THEME,
 } from "./ui-action-types";
 
-export const setTheme = (theme) => ({ type: THEME, theme });
+export const setTheme = (theme) => {
+  localStorage.setItem("theme", theme);
+  return { type: THEME, theme: theme };
+};
 export const setActiveTab = (activeTab) => ({ type: ACTIVE_TAB, activeTab });
 export const setSidebarOpen = (isSidebarOpen) => ({
   type: IS_SIDEBAR_OPEN,

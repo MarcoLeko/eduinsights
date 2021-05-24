@@ -5,13 +5,13 @@
 }
 
 .Mui-selected {
-  color: $app-primary;
+  color: $app-primary-color;
 }
 
 .tab {
   min-width: 0;
   ~ :hover {
-  color: $app-primary;
+  color: $app-primary-color;
 }
   font-size: 1rem;
   font-weight: 300;

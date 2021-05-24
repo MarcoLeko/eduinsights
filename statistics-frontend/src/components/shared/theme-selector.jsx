@@ -7,7 +7,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { setTheme } from "../../context/ui-actions";
 import { useUiContext } from "../../hooks/use-ui-context";
 import { navItemsSideBar } from "./navigation-items";
-import { setThemeSchema } from "../../helper/user-theme-schema";
 
 const useStyles = makeStyles(() => ({
   linkItem: {
@@ -35,7 +34,6 @@ export function ThemeSelector() {
 
   const handleMenuItemClick = (event, value) => {
     dispatch(setTheme(value));
-    setThemeSchema(value);
   };
 
   const handleThemeMenuClose = () => {

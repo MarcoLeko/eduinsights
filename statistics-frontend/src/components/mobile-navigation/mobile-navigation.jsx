@@ -18,7 +18,7 @@ const useStyles = (theming) =>
       backgroundColor: theming === "dark" ? grey[900] : grey[100],
     },
     selectedLabel: {
-      fontSize: "0.75rem",
+      fontSize: "0.75rem !important",
     },
   }));
 

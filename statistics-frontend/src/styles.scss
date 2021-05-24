@@ -1,11 +1,12 @@
 $font-format: verdana, sans-serif;
-$app-primary: rgba(62, 175, 255, 1);
-$app-background: linear-gradient(90deg, rgba(75, 225, 255, 1) 35%, rgba(62, 175, 255, 1) 100%);
+$app-primary-color: #3EAFFFFF;
+$app-primary-background: linear-gradient(90deg, #4BE1FFFF 35%, #3EAFFFFF 100%);
 $breakpoint-xs: 600px;
 $drawer-width: 240px;
 
 [data-theme="dark"] {
-  $app-primary: rgb(75, 225, 255);
+  $app-primary-color: #4BE1FFFF;
+  background-color: #303030;
 }
 
 html, body, #root {
@@ -23,7 +24,7 @@ html, body, #root {
 }
 
 .primary-button {
-  background: $app-background;
+  background: $app-primary-background;
 }
 
 .navigation {
